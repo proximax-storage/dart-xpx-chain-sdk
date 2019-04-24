@@ -1,12 +1,10 @@
 part of nem2_sdk_dart;
 
 class NetworkTypeDTO {
-  
   String name = null;
-  
 
   String description = null;
-  
+
   NetworkTypeDTO();
 
   @override
@@ -16,31 +14,38 @@ class NetworkTypeDTO {
 
   NetworkTypeDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    name =
-        json['name']
-    ;
-    description =
-        json['description']
-    ;
+    name = json['name'];
+    description = json['description'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'description': description
-     };
+    return {'name': name, 'description': description};
   }
 
   static List<NetworkTypeDTO> listFromJson(List<dynamic> json) {
-    return json == null ? new List<NetworkTypeDTO>() : json.map((value) => new NetworkTypeDTO.fromJson(value)).toList();
+    return json == null
+        ? new List<NetworkTypeDTO>()
+        : json.map((value) => new NetworkTypeDTO.fromJson(value)).toList();
   }
 
-  static Map<String, NetworkTypeDTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
+  static Map<String, NetworkTypeDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
     var map = new Map<String, NetworkTypeDTO>();
     if (json != null && json.length > 0) {
-      json.forEach((String key, Map<String, dynamic> value) => map[key] = new NetworkTypeDTO.fromJson(value));
+      json.forEach((String key, Map<String, dynamic> value) =>
+          map[key] = new NetworkTypeDTO.fromJson(value));
     }
     return map;
   }
 }
 
+// NetworkType enums
+const MainNet = 104;
+
+const TestNet = 152;
+
+const Mijin = 96;
+
+const MijinTest = 144;
+
+const NotSupportedNet = 0;

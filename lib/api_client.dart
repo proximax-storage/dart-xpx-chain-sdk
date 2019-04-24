@@ -8,7 +8,6 @@ class QueryParam {
 }
 
 class ApiClient {
-
   String basePath;
   var client = new BrowserClient();
 
@@ -18,12 +17,12 @@ class ApiClient {
   final _RegList = new RegExp(r'^List<(.*)>$');
   final _RegMap = new RegExp(r'^Map<String,(.*)>$');
 
-  ApiClient({this.basePath: "http://localhost:3000"}) {
+  ApiClient({this.basePath: "http://csdtest1.xpxsirius.io:3000"}) {
     // Setup authentications (key: authentication name, value: authentication).
   }
 
   void addDefaultHeader(String key, String value) {
-     _defaultHeaderMap[key] = value;
+    _defaultHeaderMap[key] = value;
   }
 
   dynamic _deserialize(dynamic value, String targetType) {
@@ -139,9 +138,11 @@ class ApiClient {
           }
       }
     } catch (e, stack) {
-      throw new ApiException.withInner(500, 'Exception during deserialization.', e, stack);
+      throw new ApiException.withInner(
+          500, 'Exception during deserialization.', e, stack);
     }
-    throw new ApiException(500, 'Could not find a suitable class for deserialization');
+    throw new ApiException(
+        500, 'Could not find a suitable class for deserialization');
   }
 
   dynamic deserialize(String jsonVal, String targetType) {
@@ -166,28 +167,28 @@ class ApiClient {
 
   // We don't use a Map<String, String> for queryParams.
   // If collectionFormat is 'multi' a key might appear multiple times.
-  Future<Response> invokeAPI(String path,
-                             String method,
-                             Iterable<QueryParam> queryParams,
-                             Object body,
-                             Map<String, String> headerParams,
-                             Map<String, String> formParams,
-                             String contentType,
-                             List<String> authNames) async {
-
+  Future<Response> invokeAPI(
+      String path,
+      String method,
+      Iterable<QueryParam> queryParams,
+      Object body,
+      Map<String, String> headerParams,
+      Map<String, String> formParams,
+      String contentType,
+      List<String> authNames) async {
     _updateParamsForAuth(authNames, queryParams, headerParams);
 
-    var ps = queryParams.where((p) => p.value != null).map((p) => '${p.name}=${p.value}');
-    String queryString = ps.isNotEmpty ?
-                         '?' + ps.join('&') :
-                         '';
+    var ps = queryParams
+        .where((p) => p.value != null)
+        .map((p) => '${p.name}=${p.value}');
+    String queryString = ps.isNotEmpty ? '?' + ps.join('&') : '';
 
     String url = basePath + path + queryString;
 
     headerParams.addAll(_defaultHeaderMap);
     headerParams['Content-Type'] = contentType;
 
-    if(body is MultipartRequest) {
+    if (body is MultipartRequest) {
       var request = new MultipartRequest(method, Uri.parse(url));
       request.fields.addAll(body.fields);
       request.files.addAll(body.files);
@@ -196,8 +197,10 @@ class ApiClient {
       var response = await client.send(request);
       return Response.fromStream(response);
     } else {
-      var msgBody = contentType == "application/x-www-form-urlencoded" ? formParams : serialize(body);
-      switch(method) {
+      var msgBody = contentType == "application/x-www-form-urlencoded"
+          ? formParams
+          : serialize(body);
+      switch (method) {
         case "POST":
           return client.post(url, headers: headerParams, body: msgBody);
         case "PUT":
@@ -214,10 +217,12 @@ class ApiClient {
 
   /// Update query and header parameters based on authentication settings.
   /// @param authNames The authentications to apply
-  void _updateParamsForAuth(List<String> authNames, List<QueryParam> queryParams, Map<String, String> headerParams) {
+  void _updateParamsForAuth(List<String> authNames,
+      List<QueryParam> queryParams, Map<String, String> headerParams) {
     authNames.forEach((authName) {
       Authentication auth = _authentications[authName];
-      if (auth == null) throw new ArgumentError("Authentication undefined: " + authName);
+      if (auth == null)
+        throw new ArgumentError("Authentication undefined: " + authName);
       auth.applyToParams(queryParams, headerParams);
     });
   }
