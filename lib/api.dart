@@ -4,6 +4,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:http/browser_client.dart';
+import 'dart:typed_data';
+import "package:nem2_crypto/nem2_crypto.dart" as crypto;
 
 
 part 'api_client.dart';
@@ -25,6 +27,7 @@ part 'src/api/transaction_routes_api.dart';
 part 'src/model/account_dto.dart';
 part 'src/model/account_info_dto.dart';
 part 'src/model/account_meta_dto.dart';
+part 'src/model/account_model.dart';
 part 'src/model/account_properties_dto.dart';
 part 'src/model/account_properties_info_dto.dart';
 part 'src/model/account_properties_meta_dto.dart';
@@ -65,6 +68,5 @@ part 'src/model/transaction_ids.dart';
 part 'src/model/transaction_payload.dart';
 part 'src/model/transaction_status_dto.dart';
 part 'src/model/u_int64_dto.dart';
-
 
 ApiClient defaultApiClient = new ApiClient();
