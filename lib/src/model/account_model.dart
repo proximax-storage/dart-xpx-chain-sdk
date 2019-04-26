@@ -9,7 +9,7 @@ class Address {
   Address();
   @override
   String toString() {
-    return 'Address[address=$address, networkType=$networkType]';
+    return 'Address[networkType=$networkType, address=$address]';
   }
 }
 
@@ -45,30 +45,35 @@ Address NewAddress(String address, int networkType) {
 }
 
 // Create an Address from a given raw address.
-Address NewAddressFromPublicKey(String pKey, int networkType){
+PublicAccount NewAddressFromPublicKey(String pKey, int networkType){
   var ad = _generateEncodedAddress(pKey, networkType);
-  return NewAddress(ad, networkType);
+  var address = NewAddress(ad, networkType);
+  var pa = new PublicAccount();
+  pa.address = address;
+  pa.publicKey = pKey;
+  return pa;
 }
 
 String _generateEncodedAddress(String pKey, int version){
   // step 1: sha3 hash of the public key
-  var pKeyD =  new Uint8List.fromList(pKey.codeUnits);
-	var sha3PublicKeyHash = crypto.HashesSha3_256(pKeyD);
+  var pKeyD =  HEX.decode(pKey);
+
+  var sha3PublicKeyHash = crypto.HashesSha3_256(pKeyD);
 
   // step 2: ripemd160 hash of (1)
   var ripemd160StepOneHash = crypto.HashesRipemd160(sha3PublicKeyHash);
 
   // step 3: add version byte in front of (2)
-	ripemd160StepOneHash.insert(0, version);
+  var versionPrefixedRipemd160Hash = addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
 
   // step 4: get the checksum of (3)
-  var stepThreeChecksum = GenerateChecksum(ripemd160StepOneHash);
+  var stepThreeChecksum = GenerateChecksum(versionPrefixedRipemd160Hash);
 
   // step 5: concatenate (3) and (4)
-  ripemd160StepOneHash.addAll(stepThreeChecksum);
+  var concatStepThreeAndStepSix = addUint8List(versionPrefixedRipemd160Hash, stepThreeChecksum);
 
   // step 6: base32 encode (5)
- return base32.encode(ripemd160StepOneHash);
+  return base32.encode(concatStepThreeAndStepSix);
 }
 
 Uint8List GenerateChecksum(Uint8List b){
@@ -76,5 +81,15 @@ Uint8List GenerateChecksum(Uint8List b){
   var sha3StepThreeHash = crypto.HashesSha3_256(b);
 
   // step 2: get the first NUM_CHECKSUM_BYTES bytes of (1)
-	return sha3StepThreeHash.getRange(0, NUM_CHECKSUM_BYTES);
+  var p = sha3StepThreeHash.getRange(0, NUM_CHECKSUM_BYTES);
+  Uint8List hash = Uint8List(NUM_CHECKSUM_BYTES);
+  for (int i = 0; i < NUM_CHECKSUM_BYTES; i++) hash[i] = p.toList()[i];
+  return hash;
+}
+
+Uint8List addUint8List(Uint8List a, Uint8List b){
+  Uint8List hash = Uint8List(b.length+a.length);
+  for (int i = 0; i < a.length; i++) hash[i] = a[i];
+  for (int i = 0; i < b.length; i++) hash[i+a.length] = b[i];
+  return hash;
 }
