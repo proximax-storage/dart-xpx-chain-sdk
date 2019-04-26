@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:http/browser_client.dart';
 import 'dart:typed_data';
+import "package:hex/hex.dart";
+import 'package:base32/base32.dart';
 import "package:nem2_crypto/nem2_crypto.dart" as crypto;
 
 
