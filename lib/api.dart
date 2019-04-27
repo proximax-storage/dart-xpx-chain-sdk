@@ -9,7 +9,7 @@ import "package:hex/hex.dart";
 import 'package:base32/base32.dart';
 import "package:nem2_crypto/nem2_crypto.dart" as crypto;
 
-
+part 'api_utils.dart';
 part 'api_client.dart';
 part 'api_helper.dart';
 part 'api_exception.dart';

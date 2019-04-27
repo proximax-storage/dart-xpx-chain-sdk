@@ -44,14 +44,26 @@ Address NewAddress(String address, int networkType) {
   return ad;
 }
 
-// Create an Address from a given raw address.
-PublicAccount NewAddressFromPublicKey(String pKey, int networkType){
+// Create an PublicAccount from a given hex public key.
+PublicAccount NewAccountFromPublicKey(String pKey, int networkType){
   var ad = _generateEncodedAddress(pKey, networkType);
   var address = NewAddress(ad, networkType);
   var pa = new PublicAccount();
   pa.address = address;
   pa.publicKey = pKey;
   return pa;
+}
+
+// Create an Account from a given hex private key.
+Account NewAccountFromPrivateKey(String sHex, int networkType){
+  var k = crypto.NewPrivateKeyFromHexString(sHex);
+  var kp = crypto.NewKeyPair(k, null);
+  print(kp.publicKey.toString());
+  var pa = NewAccountFromPublicKey(kp.publicKey.toString(), networkType);
+  var account = new Account();
+  account.publicAccount = pa;
+  account.account = kp;
+  return account;
 }
 
 String _generateEncodedAddress(String pKey, int version){
