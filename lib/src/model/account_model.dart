@@ -31,7 +31,7 @@ class Account {
   Account();
   @override
   String toString() {
-    return 'Account[account=$account, publicAccount=$publicAccount]';
+    return publicAccount.toString();
   }
 }
 
@@ -44,8 +44,8 @@ Address NewAddress(String address, int networkType) {
   return ad;
 }
 
-// Create an PublicAccount from a given hex public key.
-PublicAccount NewAccountFromPublicKey(String pKey, int networkType){
+// Create an Address from a given raw address.
+PublicAccount NewAccountFromPublicKey(String pKey, int networkType) {
   var ad = _generateEncodedAddress(pKey, networkType);
   var address = NewAddress(ad, networkType);
   var pa = new PublicAccount();
@@ -54,21 +54,9 @@ PublicAccount NewAccountFromPublicKey(String pKey, int networkType){
   return pa;
 }
 
-// Create an Account from a given hex private key.
-Account NewAccountFromPrivateKey(String sHex, int networkType){
-  var k = crypto.NewPrivateKeyFromHexString(sHex);
-  var kp = crypto.NewKeyPair(k, null);
-  print(kp.publicKey.toString());
-  var pa = NewAccountFromPublicKey(kp.publicKey.toString(), networkType);
-  var account = new Account();
-  account.publicAccount = pa;
-  account.account = kp;
-  return account;
-}
-
-String _generateEncodedAddress(String pKey, int version){
+String _generateEncodedAddress(String pKey, int version) {
   // step 1: sha3 hash of the public key
-  var pKeyD =  HEX.decode(pKey);
+  var pKeyD = HEX.decode(pKey);
 
   var sha3PublicKeyHash = crypto.HashesSha3_256(pKeyD);
 
@@ -76,19 +64,21 @@ String _generateEncodedAddress(String pKey, int version){
   var ripemd160StepOneHash = crypto.HashesRipemd160(sha3PublicKeyHash);
 
   // step 3: add version byte in front of (2)
-  var versionPrefixedRipemd160Hash = addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
+  var versionPrefixedRipemd160Hash =
+  addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
 
   // step 4: get the checksum of (3)
   var stepThreeChecksum = GenerateChecksum(versionPrefixedRipemd160Hash);
 
   // step 5: concatenate (3) and (4)
-  var concatStepThreeAndStepSix = addUint8List(versionPrefixedRipemd160Hash, stepThreeChecksum);
+  var concatStepThreeAndStepSix =
+  addUint8List(versionPrefixedRipemd160Hash, stepThreeChecksum);
 
   // step 6: base32 encode (5)
   return base32.encode(concatStepThreeAndStepSix);
 }
 
-Uint8List GenerateChecksum(Uint8List b){
+Uint8List GenerateChecksum(Uint8List b) {
   // step 1: sha3 hash of (input
   var sha3StepThreeHash = crypto.HashesSha3_256(b);
 
@@ -99,9 +89,21 @@ Uint8List GenerateChecksum(Uint8List b){
   return hash;
 }
 
-Uint8List addUint8List(Uint8List a, Uint8List b){
-  Uint8List hash = Uint8List(b.length+a.length);
+// Create an Account from a given hex private key.
+Account NewAccountFromPrivateKey(String sHex, int networkType) {
+  var k = crypto.NewPrivateKeyFromHexString(sHex);
+  var kp = crypto.NewKeyPair(k, null);
+
+  var pa = NewAccountFromPublicKey(kp.publicKey.toString(), networkType);
+  var account = new Account();
+  account.publicAccount = pa;
+  account.account = kp;
+  return account;
+}
+
+Uint8List addUint8List(Uint8List a, Uint8List b) {
+  Uint8List hash = Uint8List(b.length + a.length);
   for (int i = 0; i < a.length; i++) hash[i] = a[i];
-  for (int i = 0; i < b.length; i++) hash[i+a.length] = b[i];
+  for (int i = 0; i < b.length; i++) hash[i + a.length] = b[i];
   return hash;
 }
