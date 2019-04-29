@@ -8,6 +8,8 @@ import 'dart:typed_data';
 import "package:hex/hex.dart";
 import 'package:base32/base32.dart';
 import "package:nem2_crypto/nem2_crypto.dart" as crypto;
+import "package:nem2_crypto/imp/sha3.dart" as sha3;
+
 
 part 'api_utils.dart';
 part 'api_client.dart';
@@ -61,6 +63,7 @@ part 'src/model/namespace_dto.dart';
 part 'src/model/namespace_ids.dart';
 part 'src/model/namespace_info_dto.dart';
 part 'src/model/namespace_meta_dto.dart';
+part 'src/model/namespace_model.dart';
 part 'src/model/namespace_name_dto.dart';
 part 'src/model/network_type_dto.dart';
 part 'src/model/node_info_dto.dart';
