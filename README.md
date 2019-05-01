@@ -29,6 +29,7 @@ $ flutter packages get
 ```
 
 Alternatively, your editor might support pub get or flutter packages get. Check the docs for your editor to learn more.
+
 **3. Import it**
 
 Now in your Dart code, you can use:
