@@ -43,10 +43,6 @@ Examples are in the `examples` folder
 
 For more examples, go to our [wiki](https://github.com/proximax-storage/dart-xpx-catapult-sdk/wiki)
 
-## Acknowledgement ## 
-
-This library is a fork of dart-xpx-catapult-sdk which was also contributed by ProximaX Limited to NEM Foundation. 
-
 ## Contribution ##
 We'd love to get more people involved in the project. Please feel free to raise any issues or PR and we'll review your contribution.
     
