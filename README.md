@@ -1,1 +1,2 @@
-# nem2-sdk-dart
+<p align="center"><a href="https://vuejs.org" target="_blank" rel="noopener noreferrer"><img width="150" src="https://user-images.githubusercontent.com/29048783/57000439-a41fa000-6b81-11e9-94f3-6df17de7e41a.png" alt="Vue logo"></a></p>
+<h2 align="center">Dart client library for Catapult API</h2>
