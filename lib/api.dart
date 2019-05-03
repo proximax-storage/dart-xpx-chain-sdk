@@ -2,9 +2,11 @@ library nem2_sdk_dart;
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:http/http.dart';
-import 'package:http/browser_client.dart';
 import 'dart:typed_data';
+
+import 'package:http/http.dart';
+import 'package:fixnum/fixnum.dart';
+import 'package:http/browser_client.dart';
 import "package:hex/hex.dart";
 import 'package:base32/base32.dart';
 import "package:nem2_crypto/nem2_crypto.dart" as crypto;
@@ -20,6 +22,7 @@ part 'src/auth/api_key_auth.dart';
 part 'src/auth/oauth.dart';
 part 'src/auth/http_basic_auth.dart';
 
+part 'src/api/api_conf.dart';
 part 'src/api/account_routes_api.dart';
 part 'src/api/blockchain_routes_api.dart';
 part 'src/api/mosaic_routes_api.dart';
@@ -74,4 +77,4 @@ part 'src/model/transaction_payload.dart';
 part 'src/model/transaction_status_dto.dart';
 part 'src/model/u_int64_dto.dart';
 
-ApiClient defaultApiClient = new ApiClient();
+ApiClient defaultApiClient = new ApiClient(null, null);

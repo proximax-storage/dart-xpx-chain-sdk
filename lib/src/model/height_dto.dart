@@ -7,11 +7,12 @@ class HeightDTO {
 
   @override
   String toString() {
-    return 'HeightDTO[height=$height, ]';
+    return 'Height[${height.h}, ${height.l}]';
   }
 
   HeightDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
+
     height = new UInt64DTO.fromJson(json['height']);
   }
 

@@ -186,13 +186,16 @@ class BlockchainRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+    var response = await this.apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'HeightDTO') as HeightDTO;
+      var t =
+          this.apiClient.deserialize(response.body, 'HeightDTO') as HeightDTO;
+
+      return t;
     } else {
       return null;
     }

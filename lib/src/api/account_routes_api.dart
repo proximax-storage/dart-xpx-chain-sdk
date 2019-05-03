@@ -1,26 +1,26 @@
 part of nem2_sdk_dart;
 
 class AccountRoutesApi {
-  final ApiClient apiClient;
+  final ApiClient _apiClient;
 
-  AccountRoutesApi([ApiClient apiClient])
-      : apiClient = apiClient ?? defaultApiClient;
+  AccountRoutesApi([ApiClient _apiClient])
+      : _apiClient = _apiClient ?? defaultApiClient;
 
   /// Get account information
   ///
   /// Returns the account information.
-  Future<AccountInfoDTO> getAccountInfo(String accountId) async {
+  Future<AccountInfoDTO> GetAccountInfo(Address address) async {
     Object postBody = null;
 
     // verify required params are set
-    if (accountId == null) {
+    if (address.address == null) {
       throw new ApiException(400, "Missing required param: accountId");
     }
 
     // create path and map variables
     String path = "/account/{accountId}"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "accountId" + "}", accountId.toString());
+        .replaceAll("{" + "accountId" + "}", address.address);
 
     // query params
     List<QueryParam> queryParams = [];
@@ -40,13 +40,13 @@ class AccountRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+    var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'AccountInfoDTO')
+      return _apiClient.deserialize(response.body, 'AccountInfoDTO')
           as AccountInfoDTO;
     } else {
       return null;
@@ -87,13 +87,13 @@ class AccountRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+    var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'MultisigAccountInfoDTO')
+      return _apiClient.deserialize(response.body, 'MultisigAccountInfoDTO')
           as MultisigAccountInfoDTO;
     } else {
       return null;
@@ -135,13 +135,13 @@ class AccountRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+    var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(
+      return (_apiClient.deserialize(
               response.body, 'List<MultisigAccountGraphInfoDTO>') as List)
           .map((item) => item as MultisigAccountGraphInfoDTO)
           .toList();
@@ -185,13 +185,13 @@ class AccountRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+    var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'AccountPropertiesInfoDTO')
+      return _apiClient.deserialize(response.body, 'AccountPropertiesInfoDTO')
           as AccountPropertiesInfoDTO;
     } else {
       return null;
@@ -231,13 +231,13 @@ class AccountRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'POST', queryParams,
+    var response = await _apiClient.invokeAPI(path, 'POST', queryParams,
         postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(
+      return (_apiClient.deserialize(
               response.body, 'List<AccountPropertiesInfoDTO>') as List)
           .map((item) => item as AccountPropertiesInfoDTO)
           .toList();
@@ -278,13 +278,13 @@ class AccountRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'POST', queryParams,
+    var response = await _apiClient.invokeAPI(path, 'POST', queryParams,
         postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<AccountInfoDTO>')
+      return (_apiClient.deserialize(response.body, 'List<AccountInfoDTO>')
               as List)
           .map((item) => item as AccountInfoDTO)
           .toList();
@@ -339,13 +339,13 @@ class AccountRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+    var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<Object>') as List)
+      return (_apiClient.deserialize(response.body, 'List<Object>') as List)
           .map((item) => item as Object)
           .toList();
     } else {
@@ -399,13 +399,13 @@ class AccountRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+    var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<Object>') as List)
+      return (_apiClient.deserialize(response.body, 'List<Object>') as List)
           .map((item) => item as Object)
           .toList();
     } else {
@@ -459,13 +459,13 @@ class AccountRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+    var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<Object>') as List)
+      return (_apiClient.deserialize(response.body, 'List<Object>') as List)
           .map((item) => item as Object)
           .toList();
     } else {
@@ -519,13 +519,13 @@ class AccountRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+    var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<Object>') as List)
+      return (_apiClient.deserialize(response.body, 'List<Object>') as List)
           .map((item) => item as Object)
           .toList();
     } else {
@@ -579,13 +579,13 @@ class AccountRoutesApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+    var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<Object>') as List)
+      return (_apiClient.deserialize(response.body, 'List<Object>') as List)
           .map((item) => item as Object)
           .toList();
     } else {

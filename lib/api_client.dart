@@ -7,8 +7,47 @@ class QueryParam {
   QueryParam(this.name, this.value);
 }
 
+Client NewClient(NewConfig conf, BrowserClient client) {
+
+  if (conf == null) {
+    conf = new NewConfig("http://127.0.0.1:3000", 144);
+  }
+
+  if (client == null) {
+    client = new BrowserClient();
+  }
+
+  ApiClient apiClient = new ApiClient(conf, client);
+
+  var t =  new Client(apiClient);
+  return t;
+}
+
+class Client {
+
+  BlockchainRoutesApi _block;
+
+  ApiClient _client;
+
+  Client(this._client);
+
+  BlockchainRoutesApi BlockChain() =>  BlockchainRoutesApi(_client);
+  
+  AccountRoutesApi Account() => new AccountRoutesApi(_client);
+
+  MosaicRoutesApi Mosaic() => new MosaicRoutesApi(_client);
+
+  NamespaceRoutesApi Namespace () => new NamespaceRoutesApi(_client);
+
+  NetworkRoutesApi Network() => new NetworkRoutesApi(_client);
+
+  NodeRoutesApi Node() => new NodeRoutesApi(_client);
+
+  TransactionRoutesApi Transaction() => new TransactionRoutesApi(_client);
+}
+
 class ApiClient {
-  String basePath;
+  NewConfig conf;
   var client = new BrowserClient();
 
   Map<String, String> _defaultHeaderMap = {};
@@ -17,7 +56,7 @@ class ApiClient {
   final _RegList = new RegExp(r'^List<(.*)>$');
   final _RegMap = new RegExp(r'^Map<String,(.*)>$');
 
-  ApiClient({this.basePath: "http://csdtest1.xpxsirius.io:3000"}) {
+  ApiClient(this.conf, this.client) {
     // Setup authentications (key: authentication name, value: authentication).
   }
 
@@ -152,6 +191,7 @@ class ApiClient {
     if (targetType == 'String') return jsonVal;
 
     var decodedJson = json.decode(jsonVal);
+    print("JSON: ${decodedJson}");
     return _deserialize(decodedJson, targetType);
   }
 
@@ -183,7 +223,7 @@ class ApiClient {
         .map((p) => '${p.name}=${p.value}');
     String queryString = ps.isNotEmpty ? '?' + ps.join('&') : '';
 
-    String url = basePath + path + queryString;
+    String url = conf.baseUrl + path + queryString;
 
     headerParams.addAll(_defaultHeaderMap);
     headerParams['Content-Type'] = contentType;
@@ -200,8 +240,9 @@ class ApiClient {
       var msgBody = contentType == "application/x-www-form-urlencoded"
           ? formParams
           : serialize(body);
+
       switch (method) {
-        case "POST":
+    case "POST":
           return client.post(url, headers: headerParams, body: msgBody);
         case "PUT":
           return client.put(url, headers: headerParams, body: msgBody);
@@ -210,7 +251,8 @@ class ApiClient {
         case "PATCH":
           return client.patch(url, headers: headerParams, body: msgBody);
         default:
-          return client.get(url, headers: headerParams);
+          var response = client.get(url, headers: headerParams);
+          return response;
       }
     }
   }

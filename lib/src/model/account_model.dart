@@ -45,6 +45,12 @@ Address NewAddress(String address, int networkType) {
 }
 
 // Create an Address from a given raw address.
+Address NewAddressFromPublicKey(String pKey, int networkType) {
+  var ad = _generateEncodedAddress(pKey, networkType);
+  return NewAddress(ad, networkType);
+}
+
+// Create an Account from a given raw address.
 PublicAccount NewAccountFromPublicKey(String pKey, int networkType) {
   var ad = _generateEncodedAddress(pKey, networkType);
   var address = NewAddress(ad, networkType);
@@ -65,14 +71,14 @@ String _generateEncodedAddress(String pKey, int version) {
 
   // step 3: add version byte in front of (2)
   var versionPrefixedRipemd160Hash =
-  addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
+      addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
 
   // step 4: get the checksum of (3)
   var stepThreeChecksum = GenerateChecksum(versionPrefixedRipemd160Hash);
 
   // step 5: concatenate (3) and (4)
   var concatStepThreeAndStepSix =
-  addUint8List(versionPrefixedRipemd160Hash, stepThreeChecksum);
+      addUint8List(versionPrefixedRipemd160Hash, stepThreeChecksum);
 
   // step 6: base32 encode (5)
   return base32.encode(concatStepThreeAndStepSix);

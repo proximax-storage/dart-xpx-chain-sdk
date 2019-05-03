@@ -1,15 +1,20 @@
 part of nem2_sdk_dart;
 
 class UInt64DTO {
+  Int64 h, l;
+
   UInt64DTO();
 
   @override
   String toString() {
-    return 'UInt64DTO[]';
+    return 'UInt64DTO[${h}, ${l}]';
   }
 
-  UInt64DTO.fromJson(Map<String, dynamic> json) {
+  UInt64DTO.fromJson(dynamic json) {
     if (json == null) return;
+
+    h = Int64(json[0]);
+    l = Int64(json[1]);
   }
 
   Map<String, dynamic> toJson() {
