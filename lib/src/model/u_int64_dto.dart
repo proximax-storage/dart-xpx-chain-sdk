@@ -1,7 +1,7 @@
 part of nem2_sdk_dart;
 
 class UInt64DTO {
-  Int64 h, l;
+  Int32 h, l;
 
   UInt64DTO();
 
@@ -13,8 +13,16 @@ class UInt64DTO {
   UInt64DTO.fromJson(dynamic json) {
     if (json == null) return;
 
-    h = Int64(json[0]);
-    l = Int64(json[1]);
+    h = Int32(json[0]);
+    l = Int32(json[1]);
+  }
+
+  UInt64DTO.fromBigInt(BigInt v) {
+    if (json == null) return;
+
+    var u64 = v.toInt();
+    h = Int32(u64 & 0xFFFFFFFF);
+    l = Int32(u64 >> 32);
   }
 
   Map<String, dynamic> toJson() {
@@ -35,5 +43,14 @@ class UInt64DTO {
           map[key] = new UInt64DTO.fromJson(value));
     }
     return map;
+  }
+
+  BigInt toBigInt() {
+    var buffer = new Uint8List(8).buffer;
+    var bdata = new ByteData.view(buffer);
+    bdata.setInt32(0, this.l.toInt());
+    bdata.setInt32(4, this.h.toInt());
+
+    return new BigInt.from(bdata.getInt64(0));
   }
 }
