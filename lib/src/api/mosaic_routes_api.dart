@@ -35,7 +35,7 @@ class MosaicRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -80,7 +80,7 @@ class MosaicRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -127,7 +127,7 @@ class MosaicRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}

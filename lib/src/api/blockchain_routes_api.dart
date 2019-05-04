@@ -1,7 +1,7 @@
 part of nem2_sdk_dart;
 
 class BlockchainRoutesApi {
-  final ApiClient apiClient;
+  ApiClient apiClient;
 
   BlockchainRoutesApi([ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
@@ -9,7 +9,7 @@ class BlockchainRoutesApi {
   /// Get block information
   ///
   /// Gets a block from the chain that has the given height.
-  Future<BlockInfoDTO> getBlockByHeight(int height) async {
+  Future<BlockInfoDTO> GetBlockByHeight(int height) async {
     Object postBody = null;
 
     // verify required params are set
@@ -35,7 +35,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -56,7 +56,7 @@ class BlockchainRoutesApi {
   /// Get receipts from a block
   ///
   /// Returns the [receipts](https://nemtech.github.io/concepts/receipt.html) linked to a block.
-  Future<List<Object>> getBlockReceipts(int height) async {
+  Future<List<Object>> GetBlockReceipts(int height) async {
     Object postBody = null;
 
     // verify required params are set
@@ -82,7 +82,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -104,7 +104,7 @@ class BlockchainRoutesApi {
   /// Get transactions from a block
   ///
   /// Returns an array of [transactions](https://nemtech.github.io/concepts/transaction.html) included in a block for a given block height.
-  Future<List<Object>> getBlockTransactions(int height,
+  Future<List<Object>> GetBlockTransactions(int height,
       {int pageSize, String id}) async {
     Object postBody = null;
 
@@ -138,7 +138,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -160,7 +160,7 @@ class BlockchainRoutesApi {
   /// Get the current height of the chain
   ///
   /// Returns the current height of the blockchain.
-  Future<HeightDTO> getBlockchainHeight() async {
+  Future<Height> GetBlockchainHeight() async {
     Object postBody = null;
 
     // verify required params are set
@@ -181,7 +181,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -194,8 +194,7 @@ class BlockchainRoutesApi {
     } else if (response.body != null) {
       var t =
           this.apiClient.deserialize(response.body, 'HeightDTO') as HeightDTO;
-
-      return t;
+      return new Height.fromDTO(t);
     } else {
       return null;
     }
@@ -204,7 +203,7 @@ class BlockchainRoutesApi {
   /// Get the current score of the chain
   ///
   /// Gets the current score of the blockchain. The higher the score, the better the chain. During synchronization, nodes try to get the best blockchain in the network.  The score for a block is derived from its difficulty and the time (in seconds) that has elapsed since the last block:      block score &#x3D; difficulty − time elasped since last block
-  Future<BlockchainScoreDTO> getBlockchainScore() async {
+  Future<BlockchainScoreDTO> GetBlockchainScore() async {
     Object postBody = null;
 
     // verify required params are set
@@ -225,7 +224,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -246,7 +245,7 @@ class BlockchainRoutesApi {
   /// Get blocks information
   ///
   /// Gets up to limit number of blocks after given block height.
-  Future<List<BlockInfoDTO>> getBlocksByHeightWithLimit(
+  Future<List<BlockInfoDTO>> GetBlocksByHeightWithLimit(
       int height, int limit) async {
     Object postBody = null;
 
@@ -277,7 +276,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -300,7 +299,7 @@ class BlockchainRoutesApi {
   /// Get the storage information
   ///
   /// Returns statistical information about the blockchain.
-  Future<BlockchainStorageInfoDTO> getDiagnosticStorage() async {
+  Future<BlockchainStorageInfoDTO> GetDiagnosticStorage() async {
     Object postBody = null;
 
     // verify required params are set
@@ -321,7 +320,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -342,7 +341,7 @@ class BlockchainRoutesApi {
   /// Get the merkle path for a given a receipt statement hash and block
   ///
   /// Returns the merkle path for a [receipt statement or resolution](https://nemtech.github.io/concepts/receipt.html) linked to a block. The path is the complementary data needed to calculate the merkle root. A client can compare if the calculated root equals the one recorded in the block header, verifying that the receipt was linked with the block.
-  Future<MerkleProofInfoDTO> getMerkleReceipts(int height, String hash) async {
+  Future<MerkleProofInfoDTO> GetMerkleReceipts(int height, String hash) async {
     Object postBody = null;
 
     // verify required params are set
@@ -372,7 +371,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -393,7 +392,7 @@ class BlockchainRoutesApi {
   /// Get the merkle path for a given a transaction and block
   ///
   /// Returns the merkle path for a [transaction](https://nemtech.github.io/concepts/transaction.html) included in a block. The path is the complementary data needed to calculate the merkle root. A client can compare if the calculated root equals the one recorded in the block header, verifying that the transaction was included in the block.
-  Future<MerkleProofInfoDTO> getMerkleTransaction(
+  Future<MerkleProofInfoDTO> GetMerkleTransaction(
       int height, String hash) async {
     Object postBody = null;
 
@@ -424,7 +423,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      MultipartRequest mp = new MultipartRequest(null, null);
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
