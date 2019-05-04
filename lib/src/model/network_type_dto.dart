@@ -1,5 +1,18 @@
 part of nem2_sdk_dart;
 
+// NetworkType enums
+const MainNet = 104;
+
+const TestNet = 152;
+
+const Mijin = 96;
+
+const MijinTest = 144;
+
+const NotSupportedNet = 0;
+
+typedef num NetworkType();
+
 class NetworkTypeDTO {
   String name = null;
 
@@ -38,14 +51,14 @@ class NetworkTypeDTO {
     return map;
   }
 }
-
-// NetworkType enums
-const MainNet = 104;
-
-const TestNet = 152;
-
-const Mijin = 96;
-
-const MijinTest = 144;
-
-const NotSupportedNet = 0;
+//
+//// ExtractNetworkType return networkType from version
+//int ExtractNetworkType(Int64 version) {
+//binary.LittleEndian.PutUint64(b, version)
+//
+//a := binary.LittleEndian.Uint16(sampleA)
+//// If you need int16:
+//a2 := int16(a)
+//
+//return NetworkType(b[1])
+//}

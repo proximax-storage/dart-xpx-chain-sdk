@@ -3,7 +3,7 @@ part of nem2_sdk_dart;
 class HeightDTO {
   UInt64DTO height = null;
 
-  HeightDTO();
+  HeightDTO(this.height);
 
   @override
   String toString() {

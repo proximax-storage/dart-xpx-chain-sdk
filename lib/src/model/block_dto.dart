@@ -29,11 +29,6 @@ class BlockDTO {
 
   BlockDTO();
 
-  @override
-  String toString() {
-    return 'BlockDTO[signature=$signature, signer=$signer, version=$version, type=$type, height=$height, timestamp=$timestamp, difficulty=$difficulty, feeMultiplier=$feeMultiplier, previousBlockHash=$previousBlockHash, blockTransactionsHash=$blockTransactionsHash, blockReceiptsHash=$blockReceiptsHash, stateHash=$stateHash, beneficiaryPublicKey=$beneficiaryPublicKey, ]';
-  }
-
   BlockDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     signature = json['signature'];
