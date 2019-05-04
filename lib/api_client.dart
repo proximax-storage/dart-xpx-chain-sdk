@@ -7,48 +7,47 @@ class QueryParam {
   QueryParam(this.name, this.value);
 }
 
-Client NewClient(NewConfig conf, BrowserClient client) {
-
+Client NewClient(NewConfig conf, http.Client client) {
   if (conf == null) {
     conf = new NewConfig("http://127.0.0.1:3000", 144);
   }
 
   if (client == null) {
-    client = new BrowserClient();
+    client = new http.Client();
   }
 
   ApiClient apiClient = new ApiClient(conf, client);
 
-  var t =  new Client(apiClient);
-  return t;
+  return new Client(apiClient);
 }
 
 class Client {
+//  BlockchainRoutesApi _block;
 
-  BlockchainRoutesApi _block;
+  final ApiClient apiClient;
 
-  ApiClient _client;
+//  ApiClient apiClient;
 
-  Client(this._client);
+  Client(this.apiClient);
 
-  BlockchainRoutesApi BlockChain() =>  BlockchainRoutesApi(_client);
-  
-  AccountRoutesApi Account() => new AccountRoutesApi(_client);
+  BlockchainRoutesApi BlockChain() => new BlockchainRoutesApi(apiClient);
 
-  MosaicRoutesApi Mosaic() => new MosaicRoutesApi(_client);
+  AccountRoutesApi Account() => new AccountRoutesApi(apiClient);
 
-  NamespaceRoutesApi Namespace () => new NamespaceRoutesApi(_client);
+  MosaicRoutesApi Mosaic() => new MosaicRoutesApi(apiClient);
 
-  NetworkRoutesApi Network() => new NetworkRoutesApi(_client);
+  NamespaceRoutesApi Namespace() => new NamespaceRoutesApi(apiClient);
 
-  NodeRoutesApi Node() => new NodeRoutesApi(_client);
+  NetworkRoutesApi Network() => new NetworkRoutesApi(apiClient);
 
-  TransactionRoutesApi Transaction() => new TransactionRoutesApi(_client);
+  NodeRoutesApi Node() => new NodeRoutesApi(apiClient);
+
+  TransactionRoutesApi Transaction() => new TransactionRoutesApi(apiClient);
 }
 
 class ApiClient {
   NewConfig conf;
-  var client = new BrowserClient();
+  var client = new http.Client();
 
   Map<String, String> _defaultHeaderMap = {};
   Map<String, Authentication> _authentications = {};
@@ -191,7 +190,6 @@ class ApiClient {
     if (targetType == 'String') return jsonVal;
 
     var decodedJson = json.decode(jsonVal);
-    print("JSON: ${decodedJson}");
     return _deserialize(decodedJson, targetType);
   }
 
@@ -207,7 +205,7 @@ class ApiClient {
 
   // We don't use a Map<String, String> for queryParams.
   // If collectionFormat is 'multi' a key might appear multiple times.
-  Future<Response> invokeAPI(
+  Future<http.Response> invokeAPI(
       String path,
       String method,
       Iterable<QueryParam> queryParams,
@@ -228,21 +226,21 @@ class ApiClient {
     headerParams.addAll(_defaultHeaderMap);
     headerParams['Content-Type'] = contentType;
 
-    if (body is MultipartRequest) {
-      var request = new MultipartRequest(method, Uri.parse(url));
+    if (body is http.MultipartRequest) {
+      var request = new http.MultipartRequest(method, Uri.parse(url));
       request.fields.addAll(body.fields);
       request.files.addAll(body.files);
       request.headers.addAll(body.headers);
       request.headers.addAll(headerParams);
       var response = await client.send(request);
-      return Response.fromStream(response);
+      return http.Response.fromStream(response);
     } else {
       var msgBody = contentType == "application/x-www-form-urlencoded"
           ? formParams
           : serialize(body);
 
       switch (method) {
-    case "POST":
+        case "POST":
           return client.post(url, headers: headerParams, body: msgBody);
         case "PUT":
           return client.put(url, headers: headerParams, body: msgBody);

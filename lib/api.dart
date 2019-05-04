@@ -4,19 +4,18 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:fixnum/fixnum.dart';
-import 'package:http/browser_client.dart';
 import "package:hex/hex.dart";
 import 'package:base32/base32.dart';
 import "package:nem2_crypto/nem2_crypto.dart" as crypto;
 import "package:nem2_crypto/imp/sha3.dart" as sha3;
 
-
 part 'api_utils.dart';
 part 'api_client.dart';
 part 'api_helper.dart';
 part 'api_exception.dart';
+part 'big_endian.dart';
 part 'src/auth/authentication.dart';
 part 'src/auth/api_key_auth.dart';
 part 'src/auth/oauth.dart';
@@ -43,6 +42,8 @@ part 'src/model/addresses.dart';
 part 'src/model/alias_dto.dart';
 part 'src/model/announce_transaction_info_dto.dart';
 part 'src/model/block_dto.dart';
+part 'src/model/block_model.dart';
+
 part 'src/model/block_info_dto.dart';
 part 'src/model/block_meta_dto.dart';
 part 'src/model/blockchain_score_dto.dart';
