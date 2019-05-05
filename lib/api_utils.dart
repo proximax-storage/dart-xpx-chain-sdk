@@ -1,4 +1,4 @@
-part of nem2_sdk_dart;
+part of xpx_catapult_sdk ;
 
 final RegExp regValidNamespace = new RegExp(
   r'^[a-zA-Z0-9]+$',
@@ -41,14 +41,24 @@ List<int> FromBigInt(BigInt v) {
   return i;
 }
 
-String IntToHex(int u) {
+String _intToHex(int u) {
   var raw = integerToBytes(u, 4).reversed;
   return HEX.encode(raw.toList());
 }
 
-String BigIntegerToHex(BigInt id){
+String bigIntegerToHex(BigInt id){
   var u = FromBigInt(id);
-  return IntToHex(u[1]) + IntToHex(u[0]);
+  return _intToHex(u[1]) + _intToHex(u[0]);
+}
+
+int bytesToInteger(List<int> bytes) {
+  num value = 0;
+  bytes = bytes.sublist(0, 32);
+  for (var i = 0; i < bytes.length; i++) {
+    value += bytes[i] * pow(256, i);
+  }
+  ;
+  return value.toInt();
 }
 
 Uint8List integerToBytes(int e, int length) {

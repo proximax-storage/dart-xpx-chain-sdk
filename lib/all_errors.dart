@@ -1,4 +1,4 @@
-part of nem2_sdk_dart;
+part of xpx_catapult_sdk ;
 
 /// Catapult REST API errors
 final ErrResourceNotFound = new Exception("resource is not found");

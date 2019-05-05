@@ -1,4 +1,4 @@
-part of nem2_sdk_dart;
+part of xpx_catapult_sdk ;
 
 class NamespaceRoutesApi {
   final ApiClient apiClient;
@@ -9,7 +9,7 @@ class NamespaceRoutesApi {
   /// Get namespace information
   ///
   /// Gets the namespace for a given namespaceId.
-  Future<NamespaceInfoDTO> GetNamespace(BigInt namespaceId) async {
+  Future<NamespaceInfo> GetNamespace(BigInt namespaceId) async {
     Object postBody = null;
 
     // verify required params are set
@@ -17,7 +17,7 @@ class NamespaceRoutesApi {
       throw new ApiException(400, "Missing required param: namespaceId");
     }
 
-    var nsId = BigIntegerToHex(namespaceId);
+    var nsId = bigIntegerToHex(namespaceId);
 
     // create path and map variables
     String path = "/namespace/{namespaceId}"
@@ -48,9 +48,10 @@ class NamespaceRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      var resp = apiClient.deserialize(response.body, 'NamespaceInfoDTO')
-          as NamespaceInfoDTO;
-      return resp;
+      var resp = apiClient.deserialize(response.body, '_namespaceInfoDTO')
+          as _namespaceInfoDTO;
+      print(resp);
+      return new NamespaceInfo();
     } else {
       return null;
     }
@@ -59,7 +60,7 @@ class NamespaceRoutesApi {
   /// Get namespaces owned by an account
   ///
   /// Gets an array of namespaces for a given account address.
-  Future<List<NamespaceInfoDTO>> GetNamespacesFromAccount(String accountId,
+  Future<List<_namespaceInfoDTO>> GetNamespacesFromAccount(String accountId,
       {int pageSize, String id}) async {
     Object postBody = null;
 
@@ -104,9 +105,9 @@ class NamespaceRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<NamespaceInfoDTO>')
+      return (apiClient.deserialize(response.body, 'List<_namespaceInfoDTO>')
               as List)
-          .map((item) => item as NamespaceInfoDTO)
+          .map((item) => item as _namespaceInfoDTO)
           .toList();
     } else {
       return null;
@@ -116,7 +117,7 @@ class NamespaceRoutesApi {
   /// Get namespaces for given array of addresses
   ///
   /// Gets namespaces for a given array of addresses.
-  Future<List<NamespaceInfoDTO>> GetNamespacesFromAccounts(Addresses addresses,
+  Future<List<_namespaceInfoDTO>> GetNamespacesFromAccounts(Addresses addresses,
       {int pageSize, String id}) async {
     Object postBody = addresses;
 
@@ -159,9 +160,9 @@ class NamespaceRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<NamespaceInfoDTO>')
+      return (apiClient.deserialize(response.body, 'List<_namespaceInfoDTO>')
               as List)
-          .map((item) => item as NamespaceInfoDTO)
+          .map((item) => item as _namespaceInfoDTO)
           .toList();
     } else {
       return null;

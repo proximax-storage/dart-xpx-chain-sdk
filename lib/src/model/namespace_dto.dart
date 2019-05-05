@@ -1,4 +1,4 @@
-part of nem2_sdk_dart;
+part of xpx_catapult_sdk ;
 
 class NamespaceDTO {
   String owner = null;
@@ -79,21 +79,21 @@ class NamespaceDTO {
   }
 }
 
-class NamespaceInfoDTO {
-  NamespaceMetaDTO meta = null;
+class _namespaceInfoDTO {
+  _namespaceMetaDTO meta = null;
 
   NamespaceDTO namespace = null;
 
-  NamespaceInfoDTO();
+  _namespaceInfoDTO();
 
   @override
   String toString() {
-    return 'NamespaceInfoDTO[meta=$meta, namespace=$namespace, ]';
+    return '_namespaceInfoDTO[meta=$meta, namespace=$namespace, ]';
   }
 
-  NamespaceInfoDTO.fromJson(Map<String, dynamic> json) {
+  _namespaceInfoDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    meta = new NamespaceMetaDTO.fromJson(json['meta']);
+    meta = new _namespaceMetaDTO.fromJson(json['meta']);
     namespace = new NamespaceDTO.fromJson(json['namespace']);
   }
 
@@ -101,38 +101,38 @@ class NamespaceInfoDTO {
     return {'meta': meta, 'namespace': namespace};
   }
 
-  static List<NamespaceInfoDTO> listFromJson(List<dynamic> json) {
+  static List<_namespaceInfoDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<NamespaceInfoDTO>()
-        : json.map((value) => new NamespaceInfoDTO.fromJson(value)).toList();
+        ? new List<_namespaceInfoDTO>()
+        : json.map((value) => new _namespaceInfoDTO.fromJson(value)).toList();
   }
 
-  static Map<String, NamespaceInfoDTO> mapFromJson(
+  static Map<String, _namespaceInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, NamespaceInfoDTO>();
+    var map = new Map<String, _namespaceInfoDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new NamespaceInfoDTO.fromJson(value));
+      map[key] = new _namespaceInfoDTO.fromJson(value));
     }
     return map;
   }
 }
 
-class NamespaceMetaDTO {
+class _namespaceMetaDTO {
   String id = null;
 
   bool active = null;
 
   int index = null;
 
-  NamespaceMetaDTO();
+  _namespaceMetaDTO();
 
   @override
   String toString() {
-    return 'NamespaceMetaDTO[id=$id, active=$active, index=$index, ]';
+    return '_namespaceMetaDTO[id=$id, active=$active, index=$index, ]';
   }
 
-  NamespaceMetaDTO.fromJson(Map<String, dynamic> json) {
+  _namespaceMetaDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     id = json['id'];
     active = json['active'];
@@ -143,18 +143,18 @@ class NamespaceMetaDTO {
     return {'id': id, 'active': active, 'index': index};
   }
 
-  static List<NamespaceMetaDTO> listFromJson(List<dynamic> json) {
+  static List<_namespaceMetaDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<NamespaceMetaDTO>()
-        : json.map((value) => new NamespaceMetaDTO.fromJson(value)).toList();
+        ? new List<_namespaceMetaDTO>()
+        : json.map((value) => new _namespaceMetaDTO.fromJson(value)).toList();
   }
 
-  static Map<String, NamespaceMetaDTO> mapFromJson(
+  static Map<String, _namespaceMetaDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, NamespaceMetaDTO>();
+    var map = new Map<String, _namespaceMetaDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new NamespaceMetaDTO.fromJson(value));
+      map[key] = new _namespaceMetaDTO.fromJson(value));
     }
     return map;
   }

@@ -1,4 +1,4 @@
-part of nem2_sdk_dart;
+part of xpx_catapult_sdk ;
 
 class _HeightDTO {
   UInt64DTO height = null;
@@ -7,7 +7,7 @@ class _HeightDTO {
 
   @override
   String toString() {
-    return 'Height[${height.h}, ${height.l}]';
+    return 'Height[${height.higher}, ${height.lower}]';
   }
 
   _HeightDTO.fromJson(Map<String, dynamic> json) {

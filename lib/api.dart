@@ -1,4 +1,4 @@
-library nem2_sdk_dart;
+library xpx_catapult_sdk ;
 
 import 'dart:async';
 import 'dart:convert';

@@ -1,4 +1,4 @@
-part of nem2_sdk_dart;
+part of xpx_catapult_sdk ;
 
 class _mosaicDTO {
   UInt64DTO id = null;

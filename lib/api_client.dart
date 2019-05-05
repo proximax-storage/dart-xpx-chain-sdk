@@ -1,4 +1,4 @@
-part of nem2_sdk_dart;
+part of xpx_catapult_sdk ;
 
 class QueryParam {
   String name;
@@ -9,7 +9,7 @@ class QueryParam {
 
 Client NewClient(NewConfig conf, http.Client client) {
   if (conf == null) {
-    conf = new NewConfig("http://127.0.0.1:3000", 144);
+    conf = new NewConfig("http://127.0.0.1:3000", MijinTest);
   }
 
   if (client == null) {
@@ -138,10 +138,10 @@ class ApiClient {
           return new NamespaceDTO.fromJson(value);
         case 'NamespaceIds':
           return new NamespaceIds.fromJson(value);
-        case 'NamespaceInfoDTO':
-          return new NamespaceInfoDTO.fromJson(value);
-        case 'NamespaceMetaDTO':
-          return new NamespaceMetaDTO.fromJson(value);
+        case '_namespaceInfoDTO':
+          return new _namespaceInfoDTO.fromJson(value);
+        case '_namespaceMetaDTO':
+          return new _namespaceMetaDTO.fromJson(value);
         case 'NamespaceNameDTO':
           return new NamespaceNameDTO.fromJson(value);
         case 'NetworkTypeDTO':
