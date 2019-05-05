@@ -31,8 +31,6 @@ part 'src/api/node_routes_api.dart';
 part 'src/api/transaction_routes_api.dart';
 
 part 'src/model/account_dto.dart';
-part 'src/model/account_info_dto.dart';
-part 'src/model/account_meta_dto.dart';
 part 'src/model/account_model.dart';
 part 'src/model/account_properties_dto.dart';
 part 'src/model/account_properties_info_dto.dart';
@@ -51,6 +49,7 @@ part 'src/model/merkle_path_item.dart';
 part 'src/model/merkle_proof_info_dto.dart';
 part 'src/model/merkle_proof_info_payload.dart';
 part 'src/model/mosaic_dto.dart';
+part 'src/model/mosaic_model.dart';
 part 'src/model/mosaic_definition_dto.dart';
 part 'src/model/mosaic_ids.dart';
 part 'src/model/mosaic_info_dto.dart';

@@ -74,12 +74,12 @@ class ApiClient {
           return value is bool ? value : '$value'.toLowerCase() == 'true';
         case 'double':
           return value is double ? value : double.parse('$value');
-        case 'AccountDTO':
-          return new AccountDTO.fromJson(value);
-        case 'AccountInfoDTO':
-          return new AccountInfoDTO.fromJson(value);
-        case 'AccountMetaDTO':
-          return new AccountMetaDTO.fromJson(value);
+        case '_accountDTO':
+          return new _accountDTO.fromJson(value);
+        case '_accountInfoDTO':
+          return new _accountInfoDTO.fromJson(value);
+        case '_accountMetaDTO':
+          return new _accountMetaDTO.fromJson(value);
         case 'AccountPropertiesDTO':
           return new AccountPropertiesDTO.fromJson(value);
         case 'AccountPropertiesInfoDTO':
@@ -114,8 +114,8 @@ class ApiClient {
           return new MerkleProofInfoDTO.fromJson(value);
         case 'MerkleProofInfoPayload':
           return new MerkleProofInfoPayload.fromJson(value);
-        case 'MosaicDTO':
-          return new MosaicDTO.fromJson(value);
+        case '_mosaicDTO':
+          return new _mosaicDTO.fromJson(value);
         case 'MosaicDefinitionDTO':
           return new MosaicDefinitionDTO.fromJson(value);
         case 'MosaicIds':

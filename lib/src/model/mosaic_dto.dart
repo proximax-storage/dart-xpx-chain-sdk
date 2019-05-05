@@ -1,18 +1,18 @@
 part of nem2_sdk_dart;
 
-class MosaicDTO {
+class _mosaicDTO {
   UInt64DTO id = null;
 
   UInt64DTO amount = null;
 
-  MosaicDTO();
+  _mosaicDTO();
 
   @override
   String toString() {
-    return 'MosaicDTO[id=$id, amount=$amount, ]';
+    return '_mosaicDTO[id=$id, amount=$amount, ]';
   }
 
-  MosaicDTO.fromJson(Map<String, dynamic> json) {
+  _mosaicDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     id = new UInt64DTO.fromJson(json['id']);
     amount = new UInt64DTO.fromJson(json['amount']);
@@ -22,18 +22,18 @@ class MosaicDTO {
     return {'id': id, 'amount': amount};
   }
 
-  static List<MosaicDTO> listFromJson(List<dynamic> json) {
+  static List<_mosaicDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<MosaicDTO>()
-        : json.map((value) => new MosaicDTO.fromJson(value)).toList();
+        ? new List<_mosaicDTO>()
+        : json.map((value) => new _mosaicDTO.fromJson(value)).toList();
   }
 
-  static Map<String, MosaicDTO> mapFromJson(
+  static Map<String, _mosaicDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, MosaicDTO>();
+    var map = new Map<String, _mosaicDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new MosaicDTO.fromJson(value));
+          map[key] = new _mosaicDTO.fromJson(value));
     }
     return map;
   }

@@ -9,7 +9,7 @@ class AccountRoutesApi {
   /// Get account information
   ///
   /// Returns the account information.
-  Future<AccountInfoDTO> GetAccountInfo(Address address) async {
+  Future<AccountInfo> GetAccountInfo(Address address) async {
     Object postBody = null;
 
     // verify required params are set
@@ -46,8 +46,8 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return _apiClient.deserialize(response.body, 'AccountInfoDTO')
-          as AccountInfoDTO;
+      final resp = _apiClient.deserialize(response.body, '_accountInfoDTO') as _accountInfoDTO;
+          return AccountInfo.fromDTO(resp);
     } else {
       return null;
     }
@@ -249,7 +249,7 @@ class AccountRoutesApi {
   /// Get accounts information
   ///
   /// Returns the account information for an array of accounts.
-  Future<List<AccountInfoDTO>> getAccountsInfo(Addresses addresses) async {
+  Future<List<_accountInfoDTO>> getAccountsInfo(Addresses addresses) async {
     Object postBody = addresses;
 
     // verify required params are set
@@ -284,9 +284,9 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (_apiClient.deserialize(response.body, 'List<AccountInfoDTO>')
+      return (_apiClient.deserialize(response.body, 'List<_accountInfoDTO>')
               as List)
-          .map((item) => item as AccountInfoDTO)
+          .map((item) => item as _accountInfoDTO)
           .toList();
     } else {
       return null;
