@@ -31,6 +31,7 @@ class NamespaceDTO {
   }
 
   NamespaceDTO.fromJson(Map<String, dynamic> json) {
+
     if (json == null) return;
     owner = json['owner'];
     ownerAddress = json['ownerAddress'];
@@ -73,6 +74,87 @@ class NamespaceDTO {
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
           map[key] = new NamespaceDTO.fromJson(value));
+    }
+    return map;
+  }
+}
+
+class NamespaceInfoDTO {
+  NamespaceMetaDTO meta = null;
+
+  NamespaceDTO namespace = null;
+
+  NamespaceInfoDTO();
+
+  @override
+  String toString() {
+    return 'NamespaceInfoDTO[meta=$meta, namespace=$namespace, ]';
+  }
+
+  NamespaceInfoDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    meta = new NamespaceMetaDTO.fromJson(json['meta']);
+    namespace = new NamespaceDTO.fromJson(json['namespace']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'meta': meta, 'namespace': namespace};
+  }
+
+  static List<NamespaceInfoDTO> listFromJson(List<dynamic> json) {
+    return json == null
+        ? new List<NamespaceInfoDTO>()
+        : json.map((value) => new NamespaceInfoDTO.fromJson(value)).toList();
+  }
+
+  static Map<String, NamespaceInfoDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
+    var map = new Map<String, NamespaceInfoDTO>();
+    if (json != null && json.length > 0) {
+      json.forEach((String key, Map<String, dynamic> value) =>
+      map[key] = new NamespaceInfoDTO.fromJson(value));
+    }
+    return map;
+  }
+}
+
+class NamespaceMetaDTO {
+  String id = null;
+
+  bool active = null;
+
+  int index = null;
+
+  NamespaceMetaDTO();
+
+  @override
+  String toString() {
+    return 'NamespaceMetaDTO[id=$id, active=$active, index=$index, ]';
+  }
+
+  NamespaceMetaDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    id = json['id'];
+    active = json['active'];
+    index = json['index'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'active': active, 'index': index};
+  }
+
+  static List<NamespaceMetaDTO> listFromJson(List<dynamic> json) {
+    return json == null
+        ? new List<NamespaceMetaDTO>()
+        : json.map((value) => new NamespaceMetaDTO.fromJson(value)).toList();
+  }
+
+  static Map<String, NamespaceMetaDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
+    var map = new Map<String, NamespaceMetaDTO>();
+    if (json != null && json.length > 0) {
+      json.forEach((String key, Map<String, dynamic> value) =>
+      map[key] = new NamespaceMetaDTO.fromJson(value));
     }
     return map;
   }

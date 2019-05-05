@@ -3,6 +3,7 @@ library nem2_sdk_dart;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:math';
 
 import 'package:http/http.dart' as http;
 import 'package:fixnum/fixnum.dart';
@@ -12,6 +13,7 @@ import "package:nem2_crypto/nem2_crypto.dart" as crypto;
 import "package:nem2_crypto/imp/sha3.dart" as sha3;
 
 part 'api_utils.dart';
+part 'all_errors.dart';
 part 'api_client.dart';
 part 'api_helper.dart';
 part 'api_exception.dart';
@@ -61,8 +63,6 @@ part 'src/model/multisig_account_info_dto.dart';
 part 'src/model/multisig_dto.dart';
 part 'src/model/namespace_dto.dart';
 part 'src/model/namespace_ids.dart';
-part 'src/model/namespace_info_dto.dart';
-part 'src/model/namespace_meta_dto.dart';
 part 'src/model/namespace_model.dart';
 part 'src/model/namespace_name_dto.dart';
 part 'src/model/network_type_dto.dart';

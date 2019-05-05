@@ -9,7 +9,7 @@ class NamespaceRoutesApi {
   /// Get namespace information
   ///
   /// Gets the namespace for a given namespaceId.
-  Future<NamespaceInfoDTO> getNamespace(String namespaceId) async {
+  Future<NamespaceInfoDTO> GetNamespace(BigInt namespaceId) async {
     Object postBody = null;
 
     // verify required params are set
@@ -17,10 +17,12 @@ class NamespaceRoutesApi {
       throw new ApiException(400, "Missing required param: namespaceId");
     }
 
+    var nsId = BigIntegerToHex(namespaceId);
+
     // create path and map variables
     String path = "/namespace/{namespaceId}"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "namespaceId" + "}", namespaceId.toString());
+        .replaceAll("{" + "namespaceId" + "}", nsId);
 
     // query params
     List<QueryParam> queryParams = [];
@@ -46,8 +48,9 @@ class NamespaceRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'NamespaceInfoDTO')
+      var resp = apiClient.deserialize(response.body, 'NamespaceInfoDTO')
           as NamespaceInfoDTO;
+      return resp;
     } else {
       return null;
     }
@@ -56,7 +59,7 @@ class NamespaceRoutesApi {
   /// Get namespaces owned by an account
   ///
   /// Gets an array of namespaces for a given account address.
-  Future<List<NamespaceInfoDTO>> getNamespacesFromAccount(String accountId,
+  Future<List<NamespaceInfoDTO>> GetNamespacesFromAccount(String accountId,
       {int pageSize, String id}) async {
     Object postBody = null;
 
@@ -113,7 +116,7 @@ class NamespaceRoutesApi {
   /// Get namespaces for given array of addresses
   ///
   /// Gets namespaces for a given array of addresses.
-  Future<List<NamespaceInfoDTO>> getNamespacesFromAccounts(Addresses addresses,
+  Future<List<NamespaceInfoDTO>> GetNamespacesFromAccounts(Addresses addresses,
       {int pageSize, String id}) async {
     Object postBody = addresses;
 
@@ -168,7 +171,7 @@ class NamespaceRoutesApi {
   /// Get readable names for a set of namespaces
   ///
   /// Returns friendly names for mosaics.
-  Future<List<NamespaceNameDTO>> getNamespacesNames(
+  Future<List<NamespaceNameDTO>> GetNamespacesNames(
       NamespaceIds namespaceIds) async {
     Object postBody = namespaceIds;
 

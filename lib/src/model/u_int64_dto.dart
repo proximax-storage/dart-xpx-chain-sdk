@@ -12,7 +12,6 @@ class UInt64DTO {
 
   UInt64DTO.fromJson(dynamic json) {
     if (json == null) return;
-
     h = Int32(json[0]);
     l = Int32(json[1]);
   }
