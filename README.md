@@ -1,7 +1,9 @@
 <p align="center"><a href="https://vuejs.org" target="_blank" rel="noopener noreferrer"><img width="150" src="https://user-images.githubusercontent.com/29048783/57000439-a41fa000-6b81-11e9-94f3-6df17de7e41a.png" alt="Vue logo"></a></p>
-<h2 align="center">Dart client library for Catapult API</h2>
+<h2 align="center">ProximaX Sirius Blockchain Dart SDK</h2>
 
-Use this package as a library
+Official ProximaX Sirius Blockchain SDK Library in Golang.
+
+The ProximaX Sirius Catapult Chain Dart SDK works as a lightweight Dart library for interacting with the Sirius Blockchain. It provides a complete library set coverage, and supports synchronous and asynchronous requests.
 
 **1. Depend on it**
 
