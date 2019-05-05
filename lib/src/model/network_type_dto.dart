@@ -13,6 +13,13 @@ const NotSupportedNet = 0;
 
 typedef num NetworkType();
 
+const Map<String, int> addressNet = {
+  'N': MainNet,
+  'T': TestNet,
+  'M': Mijin,
+  'S': MijinTest,
+};
+
 class NetworkTypeDTO {
   String name = null;
 
@@ -51,14 +58,3 @@ class NetworkTypeDTO {
     return map;
   }
 }
-//
-//// ExtractNetworkType return networkType from version
-//int ExtractNetworkType(Int64 version) {
-//binary.LittleEndian.PutUint64(b, version)
-//
-//a := binary.LittleEndian.Uint16(sampleA)
-//// If you need int16:
-//a2 := int16(a)
-//
-//return NetworkType(b[1])
-//}
