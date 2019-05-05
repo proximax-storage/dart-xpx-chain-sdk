@@ -1,6 +1,6 @@
 part of nem2_sdk_dart;
 
-class BlockDTO {
+class _BlockDTO {
   String signature = null;
 
   String signer = null;
@@ -27,9 +27,10 @@ class BlockDTO {
 
   String beneficiaryPublicKey = null;
 
-  BlockDTO();
+  _BlockDTO();
 
-  BlockDTO.fromJson(Map<String, dynamic> json) {
+  _BlockDTO.fromJson(Map<String, dynamic> json) {
+
     if (json == null) return;
     signature = json['signature'];
     signer = json['signer'];
@@ -64,18 +65,90 @@ class BlockDTO {
     };
   }
 
-  static List<BlockDTO> listFromJson(List<dynamic> json) {
+  static List<_BlockDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<BlockDTO>()
-        : json.map((value) => new BlockDTO.fromJson(value)).toList();
+        ? new List<_BlockDTO>()
+        : json.map((value) => new _BlockDTO.fromJson(value)).toList();
   }
 
-  static Map<String, BlockDTO> mapFromJson(
+  static Map<String, _BlockDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, BlockDTO>();
+    var map = new Map<String, _BlockDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new BlockDTO.fromJson(value));
+          map[key] = new _BlockDTO.fromJson(value));
+    }
+    return map;
+  }
+}
+
+class _BlockInfoDTO {
+  _BlockMetaDTO meta = null;
+
+  _BlockDTO block = null;
+
+  _BlockInfoDTO();
+
+  _BlockInfoDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    meta = new _BlockMetaDTO.fromJson(json['meta']);
+    block = new _BlockDTO.fromJson(json['block']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'meta': meta, 'block': block};
+  }
+
+  static List<_BlockInfoDTO> listFromJson(List<dynamic> json) {
+    return json == null
+        ? new List<_BlockInfoDTO>()
+        : json.map((value) => new _BlockInfoDTO.fromJson(value)).toList();
+  }
+
+  static Map<String, _BlockInfoDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
+    var map = new Map<String, _BlockInfoDTO>();
+    if (json != null && json.length > 0) {
+      json.forEach((String key, Map<String, dynamic> value) =>
+      map[key] = new _BlockInfoDTO.fromJson(value));
+    }
+    return map;
+  }
+
+
+}
+
+class _BlockMetaDTO {
+  String hash = null;
+
+  String generationHash = null;
+
+  UInt64DTO totalFee = null;
+
+  num numTransactions = null;
+
+  _BlockMetaDTO();
+
+  _BlockMetaDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    hash = json['hash'];
+    generationHash = json['generationHash'];
+    totalFee = new UInt64DTO.fromJson(json['totalFee']);
+    numTransactions = json['numTransactions'];
+  }
+
+  static List<_BlockMetaDTO> listFromJson(List<dynamic> json) {
+    return json == null
+        ? new List<_BlockMetaDTO>()
+        : json.map((value) => new _BlockMetaDTO.fromJson(value)).toList();
+  }
+
+  static Map<String, _BlockMetaDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
+    var map = new Map<String, _BlockMetaDTO>();
+    if (json != null && json.length > 0) {
+      json.forEach((String key, Map<String, dynamic> value) =>
+      map[key] = new _BlockMetaDTO.fromJson(value));
     }
     return map;
   }

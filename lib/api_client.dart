@@ -95,11 +95,11 @@ class ApiClient {
         case 'AnnounceTransactionInfoDTO':
           return new AnnounceTransactionInfoDTO.fromJson(value);
         case 'BlockDTO':
-          return new BlockDTO.fromJson(value);
+          return new _BlockDTO.fromJson(value);
         case 'BlockInfoDTO':
-          return new BlockInfoDTO.fromJson(value);
+          return new _BlockInfoDTO.fromJson(value);
         case 'BlockMetaDTO':
-          return new BlockMetaDTO.fromJson(value);
+          return new _BlockMetaDTO.fromJson(value);
         case 'BlockchainScoreDTO':
           return new BlockchainScoreDTO.fromJson(value);
         case 'BlockchainStorageInfoDTO':
@@ -107,7 +107,7 @@ class ApiClient {
         case 'CommunicationTimestamps':
           return new CommunicationTimestamps.fromJson(value);
         case 'HeightDTO':
-          return new HeightDTO.fromJson(value);
+          return new _HeightDTO.fromJson(value);
         case 'MerklePathItem':
           return new MerklePathItem.fromJson(value);
         case 'MerkleProofInfoDTO':

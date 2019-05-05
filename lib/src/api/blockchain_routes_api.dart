@@ -9,7 +9,7 @@ class BlockchainRoutesApi {
   /// Get block information
   ///
   /// Gets a block from the chain that has the given height.
-  Future<BlockInfoDTO> GetBlockByHeight(int height) async {
+  Future<BlockInfo> GetBlockByHeight(int height) async {
     Object postBody = null;
 
     // verify required params are set
@@ -46,8 +46,8 @@ class BlockchainRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'BlockInfoDTO')
-          as BlockInfoDTO;
+      var resp = apiClient.deserialize(response.body, 'BlockInfoDTO') as _BlockInfoDTO;
+      return new BlockInfo.fromDTO(resp);
     } else {
       return null;
     }
@@ -192,9 +192,9 @@ class BlockchainRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      var t =
-          this.apiClient.deserialize(response.body, 'HeightDTO') as HeightDTO;
-      return new Height.fromDTO(t);
+      var resp =
+          this.apiClient.deserialize(response.body, 'HeightDTO') as _HeightDTO;
+      return new Height.fromDTO(resp);
     } else {
       return null;
     }
@@ -245,7 +245,7 @@ class BlockchainRoutesApi {
   /// Get blocks information
   ///
   /// Gets up to limit number of blocks after given block height.
-  Future<List<BlockInfoDTO>> GetBlocksByHeightWithLimit(
+  Future<List<_BlockInfoDTO>> GetBlocksByHeightWithLimit(
       int height, int limit) async {
     Object postBody = null;
 
@@ -289,7 +289,7 @@ class BlockchainRoutesApi {
     } else if (response.body != null) {
       return (apiClient.deserialize(response.body, 'List<BlockInfoDTO>')
               as List)
-          .map((item) => item as BlockInfoDTO)
+          .map((item) => item as _BlockInfoDTO)
           .toList();
     } else {
       return null;

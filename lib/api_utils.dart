@@ -7,3 +7,11 @@ Uint8List HexDecodeStringOdd(String s) {
   }
   return HEX.decode(s);
 }
+
+// ExtractNetworkType return networkType from version
+int ExtractNetworkType(int version) {
+  var buffer = new Uint8List(8).buffer;
+  var bdata = new ByteData.view(buffer);
+  bdata.setInt64(0, version, Endian.little);
+  return bdata.getUint8(1);
+}

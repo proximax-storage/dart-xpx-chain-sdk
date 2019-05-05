@@ -43,9 +43,6 @@ part 'src/model/alias_dto.dart';
 part 'src/model/announce_transaction_info_dto.dart';
 part 'src/model/block_dto.dart';
 part 'src/model/block_model.dart';
-
-part 'src/model/block_info_dto.dart';
-part 'src/model/block_meta_dto.dart';
 part 'src/model/blockchain_score_dto.dart';
 part 'src/model/blockchain_storage_info_dto.dart';
 part 'src/model/communication_timestamps.dart';

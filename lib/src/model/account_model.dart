@@ -9,7 +9,10 @@ class Address {
   Address();
   @override
   String toString() {
-    return 'Address[networkType=$networkType, address=$address]';
+    return '{\n'
+        '\tnetworkType: $networkType,\n'
+        '\taddress=$address,\n'
+        '\t}';
   }
 }
 
@@ -20,7 +23,10 @@ class PublicAccount {
   PublicAccount();
   @override
   String toString() {
-    return 'PublicAccount[address=$address, publicKey=$publicKey]';
+    return '{\n'
+        '\taddress: $address,\n'
+        '\tpublicKey: $publicKey\n'
+        '\t}\n';
   }
 }
 

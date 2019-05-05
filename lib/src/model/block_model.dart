@@ -1,42 +1,50 @@
 part of nem2_sdk_dart;
 
-class Block {
+class BlockInfo {
+  int NetworkType;
   String Hash;
   String GenerationHash;
   BigInt TotalFee;
-  BigInt NumTransactions;
+  int NumTransactions;
   String Signature;
   PublicAccount Signer;
-  UInt64DTO Version;
-  UInt64DTO Type;
+  int Version;
+  int Type;
   BigInt Height;
   BigInt Timestamp;
   BigInt Difficulty;
   String PreviousBlockHash;
   String BlockTransactionsHash;
 
-  Block();
+  BlockInfo();
 
   @override
   String toString() {
-    return 'BlockInfo['
-        'signature=$Signature,'
-        ' signer=$Signer,'
-        ' version=$Version,'
-        ' type=$Type,'
-        ' height=$Height,'
-        ' timestamp=$Timestamp,'
-        ' difficulty=$Difficulty,'
-        ' feeMultiplier=$TotalFee,'
-        ' previousBlockHash=$PreviousBlockHash,'
-        ' blockTransactionsHash=$BlockTransactionsHash,'
-        ' Hash=$Hash,'
-        ' PublicAccount=$PublicAccount,'
-        ' ]';
+    return '{\n'
+        '\tNetworkType: $NetworkType,\n'
+        '\tHash: $Hash,\n'
+        '\tGenerationHash: $GenerationHash,\n'
+        '\tTotalFee: $TotalFee,\n'
+        '\tNumTransactions: $NumTransactions,\n'
+        '\tSignature: $Signature,\n'
+        '\tSigner: $Signer'
+        '\tVersion: $Version,\n'
+        '\tType: $Type,\n'
+        '\tHeight: $Height,\n'
+        '\tTimestamp: $Timestamp,\n'
+        '\tDifficulty: $Difficulty,\n'
+        '\tPreviousBlockHash: $PreviousBlockHash,\n'
+        '\tBlockTransactionsHash: $BlockTransactionsHash,\n'
+        '}\n';
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'networkType': NetworkType,
+      'hash': Hash,
+      'generationHash': GenerationHash,
+      'totalFee': TotalFee,
+      'NumTransactions': NumTransactions,
       'signature': Signature,
       'signer': Signer,
       'version': Version,
@@ -44,12 +52,26 @@ class Block {
       'height': Height,
       'timestamp': Timestamp,
       'difficulty': Difficulty,
-      'feeMultiplier': TotalFee,
       'previousBlockHash': PreviousBlockHash,
       'blockTransactionsHash': BlockTransactionsHash,
-      'hash': Hash,
-      'publicAccount': PublicAccount
     };
+  }
+
+  BlockInfo.fromDTO(_BlockInfoDTO v) {
+    NetworkType = ExtractNetworkType(v.block.version);
+    Hash = v.meta.hash;
+    GenerationHash = v.meta.generationHash;
+    TotalFee = v.meta.totalFee.toBigInt();
+    NumTransactions = v.meta.numTransactions;
+    Signature = v.block.signature;
+    Signer = NewAccountFromPublicKey(v.block.signer, NetworkType);
+    Version = v.block.version;
+    Type = v.block.type;
+    Height = v.block.height.toBigInt();
+    Timestamp = v.block.timestamp.toBigInt();
+    Difficulty = v.block.difficulty.toBigInt();
+    PreviousBlockHash = v.block.previousBlockHash;
+    BlockTransactionsHash = v.block.blockTransactionsHash;
   }
 }
 
@@ -63,7 +85,7 @@ class Height {
     return 'Height[height = ${_height}]';
   }
 
-  Height.fromDTO(HeightDTO v) {
+  Height.fromDTO(_HeightDTO v) {
     _height = v.height.toBigInt();
   }
 
