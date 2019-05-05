@@ -1,6 +1,6 @@
 part of nem2_sdk_dart;
 
-class AccountDTO {
+class _accountDTO {
   String address = null;
 
   UInt64DTO addressHeight = null;
@@ -9,26 +9,26 @@ class AccountDTO {
 
   UInt64DTO publicKeyHeight = null;
 
-  List<MosaicDTO> mosaics = [];
+  List<_mosaicDTO> mosaics = [];
 
   UInt64DTO importance = null;
 
   UInt64DTO importanceHeight = null;
 
-  AccountDTO();
+  _accountDTO();
 
   @override
   String toString() {
-    return 'AccountDTO[address=$address, addressHeight=$addressHeight, publicKey=$publicKey, publicKeyHeight=$publicKeyHeight, mosaics=$mosaics, importance=$importance, importanceHeight=$importanceHeight, ]';
+    return '_accountDTO[address=$address, addressHeight=$addressHeight, publicKey=$publicKey, publicKeyHeight=$publicKeyHeight, mosaics=$mosaics, importance=$importance, importanceHeight=$importanceHeight, ]';
   }
 
-  AccountDTO.fromJson(Map<String, dynamic> json) {
+  _accountDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     address = json['address'];
     addressHeight = new UInt64DTO.fromJson(json['addressHeight']);
     publicKey = json['publicKey'];
     publicKeyHeight = new UInt64DTO.fromJson(json['publicKeyHeight']);
-    mosaics = MosaicDTO.listFromJson(json['mosaics']);
+    mosaics = _mosaicDTO.listFromJson(json['mosaics']);
     importance = new UInt64DTO.fromJson(json['importance']);
     importanceHeight = new UInt64DTO.fromJson(json['importanceHeight']);
   }
@@ -45,18 +45,90 @@ class AccountDTO {
     };
   }
 
-  static List<AccountDTO> listFromJson(List<dynamic> json) {
+  static List<_accountDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<AccountDTO>()
-        : json.map((value) => new AccountDTO.fromJson(value)).toList();
+        ? new List<_accountDTO>()
+        : json.map((value) => new _accountDTO.fromJson(value)).toList();
   }
 
-  static Map<String, AccountDTO> mapFromJson(
+  static Map<String, _accountDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, AccountDTO>();
+    var map = new Map<String, _accountDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new AccountDTO.fromJson(value));
+          map[key] = new _accountDTO.fromJson(value));
+    }
+    return map;
+  }
+}
+
+class _accountInfoDTO {
+  _accountMetaDTO meta = null;
+
+  _accountDTO account = null;
+
+  _accountInfoDTO();
+
+  @override
+  String toString() {
+    return '_accountInfoDTO[meta=$meta, account=$account, ]';
+  }
+
+  _accountInfoDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    meta = new _accountMetaDTO.fromJson(json['meta']);
+    account = new _accountDTO.fromJson(json['account']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'meta': meta, 'account': account};
+  }
+
+  static List<_accountInfoDTO> listFromJson(List<dynamic> json) {
+    return json == null
+        ? new List<_accountInfoDTO>()
+        : json.map((value) => new _accountInfoDTO.fromJson(value)).toList();
+  }
+
+  static Map<String, _accountInfoDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
+    var map = new Map<String, _accountInfoDTO>();
+    if (json != null && json.length > 0) {
+      json.forEach((String key, Map<String, dynamic> value) =>
+      map[key] = new _accountInfoDTO.fromJson(value));
+    }
+    return map;
+  }
+}
+
+class _accountMetaDTO {
+  _accountMetaDTO();
+
+  @override
+  String toString() {
+    return '_accountMetaDTO[]';
+  }
+
+  _accountMetaDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {};
+  }
+
+  static List<_accountMetaDTO> listFromJson(List<dynamic> json) {
+    return json == null
+        ? new List<_accountMetaDTO>()
+        : json.map((value) => new _accountMetaDTO.fromJson(value)).toList();
+  }
+
+  static Map<String, _accountMetaDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
+    var map = new Map<String, _accountMetaDTO>();
+    if (json != null && json.length > 0) {
+      json.forEach((String key, Map<String, dynamic> value) =>
+      map[key] = new _accountMetaDTO.fromJson(value));
     }
     return map;
   }

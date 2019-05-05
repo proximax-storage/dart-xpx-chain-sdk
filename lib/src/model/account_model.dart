@@ -2,45 +2,6 @@ part of nem2_sdk_dart;
 
 const NUM_CHECKSUM_BYTES = 4;
 
-class Address {
-  int networkType = null;
-  String address = null;
-
-  Address();
-  @override
-  String toString() {
-    return '{\n'
-        '\tnetworkType: $networkType,\n'
-        '\taddress=$address,\n'
-        '\t}';
-  }
-}
-
-class PublicAccount {
-  String publicKey = null;
-  Address address = null;
-
-  PublicAccount();
-  @override
-  String toString() {
-    return '{\n'
-        '\taddress: $address,\n'
-        '\tpublicKey: $publicKey\n'
-        '\t}\n';
-  }
-}
-
-class Account {
-  PublicAccount publicAccount = null;
-  crypto.KeyPair account = null;
-
-  Account();
-  @override
-  String toString() {
-    return publicAccount.toString();
-  }
-}
-
 // Create an Address from a given raw address
 Address NewAddress(String address, int networkType) {
   address = address.replaceAll("-", "");
@@ -48,6 +9,19 @@ Address NewAddress(String address, int networkType) {
   ad.address = address.toUpperCase();
   ad.networkType = networkType;
   return ad;
+}
+
+Address NewAddressFromRaw(String address) {
+  final nType = addressNet[address[0]];
+  return NewAddress(address, nType);
+}
+
+Address NewAddressFromEncoded(String encoded) {
+  final pH = HEX.decode(encoded);
+
+  final parsed = base32.encode(pH);
+
+  return NewAddressFromRaw(parsed);
 }
 
 // Create an Address from a given raw address.
@@ -118,4 +92,100 @@ Uint8List addUint8List(Uint8List a, Uint8List b) {
   for (int i = 0; i < a.length; i++) hash[i] = a[i];
   for (int i = 0; i < b.length; i++) hash[i + a.length] = b[i];
   return hash;
+}
+
+class Address {
+  int networkType = null;
+  String address = null;
+
+  Address();
+  @override
+  String toString() {
+    return '{\n'
+        '\tNetworkType: $networkType,\n'
+        '\tAddress=$address,\n'
+        '\t}';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'networkType': networkType,
+      'address': address,
+    };
+  }
+}
+
+class PublicAccount {
+  String publicKey = null;
+  Address address = null;
+
+  PublicAccount();
+  @override
+  String toString() {
+    return '{\n'
+        '\taddress: $address,\n'
+        '\tpublicKey: $publicKey\n'
+        '\t}\n';
+  }
+}
+
+class Account {
+  PublicAccount publicAccount = null;
+  crypto.KeyPair account = null;
+
+  Account();
+  @override
+  String toString() {
+    return publicAccount.toString();
+  }
+}
+
+class AccountInfo {
+  Address address;
+  BigInt addressHeight;
+  String publicKey;
+  BigInt publicKeyHeight;
+  BigInt importance;
+  BigInt importanceHeight;
+  List<Mosaic> mosaics;
+
+  @override
+  String toString() {
+    return '{\n'
+        '\t"Address": $address,\n'
+        '\t"AddressHeight": $addressHeight,\n'
+        '\t"PublicKey": $publicKey,\n'
+        '\t"PublicKeyHeight": $publicKeyHeight,\n'
+        '\t"Importance": $importance,\n'
+        '\t"ImportanceHeight": $importanceHeight,\n'
+        '\t"Mosaics": $mosaics,\n'
+        '}\n';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Address': address,
+      'AddressHeight': addressHeight,
+      'PublicKey': publicKey,
+      'PublicKeyHeight': publicKeyHeight,
+      'Importance': importance,
+      'ImportanceHeight': importanceHeight,
+      'Mosaics': mosaics,
+    };
+  }
+
+  AccountInfo.fromDTO(_accountInfoDTO v) {
+    List<Mosaic> m = new List(v.account.mosaics.length);
+    for (var i = 0; i < v.account.mosaics.length; i++) {
+      m[i] = new Mosaic.fromDTO(v.account.mosaics[i]);
+    }
+
+    address = NewAddressFromEncoded(v.account.address);
+    addressHeight = v.account.addressHeight.toBigInt();
+    publicKey = v.account.publicKey;
+    publicKeyHeight = v.account.publicKeyHeight.toBigInt();
+    importance = v.account.importance.toBigInt();
+    importanceHeight = v.account.importanceHeight.toBigInt();
+    mosaics = m;
+  }
 }
