@@ -42,7 +42,7 @@ import 'package:nem2_crypto/nem2_crypto.dart';
 
 ## Wiki and Examples ##
 
-Examples are in the [examples](https://github.com/proximax-storage/dart-xpx-catapult-sdk/example) folder
+Examples are in the [examples](https://github.com/proximax-storage/dart-xpx-catapult-sdk/tree/master/examples) folder
 
 For more examples, go to our [wiki](https://github.com/proximax-storage/dart-xpx-catapult-sdk/wiki)
 
