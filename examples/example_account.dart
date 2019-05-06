@@ -1,8 +1,8 @@
 import 'package:xpx_catapult_sdk/api.dart';
 
-const baseUrl  = "http://54.169.118.203:3000";
+const baseUrl  = "http://bcstage1.xpxsirius.io:3000";
 
-const networkType = MijinTest;
+const networkType = PrivateTest;
 
 /// Simple Account API request
 void main() async {
@@ -18,7 +18,7 @@ void main() async {
   var client =  NewClient(config, null);
 
   /// Create an Address from a given public key.
-  var address = NewAddressFromPublicKey("7881B12F6080B0524F11AF08AB226F7BA7B57286A90A8DE0580E2BC9FE06289D", networkType);
+  var address = NewAddressFromPublicKey("37E95F604301545103E8AC3EFA5A40319DC05587B6192E9658052753356CDBB9", networkType);
 
   try {
     /// Get AccountInfo for an account.

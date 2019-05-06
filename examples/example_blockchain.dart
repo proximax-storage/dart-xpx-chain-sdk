@@ -1,7 +1,8 @@
+import 'dart:typed_data';
 import 'package:xpx_catapult_sdk/api.dart';
 
-const baseUrl  = "http://54.169.118.203:3000";
-const networkType = MijinTest;
+const baseUrl  = "http://bcstage1.xpxsirius.io:3000";
+const networkType = PrivateTest;
 
 /// Simple BlockChain API request
 void main() async {
@@ -18,7 +19,16 @@ void main() async {
 
   /// Get the current height of the chain.
   try {
-    var result = await client.BlockChain().GetBlockByHeight(1333762);
+    var result = await client.BlockChain().GetBlockchainHeight();
+    print(result);
+  } catch (e) {
+    print("Exception when calling BlockChain->GetBlockByHeight: $e\n");
+  }
+
+  ///Get BlockInfo for a given block height.
+  try {
+    var height = BigInt.from(35418);
+    var result = await client.BlockChain().GetBlockByHeight(height);
     print(result);
   } catch (e) {
     print("Exception when calling BlockChain->GetBlockByHeight: $e\n");

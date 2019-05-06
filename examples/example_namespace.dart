@@ -1,8 +1,8 @@
 import 'package:xpx_catapult_sdk/api.dart';
 
-const baseUrl  = "http://54.169.118.203:3000";
+const baseUrl  = "http://bcdev1.xpxsirius.io:3000";
 
-const networkType = MijinTest;
+const networkType = PrivateTest;
 
 /// Simple Namespace API request
 void main() async {
