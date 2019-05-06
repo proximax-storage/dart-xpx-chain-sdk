@@ -1,8 +1,7 @@
-import 'dart:typed_data';
 import 'package:xpx_catapult_sdk/api.dart';
 
 const baseUrl  = "http://bcstage1.xpxsirius.io:3000";
-const networkType = PrivateTest;
+const networkType = PublicTest;
 
 /// Simple BlockChain API request
 void main() async {
@@ -27,7 +26,7 @@ void main() async {
 
   ///Get BlockInfo for a given block height.
   try {
-    var height = BigInt.from(35418);
+    var height = BigInt.from(1);
     var result = await client.BlockChain().GetBlockByHeight(height);
     print(result);
   } catch (e) {

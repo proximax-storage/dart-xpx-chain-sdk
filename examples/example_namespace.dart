@@ -2,7 +2,7 @@ import 'package:xpx_catapult_sdk/api.dart';
 
 const baseUrl  = "http://bcdev1.xpxsirius.io:3000";
 
-const networkType = PrivateTest;
+const networkType = PublicTest;
 
 /// Simple Namespace API request
 void main() async {

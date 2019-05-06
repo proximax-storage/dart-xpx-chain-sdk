@@ -1,6 +1,6 @@
 import 'package:xpx_catapult_sdk/api.dart';
 
-const networkType = PrivateTest;
+const networkType = PublicTest;
 
 const privateKey = "1ACE45EAD3C2F0811D9F4355F35BF78483324975083BE4E503EA49DFFEA691A0";
 

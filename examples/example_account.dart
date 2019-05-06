@@ -2,7 +2,7 @@ import 'package:xpx_catapult_sdk/api.dart';
 
 const baseUrl  = "http://bcstage1.xpxsirius.io:3000";
 
-const networkType = PrivateTest;
+const networkType = PublicTest;
 
 /// Simple Account API request
 void main() async {
@@ -18,7 +18,7 @@ void main() async {
   var client =  NewClient(config, null);
 
   /// Create an Address from a given public key.
-  var address = NewAddressFromPublicKey("37E95F604301545103E8AC3EFA5A40319DC05587B6192E9658052753356CDBB9", networkType);
+  var address = NewAddressFromPublicKey("B4F12E7C9F6946091E2CB8B6D3A12B50D17CCBBF646386EA27CE2946A7423DCF", networkType);
 
   try {
     /// Get AccountInfo for an account.
