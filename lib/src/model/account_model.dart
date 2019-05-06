@@ -145,9 +145,9 @@ class AccountInfo {
   BigInt addressHeight;
   String publicKey;
   BigInt publicKeyHeight;
-  BigInt importance;
-  BigInt importanceHeight;
   List<Mosaic> mosaics;
+  int accountType;
+  String linkedAccountKey;
 
   @override
   String toString() {
@@ -156,21 +156,21 @@ class AccountInfo {
         '\t"AddressHeight": $addressHeight,\n'
         '\t"PublicKey": $publicKey,\n'
         '\t"PublicKeyHeight": $publicKeyHeight,\n'
-        '\t"Importance": $importance,\n'
-        '\t"ImportanceHeight": $importanceHeight,\n'
+        '\t"AccountType": $accountType,\n'
+        '\t"LinkedAccountKey": $linkedAccountKey,\n'
         '\t"Mosaics": $mosaics,\n'
         '}\n';
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'Address': address,
-      'AddressHeight': addressHeight,
-      'PublicKey': publicKey,
-      'PublicKeyHeight': publicKeyHeight,
-      'Importance': importance,
-      'ImportanceHeight': importanceHeight,
-      'Mosaics': mosaics,
+      'address': address,
+      'addressHeight': addressHeight,
+      'publicKey': publicKey,
+      'publicKeyHeight': publicKeyHeight,
+      'accountType': accountType,
+      'linkedAccountKey': linkedAccountKey,
+      'mosaics': mosaics,
     };
   }
 
@@ -184,8 +184,8 @@ class AccountInfo {
     addressHeight = v.account.addressHeight.toBigInt();
     publicKey = v.account.publicKey;
     publicKeyHeight = v.account.publicKeyHeight.toBigInt();
-    importance = v.account.importance.toBigInt();
-    importanceHeight = v.account.importanceHeight.toBigInt();
+    accountType = v.account.accountType;
+    linkedAccountKey = v.account.linkedAccountKey;
     mosaics = m;
   }
 }

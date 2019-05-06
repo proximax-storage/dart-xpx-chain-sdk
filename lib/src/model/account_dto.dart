@@ -11,15 +11,21 @@ class _accountDTO {
 
   List<_mosaicDTO> mosaics = [];
 
-  UInt64DTO importance = null;
+  int accountType = null;
 
-  UInt64DTO importanceHeight = null;
+  String linkedAccountKey = null;
 
   _accountDTO();
 
   @override
   String toString() {
-    return '_accountDTO[address=$address, addressHeight=$addressHeight, publicKey=$publicKey, publicKeyHeight=$publicKeyHeight, mosaics=$mosaics, importance=$importance, importanceHeight=$importanceHeight, ]';
+    return '[Address=$address,'
+        ' AddressHeight=$addressHeight,'
+        ' PublicKey=$publicKey,'
+        ' PublicKeyHeight=$publicKeyHeight,'
+        ' Mosaics=$mosaics,'
+        ' AccountType=$accountType,'
+        ' LinkedAccountKey=$linkedAccountKey]';
   }
 
   _accountDTO.fromJson(Map<String, dynamic> json) {
@@ -29,8 +35,8 @@ class _accountDTO {
     publicKey = json['publicKey'];
     publicKeyHeight = new UInt64DTO.fromJson(json['publicKeyHeight']);
     mosaics = _mosaicDTO.listFromJson(json['mosaics']);
-    importance = new UInt64DTO.fromJson(json['importance']);
-    importanceHeight = new UInt64DTO.fromJson(json['importanceHeight']);
+    accountType = json['accountType'];
+    linkedAccountKey = json['linkedAccountKey'];
   }
 
   Map<String, dynamic> toJson() {
@@ -40,8 +46,8 @@ class _accountDTO {
       'publicKey': publicKey,
       'publicKeyHeight': publicKeyHeight,
       'mosaics': mosaics,
-      'importance': importance,
-      'importanceHeight': importanceHeight
+      'accountType': accountType,
+      'linkedAccountKey': linkedAccountKey
     };
   }
 
