@@ -9,7 +9,7 @@ class BlockchainRoutesApi {
   /// Get block information
   ///
   /// Gets a block from the chain that has the given height.
-  Future<BlockInfo> GetBlockByHeight(int height) async {
+  Future<BlockInfo> GetBlockByHeight(BigInt height) async {
     Object postBody = null;
 
     // verify required params are set

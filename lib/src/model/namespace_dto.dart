@@ -1,6 +1,6 @@
 part of xpx_catapult_sdk ;
 
-class NamespaceDTO {
+class _namespaceDTO {
   String owner = null;
 
   String ownerAddress = null;
@@ -23,14 +23,14 @@ class NamespaceDTO {
 
   UInt64DTO parentId = null;
 
-  NamespaceDTO();
+  _namespaceDTO();
 
   @override
   String toString() {
-    return 'NamespaceDTO[owner=$owner, ownerAddress=$ownerAddress, startHeight=$startHeight, endHeight=$endHeight, depth=$depth, level0=$level0, level1=$level1, level2=$level2, type=$type, alias=$alias, parentId=$parentId, ]';
+    return '_namespaceDTO[owner=$owner, ownerAddress=$ownerAddress, startHeight=$startHeight, endHeight=$endHeight, depth=$depth, level0=$level0, level1=$level1, level2=$level2, type=$type, alias=$alias, parentId=$parentId, ]';
   }
 
-  NamespaceDTO.fromJson(Map<String, dynamic> json) {
+  _namespaceDTO.fromJson(Map<String, dynamic> json) {
 
     if (json == null) return;
     owner = json['owner'];
@@ -62,18 +62,18 @@ class NamespaceDTO {
     };
   }
 
-  static List<NamespaceDTO> listFromJson(List<dynamic> json) {
+  static List<_namespaceDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<NamespaceDTO>()
-        : json.map((value) => new NamespaceDTO.fromJson(value)).toList();
+        ? new List<_namespaceDTO>()
+        : json.map((value) => new _namespaceDTO.fromJson(value)).toList();
   }
 
-  static Map<String, NamespaceDTO> mapFromJson(
+  static Map<String, _namespaceDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, NamespaceDTO>();
+    var map = new Map<String, _namespaceDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new NamespaceDTO.fromJson(value));
+          map[key] = new _namespaceDTO.fromJson(value));
     }
     return map;
   }
@@ -82,7 +82,7 @@ class NamespaceDTO {
 class _namespaceInfoDTO {
   _namespaceMetaDTO meta = null;
 
-  NamespaceDTO namespace = null;
+  _namespaceDTO namespace = null;
 
   _namespaceInfoDTO();
 
@@ -94,7 +94,7 @@ class _namespaceInfoDTO {
   _namespaceInfoDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     meta = new _namespaceMetaDTO.fromJson(json['meta']);
-    namespace = new NamespaceDTO.fromJson(json['namespace']);
+    namespace = new _namespaceDTO.fromJson(json['namespace']);
   }
 
   Map<String, dynamic> toJson() {

@@ -134,8 +134,8 @@ class ApiClient {
           return new MultisigAccountInfoDTO.fromJson(value);
         case 'MultisigDTO':
           return new MultisigDTO.fromJson(value);
-        case 'NamespaceDTO':
-          return new NamespaceDTO.fromJson(value);
+        case '_namespaceDTO':
+          return new _namespaceDTO.fromJson(value);
         case 'NamespaceIds':
           return new NamespaceIds.fromJson(value);
         case '_namespaceInfoDTO':

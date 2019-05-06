@@ -24,7 +24,7 @@ Address NewAddressFromEncoded(String encoded) {
   return NewAddressFromRaw(parsed);
 }
 
-// Create an Address from a given raw address.
+// Create an Address from a given public key.
 Address NewAddressFromPublicKey(String pKey, int networkType) {
   var ad = _generateEncodedAddress(pKey, networkType);
   return NewAddress(ad, networkType);
