@@ -1,23 +1,21 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 // NetworkType enums
-const MainNet = 104;
-
-const TestNet = 152;
-
-const Mijin = 96;
-
-const MijinTest = 144;
-
-const NotSupportedNet = 0;
-
-typedef num NetworkType();
+const Mijin = 96,
+    MijinTest = 144,
+    Public = 184,
+    PublicTest = 168,
+    Private = 200,
+    PrivateTest = 176,
+    NotSupportedNet = 0;
 
 const Map<String, int> addressNet = {
-  'N': MainNet,
-  'T': TestNet,
   'M': Mijin,
   'S': MijinTest,
+  'X': Public,
+  'V': PublicTest,
+  'Z': Private,
+  'W': PrivateTest,
 };
 
 class NetworkTypeDTO {
