@@ -11,7 +11,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  nem2_crypto: ^1.0.3
+  xpx_catapult_sdk: ^0.0.1
 ```
 
 **2. Install it**
