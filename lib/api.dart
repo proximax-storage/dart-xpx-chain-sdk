@@ -17,7 +17,7 @@ part 'all_errors.dart';
 part 'api_client.dart';
 part 'api_helper.dart';
 part 'api_exception.dart';
-part 'big_endian.dart';
+part 'buffer.dart';
 part 'src/auth/authentication.dart';
 part 'src/auth/api_key_auth.dart';
 part 'src/auth/oauth.dart';

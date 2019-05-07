@@ -45,21 +45,13 @@ class UInt64DTO {
   }
 
   BigInt toBigInt() {
-    var buffer = new Uint8List(8).buffer;
-    var bdata = new ByteData.view(buffer);
+    var buffer = new Buffer.BigEndian(8);
 
-    bdata.setInt32(0, this.lower.toInt());
-    bdata.setInt32(4, this.higher.toInt());
+    buffer.writeInt32(this.lower.toInt());
+    buffer.writeInt32(this.higher.toInt());
 
-    return decodeBigInt(buffer.asUint8List());
+    return buffer.toBigInt();
   }
 }
 
-/// Decode a BigInt from bytes in big-endian encoding.
-BigInt decodeBigInt(List<int> bytes) {
-  BigInt result = new BigInt.from(0);
-  for (int i = 0; i < bytes.length; i++) {
-    result += new BigInt.from(bytes[bytes.length - i - 1]) << (8 * i);
-  }
-  return result;
-}
+
