@@ -18,6 +18,8 @@ const Map<String, int> addressNet = {
   'W': PrivateTest,
 };
 
+final NetworkType = new NetworkTypeList();
+
 class NetworkTypeDTO {
   String name = null;
 
@@ -55,4 +57,29 @@ class NetworkTypeDTO {
     }
     return map;
   }
+}
+
+/// Static class containing network type constants.
+class NetworkTypeList {
+  final NOTSUPPORTED_NET = 0,
+
+      /// Public net network
+      PUBLIC = 0xb8,
+
+      /// Public Test net network
+      PUBLIC_TEST = 0xa8,
+
+      /// Private network
+      PRIVATE = 0xc8,
+
+      /// Private test network
+      PRIVATE_TEST = 0xb0,
+
+      /// Mijin net network
+      MIJIN = 0x60,
+
+      /// Mijin test net network
+      MIJIN_TEST = 0x90;
+
+  NetworkTypeList();
 }

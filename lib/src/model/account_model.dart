@@ -125,7 +125,7 @@ class PublicAccount {
     return '{\n'
         '\taddress: $address,\n'
         '\tpublicKey: $publicKey\n'
-        '\t}\n';
+        '\t}';
   }
 }
 

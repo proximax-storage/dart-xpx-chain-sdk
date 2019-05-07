@@ -24,25 +24,25 @@ Client NewClient(NewConfig conf, http.Client client) {
 class Client {
 //  BlockchainRoutesApi _block;
 
-  final ApiClient apiClient;
+  final ApiClient _apiClient;
 
 //  ApiClient apiClient;
 
-  Client(this.apiClient);
+  Client(this._apiClient);
 
-  BlockchainRoutesApi BlockChain() => new BlockchainRoutesApi(apiClient);
+  BlockchainRoutesApi BlockChain() => new BlockchainRoutesApi(_apiClient);
 
-  AccountRoutesApi Account() => new AccountRoutesApi(apiClient);
+  AccountRoutesApi Account() => new AccountRoutesApi(_apiClient);
 
-  MosaicRoutesApi Mosaic() => new MosaicRoutesApi(apiClient);
+  MosaicRoutesApi Mosaic() => new MosaicRoutesApi(_apiClient);
 
-  NamespaceRoutesApi Namespace() => new NamespaceRoutesApi(apiClient);
+  NamespaceRoutesApi Namespace() => new NamespaceRoutesApi(_apiClient);
 
-  NetworkRoutesApi Network() => new NetworkRoutesApi(apiClient);
+  NetworkRoutesApi Network() => new NetworkRoutesApi(_apiClient);
 
-  NodeRoutesApi Node() => new NodeRoutesApi(apiClient);
+  NodeRoutesApi Node() => new NodeRoutesApi(_apiClient);
 
-  TransactionRoutesApi Transaction() => new TransactionRoutesApi(apiClient);
+  TransactionRoutesApi Transaction() => new TransactionRoutesApi(_apiClient);
 }
 
 class ApiClient {

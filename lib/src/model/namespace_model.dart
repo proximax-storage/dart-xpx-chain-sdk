@@ -1,13 +1,13 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class NamespaceInfo {
-  BigInt namespaceId = null;
-
-  String fullName = null;
-
   bool active = null;
 
   int index = null;
+
+  BigInt namespaceId = null;
+
+  String fullName = null;
 
   String metaId = null;
 
@@ -19,7 +19,7 @@ class NamespaceInfo {
 
   NamespaceInfo parent = null;
 
-  String owner = null;
+  PublicAccount owner = null;
 
   BigInt startHeight = null;
 
@@ -29,74 +29,43 @@ class NamespaceInfo {
 
   NamespaceInfo();
 
-//  @override
-//  String toString() {
-//    return 'NamespaceInfo[owner=$owner, ownerAddress=$ownerAddress, startHeight=$startHeight, endHeight=$endHeight, depth=$depth, level0=$level0, level1=$level1, level2=$level2, type=$type, alias=$alias, parentId=$parentId, ]';
-//  }
+  @override
+  String toString() {
+    return '{\n'
+        '\tNamespaceId: $namespaceId,\n'
+        '\tActive: $active,\n'
+        '\tIndex: $index,\n'
+        '\tMetaId: $metaId,\n'
+        '\tTypeSpace: $typeSpace,\n'
+        '\tDepth: $depth,\n'
+        '\tLevels: $levels,\n'
+        '\tParent: $parent,\n'
+        '\tAlias: $alias,\n'
+        '\tOwner:$owner,\n'
+        '\tStartHeight: $startHeight,\n'
+        '\tEndHeight: $endHeight\n'
+        '}\n';
+  }
 
-//  NamespaceInfo.fromDTO(_namespaceInfoDTO value) {
-//
-//    if (json == null) return;
-//    namespaceId = value.namespace.na;
-//    ownerAddress = json['ownerAddress'];
-//    startHeight = new UInt64DTO.fromJson(json['startHeight']);
-//    endHeight = new UInt64DTO.fromJson(json['endHeight']);
-//    depth = json['depth'];
-//    level0 = new UInt64DTO.fromJson(json['level0']);
-//    level1 = new UInt64DTO.fromJson(json['level1']);
-//    level2 = new UInt64DTO.fromJson(json['level2']);
-//    type = json['type'];
-//    alias = new AliasDTO.fromJson(json['alias']);
-//    parentId = new UInt64DTO.fromJson(json['parentId']);
-//  }
+  NamespaceInfo.fromDTO(_namespaceInfoDTO value) {
+    if (json == null) return;
 
-//  NamespaceInfo.fromJson(Map<String, dynamic> json) {
-//
-//    if (json == null) return;
-//    owner = json['owner'];
-//    ownerAddress = json['ownerAddress'];
-//    startHeight = new UInt64DTO.fromJson(json['startHeight']);
-//    endHeight = new UInt64DTO.fromJson(json['endHeight']);
-//    depth = json['depth'];
-//    level0 = new UInt64DTO.fromJson(json['level0']);
-//    level1 = new UInt64DTO.fromJson(json['level1']);
-//    level2 = new UInt64DTO.fromJson(json['level2']);
-//    type = json['type'];
-//    alias = new AliasDTO.fromJson(json['alias']);
-//    parentId = new UInt64DTO.fromJson(json['parentId']);
-//  }
-//
-//  Map<String, dynamic> toJson() {
-//    return {
-//      'owner': owner,
-//      'ownerAddress': ownerAddress,
-//      'startHeight': startHeight,
-//      'endHeight': endHeight,
-//      'depth': depth,
-//      'level0': level0,
-//      'level1': level1,
-//      'level2': level2,
-//      'type': type,
-//      'alias': alias,
-//      'parentId': parentId
-//    };
-//  }
-
-//  static List<NamespaceInfo> listFromJson(List<dynamic> json) {
-//    return json == null
-//        ? new List<NamespaceInfo>()
-//        : json.map((value) => new NamespaceInfo.fromJson(value)).toList();
-//  }
-//
-//  static Map<String, NamespaceInfo> mapFromJson(
-//      Map<String, Map<String, dynamic>> json) {
-//    var map = new Map<String, NamespaceInfo>();
-//    if (json != null && json.length > 0) {
-//      json.forEach((String key, Map<String, dynamic> value) =>
-//      map[key] = new NamespaceInfo.fromJson(value));
-//    }
-//    return map;
-//  }
+    metaId = value.meta.id;
+    active = value.meta.active;
+    index = value.meta.index;
+    owner = NewAccountFromPublicKey(value.namespace.owner, value.namespace.type);
+    startHeight = value.namespace.startHeight.toBigInt();
+    endHeight = value.namespace.endHeight.toBigInt();
+    depth = value.namespace.depth;
+    levels = extractLevels(value);
+    typeSpace = value.namespace.type;
+    alias = null;
+    if (value.namespace.parentId.higher != 0) {
+      final p = new NamespaceInfo();
+      p.namespaceId = value.namespace.parentId.toBigInt();
+      parent = p;
+    }
+  }
 }
 
 //NewNamespaceIdFromName generate Id from namespaceName
@@ -149,7 +118,7 @@ BigInt _generateId(String name, BigInt parentId) {
   List<dynamic> raw() {
     return [
       EndianLittleUint32(t.getRange(0, 4).toList()),
-      EndianLittleUint32(t.getRange(4, 8).toList())
+      EndianLittleUint32(t.getRange(4, 8).toList()) | 0x80000000
     ];
   }
 
@@ -162,3 +131,23 @@ BigInt _generateNamespaceId(namespaceName) {
   return list[list.length - 1];
 }
 
+List<BigInt> extractLevels(_namespaceInfoDTO ref) {
+  List<BigInt> levels = [];
+
+  if (ref.namespace.level0.higher != null) {
+    final nsName = ref.namespace.level0.toBigInt();
+    levels.add(nsName);
+  }
+
+  if (ref.namespace.level1.higher != null) {
+    final nsName = ref.namespace.level1.toBigInt();
+    levels.add(nsName);
+  }
+
+  if (ref.namespace.level2.higher != null) {
+    final nsName = ref.namespace.level2.toBigInt();
+    levels.add(nsName);
+  }
+
+  return levels;
+}

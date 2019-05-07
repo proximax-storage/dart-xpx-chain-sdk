@@ -1,10 +1,13 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class NamespaceRoutesApi {
   final ApiClient apiClient;
 
   NamespaceRoutesApi([ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
+
+  Future<NamespaceInfo> buildNamespaceHierarchy(NamespaceInfo namespaceId) =>
+      GetNamespace(namespaceId.parent.namespaceId);
 
   /// Get namespace information
   ///
@@ -23,7 +26,6 @@ class NamespaceRoutesApi {
     String path = "/namespace/{namespaceId}"
         .replaceAll("{format}", "json")
         .replaceAll("{" + "namespaceId" + "}", nsId);
-
     // query params
     List<QueryParam> queryParams = [];
     Map<String, String> headerParams = {};
@@ -50,8 +52,12 @@ class NamespaceRoutesApi {
     } else if (response.body != null) {
       var resp = apiClient.deserialize(response.body, '_namespaceInfoDTO')
           as _namespaceInfoDTO;
-      print(resp);
-      return new NamespaceInfo();
+      var ns = new NamespaceInfo.fromDTO(resp);
+
+      if (ns.parent != null) {
+        ns.parent = await buildNamespaceHierarchy(ns);
+      }
+      return ns;
     } else {
       return null;
     }

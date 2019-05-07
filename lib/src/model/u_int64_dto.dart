@@ -1,7 +1,7 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class UInt64DTO {
-  Int32 lower, higher;
+  Int64 lower, higher;
 
   UInt64DTO();
 
@@ -12,16 +12,16 @@ class UInt64DTO {
 
   UInt64DTO.fromJson(dynamic json) {
     if (json == null) return;
-    higher = Int32(json[0]);
-    lower = Int32(json[1]);
+    higher = Int64(json[0]);
+    lower = Int64(json[1]);
   }
 
   UInt64DTO.fromBigInt(BigInt v) {
     if (json == null) return;
 
     var u64 = v.toInt();
-    higher = Int32(u64 & 0xFFFFFFFF);
-    lower = Int32(u64 >> 32);
+    higher = Int64(u64 & 0xFFFFFFFF);
+    lower = Int64(u64 >> 32);
   }
 
   Map<String, dynamic> toJson() {
@@ -50,6 +50,6 @@ class UInt64DTO {
     bdata.setInt32(0, this.lower.toInt());
     bdata.setInt32(4, this.higher.toInt());
 
-    return new BigInt.from(bdata.getInt64(0));
+    return new BigInt.from(bdata.getUint64(0));
   }
 }

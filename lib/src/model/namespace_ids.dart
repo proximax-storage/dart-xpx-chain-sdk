@@ -7,7 +7,7 @@ class NamespaceIds {
 
   @override
   String toString() {
-    return 'NamespaceIds[namespaceIds=$namespaceIds, ]';
+    return 'NamespaceIds[namespaceIds=$namespaceIds]';
   }
 
   NamespaceIds.fromJson(Map<String, dynamic> json) {
