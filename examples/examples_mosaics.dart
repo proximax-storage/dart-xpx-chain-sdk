@@ -4,7 +4,7 @@ const baseUrl  = "http://bcstage1.xpxsirius.io:3000";
 
 final networkType = NetworkType.PUBLIC_TEST;
 
-/// Simple Namespace API request
+/// Simple Mosaic API request
 void main() async {
   var config = new  NewConfig(baseUrl, networkType);
 
@@ -17,12 +17,11 @@ void main() async {
   /// 2- var client = NewClient(config, new BrowserClient());
   var client =  NewClient(config, null);
 
-  /// Generate Id from namespaceName
-  var ns = NewNamespaceIdFromName("prx");
+  /// Gets the mosaic definition for a given mosaicId.
   try {
-    var result = await client.Namespace.GetNamespace(ns);
-    print(result);
+    var result = await client.Mosaic.GetMosaic(XpxMosaicId);
+    print(result.properties);
   } catch (e) {
-    print("Exception when calling Namespace->GetNamespace: $e\n");
+    print("Exception when calling Mosaic->GetMosaic: $e\n");
   }
 }
