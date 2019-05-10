@@ -23,7 +23,7 @@ void main() async {
   try {
     /// Get AccountInfo for an account.
     /// Param address - A Address object.
-    var result = await client.Account().GetAccountInfo(address);
+    var result = await client.Account.GetAccountInfo(address);
     print(result);
   } catch (e) {
     print("Exception when calling Account->GetAccountInfo: $e\n");

@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class QueryParam {
   String name;
@@ -22,27 +22,23 @@ Client NewClient(NewConfig conf, http.Client client) {
 }
 
 class Client {
-//  BlockchainRoutesApi _block;
-
   final ApiClient _apiClient;
+  final BlockchainRoutesApi BlockChain;
+  final AccountRoutesApi Account;
+  final MosaicRoutesApi Mosaic;
+  final NamespaceRoutesApi Namespace;
+  final NetworkRoutesApi Network;
+  final NodeRoutesApi Node;
+  final TransactionRoutesApi Transaction;
 
-//  ApiClient apiClient;
-
-  Client(this._apiClient);
-
-  BlockchainRoutesApi BlockChain() => new BlockchainRoutesApi(_apiClient);
-
-  AccountRoutesApi Account() => new AccountRoutesApi(_apiClient);
-
-  MosaicRoutesApi Mosaic() => new MosaicRoutesApi(_apiClient);
-
-  NamespaceRoutesApi Namespace() => new NamespaceRoutesApi(_apiClient);
-
-  NetworkRoutesApi Network() => new NetworkRoutesApi(_apiClient);
-
-  NodeRoutesApi Node() => new NodeRoutesApi(_apiClient);
-
-  TransactionRoutesApi Transaction() => new TransactionRoutesApi(_apiClient);
+  Client(this._apiClient)
+      : BlockChain = new BlockchainRoutesApi(_apiClient),
+        Account = new AccountRoutesApi(_apiClient),
+        Mosaic = new MosaicRoutesApi(_apiClient),
+        Namespace = new NamespaceRoutesApi(_apiClient),
+        Network = new NetworkRoutesApi(_apiClient),
+        Node = new NodeRoutesApi(_apiClient),
+        Transaction = new TransactionRoutesApi(_apiClient);
 }
 
 class ApiClient {

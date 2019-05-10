@@ -18,7 +18,7 @@ void main() async {
 
   /// Get the current height of the chain.
   try {
-    var result = await client.BlockChain().GetBlockchainHeight();
+    var result = await client.BlockChain.GetBlockchainHeight();
     print(result);
   } catch (e) {
     print("Exception when calling BlockChain->GetBlockByHeight: $e\n");
@@ -27,9 +27,10 @@ void main() async {
   ///Get BlockInfo for a given block height.
   try {
     var height = BigInt.from(1);
-    var result = await client.BlockChain().GetBlockByHeight(height);
+    var result = await client.BlockChain.GetBlockByHeight(height);
     print(result);
   } catch (e) {
     print("Exception when calling BlockChain->GetBlockByHeight: $e\n");
   }
+
 }
