@@ -1,7 +1,8 @@
 import 'package:xpx_catapult_sdk/api.dart';
 
 const baseUrl  = "http://bcstage1.xpxsirius.io:3000";
-const networkType = PublicTest;
+
+final networkType = NetworkType.PUBLIC_TEST;
 
 /// Simple BlockChain API request
 void main() async {
