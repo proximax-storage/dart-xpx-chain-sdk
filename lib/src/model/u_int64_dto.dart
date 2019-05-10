@@ -3,7 +3,7 @@ part of xpx_catapult_sdk;
 class UInt64DTO {
   Int64 lower, higher;
 
-  UInt64DTO();
+  UInt64DTO([this.higher, this.lower]);
 
   @override
   String toString() {
