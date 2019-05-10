@@ -66,7 +66,7 @@ class NamespaceRoutesApi {
   /// Get namespaces owned by an account
   ///
   /// Gets an array of namespaces for a given account address.
-  Future<List<_namespaceInfoDTO>> GetNamespacesFromAccount(String accountId,
+  Future<List<_namespaceInfoDTO>> GetNamespacesFromAccount(Address accountId,
       {int pageSize, String id}) async {
     Object postBody = null;
 
@@ -78,7 +78,7 @@ class NamespaceRoutesApi {
     // create path and map variables
     String path = "/account/{accountId}/namespaces"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "accountId" + "}", accountId.toString());
+        .replaceAll("{" + "accountId" + "}", accountId.address);
 
     // query params
     List<QueryParam> queryParams = [];
