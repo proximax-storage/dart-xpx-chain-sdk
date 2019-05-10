@@ -1,12 +1,12 @@
 import 'package:xpx_catapult_sdk/api.dart';
 
-const baseUrl  = "http://bcstage1.xpxsirius.io:3000";
+const baseUrl = "http://bcstage1.xpxsirius.io:3000";
 
 final networkType = NetworkType.PUBLIC_TEST;
 
 /// Simple BlockChain API request
 void main() async {
-  var config = new  NewConfig(baseUrl, networkType);
+  var config = new NewConfig(baseUrl, networkType);
 
   /// Creating a client instance
   /// xpx_catapult_sdk uses the Dart's native HttpClient.
@@ -15,7 +15,7 @@ void main() async {
   /// example:
   /// 1- import 'package:http/browser_client.dart';
   /// 2- var client = NewClient(config, new BrowserClient());
-  var client =  NewClient(config, null);
+  var client = NewClient(config, null);
 
   /// Get the current height of the chain.
   try {
@@ -33,5 +33,4 @@ void main() async {
   } catch (e) {
     print("Exception when calling BlockChain->GetBlockByHeight: $e\n");
   }
-
 }
