@@ -1,11 +1,10 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 final RegExp regValidNamespace = new RegExp(
   r'^[a-zA-Z0-9]+$',
   caseSensitive: false,
   multiLine: false,
 );
-//final RegExp regValidMosaicName = new RegExp(r"(^[a-z0-9][a-z0-9-_]*$)");
 
 // HexDecodeStringOdd return padding hex representation of string
 Uint8List HexDecodeStringOdd(String s) {
@@ -43,7 +42,7 @@ String _intToHex(int u) {
   return HEX.encode(raw.toList());
 }
 
-String bigIntegerToHex(BigInt id){
+String bigIntegerToHex(BigInt id) {
   var u = FromBigInt(id);
   return _intToHex(u[1].toInt()) + _intToHex(u[0].toInt());
 }
@@ -58,7 +57,6 @@ int bytesToInteger(List<int> bytes) {
   return value.toInt();
 }
 
-
 Uint8List integerToBytes(int e, int length) {
   var byteList = new Uint8List(length);
   for (var i = 0; i < length; i++) {
@@ -66,4 +64,16 @@ Uint8List integerToBytes(int e, int length) {
   }
   ;
   return byteList;
+}
+
+bool EqualsBigInts(BigInt first, second) {
+  if (first == null && second == null) {
+    return true;
+  }
+
+  if (first != null) {
+    return (first.compareTo(second) == 0);
+  }
+
+  return (second.compareTo(first) == 0);
 }
