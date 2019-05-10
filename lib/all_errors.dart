@@ -13,6 +13,10 @@ final ErrNilMosaicId = new Exception("mosaicId must not be nil");
 final ErrNilMosaicAmount = new Exception("amount must be not nil");
 final ErrInvalidMosaicName = new Exception("mosaic name is invalid");
 final ErrNilMosaicProperties = new Exception("mosaic properties must not be nil");
+final ErrInvalidMosaicProperties = new Exception("mosaic Properties is not valid");
+
+final ErrInvalidOwnerPublicKey = new Exception("public owner key is invalid");
+
 
 /// Namespace errors
 final ErrInvalidNamespaceName = new Exception("namespace name is invalid");

@@ -1,5 +1,16 @@
 part of xpx_catapult_sdk;
 
+const Decrease = 0, Increase = 1;
+
+// Create xpx with using xpx as unit
+Mosaic Xpx(int amount) {
+  return new Mosaic(XpxMosaicId, new BigInt.from(amount));
+}
+
+Mosaic XpxRelative(int amount) {
+  return Xpx((BigInt.from(1000000) * BigInt.from(amount)).toInt());
+}
+
 class Mosaic {
   BigInt id = null;
 
@@ -23,6 +34,85 @@ class Mosaic {
     id = v.id.toBigInt();
     amount = v.amount.toBigInt();
   }
+}
+
+class MosaicInfo {
+  BigInt mosaicId;
+  BigInt supply;
+  BigInt height;
+  PublicAccount owner;
+  int revision;
+  MosaicProperties properties;
+  MosaicInfo();
+
+  @override
+  String toString() {
+    return '\n\t{\n'
+        '\t"MosaicId": $mosaicId,\n'
+        '\t"Supply": $supply\n'
+        '\t"Height": $height\n'
+        '\t"Owner": $owner\n'
+        '\t"Revision": $revision\n'
+        '\t"Properties": $properties\n'
+        '\t}';
+  }
+
+  MosaicInfo.fromDTO(_mosaicInfoDTO value) {
+    if (json == null) return;
+
+    mosaicId = value.mosaic.mosaicId.toBigInt();
+    supply = value.mosaic.supply.toBigInt();
+    height = value.mosaic.height.toBigInt();
+    owner = NewAccountFromPublicKey(value.mosaic.owner, ConfigNetworkType);
+    revision = value.mosaic.revision;
+    properties = new MosaicProperties.fromJson(value.mosaic.properties);
+  }
+}
+
+/// MosaicProperties  structure describes mosaic properties.
+class MosaicProperties {
+  bool supplyMutable;
+  bool transferable;
+  bool levyMutable;
+  int divisibility;
+  BigInt duration;
+
+  MosaicProperties(this.supplyMutable, this.transferable, this.levyMutable,
+      this.divisibility, this.duration);
+
+  @override
+  String toString() {
+    return '{\n'
+        '\t"SupplyMutable": $supplyMutable,\n'
+        '\t"Transferable": $transferable,\n'
+        '\t"LevyMutable": $levyMutable,\n'
+        '\t"Divisibility": $divisibility,\n'
+        '\t"Duratione": $duration\n'
+        '\t}';
+  }
+
+  MosaicProperties.fromJson(List<UInt64DTO> value) {
+    if (json == null) throw ErrInvalidMosaicProperties;
+
+    if (value.length < 3) {
+      throw ErrInvalidMosaicProperties;
+    }
+
+    final flags = "00" + value[0].toBigInt().toRadixString(2);
+    final bitMapFlags = flags.substring(flags.length - 3, flags.length);
+
+    supplyMutable = bitMapFlags[2] == '1';
+    transferable = bitMapFlags[1] == '1';
+    levyMutable = bitMapFlags[0] == '1';
+    divisibility = value[1].toBigInt().toInt();
+    duration = value[2].toBigInt();
+  }
+}
+
+MosaicProperties NewMosaicProperties(bool SupplyMutable, Transferable,
+    LevyMutable, int Divisibility, BigInt Duration) {
+  return new MosaicProperties(
+      SupplyMutable, Transferable, LevyMutable, Divisibility, Duration);
 }
 
 BigInt NewMosaicIdFromNonceAndOwner(int nonce, String ownerPublicKey) {

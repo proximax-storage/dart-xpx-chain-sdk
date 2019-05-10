@@ -112,18 +112,16 @@ class ApiClient {
           return new MerkleProofInfoPayload.fromJson(value);
         case '_mosaicDTO':
           return new _mosaicDTO.fromJson(value);
-        case 'MosaicDefinitionDTO':
-          return new MosaicDefinitionDTO.fromJson(value);
+        case '_mosaicDefinitionDTO':
+          return new _mosaicDefinitionDTO.fromJson(value);
         case 'MosaicIds':
           return new MosaicIds.fromJson(value);
-        case 'MosaicInfoDTO':
-          return new MosaicInfoDTO.fromJson(value);
-        case 'MosaicMetaDTO':
-          return new MosaicMetaDTO.fromJson(value);
+        case '_mosaicInfoDTO':
+          return new _mosaicInfoDTO.fromJson(value);
+        case '_mosaicMetaDTO':
+          return new _mosaicMetaDTO.fromJson(value);
         case 'MosaicNameDTO':
           return new MosaicNameDTO.fromJson(value);
-        case 'MosaicPropertiesDTO':
-          return new MosaicPropertiesDTO.fromJson(value);
         case 'MultisigAccountGraphInfoDTO':
           return new MultisigAccountGraphInfoDTO.fromJson(value);
         case 'MultisigAccountInfoDTO':
@@ -271,3 +269,4 @@ class ApiClient {
     });
   }
 }
+

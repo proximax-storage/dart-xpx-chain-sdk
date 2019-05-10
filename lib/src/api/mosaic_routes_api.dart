@@ -9,18 +9,18 @@ class MosaicRoutesApi {
   /// Get mosaic information
   ///
   /// Gets the mosaic definition for a given mosaicId.
-  Future<MosaicInfoDTO> getMosaic(String mosaicId) async {
+  Future<MosaicInfo> GetMosaic(BigInt mosaicId) async {
     Object postBody = null;
 
     // verify required params are set
     if (mosaicId == null) {
       throw new ApiException(400, "Missing required param: mosaicId");
     }
-
+    var nsId = bigIntegerToHex(mosaicId);
     // create path and map variables
     String path = "/mosaic/{mosaicId}"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "mosaicId" + "}", mosaicId.toString());
+        .replaceAll("{" + "mosaicId" + "}", nsId);
 
     // query params
     List<QueryParam> queryParams = [];
@@ -46,8 +46,8 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'MosaicInfoDTO')
-          as MosaicInfoDTO;
+      var resp =apiClient.deserialize(response.body, '_mosaicInfoDTO')as _mosaicInfoDTO;
+      return new MosaicInfo.fromDTO(resp);
     } else {
       return null;
     }
@@ -56,7 +56,7 @@ class MosaicRoutesApi {
   /// Get mosaics information for an array of mosaics
   ///
   /// Gets an array of mosaic definition.
-  Future<List<MosaicInfoDTO>> getMosaics(MosaicIds mosaicIds) async {
+  Future<List<_mosaicInfoDTO>> getMosaics(MosaicIds mosaicIds) async {
     Object postBody = mosaicIds;
 
     // verify required params are set
@@ -91,9 +91,9 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<MosaicInfoDTO>')
+      return (apiClient.deserialize(response.body, 'List<_mosaicInfoDTO>')
               as List)
-          .map((item) => item as MosaicInfoDTO)
+          .map((item) => item as _mosaicInfoDTO)
           .toList();
     } else {
       return null;
