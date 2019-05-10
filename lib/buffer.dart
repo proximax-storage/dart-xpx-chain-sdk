@@ -21,28 +21,18 @@ abstract class Buffer {
     return new _WriterForLEHost._create(out);
   }
 
-  writeFloat64(double v);
+  writeInt32(int v);
 
-  writeFloat32(double v);
-
-  writeInt32(int v) {
-    out[position + 3] = v;
-    out[position + 2] = (v >> 8);
-    out[position + 1] = (v >> 16);
-    out[position + 0] = (v >> 24);
-    position += 4;
-  }
-
-  writeInt16(int v) {
-    out[position + 1] = v;
-    out[position + 0] = (v >> 8);
-    position += 2;
-  }
+  writeInt16(int v);
 
   writeInt8(int v) {
     out[position] = v;
     position++;
   }
+
+  writeFloat64(double v);
+
+  writeFloat32(double v);
 
   writeString(String str) {
     out.setAll(position, str.codeUnits);
@@ -67,6 +57,20 @@ final Float64List _convF64 = new Float64List.view(_convU8.buffer);
 /// Writer used on little-endian host.
 class _WriterForLEHost extends Buffer {
   _WriterForLEHost._create(out) : super._create(out);
+
+  writeInt16(int v) {
+    out[position + 0] = v;
+    out[position + 1] = (v >> 8);
+    position += 2;
+  }
+
+  writeInt32(int v) {
+    out[position + 0] = v;
+    out[position + 1] = (v >> 8);
+    out[position + 2] = (v >> 16);
+    out[position + 3] = (v >> 24);
+    position += 4;
+  }
 
   writeFloat64(double v) {
     _convF64[0] = v;
@@ -94,6 +98,20 @@ class _WriterForLEHost extends Buffer {
 /// Writer used on the big-endian host.
 class _WriterForBEHost extends Buffer {
   _WriterForBEHost._create(out) : super._create(out);
+
+  writeInt32(int v) {
+    out[position + 3] = v;
+    out[position + 2] = (v >> 8);
+    out[position + 1] = (v >> 16);
+    out[position + 0] = (v >> 24);
+    position += 4;
+  }
+
+  writeInt16(int v) {
+    out[position + 1] = v;
+    out[position + 0] = (v >> 8);
+    position += 2;
+  }
 
   writeFloat64(double v) {
     _convF64[0] = v;
