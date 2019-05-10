@@ -6,6 +6,16 @@ class NamespaceRoutesApi {
   NamespaceRoutesApi([ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
 
+  Future<List<NamespaceInfo>> buildNamespacesHierarchy(
+      List<NamespaceInfo> namespaceIds) async {
+    for (int i = 0; i < namespaceIds.length; i++)
+      if (namespaceIds[i].parent != null) {
+        namespaceIds[i].parent = await buildNamespaceHierarchy(namespaceIds[i]);
+      }
+
+    return namespaceIds;
+  }
+
   Future<NamespaceInfo> buildNamespaceHierarchy(NamespaceInfo namespaceId) =>
       GetNamespace(namespaceId.parent.namespaceId);
 
@@ -66,19 +76,19 @@ class NamespaceRoutesApi {
   /// Get namespaces owned by an account
   ///
   /// Gets an array of namespaces for a given account address.
-  Future<List<_namespaceInfoDTO>> GetNamespacesFromAccount(Address accountId,
+  Future<List<NamespaceInfo>> GetNamespacesFromAccount(Address accountIds,
       {int pageSize, String id}) async {
     Object postBody = null;
 
     // verify required params are set
-    if (accountId == null) {
+    if (accountIds == null) {
       throw new ApiException(400, "Missing required param: accountId");
     }
 
     // create path and map variables
     String path = "/account/{accountId}/namespaces"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "accountId" + "}", accountId.address);
+        .replaceAll("{" + "accountId" + "}",accountIds.address);
 
     // query params
     List<QueryParam> queryParams = [];
@@ -111,10 +121,14 @@ class NamespaceRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<_namespaceInfoDTO>')
-              as List)
+      var resp = (apiClient.deserialize(
+              response.body, 'List<_namespaceInfoDTO>') as List)
           .map((item) => item as _namespaceInfoDTO)
           .toList();
+
+      final nss = NamespaceInfo.listFromDTO(resp);
+
+      return buildNamespacesHierarchy(nss);
     } else {
       return null;
     }
@@ -123,7 +137,7 @@ class NamespaceRoutesApi {
   /// Get namespaces for given array of addresses
   ///
   /// Gets namespaces for a given array of addresses.
-  Future<List<_namespaceInfoDTO>> GetNamespacesFromAccounts(Addresses addresses,
+  Future<List<NamespaceInfo>> GetNamespacesFromAccounts(Addresses addresses,
       {int pageSize, String id}) async {
     Object postBody = addresses;
 
@@ -166,10 +180,14 @@ class NamespaceRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<_namespaceInfoDTO>')
-              as List)
+      var resp = (apiClient.deserialize(
+          response.body, 'List<_namespaceInfoDTO>') as List)
           .map((item) => item as _namespaceInfoDTO)
           .toList();
+
+      final nss = NamespaceInfo.listFromDTO(resp);
+
+      return buildNamespacesHierarchy(nss);
     } else {
       return null;
     }

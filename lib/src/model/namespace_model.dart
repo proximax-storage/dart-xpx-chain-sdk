@@ -66,6 +66,12 @@ class NamespaceInfo {
       parent = p;
     }
   }
+
+  static List<NamespaceInfo> listFromDTO(List<dynamic> json) {
+    return json == null
+        ? new List<NamespaceInfo>()
+        : json.map((value) => new NamespaceInfo.fromDTO(value)).toList();
+  }
 }
 
 //NewNamespaceIdFromName generate Id from namespaceName
@@ -96,6 +102,7 @@ List<BigInt> GenerateNamespacePath(String name) {
     namespaceId = _generateId('$i', BigInt.zero);
     path.add(namespaceId);
   }
+
   return path;
 }
 
@@ -110,8 +117,9 @@ BigInt _generateId(String name, BigInt parentId) {
   var result = sha3.New256();
 
   result.update(b, 0, b.length);
+
   var p = new Uint8List(name.length);
-  for (int i = 0; i < name.codeUnits.length; i++) p[i] = name.codeUnits[i];
+  for (int i = 0; i < name.length; i++) p[i] = name.codeUnits[i];
 
   var t = result.process(p);
 
@@ -151,3 +159,4 @@ List<BigInt> extractLevels(_namespaceInfoDTO ref) {
 
   return levels;
 }
+

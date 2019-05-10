@@ -33,6 +33,7 @@ class _namespaceDTO {
   _namespaceDTO.fromJson(Map<String, dynamic> json) {
 
     if (json == null) return;
+
     owner = json['owner'];
     ownerAddress = json['ownerAddress'];
     startHeight = new UInt64DTO.fromJson(json['startHeight']);
