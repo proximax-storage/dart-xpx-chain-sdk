@@ -1,31 +1,31 @@
 part of xpx_catapult_sdk;
 
 class NamespaceInfo {
-  bool active = null;
+  bool active;
 
-  int index = null;
+  int index;
 
-  BigInt namespaceId = null;
+  BigInt namespaceId;
 
-  String fullName = null;
+  String fullName;
 
-  String metaId = null;
+  String metaId;
 
-  int typeSpace = null;
+  int typeSpace;
 
-  int depth = null;
+  int depth;
 
-  List<BigInt> levels = null;
+  List<BigInt> levels;
 
-  NamespaceInfo parent = null;
+  NamespaceInfo parent;
 
-  PublicAccount owner = null;
+  PublicAccount owner;
 
-  BigInt startHeight = null;
+  BigInt startHeight;
 
-  BigInt endHeight = null;
+  BigInt endHeight;
 
-  AliasDTO alias = null;
+  Alias alias;
 
   NamespaceInfo();
 
@@ -47,19 +47,38 @@ class NamespaceInfo {
         '}\n';
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'active': active,
+      'index': index,
+      'namespaceId': namespaceId,
+      'fullName': fullName,
+      'metaId': metaId,
+      'typeSpace': typeSpace,
+      'depth': depth,
+      'levels': levels,
+      'parent': parent,
+      'owner': owner,
+      'startHeight': startHeight,
+      'endHeight': endHeight,
+      'alias': alias,
+    };
+  }
+
   NamespaceInfo.fromDTO(_namespaceInfoDTO value) {
     if (json == null) return;
-
+//    namespaceId = value.namespace.
     metaId = value.meta.id;
     active = value.meta.active;
     index = value.meta.index;
-    owner = NewAccountFromPublicKey(value.namespace.owner, value.namespace.type);
+    owner =
+        NewAccountFromPublicKey(value.namespace.owner, value.namespace.type);
     startHeight = value.namespace.startHeight.toBigInt();
     endHeight = value.namespace.endHeight.toBigInt();
     depth = value.namespace.depth;
     levels = extractLevels(value);
     typeSpace = value.namespace.type;
-    alias = null;
+    alias = new Alias.fromDTO(value.namespace.alias);
     if (value.namespace.parentId.higher != 0) {
       final p = new NamespaceInfo();
       p.namespaceId = value.namespace.parentId.toBigInt();
@@ -74,11 +93,65 @@ class NamespaceInfo {
   }
 }
 
-//NewNamespaceIdFromName generate Id from namespaceName
+/// NewNamespaceIdFromName generate Id from namespaceName
 BigInt NewNamespaceIdFromName(String namespaceName) {
   var id = _generateNamespaceId(namespaceName);
 
   return id;
+}
+
+class NamespaceIds {
+  List<BigInt> namespaceIds = [];
+
+  NamespaceIds();
+
+  @override
+  String toString() {
+    return '{"namespaceIds":$namespaceIds}';
+  }
+
+  Map<String, dynamic> toJson() {
+    List<String> nsIds = List(namespaceIds.length);
+
+    for (int i = 0; i < namespaceIds.length; i++)
+      nsIds[i] = bigIntegerToHex(namespaceIds[i]);
+
+    return {
+      'namespaceIds': nsIds,
+    };
+  }
+}
+
+class NamespaceName {
+  BigInt parentId;
+
+  BigInt namespaceId;
+
+  String name = null;
+
+  NamespaceName();
+
+  @override
+  String toString() {
+    return '{ParentId:${bigIntegerToHex(parentId)}, NamespaceId:${bigIntegerToHex(namespaceId).toUpperCase()}, Name:$name}';
+  }
+
+  NamespaceName.fromDTO(_namespaceNameDTO value) {
+    if (json == null) return;
+    parentId = value.parentId == null ? value.parentId.toBigInt() : null;
+    namespaceId = value.namespaceId.toBigInt();
+    name = value.name;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'parentId': parentId, 'namespaceId': namespaceId, 'name': name};
+  }
+
+  static List<NamespaceName> listFromDTO(List<_namespaceNameDTO> json) {
+    return json == null
+        ? new List<NamespaceName>()
+        : json.map((value) => new NamespaceName.fromDTO(value)).toList();
+  }
 }
 
 // GenerateNamespacePath create list NamespaceId from string
@@ -160,3 +233,7 @@ List<BigInt> extractLevels(_namespaceInfoDTO ref) {
   return levels;
 }
 
+String getPrettyJSONString(jsonObject) {
+  var encoder = new JsonEncoder.withIndent(" ");
+  return encoder.convert(jsonObject);
+}

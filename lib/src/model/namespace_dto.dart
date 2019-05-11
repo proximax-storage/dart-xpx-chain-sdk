@@ -19,7 +19,7 @@ class _namespaceDTO {
 
   int type = null;
 
-  AliasDTO alias = null;
+  _aliasDTO alias = null;
 
   UInt64DTO parentId = null;
 
@@ -43,7 +43,7 @@ class _namespaceDTO {
     level1 = new UInt64DTO.fromJson(json['level1']);
     level2 = new UInt64DTO.fromJson(json['level2']);
     type = json['type'];
-    alias = new AliasDTO.fromJson(json['alias']);
+    alias = new _aliasDTO.fromJson(json['alias']);
     parentId = new UInt64DTO.fromJson(json['parentId']);
   }
 
@@ -156,6 +156,48 @@ class _namespaceMetaDTO {
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
       map[key] = new _namespaceMetaDTO.fromJson(value));
+    }
+    return map;
+  }
+}
+
+class _namespaceNameDTO {
+  UInt64DTO parentId = null;
+
+  UInt64DTO namespaceId = null;
+
+  String name = null;
+
+  _namespaceNameDTO();
+
+  @override
+  String toString() {
+    return '_namespaceNameDTO[parentId=$parentId, namespaceId=$namespaceId, name=$name, ]';
+  }
+
+  _namespaceNameDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    parentId = new UInt64DTO.fromJson(json['parentId']);
+    namespaceId = new UInt64DTO.fromJson(json['namespaceId']);
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'parentId': parentId, 'namespaceId': namespaceId, 'name': name};
+  }
+
+  static List<_namespaceNameDTO> listFromJson(List<dynamic> json) {
+    return json == null
+        ? new List<_namespaceNameDTO>()
+        : json.map((value) => new _namespaceNameDTO.fromJson(value)).toList();
+  }
+
+  static Map<String, _namespaceNameDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
+    var map = new Map<String, _namespaceNameDTO>();
+    if (json != null && json.length > 0) {
+      json.forEach((String key, Map<String, dynamic> value) =>
+      map[key] = new _namespaceNameDTO.fromJson(value));
     }
     return map;
   }

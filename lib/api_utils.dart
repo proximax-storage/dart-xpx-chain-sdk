@@ -43,6 +43,10 @@ String _intToHex(int u) {
 }
 
 String bigIntegerToHex(BigInt id) {
+  if (id == null) {
+    return null;
+  }
+
   var u = FromBigInt(id);
   return _intToHex(u[1].toInt()) + _intToHex(u[0].toInt());
 }

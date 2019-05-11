@@ -86,8 +86,8 @@ class ApiClient {
           return new AccountPropertyDTO.fromJson(value);
         case 'Addresses':
           return new Addresses.fromJson(value);
-        case 'AliasDTO':
-          return new AliasDTO.fromJson(value);
+        case '_aliasDTO':
+          return new _aliasDTO.fromJson(value);
         case 'AnnounceTransactionInfoDTO':
           return new AnnounceTransactionInfoDTO.fromJson(value);
         case 'BlockDTO':
@@ -134,8 +134,8 @@ class ApiClient {
           return new _namespaceInfoDTO.fromJson(value);
         case '_namespaceMetaDTO':
           return new _namespaceMetaDTO.fromJson(value);
-        case 'NamespaceNameDTO':
-          return new NamespaceNameDTO.fromJson(value);
+        case '_namespaceNameDTO':
+          return new _namespaceNameDTO.fromJson(value);
         case 'NetworkTypeDTO':
           return new NetworkTypeDTO.fromJson(value);
         case 'NodeInfoDTO':
@@ -230,7 +230,6 @@ class ApiClient {
       var msgBody = contentType == "application/x-www-form-urlencoded"
           ? formParams
           : serialize(body);
-
       switch (method) {
         case "POST":
           return client.post(url, headers: headerParams, body: msgBody);
