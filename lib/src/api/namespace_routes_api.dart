@@ -88,7 +88,7 @@ class NamespaceRoutesApi {
     // create path and map variables
     String path = "/account/{accountId}/namespaces"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "accountId" + "}",accountIds.address);
+        .replaceAll("{" + "accountId" + "}", accountIds.address);
 
     // query params
     List<QueryParam> queryParams = [];
@@ -181,7 +181,7 @@ class NamespaceRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       var resp = (apiClient.deserialize(
-          response.body, 'List<_namespaceInfoDTO>') as List)
+              response.body, 'List<_namespaceInfoDTO>') as List)
           .map((item) => item as _namespaceInfoDTO)
           .toList();
 
@@ -196,15 +196,17 @@ class NamespaceRoutesApi {
   /// Get readable names for a set of namespaces
   ///
   /// Returns friendly names for mosaics.
-  Future<List<NamespaceNameDTO>> GetNamespacesNames(
-      NamespaceIds namespaceIds) async {
-    Object postBody = namespaceIds;
+  Future<List<NamespaceName>> GetNamespacesNames(NamespaceIds nsIds) async {
+    Object postBody = nsIds;
 
     // verify required params are set
-    if (namespaceIds == null) {
+    if (nsIds == null) {
       throw new ApiException(400, "Missing required param: namespaceIds");
     }
 
+    if (nsIds.namespaceIds.length == 0) {
+      throw ErrEmptyNamespaceIds;
+    }
     // create path and map variables
     String path = "/namespace/names".replaceAll("{format}", "json");
 
@@ -232,10 +234,11 @@ class NamespaceRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<NamespaceNameDTO>')
+      final resp = (apiClient.deserialize(response.body, 'List<_namespaceNameDTO>')
               as List)
-          .map((item) => item as NamespaceNameDTO)
+          .map((item) => item as _namespaceNameDTO)
           .toList();
+      return  NamespaceName.listFromDTO(resp);
     } else {
       return null;
     }

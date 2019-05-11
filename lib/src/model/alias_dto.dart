@@ -1,20 +1,20 @@
 part of xpx_catapult_sdk ;
 
-class AliasDTO {
+class _aliasDTO {
   int type = null;
 
   UInt64DTO mosaicId = null;
 
   String address = null;
 
-  AliasDTO();
+  _aliasDTO();
 
   @override
   String toString() {
-    return 'AliasDTO[type=$type, mosaicId=$mosaicId, address=$address, ]';
+    return '{type:$type, mosaicId:$mosaicId, address:$address}';
   }
 
-  AliasDTO.fromJson(Map<String, dynamic> json) {
+  _aliasDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     type = json['type'];
     mosaicId = new UInt64DTO.fromJson(json['mosaicId']);
@@ -25,18 +25,18 @@ class AliasDTO {
     return {'type': type, 'mosaicId': mosaicId, 'address': address};
   }
 
-  static List<AliasDTO> listFromJson(List<dynamic> json) {
+  static List<_aliasDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<AliasDTO>()
-        : json.map((value) => new AliasDTO.fromJson(value)).toList();
+        ? new List<_aliasDTO>()
+        : json.map((value) => new _aliasDTO.fromJson(value)).toList();
   }
 
-  static Map<String, AliasDTO> mapFromJson(
+  static Map<String, _aliasDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, AliasDTO>();
+    var map = new Map<String, _aliasDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new AliasDTO.fromJson(value));
+          map[key] = new _aliasDTO.fromJson(value));
     }
     return map;
   }
