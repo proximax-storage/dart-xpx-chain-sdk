@@ -17,14 +17,16 @@ void main() async {
   /// 2- var client = NewClient(config, new BrowserClient());
   var client = NewClient(config, null);
 
+  var nsId = NewNamespaceIdFromName("prx");
+
   /// Generate Id from namespaceName
-  var ns = NewNamespaceIdFromName("prx");
   try {
-    var result = await client.Namespace.GetNamespace(ns);
+    var result = await client.Namespace.GetNamespace(nsId);
     print(result);
   } catch (e) {
     print("Exception when calling Namespace->GetNamespace: $e\n");
   }
+  print('\n');
 
   /// Gets an array of namespaces for a given account address.
   var address = NewAddressFromPublicKey(
@@ -35,6 +37,30 @@ void main() async {
     var result = await client.Namespace.GetNamespacesFromAccount(address);
     print(result);
   } catch (e) {
-    print("Exception when calling Namespace->GetNamespace: $e\n");
+    print("Exception when calling Namespace->GetNamespacesFromAccount: $e\n");
+  }
+  print('\n');
+
+  /// Gets namespaces for a given array of addresses.
+  var d = new Addresses();
+  d.addresses.add(address.address);
+
+  try {
+    var result = await client.Namespace.GetNamespacesFromAccounts(d);
+    print(result);
+  } catch (e) {
+    print("Exception when calling Namespace->GetNamespacesFromAccounts: $e\n");
+  }
+  print('\n');
+
+  /// Returns friendly names for mosaics.
+  var nsIds = new NamespaceIds();
+  nsIds.namespaceIds.add(nsId);
+
+  try {
+    var result = await client.Namespace.GetNamespacesNames(nsIds);
+    print(result);
+  } catch (e) {
+    print("Exception when calling Namespace->GetNamespacesNames: $e\n");
   }
 }
