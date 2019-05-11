@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 int ConfigNetworkType = 0;
 
@@ -7,7 +7,7 @@ class NewConfig {
   int networkType;
   String baseUrl;
 
-  NewConfig(this.baseUrl, this.networkType){
+  NewConfig(this.baseUrl, this.networkType) {
     ConfigNetworkType = this.networkType;
   }
 }

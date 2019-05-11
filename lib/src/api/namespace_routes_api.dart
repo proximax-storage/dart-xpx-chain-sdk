@@ -45,7 +45,6 @@ class NamespaceRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -55,7 +54,7 @@ class NamespaceRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -106,7 +105,6 @@ class NamespaceRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -116,7 +114,7 @@ class NamespaceRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -165,7 +163,6 @@ class NamespaceRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -175,7 +172,7 @@ class NamespaceRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -219,7 +216,6 @@ class NamespaceRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -229,16 +225,16 @@ class NamespaceRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = (apiClient.deserialize(response.body, 'List<_namespaceNameDTO>')
-              as List)
+      final resp = (apiClient.deserialize(
+              response.body, 'List<_namespaceNameDTO>') as List)
           .map((item) => item as _namespaceNameDTO)
           .toList();
-      return  NamespaceName.listFromDTO(resp);
+      return NamespaceName.listFromDTO(resp);
     } else {
       return null;
     }

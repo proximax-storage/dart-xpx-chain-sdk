@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 const _delimiters = const {'csv': ',', 'ssv': ' ', 'tsv': '\t', 'pipes': '|'};
 

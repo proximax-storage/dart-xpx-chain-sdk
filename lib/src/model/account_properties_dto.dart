@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class AccountPropertiesDTO {
   String address = null;

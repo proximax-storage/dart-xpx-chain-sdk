@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class _accountDTO {
   String address = null;
@@ -101,7 +101,7 @@ class _accountInfoDTO {
     var map = new Map<String, _accountInfoDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new _accountInfoDTO.fromJson(value));
+          map[key] = new _accountInfoDTO.fromJson(value));
     }
     return map;
   }
@@ -134,7 +134,7 @@ class _accountMetaDTO {
     var map = new Map<String, _accountMetaDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new _accountMetaDTO.fromJson(value));
+          map[key] = new _accountMetaDTO.fromJson(value));
     }
     return map;
   }

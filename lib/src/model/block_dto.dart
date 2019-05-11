@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class _BlockDTO {
   String signature = null;
@@ -30,7 +30,6 @@ class _BlockDTO {
   _BlockDTO();
 
   _BlockDTO.fromJson(Map<String, dynamic> json) {
-
     if (json == null) return;
     signature = json['signature'];
     signer = json['signer'];
@@ -110,12 +109,10 @@ class _BlockInfoDTO {
     var map = new Map<String, _BlockInfoDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new _BlockInfoDTO.fromJson(value));
+          map[key] = new _BlockInfoDTO.fromJson(value));
     }
     return map;
   }
-
-
 }
 
 class _BlockMetaDTO {
@@ -148,7 +145,7 @@ class _BlockMetaDTO {
     var map = new Map<String, _BlockMetaDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new _BlockMetaDTO.fromJson(value));
+          map[key] = new _BlockMetaDTO.fromJson(value));
     }
     return map;
   }

@@ -1,4 +1,4 @@
-library xpx_catapult_sdk ;
+library xpx_catapult_sdk;
 
 import 'dart:async';
 import 'dart:convert';
@@ -19,10 +19,6 @@ part 'api_client.dart';
 part 'api_helper.dart';
 part 'api_exception.dart';
 part 'buffer.dart';
-part 'src/auth/authentication.dart';
-part 'src/auth/api_key_auth.dart';
-part 'src/auth/oauth.dart';
-part 'src/auth/http_basic_auth.dart';
 
 part 'src/api/api_conf.dart';
 part 'src/api/account_routes_api.dart';
@@ -54,10 +50,6 @@ part 'src/model/merkle_proof_info_dto.dart';
 part 'src/model/merkle_proof_info_payload.dart';
 part 'src/model/mosaic_dto.dart';
 part 'src/model/mosaic_model.dart';
-part 'src/model/mosaic_definition_dto.dart';
-part 'src/model/mosaic_name_dto.dart';
-part 'src/model/multisig_account_graph_info_dto.dart';
-part 'src/model/multisig_account_info_dto.dart';
 part 'src/model/multisig_dto.dart';
 part 'src/model/namespace_dto.dart';
 part 'src/model/namespace_model.dart';

@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class _mosaicDTO {
   UInt64DTO id = null;
@@ -70,7 +70,7 @@ class MosaicIds {
     var map = new Map<String, MosaicIds>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new MosaicIds.fromJson(value));
+          map[key] = new MosaicIds.fromJson(value));
     }
     return map;
   }
@@ -109,7 +109,7 @@ class _mosaicInfoDTO {
     var map = new Map<String, _mosaicInfoDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new _mosaicInfoDTO.fromJson(value));
+          map[key] = new _mosaicInfoDTO.fromJson(value));
     }
     return map;
   }
@@ -145,7 +145,88 @@ class _mosaicMetaDTO {
     var map = new Map<String, _mosaicMetaDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new _mosaicMetaDTO.fromJson(value));
+          map[key] = new _mosaicMetaDTO.fromJson(value));
+    }
+    return map;
+  }
+}
+
+class _mosaicDefinitionDTO {
+  UInt64DTO mosaicId = null;
+
+  UInt64DTO supply = null;
+
+  UInt64DTO height = null;
+
+  String owner = null;
+
+  int revision = null;
+
+  List<UInt64DTO> properties = null;
+
+  Object levy = null;
+
+  _mosaicDefinitionDTO();
+
+  @override
+  String toString() {
+    return '{MosaicId=$mosaicId, Supply=$supply, Height=$height, Owner=$owner, Revision=$revision, Properties=$properties}';
+  }
+
+  _mosaicDefinitionDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return;
+    } else {
+      properties = new List(json['properties'].length);
+    }
+
+    mosaicId = new UInt64DTO.fromJson(json['mosaicId']);
+    supply = new UInt64DTO.fromJson(json['supply']);
+    height = new UInt64DTO.fromJson(json['height']);
+    owner = json['owner'];
+    revision = json['revision'];
+    for (int i = 0; i < 3; i++)
+      properties[i] = (UInt64DTO.fromJson(json['properties'][i]));
+  }
+}
+
+class MosaicNameDTO {
+  UInt64DTO parentId = null;
+
+  UInt64DTO mosaicId = null;
+
+  String name = null;
+
+  MosaicNameDTO();
+
+  @override
+  String toString() {
+    return 'MosaicNameDTO[parentId=$parentId, mosaicId=$mosaicId, name=$name, ]';
+  }
+
+  MosaicNameDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    parentId = new UInt64DTO.fromJson(json['parentId']);
+    mosaicId = new UInt64DTO.fromJson(json['mosaicId']);
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'parentId': parentId, 'mosaicId': mosaicId, 'name': name};
+  }
+
+  static List<MosaicNameDTO> listFromJson(List<dynamic> json) {
+    return json == null
+        ? new List<MosaicNameDTO>()
+        : json.map((value) => new MosaicNameDTO.fromJson(value)).toList();
+  }
+
+  static Map<String, MosaicNameDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
+    var map = new Map<String, MosaicNameDTO>();
+    if (json != null && json.length > 0) {
+      json.forEach((String key, Map<String, dynamic> value) =>
+          map[key] = new MosaicNameDTO.fromJson(value));
     }
     return map;
   }

@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class BlockchainRoutesApi {
   ApiClient apiClient;
@@ -31,7 +31,6 @@ class BlockchainRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -41,12 +40,13 @@ class BlockchainRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      var resp = apiClient.deserialize(response.body, 'BlockInfoDTO') as _BlockInfoDTO;
+      var resp =
+          apiClient.deserialize(response.body, 'BlockInfoDTO') as _BlockInfoDTO;
       return new BlockInfo.fromDTO(resp);
     } else {
       return null;
@@ -78,7 +78,6 @@ class BlockchainRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -88,7 +87,7 @@ class BlockchainRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -134,7 +133,6 @@ class BlockchainRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -144,7 +142,7 @@ class BlockchainRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -177,7 +175,6 @@ class BlockchainRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -187,7 +184,7 @@ class BlockchainRoutesApi {
     } else {}
 
     var response = await this.apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -220,7 +217,6 @@ class BlockchainRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -230,7 +226,7 @@ class BlockchainRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -272,7 +268,6 @@ class BlockchainRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -282,7 +277,7 @@ class BlockchainRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -316,7 +311,6 @@ class BlockchainRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -326,7 +320,7 @@ class BlockchainRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -367,7 +361,6 @@ class BlockchainRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -377,7 +370,7 @@ class BlockchainRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -419,7 +412,6 @@ class BlockchainRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -429,7 +421,7 @@ class BlockchainRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);

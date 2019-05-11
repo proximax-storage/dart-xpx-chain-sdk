@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class CommunicationTimestamps {
   UInt64DTO sendTimestamp = null;

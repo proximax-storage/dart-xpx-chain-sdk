@@ -46,7 +46,6 @@ class ApiClient {
   var client = new http.Client();
 
   Map<String, String> _defaultHeaderMap = {};
-  Map<String, Authentication> _authentications = {};
 
   final _RegList = new RegExp(r'^List<(.*)>$');
   final _RegMap = new RegExp(r'^Map<String,(.*)>$');
@@ -204,10 +203,7 @@ class ApiClient {
       Object body,
       Map<String, String> headerParams,
       Map<String, String> formParams,
-      String contentType,
-      List<String> authNames) async {
-    _updateParamsForAuth(authNames, queryParams, headerParams);
-
+      String contentType) async {
     var ps = queryParams
         .where((p) => p.value != null)
         .map((p) => '${p.name}=${p.value}');
@@ -245,25 +241,4 @@ class ApiClient {
       }
     }
   }
-
-  /// Update query and header parameters based on authentication settings.
-  /// @param authNames The authentications to apply
-  void _updateParamsForAuth(List<String> authNames,
-      List<QueryParam> queryParams, Map<String, String> headerParams) {
-    authNames.forEach((authName) {
-      Authentication auth = _authentications[authName];
-      if (auth == null)
-        throw new ArgumentError("Authentication undefined: " + authName);
-      auth.applyToParams(queryParams, headerParams);
-    });
-  }
-
-  void setAccessToken(String accessToken) {
-    _authentications.forEach((key, auth) {
-      if (auth is OAuth) {
-        auth.setAccessToken(accessToken);
-      }
-    });
-  }
 }
-

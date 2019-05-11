@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class _namespaceDTO {
   String owner = null;
@@ -31,7 +31,6 @@ class _namespaceDTO {
   }
 
   _namespaceDTO.fromJson(Map<String, dynamic> json) {
-
     if (json == null) return;
 
     owner = json['owner'];
@@ -113,7 +112,7 @@ class _namespaceInfoDTO {
     var map = new Map<String, _namespaceInfoDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new _namespaceInfoDTO.fromJson(value));
+          map[key] = new _namespaceInfoDTO.fromJson(value));
     }
     return map;
   }
@@ -155,7 +154,7 @@ class _namespaceMetaDTO {
     var map = new Map<String, _namespaceMetaDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new _namespaceMetaDTO.fromJson(value));
+          map[key] = new _namespaceMetaDTO.fromJson(value));
     }
     return map;
   }
@@ -197,7 +196,7 @@ class _namespaceNameDTO {
     var map = new Map<String, _namespaceNameDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new _namespaceNameDTO.fromJson(value));
+          map[key] = new _namespaceNameDTO.fromJson(value));
     }
     return map;
   }

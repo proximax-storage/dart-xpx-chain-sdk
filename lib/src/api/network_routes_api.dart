@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class NetworkRoutesApi {
   final ApiClient apiClient;
@@ -26,7 +26,6 @@ class NetworkRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -36,7 +35,7 @@ class NetworkRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);

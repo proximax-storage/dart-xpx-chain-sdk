@@ -53,5 +53,3 @@ class UInt64DTO {
     return buffer.toBigInt();
   }
 }
-
-

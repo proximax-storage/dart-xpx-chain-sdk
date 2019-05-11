@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class MosaicRoutesApi {
   final ApiClient apiClient;
@@ -31,7 +31,6 @@ class MosaicRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -41,12 +40,13 @@ class MosaicRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType, authNames);
+        headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      var resp =apiClient.deserialize(response.body, '_mosaicInfoDTO')as _mosaicInfoDTO;
+      var resp = apiClient.deserialize(response.body, '_mosaicInfoDTO')
+          as _mosaicInfoDTO;
       return new MosaicInfo.fromDTO(resp);
     } else {
       return null;
@@ -76,7 +76,6 @@ class MosaicRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -86,7 +85,7 @@ class MosaicRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -123,7 +122,6 @@ class MosaicRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -133,7 +131,7 @@ class MosaicRoutesApi {
     } else {}
 
     var response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);

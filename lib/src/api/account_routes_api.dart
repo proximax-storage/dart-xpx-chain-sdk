@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk ;
+part of xpx_catapult_sdk;
 
 class AccountRoutesApi {
   final ApiClient _apiClient;
@@ -22,6 +22,7 @@ class AccountRoutesApi {
         .replaceAll("{format}", "json")
         .replaceAll("{" + "accountId" + "}", address.address);
 
+    print(path);
     // query params
     List<QueryParam> queryParams = [];
     Map<String, String> headerParams = {};
@@ -31,7 +32,6 @@ class AccountRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -41,13 +41,14 @@ class AccountRoutesApi {
     } else {}
 
     var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient.deserialize(response.body, '_accountInfoDTO') as _accountInfoDTO;
-          return AccountInfo.fromDTO(resp);
+      final resp = _apiClient.deserialize(response.body, '_accountInfoDTO')
+          as _accountInfoDTO;
+      return AccountInfo.fromDTO(resp);
     } else {
       return null;
     }
@@ -78,7 +79,6 @@ class AccountRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -88,7 +88,7 @@ class AccountRoutesApi {
     } else {}
 
     var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -126,7 +126,6 @@ class AccountRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -136,7 +135,7 @@ class AccountRoutesApi {
     } else {}
 
     var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -176,7 +175,6 @@ class AccountRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -186,7 +184,7 @@ class AccountRoutesApi {
     } else {}
 
     var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -222,7 +220,6 @@ class AccountRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -232,7 +229,7 @@ class AccountRoutesApi {
     } else {}
 
     var response = await _apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -269,7 +266,6 @@ class AccountRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -279,7 +275,7 @@ class AccountRoutesApi {
     } else {}
 
     var response = await _apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -330,7 +326,6 @@ class AccountRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -340,7 +335,7 @@ class AccountRoutesApi {
     } else {}
 
     var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -390,7 +385,6 @@ class AccountRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -400,7 +394,7 @@ class AccountRoutesApi {
     } else {}
 
     var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -450,7 +444,6 @@ class AccountRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -460,7 +453,7 @@ class AccountRoutesApi {
     } else {}
 
     var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -510,7 +503,6 @@ class AccountRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -520,7 +512,7 @@ class AccountRoutesApi {
     } else {}
 
     var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
@@ -570,7 +562,6 @@ class AccountRoutesApi {
 
     String contentType =
         contentTypes.length > 0 ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -580,7 +571,7 @@ class AccountRoutesApi {
     } else {}
 
     var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
