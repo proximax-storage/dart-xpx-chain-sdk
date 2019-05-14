@@ -37,7 +37,7 @@ Alternatively, your editor might support pub get or flutter packages get. Check 
 Now in your Dart code, you can use:
 
 ```dart
-import 'package:nem2_crypto/nem2_crypto.dart';
+import 'package:xpx_catapult_sdk/xpx_sdk.dart';
 ```
 
 ## Wiki and Examples ##

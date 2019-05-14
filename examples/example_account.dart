@@ -1,4 +1,4 @@
-import 'package:xpx_catapult_sdk/api.dart';
+import 'package:xpx_catapult_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bcstage1.xpxsirius.io:3000";
 

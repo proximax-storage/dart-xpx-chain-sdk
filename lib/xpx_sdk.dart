@@ -12,13 +12,14 @@ import 'package:base32/base32.dart';
 import "package:nem2_crypto/nem2_crypto.dart" as crypto;
 import "package:nem2_crypto/imp/sha3.dart" as sha3;
 
-part 'api_utils.dart';
 part 'consts.dart';
-part 'all_errors.dart';
-part 'api_client.dart';
-part 'api_helper.dart';
-part 'api_exception.dart';
 part 'buffer.dart';
+
+part 'all_errors.dart';
+part 'xpx_sdk_utils.dart';
+part 'xpx_sdk_client.dart';
+part 'xpx_sdk_helper.dart';
+part 'xpx_sdk_exception.dart';
 
 part 'src/api/api_conf.dart';
 part 'src/api/account_routes_api.dart';
