@@ -152,6 +152,7 @@ class NamespaceName {
         ? new List<NamespaceName>()
         : json.map((value) => new NamespaceName.fromDTO(value)).toList();
   }
+
 }
 
 // GenerateNamespacePath create list NamespaceId from string

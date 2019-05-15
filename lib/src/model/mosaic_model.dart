@@ -36,6 +36,32 @@ class Mosaic {
   }
 }
 
+class MosaicIds {
+  List<BigInt> _list = [];
+
+  MosaicIds();
+
+  MosaicIds add(BigInt id) {
+    _list.add(id);
+    return this;
+  }
+
+  @override
+  String toString() {
+    return '{mosaicIds:$_list}';
+  }
+
+  Map<String, dynamic> toJson() {
+    List<String> nsIds = List(_list.length);
+
+    for (int i = 0; i < _list.length; i++) nsIds[i] = bigIntegerToHex(_list[i]);
+
+    return {
+      'mosaicIds': nsIds,
+    };
+  }
+}
+
 class MosaicInfo {
   BigInt mosaicId;
   BigInt supply;
@@ -66,6 +92,12 @@ class MosaicInfo {
     owner = NewAccountFromPublicKey(value.mosaic.owner, ConfigNetworkType);
     revision = value.mosaic.revision;
     properties = new MosaicProperties.fromJson(value.mosaic.properties);
+  }
+
+  static List<MosaicInfo> listFromDTO(List<_mosaicInfoDTO> json) {
+    return json == null
+        ? new List<MosaicInfo>()
+        : json.map((value) => new MosaicInfo.fromDTO(value)).toList();
   }
 }
 

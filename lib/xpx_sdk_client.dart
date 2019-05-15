@@ -113,8 +113,6 @@ class ApiClient {
           return new _mosaicDTO.fromJson(value);
         case '_mosaicDefinitionDTO':
           return new _mosaicDefinitionDTO.fromJson(value);
-        case 'MosaicIds':
-          return new MosaicIds.fromJson(value);
         case '_mosaicInfoDTO':
           return new _mosaicInfoDTO.fromJson(value);
         case '_mosaicMetaDTO':

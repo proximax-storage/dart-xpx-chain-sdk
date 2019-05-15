@@ -56,7 +56,7 @@ class MosaicRoutesApi {
   /// Get mosaics information for an array of mosaics
   ///
   /// Gets an array of mosaic definition.
-  Future<List<_mosaicInfoDTO>> getMosaics(MosaicIds mosaicIds) async {
+  Future<List<MosaicInfo>> GetMosaics(MosaicIds mosaicIds) async {
     Object postBody = mosaicIds;
 
     // verify required params are set
@@ -90,10 +90,11 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<_mosaicInfoDTO>')
-              as List)
-          .map((item) => item as _mosaicInfoDTO)
-          .toList();
+      final resp =
+          (apiClient.deserialize(response.body, 'List<_mosaicInfoDTO>') as List)
+              .map((item) => item as _mosaicInfoDTO)
+              .toList();
+      return MosaicInfo.listFromDTO(resp);
     } else {
       return null;
     }
