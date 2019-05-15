@@ -20,8 +20,18 @@ void main() async {
   /// Gets the mosaic definition for a given mosaicId.
   try {
     var result = await client.Mosaic.GetMosaic(XpxMosaicId);
-    print(result.properties);
+    print(result);
   } catch (e) {
     print("Exception when calling Mosaic->GetMosaic: $e\n");
+  }
+
+  /// Gets an array of mosaic definition.
+  MosaicIds Ids = new MosaicIds();
+  Ids.add(XpxMosaicId);
+  try {
+    var result = await client.Mosaic.GetMosaics(Ids);
+    print(result);
+  } catch (e) {
+    print("Exception when calling Mosaic->GetMosaics: $e\n");
   }
 }
