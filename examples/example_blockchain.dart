@@ -17,6 +17,14 @@ void main() async {
   /// 2- var client = NewClient(config, new BrowserClient());
   var client = NewClient(config, null);
 
+  /// Gets the current score of the blockchain.
+  try {
+    var result = await client.BlockChain.GetBlockchainScore();
+    print(result);
+  } catch (e) {
+    print("Exception when calling BlockChain->GetBlockchainScore: $e\n");
+  }
+
   /// Get the current height of the chain.
   try {
     var result = await client.BlockChain.GetBlockchainHeight();
@@ -32,5 +40,25 @@ void main() async {
     print(result);
   } catch (e) {
     print("Exception when calling BlockChain->GetBlockByHeight: $e\n");
+  }
+
+  /// Returns statistical information about the blockchain.
+  try {
+    var result = await client.BlockChain.GetDiagnosticStorage();
+    print(result);
+  } catch (e) {
+    print("Exception when calling BlockChain->GetDiagnosticStorage: $e\n");
+  }
+
+  /// Gets up to limit number of blocks after given block height.
+  final height = BigInt.from(1);
+  final limit = BigInt.from(50);
+  try {
+    var result =
+        await client.BlockChain.GetBlocksByHeightWithLimit(height, limit);
+    print(result);
+  } catch (e) {
+    print(
+        "Exception when calling BlockChain->GetBlocksByHeightWithLimit: $e\n");
   }
 }

@@ -34,4 +34,12 @@ void main() async {
   } catch (e) {
     print("Exception when calling Mosaic->GetMosaics: $e\n");
   }
+
+  /// Returns friendly names for mosaics.
+  try {
+    var result = await client.Mosaic.GetMosaicsName(Ids);
+    print(result);
+  } catch (e) {
+    print("Exception when calling Mosaic->GetMosaicsName: $e\n");
+  }
 }
