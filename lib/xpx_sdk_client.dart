@@ -59,6 +59,11 @@ class ApiClient {
   }
 
   dynamic _deserialize(dynamic value, String targetType) {
+
+    if (targetType == 'Transaction'){
+      targetType = MapTransaction(value);
+    }
+
     try {
       switch (targetType) {
         case 'String':
@@ -181,10 +186,6 @@ class ApiClient {
     if (targetType == 'String') return jsonVal;
 
     var decodedJson = json.decode(jsonVal);
-
-    if (targetType == 'Transaction'){
-      targetType = MapTransaction(decodedJson);
-    }
 
     return _deserialize(decodedJson, targetType);
   }

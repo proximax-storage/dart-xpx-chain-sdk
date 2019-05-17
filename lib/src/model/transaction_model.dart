@@ -225,7 +225,6 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     return _abs;
   }
 
-  // ignore: missing_return
   TransferTransaction.fromDTO(_transferTransactionInfoDTO value)
       : super(
             value._meta._height.toBigInt(),
@@ -252,6 +251,13 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     mosaics = m;
     recipient = NewAddressFromEncoded(value._transaction._recipient);
     message = Message.fromDTO(value._transaction._message);
+  }
+
+  static List<TransferTransaction> listFromDTO(
+      List<_transferTransactionInfoDTO> json) {
+    return json == null
+        ? new List<TransferTransaction>()
+        : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
   }
 
   @override
