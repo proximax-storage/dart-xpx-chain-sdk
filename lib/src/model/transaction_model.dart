@@ -317,3 +317,48 @@ class Message {
     return data;
   }
 }
+
+// ignore: missing_return
+Transaction _deserializeTxn(dynamic value) {
+  switch (value.runtimeType) {
+    case _transferTransactionInfoDTO:
+      return TransferTransaction.fromDTO(value as _transferTransactionInfoDTO);
+    default:
+      {
+        if (value is List) {
+          value.map((v) => _deserializeTxn(v)).toList();
+        }
+      }
+  }
+}
+
+var TimestampNemesisBlock =
+    DateTime.fromMicrosecondsSinceEpoch(1459468800 * 1000);
+
+class Deadline {
+  DateTime time;
+  Deadline(this.time);
+
+  Int64 GetInstant() {
+    var x = Int64((this.time.microsecondsSinceEpoch * 1000) ~/ 1e6);
+    var y = Int64((TimestampNemesisBlock.microsecondsSinceEpoch * 1e+6) ~/ 1e6);
+    return x - y;
+  }
+}
+
+Deadline NewDeadline(
+    {int days = 0,
+    int hours = 0,
+    int minutes = 0,
+    int seconds = 0,
+    int milliseconds = 0,
+    int microseconds = 0}) {
+  var d = Duration(
+      days: days,
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds,
+      milliseconds: milliseconds,
+      microseconds: microseconds);
+  return new Deadline(new DateTime.now().add(d));
+}
