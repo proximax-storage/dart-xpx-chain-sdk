@@ -1,6 +1,6 @@
 part of xpx_catapult_sdk;
 
-var transactionTypes =  <_transactionTypeClass>{
+var transactionTypes = <_transactionTypeClass>{
   _transactionTypeClass(TransactionType.AggregateCompleted, 16705, 0x4141),
   _transactionTypeClass(TransactionType.AggregateBonded, 16961, 0x4241),
   _transactionTypeClass(TransactionType.MetadataAddress, 16701, 0x413d),
@@ -155,11 +155,11 @@ class AbstractTransaction extends TransactionInfo {
   String _signature;
   PublicAccount _signer;
 
-  AbstractTransaction(
-      height, index, id, hash, merkleComponentHash, [aggregateHash, aggregateId])
+  AbstractTransaction(height, index, id, hash, merkleComponentHash,
+      [aggregateHash, aggregateId])
       : super(height, index, id, hash, merkleComponentHash);
 
-  toStringTxInfo() => super.toString();
+  toStringMetaInfo() => super.toString();
 
   ToAggregate(PublicAccount signer) {
     signer = signer;
@@ -189,21 +189,21 @@ class AbstractTransaction extends TransactionInfo {
   String toString() {
     return '{\n'
         '\t"NetworkType": $_networkType,\n'
-        '\t"TransactionInfo": ${toStringTxInfo()},\n'
+        '\t"TransactionInfo": ${toStringMetaInfo()},\n'
         '\t"Type": ${transactionTypes.lookup(_type)._raw},\n'
         '\t"Version": $_version,\n'
         '\t"Fee": $_fee,\n'
         '\t"Deadline": $_deadline,\n'
         '\t"Signature": $_signature,\n'
         '\t"Signer": $_signer\n'
-    '}';
+        '}';
   }
 
   @override
   Map<String, dynamic> toJson() {
     return {
       'networkType': _networkType,
-      'transactionInfo': toStringTxInfo(),
+      'transactionInfo': toStringMetaInfo(),
       'type': transactionTypes.lookup(_type)._raw,
       'version': _version,
       'fee': _fee,
@@ -214,13 +214,11 @@ class AbstractTransaction extends TransactionInfo {
   }
 }
 
-class TransferTransaction extends Transaction {
+class TransferTransaction extends AbstractTransaction implements Transaction {
   AbstractTransaction _abs;
   List<Mosaic> mosaics;
   Address recipient;
   Message message;
-
-  TransferTransaction();
 
   @override
   AbstractTransaction GetAbstractTransaction() {
@@ -229,15 +227,15 @@ class TransferTransaction extends Transaction {
 
   // ignore: missing_return
   TransferTransaction.fromDTO(_transferTransactionInfoDTO value)
-      {
-
+      : super(
+            value._meta._height.toBigInt(),
+            value._meta._index,
+            value._meta._id,
+            value._meta._hash,
+            value._meta._merkleComponentHash) {
     if (value == null) return;
     _abs = AbstractTransaction(
-        value._meta._height.toBigInt(),
-        value._meta._index,
-        value._meta._id,
-        value._meta._hash,
-        value._meta._merkleComponentHash);
+        this.height, this.index, this.id, this.hash, this.merkleComponentHash);
 
     _abs._type = TransactionTypeFromRaw(value._transaction.Type);
     _abs._deadline = value._transaction.Deadline.toBigInt();
@@ -245,7 +243,8 @@ class TransferTransaction extends Transaction {
     _abs._networkType = ExtractNetworkType(value._transaction.Version);
     _abs._version = ExtractVersion(value._transaction.Version);
     _abs._fee = value._transaction.Fee.toBigInt();
-    _abs._signer = NewAccountFromPublicKey(value._transaction.Signer, _abs._networkType);
+    _abs._signer =
+        NewAccountFromPublicKey(value._transaction.Signer, _abs._networkType);
     List<Mosaic> m = new List(value._transaction._mosaics.length);
     for (var i = 0; i < value._transaction._mosaics.length; i++) {
       m[i] = new Mosaic.fromDTO(value._transaction._mosaics[i]);
@@ -254,17 +253,6 @@ class TransferTransaction extends Transaction {
     recipient = NewAddressFromEncoded(value._transaction._recipient);
     message = Message.fromDTO(value._transaction._message);
   }
-
-
-  get height => _abs.height;
-
-  get id => _abs.id;
-
-  get index => _abs.index;
-
-  get merkleComponentHash => _abs.merkleComponentHash;
-
-  get hash => _abs.hash;
 
   @override
   String toString() {
@@ -276,7 +264,8 @@ class TransferTransaction extends Transaction {
     data['abstractTransaction'] = _abs.toJson();
     if (this.mosaics != null) {
       data['mosaics'] = this.mosaics.map((v) => v.toJson()).toList();
-    };
+    }
+    ;
     data['recipient'] = recipient?.toJson();
     data['message'] = message;
     return data;
@@ -299,7 +288,7 @@ class Message {
   set payload(String payload) => _payload = payload;
 
   Message.fromDTO(_messageDTO value) {
-    if (value?._payload == null){
+    if (value?._payload == null) {
       return;
     }
 
