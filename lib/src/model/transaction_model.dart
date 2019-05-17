@@ -256,7 +256,9 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
   @override
   String toString() {
-    return '"abstractTransaction":${_abs},\n "mosaics":$mosaics, "message":${message}';
+    return '"abstractTransaction":${_abs},\n'
+        ' "mosaics":${this.mosaics.map((v) => v.toJson()).toList()},\n'
+        ' "message":${message}';
   }
 
   Map<String, dynamic> toJson() {
@@ -265,7 +267,6 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     if (this.mosaics != null) {
       data['mosaics'] = this.mosaics.map((v) => v.toJson()).toList();
     }
-    ;
     data['recipient'] = recipient?.toJson();
     data['message'] = message;
     return data;
