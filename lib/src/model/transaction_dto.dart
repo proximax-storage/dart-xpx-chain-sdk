@@ -142,62 +142,6 @@ class _transferTransactionDTO extends _abstractTransactionDTO {
   }
 }
 
-class _transactionStatusDTO {
-  String group = null;
-
-  String status = null;
-
-  String hash = null;
-
-  UInt64DTO deadline = null;
-
-  UInt64DTO height = null;
-
-  _transactionStatusDTO();
-
-  @override
-  String toString() {
-    return 'TransactionStatusDTO[group=$group, status=$status, hash=$hash, deadline=$deadline, height=$height, ]';
-  }
-
-  _transactionStatusDTO.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    group = json['group'];
-    status = json['status'];
-    hash = json['hash'];
-    deadline = new UInt64DTO.fromJson(json['deadline']);
-    height = new UInt64DTO.fromJson(json['height']);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'group': group,
-      'status': status,
-      'hash': hash,
-      'deadline': deadline,
-      'height': height
-    };
-  }
-
-  static List<_transactionStatusDTO> listFromJson(List<dynamic> json) {
-    return json == null
-        ? new List<_transactionStatusDTO>()
-        : json
-        .map((value) => new _transactionStatusDTO.fromJson(value))
-        .toList();
-  }
-
-  static Map<String, _transactionStatusDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _transactionStatusDTO>();
-    if (json != null && json.length > 0) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-      map[key] = new _transactionStatusDTO.fromJson(value));
-    }
-    return map;
-  }
-}
-
 // Message
 class _messageDTO {
   int _type;

@@ -117,9 +117,7 @@ abstract class TransactionInfo {
 
   get merkleComponentHash => _merkleComponentHash;
 
-  TransactionInfo();
-
-  TransactionInfo._create(this._height, this._index, this._id, this._hash,
+  TransactionInfo(this._height, this._index, this._id, this._hash,
       this._merkleComponentHash);
 
   @override
@@ -145,10 +143,7 @@ abstract class TransactionInfo {
 }
 
 abstract class Transaction {
-  Transaction._create();
   AbstractTransaction GetAbstractTransaction();
-  String toString();
-  Uint8List _generateBytes();
 }
 
 class AbstractTransaction extends TransactionInfo {
@@ -160,10 +155,9 @@ class AbstractTransaction extends TransactionInfo {
   String _signature;
   PublicAccount _signer;
 
-  AbstractTransaction() : super();
-  AbstractTransaction._create(
+  AbstractTransaction(
       height, index, id, hash, merkleComponentHash, [aggregateHash, aggregateId])
-      : super._create(height, index, id, hash, merkleComponentHash);
+      : super(height, index, id, hash, merkleComponentHash);
 
   toStringTxInfo() => super.toString();
 
@@ -226,24 +220,19 @@ class TransferTransaction extends Transaction {
   Address recipient;
   Message message;
 
-  TransferTransaction._create() : super._create();
+  TransferTransaction();
 
   @override
   AbstractTransaction GetAbstractTransaction() {
     return _abs;
   }
 
-  @override
-  Uint8List _generateBytes() {
-    return null;
-  }
-
   // ignore: missing_return
   TransferTransaction.fromDTO(_transferTransactionInfoDTO value)
-      : super._create() {
+      {
 
     if (value == null) return;
-    _abs = AbstractTransaction._create(
+    _abs = AbstractTransaction(
         value._meta._height.toBigInt(),
         value._meta._index,
         value._meta._id,
