@@ -235,7 +235,6 @@ class TransferTransaction extends Transaction {
 
   @override
   Uint8List _generateBytes() {
-    // TODO: implement _generateBytes
     return null;
   }
 
