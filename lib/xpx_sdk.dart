@@ -2,6 +2,7 @@ library xpx_catapult_sdk;
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:typed_data';
 import 'dart:math';
 
@@ -42,8 +43,6 @@ part 'src/model/alias_model.dart';
 part 'src/model/announce_transaction_info_dto.dart';
 part 'src/model/block_dto.dart';
 part 'src/model/block_model.dart';
-part 'src/model/blockchain_score_dto.dart';
-part 'src/model/blockchain_storage_info_dto.dart';
 part 'src/model/communication_timestamps.dart';
 part 'src/model/height_dto.dart';
 part 'src/model/merkle_path_item.dart';
@@ -57,6 +56,8 @@ part 'src/model/namespace_model.dart';
 part 'src/model/network_type_dto.dart';
 part 'src/model/node_info_dto.dart';
 part 'src/model/node_time_dto.dart';
+part 'src/model/transaction_dto.dart';
+part 'src/model/transaction_model.dart';
 part 'src/model/transaction_hashes.dart';
 part 'src/model/transaction_ids.dart';
 part 'src/model/transaction_payload.dart';

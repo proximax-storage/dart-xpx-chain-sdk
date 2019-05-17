@@ -18,8 +18,15 @@ Uint8List HexDecodeStringOdd(String s) {
 int ExtractNetworkType(int version) {
   var buffer = new Uint8List(8).buffer;
   var bdata = new ByteData.view(buffer);
-  bdata.setInt64(0, version, Endian.little);
+  bdata.setUint64(0, version, Endian.little);
   return bdata.getUint8(1);
+}
+
+int ExtractVersion(int version) {
+  var buffer = new Uint8List(8).buffer;
+  var bdata = new ByteData.view(buffer);
+  bdata.setUint64(0, version, Endian.little);
+  return bdata.getUint8(0);
 }
 
 int EndianLittleUint32(List<int> v) {

@@ -90,15 +90,15 @@ class ApiClient {
         case 'AnnounceTransactionInfoDTO':
           return new AnnounceTransactionInfoDTO.fromJson(value);
         case 'BlockDTO':
-          return new _BlockDTO.fromJson(value);
+          return new _blockDTO.fromJson(value);
         case 'BlockInfoDTO':
-          return new _BlockInfoDTO.fromJson(value);
+          return new _blockInfoDTO.fromJson(value);
         case 'BlockMetaDTO':
           return new _BlockMetaDTO.fromJson(value);
-        case 'BlockchainScoreDTO':
-          return new BlockchainScoreDTO.fromJson(value);
-        case 'BlockchainStorageInfoDTO':
-          return new BlockchainStorageInfoDTO.fromJson(value);
+        case '_blockchainScoreDTO':
+          return new _blockchainScoreDTO.fromJson(value);
+        case 'BlockchainStorageInfo':
+          return new BlockchainStorageInfo.fromJson(value);
         case 'CommunicationTimestamps':
           return new CommunicationTimestamps.fromJson(value);
         case 'HeightDTO':
@@ -117,8 +117,8 @@ class ApiClient {
           return new _mosaicInfoDTO.fromJson(value);
         case '_mosaicMetaDTO':
           return new _mosaicMetaDTO.fromJson(value);
-        case 'MosaicNameDTO':
-          return new MosaicNameDTO.fromJson(value);
+        case '_mosaicNameDTO':
+          return new _mosaicNameDTO.fromJson(value);
         case 'MultisigAccountGraphInfoDTO':
           return new MultisigAccountGraphInfoDTO.fromJson(value);
         case 'MultisigAccountInfoDTO':
@@ -139,6 +139,8 @@ class ApiClient {
           return new NodeInfoDTO.fromJson(value);
         case 'NodeTimeDTO':
           return new NodeTimeDTO.fromJson(value);
+        case 'Transfer':
+          return new _transferTransactionInfoDTO.fromJson(value);
         case 'TransactionHashes':
           return new TransactionHashes.fromJson(value);
         case 'TransactionIds':
@@ -179,6 +181,11 @@ class ApiClient {
     if (targetType == 'String') return jsonVal;
 
     var decodedJson = json.decode(jsonVal);
+
+    if (targetType == 'Transaction'){
+      targetType = MapTransaction(decodedJson);
+    }
+
     return _deserialize(decodedJson, targetType);
   }
 

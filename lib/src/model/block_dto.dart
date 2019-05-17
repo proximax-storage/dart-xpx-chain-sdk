@@ -1,6 +1,6 @@
 part of xpx_catapult_sdk;
 
-class _BlockDTO {
+class _blockDTO {
   String signature = null;
 
   String signer = null;
@@ -27,9 +27,9 @@ class _BlockDTO {
 
   String beneficiaryPublicKey = null;
 
-  _BlockDTO();
+  _blockDTO();
 
-  _BlockDTO.fromJson(Map<String, dynamic> json) {
+  _blockDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     signature = json['signature'];
     signer = json['signer'];
@@ -64,52 +64,52 @@ class _BlockDTO {
     };
   }
 
-  static List<_BlockDTO> listFromJson(List<dynamic> json) {
+  static List<_blockDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_BlockDTO>()
-        : json.map((value) => new _BlockDTO.fromJson(value)).toList();
+        ? new List<_blockDTO>()
+        : json.map((value) => new _blockDTO.fromJson(value)).toList();
   }
 
-  static Map<String, _BlockDTO> mapFromJson(
+  static Map<String, _blockDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _BlockDTO>();
+    var map = new Map<String, _blockDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _BlockDTO.fromJson(value));
+          map[key] = new _blockDTO.fromJson(value));
     }
     return map;
   }
 }
 
-class _BlockInfoDTO {
+class _blockInfoDTO {
   _BlockMetaDTO meta = null;
 
-  _BlockDTO block = null;
+  _blockDTO block = null;
 
-  _BlockInfoDTO();
+  _blockInfoDTO();
 
-  _BlockInfoDTO.fromJson(Map<String, dynamic> json) {
+  _blockInfoDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     meta = new _BlockMetaDTO.fromJson(json['meta']);
-    block = new _BlockDTO.fromJson(json['block']);
+    block = new _blockDTO.fromJson(json['block']);
   }
 
   Map<String, dynamic> toJson() {
     return {'meta': meta, 'block': block};
   }
 
-  static List<_BlockInfoDTO> listFromJson(List<dynamic> json) {
+  static List<_blockInfoDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_BlockInfoDTO>()
-        : json.map((value) => new _BlockInfoDTO.fromJson(value)).toList();
+        ? new List<_blockInfoDTO>()
+        : json.map((value) => new _blockInfoDTO.fromJson(value)).toList();
   }
 
-  static Map<String, _BlockInfoDTO> mapFromJson(
+  static Map<String, _blockInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _BlockInfoDTO>();
+    var map = new Map<String, _blockInfoDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _BlockInfoDTO.fromJson(value));
+          map[key] = new _blockInfoDTO.fromJson(value));
     }
     return map;
   }
@@ -146,6 +146,45 @@ class _BlockMetaDTO {
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
           map[key] = new _BlockMetaDTO.fromJson(value));
+    }
+    return map;
+  }
+}
+
+class _blockchainScoreDTO {
+  UInt64DTO scoreHigh;
+
+  UInt64DTO scoreLow;
+
+  _blockchainScoreDTO();
+
+  @override
+  String toString() {
+    return '_blockchainScoreDTO[scoreHigh=$scoreHigh, scoreLow=$scoreLow, ]';
+  }
+
+  _blockchainScoreDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    scoreHigh = new UInt64DTO.fromJson(json['scoreHigh']);
+    scoreLow = new UInt64DTO.fromJson(json['scoreLow']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'scoreHigh': scoreHigh, 'scoreLow': scoreLow};
+  }
+
+  static List<_blockchainScoreDTO> listFromJson(List<dynamic> json) {
+    return json == null
+        ? new List<_blockchainScoreDTO>()
+        : json.map((value) => new _blockchainScoreDTO.fromJson(value)).toList();
+  }
+
+  static Map<String, _blockchainScoreDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
+    var map = new Map<String, _blockchainScoreDTO>();
+    if (json != null && json.length > 0) {
+      json.forEach((String key, Map<String, dynamic> value) =>
+      map[key] = new _blockchainScoreDTO.fromJson(value));
     }
     return map;
   }

@@ -139,7 +139,7 @@ class TransactionRoutesApi {
   /// Get transaction information
   ///
   /// Returns transaction information given a transactionId or hash.
-  Future<Object> getTransaction(String transactionId) async {
+  Future<Transaction> GetTransaction(String transactionId) async {
     Object postBody = null;
 
     // verify required params are set
@@ -171,11 +171,11 @@ class TransactionRoutesApi {
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
         headerParams, formParams, contentType);
-
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'Object') as Object;
+      final resp = apiClient.deserialize(response.body, 'Transaction');
+      return TransferTransaction.fromDTO(resp as _transferTransactionInfoDTO);
     } else {
       return null;
     }

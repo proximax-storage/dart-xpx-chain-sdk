@@ -67,7 +67,6 @@ class NamespaceInfo {
 
   NamespaceInfo.fromDTO(_namespaceInfoDTO value) {
     if (json == null) return;
-//    namespaceId = value.namespace.
     metaId = value.meta.id;
     active = value.meta.active;
     index = value.meta.index;
@@ -143,16 +142,11 @@ class NamespaceName {
     name = value.name;
   }
 
-  Map<String, dynamic> toJson() {
-    return {'parentId': parentId, 'namespaceId': namespaceId, 'name': name};
-  }
-
   static List<NamespaceName> listFromDTO(List<_namespaceNameDTO> json) {
     return json == null
         ? new List<NamespaceName>()
         : json.map((value) => new NamespaceName.fromDTO(value)).toList();
   }
-
 }
 
 // GenerateNamespacePath create list NamespaceId from string

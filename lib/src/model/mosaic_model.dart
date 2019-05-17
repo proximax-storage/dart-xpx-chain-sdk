@@ -101,6 +101,34 @@ class MosaicInfo {
   }
 }
 
+class MosaicName {
+  BigInt parentId;
+
+  BigInt mosaicId;
+
+  String name;
+
+  MosaicName();
+
+  @override
+  String toString() {
+    return '{ParentId:${bigIntegerToHex(parentId)}, MosaicId:${bigIntegerToHex(mosaicId).toUpperCase()}, Name:$name}';
+  }
+
+  MosaicName.fromDTO(_mosaicNameDTO value) {
+    if (json == null) return;
+    parentId = value.parentId == null ? value.parentId.toBigInt() : null;
+    mosaicId = value.mosaicId.toBigInt();
+    name = value?.name;
+  }
+
+  static List<MosaicName> listFromDTO(List<_mosaicNameDTO> json) {
+    return json == null
+        ? new List<MosaicName>()
+        : json.map((value) => new MosaicName.fromDTO(value)).toList();
+  }
+}
+
 /// MosaicProperties  structure describes mosaic properties.
 class MosaicProperties {
   bool supplyMutable;

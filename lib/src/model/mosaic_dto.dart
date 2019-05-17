@@ -1,15 +1,15 @@
 part of xpx_catapult_sdk;
 
 class _mosaicDTO {
-  UInt64DTO id = null;
+  UInt64DTO id;
 
-  UInt64DTO amount = null;
+  UInt64DTO amount;
 
   _mosaicDTO();
 
   @override
   String toString() {
-    return '_mosaicDTO[id=$id, amount=$amount, ]';
+    return '{id:$id, amount:$amount}';
   }
 
   _mosaicDTO.fromJson(Map<String, dynamic> json) {
@@ -153,21 +153,21 @@ class _mosaicDefinitionDTO {
   }
 }
 
-class MosaicNameDTO {
+class _mosaicNameDTO {
   UInt64DTO parentId = null;
 
   UInt64DTO mosaicId = null;
 
   String name = null;
 
-  MosaicNameDTO();
+  _mosaicNameDTO();
 
   @override
   String toString() {
-    return 'MosaicNameDTO[parentId=$parentId, mosaicId=$mosaicId, name=$name, ]';
+    return '_mosaicNameDTO[parentId=$parentId, mosaicId=$mosaicId, name=$name, ]';
   }
 
-  MosaicNameDTO.fromJson(Map<String, dynamic> json) {
+  _mosaicNameDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     parentId = new UInt64DTO.fromJson(json['parentId']);
     mosaicId = new UInt64DTO.fromJson(json['mosaicId']);
@@ -178,18 +178,18 @@ class MosaicNameDTO {
     return {'parentId': parentId, 'mosaicId': mosaicId, 'name': name};
   }
 
-  static List<MosaicNameDTO> listFromJson(List<dynamic> json) {
+  static List<_mosaicNameDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<MosaicNameDTO>()
-        : json.map((value) => new MosaicNameDTO.fromJson(value)).toList();
+        ? new List<_mosaicNameDTO>()
+        : json.map((value) => new _mosaicNameDTO.fromJson(value)).toList();
   }
 
-  static Map<String, MosaicNameDTO> mapFromJson(
+  static Map<String, _mosaicNameDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, MosaicNameDTO>();
+    var map = new Map<String, _mosaicNameDTO>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new MosaicNameDTO.fromJson(value));
+          map[key] = new _mosaicNameDTO.fromJson(value));
     }
     return map;
   }

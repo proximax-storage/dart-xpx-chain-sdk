@@ -57,7 +57,7 @@ class BlockInfo {
     };
   }
 
-  BlockInfo.fromDTO(_BlockInfoDTO v) {
+  BlockInfo.fromDTO(_blockInfoDTO v) {
     NetworkType = ExtractNetworkType(v.block.version);
     Hash = v.meta.hash;
     GenerationHash = v.meta.generationHash;
@@ -72,6 +72,12 @@ class BlockInfo {
     Difficulty = v.block.difficulty.toBigInt();
     PreviousBlockHash = v.block.previousBlockHash;
     BlockTransactionsHash = v.block.blockTransactionsHash;
+  }
+
+  static List<BlockInfo> listFromDTO(List<_blockInfoDTO> json) {
+    return json == null
+        ? new List<BlockInfo>()
+        : json.map((value) => new BlockInfo.fromDTO(value)).toList();
   }
 }
 
@@ -96,5 +102,59 @@ class Height {
 
   BigInt toBigInt() {
     return this._height;
+  }
+}
+
+class BlockchainScore {
+  BigInt _score = null;
+
+  BlockchainScore();
+
+  @override
+  String toString() {
+    return '$_score';
+  }
+
+  BlockchainScore.fromDTO(_blockchainScoreDTO value) {
+    if (json == null) return;
+    List<dynamic> raw() {
+      return [
+        value.scoreLow.toBigInt().toInt(),
+        value.scoreHigh.toBigInt().toInt()
+      ];
+    }
+
+    var t = UInt64DTO.fromJson(raw()).toBigInt();
+    _score = t;
+  }
+}
+
+class BlockchainStorageInfo {
+  int numBlocks;
+
+  int numTransactions;
+
+  int numAccounts;
+
+  BlockchainStorageInfo();
+
+  @override
+  String toString() {
+    return '{numBlocks:$numBlocks, numTransactions:$numTransactions, numAccounts:$numAccounts}';
+  }
+
+  BlockchainStorageInfo.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    numBlocks = json['numBlocks'];
+    numTransactions = json['numTransactions'];
+    numAccounts = json['numAccounts'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'numBlocks': numBlocks,
+      'numTransactions': numTransactions,
+      'numAccounts': numAccounts
+    };
   }
 }

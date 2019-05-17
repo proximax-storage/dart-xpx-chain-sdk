@@ -103,7 +103,7 @@ class MosaicRoutesApi {
   /// Get readable names for a set of mosaics
   ///
   /// Returns friendly names for mosaics.
-  Future<List<MosaicNameDTO>> getMosaicsName(MosaicIds mosaicIds) async {
+  Future<List<MosaicName>> GetMosaicsName(MosaicIds mosaicIds) async {
     Object postBody = mosaicIds;
 
     // verify required params are set
@@ -137,10 +137,11 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<MosaicNameDTO>')
+      final resp = (apiClient.deserialize(response.body, 'List<_mosaicNameDTO>')
               as List)
-          .map((item) => item as MosaicNameDTO)
+          .map((item) => item as _mosaicNameDTO)
           .toList();
+      return MosaicName.listFromDTO(resp);
     } else {
       return null;
     }

@@ -101,10 +101,7 @@ class Address {
   Address();
   @override
   String toString() {
-    return '{\n'
-        '\tNetworkType: $networkType,\n'
-        '\tAddress=$address,\n'
-        '\t}';
+    return '${toJson()}';
   }
 
   Map<String, dynamic> toJson() {
@@ -122,10 +119,14 @@ class PublicAccount {
   PublicAccount();
   @override
   String toString() {
-    return '{\n'
-        '\taddress: $address,\n'
-        '\tpublicKey: $publicKey\n'
-        '\t}';
+    return '${toJson()}';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'address': address,
+      'publicKey': publicKey,
+    };
   }
 }
 
@@ -137,6 +138,13 @@ class Account {
   @override
   String toString() {
     return publicAccount.toString();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'publicAccount': publicAccount,
+      'account': account,
+    };
   }
 }
 
