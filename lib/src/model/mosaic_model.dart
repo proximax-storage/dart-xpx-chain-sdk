@@ -18,15 +18,15 @@ class Mosaic {
 
   Mosaic(BigInt mosaicId, amount) {
     if (mosaicId == null) {
-      throw ErrNilMosaicId;
+      throw ErrNullMosaicId;
     }
 
     if (amount == null) {
-      throw ErrNilMosaicAmount;
+      throw ErrNullMosaicAmount;
     }
 
     if (EqualsBigInts(amount, BigInt.zero)) {
-      throw ErrNilMosaicAmount;
+      throw ErrNullMosaicAmount;
     }
 
     this.id = mosaicId;
@@ -48,6 +48,12 @@ class Mosaic {
   Mosaic.fromDTO(_mosaicDTO v) {
     id = v.id.toBigInt();
     amount = v.amount.toBigInt();
+  }
+
+  static List<Mosaic> listFromDTO(List<_mosaicDTO> json) {
+    return json == null
+        ? new List<Mosaic>()
+        : json.map((value) => new Mosaic.fromDTO(value)).toList();
   }
 }
 

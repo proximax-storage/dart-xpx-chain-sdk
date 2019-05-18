@@ -18,6 +18,22 @@ var transactionTypes = <_transactionTypeClass>{
   _transactionTypeClass(TransactionType.SecretProof, 16978, 0x4252),
 };
 
+// TransactionVersion enums
+const AggregateCompletedVersion = 2,
+    AggregateBondedVersion = 2,
+    MetadataAddressVersion = 1,
+    MetadataMosaicVersion = 1,
+    MetadataNamespaceVersion = 1,
+    MosaicDefinitionVersion = 3,
+    MosaicSupplyChangeVersion = 2,
+    ModifyMultisigVersion = 3,
+    ModifyContractVersion = 3,
+    RegisterNamespaceVersion = 2,
+    TransferVersion = 3,
+    LockVersion = 1,
+    SecretLockVersion = 1,
+    SecretProofVersion = 1;
+
 // TransactionType enums
 enum TransactionType {
   AggregateCompleted,
@@ -99,70 +115,95 @@ class _transactionTypeClass {
   _transactionTypeClass([this._transactionType, this._raw, this._hex]);
 }
 
+abstract class Transaction {
+  AbstractTransaction getAbstractTransaction();
+  Uint8List generateBytes();
+}
+
 // Transaction Info
-abstract class TransactionInfo {
-  BigInt _height;
-  int _index;
-  String _id;
-  String _hash;
-  String _merkleComponentHash;
+class TransactionInfo {
+  BigInt height;
+  int index;
+  String id;
+  String hash;
+  String merkleComponentHash;
 
-  get height => _height;
+  TransactionInfo getTransactionInfo() {
+    final t = TransactionInfo();
+    t.height = this.height;
+    t.index = this.index;
+    t.id = this.id;
+    t.hash = this.hash;
+    t.merkleComponentHash = this.merkleComponentHash;
+    return t;
+  }
 
-  get index => _index;
-
-  get id => _id;
-
-  get hash => _hash;
-
-  get merkleComponentHash => _merkleComponentHash;
-
-  TransactionInfo(this._height, this._index, this._id, this._hash,
-      this._merkleComponentHash);
-
-  @override
-  String toString() {
+  String _transactionInfoToString() {
     return '{\n'
-        '\t"Height": $_height,\n'
-        '\t"Index": $_index,\n'
-        '\t"Id": $_id,\n'
-        '\t"Hash": $_hash,\n'
-        '\t"MerkleComponentHash": $_merkleComponentHash\n'
+        '\t"height": $height,\n'
+        '\t"index": $index,\n'
+        '\t"id": $id,\n'
+        '\t"hash": $hash,\n'
+        '\t"merkleComponentHash": $merkleComponentHash\n'
         '\t}';
   }
 
+  @override
+  String toString() {
+    return _transactionInfoToString();
+  }
+
   Map<String, dynamic> toJson() {
+    return _transactionInfoToJson();
+  }
+
+  Map<String, dynamic> _transactionInfoToJson() {
     return {
-      'height': _height,
-      'index': _index,
-      'id': _id,
-      'hash': _hash,
+      'height': height,
+      'index': index,
+      'id': id,
+      'hash': hash,
       'merkleComponentHash': merkleComponentHash,
     };
   }
 }
 
-abstract class Transaction {
-  AbstractTransaction GetAbstractTransaction();
-}
+class AbstractTransaction with TransactionInfo {
+  int networkType;
+  Deadline deadline;
+  _transactionTypeClass type;
+  int version;
+  BigInt fee;
+  String signature;
+  PublicAccount signer;
 
-class AbstractTransaction extends TransactionInfo {
-  int _networkType;
-  BigInt _deadline;
-  _transactionTypeClass _type;
-  int _version;
-  BigInt _fee;
-  String _signature;
-  PublicAccount _signer;
+  AbstractTransaction([height, index, id, hash, merkleComponentHash]) {
+    this.height = height;
+    this.index = index;
+    this.id = id;
+    this.hash = hash;
+    this.merkleComponentHash = merkleComponentHash;
+  }
 
-  AbstractTransaction(height, index, id, hash, merkleComponentHash,
-      [aggregateHash, aggregateId])
-      : super(height, index, id, hash, merkleComponentHash);
+  AbstractTransaction _getAbstractTransaction() {
+    final abs = AbstractTransaction();
+    abs.height = this.height;
+    abs.index = this.index;
+    abs.id = this.id;
+    abs.hash = this.hash;
+    abs.merkleComponentHash = this.merkleComponentHash;
+    abs.networkType = this.networkType;
+    abs.deadline = this.deadline;
+    abs.type = this.type;
+    abs.version = this.version;
+    abs.fee = this.fee;
+    abs.signature = this.signature;
+    abs.signer = this.signer;
+    return abs;
+  }
 
-  toStringMetaInfo() => super.toString();
-
-  ToAggregate(PublicAccount signer) {
-    signer = signer;
+  void ToAggregate(PublicAccount signer) {
+    this.signer = signer;
   }
 
   bool IsUnconfirmed() {
@@ -172,13 +213,13 @@ class AbstractTransaction extends TransactionInfo {
   bool IsConfirmed() {
     return TransactionInfo != null &&
         this.height.toInt() == 0 &&
-        this._hash == this.merkleComponentHash;
+        this.hash == this.merkleComponentHash;
   }
 
   bool HasMissingSignatures() {
     return TransactionInfo != null &&
         this.height.toInt() == 0 &&
-        this._hash != this.merkleComponentHash;
+        this.hash != this.merkleComponentHash;
   }
 
   bool IsUnannounced() {
@@ -187,42 +228,65 @@ class AbstractTransaction extends TransactionInfo {
 
   @override
   String toString() {
+    return _abstractTransactionToString();
+  }
+
+  String _abstractTransactionToString() {
     return '{\n'
-        '\t"NetworkType": $_networkType,\n'
-        '\t"TransactionInfo": ${toStringMetaInfo()},\n'
-        '\t"Type": ${transactionTypes.lookup(_type)._raw},\n'
-        '\t"Version": $_version,\n'
-        '\t"Fee": $_fee,\n'
-        '\t"Deadline": $_deadline,\n'
-        '\t"Signature": $_signature,\n'
-        '\t"Signer": $_signer\n'
+        '\t"transactionInfo":${_transactionInfoToString()}\n'
+        '\t"networkType": $networkType,\n'
+        '\t"type": ${transactionTypes.lookup(type)?._raw},\n'
+        '\t"version": $version,\n'
+        '\t"fee": $fee,\n'
+        '\t"deadline": $deadline,\n'
+        '\t"signature": $signature,\n'
+        '\t"signer": $signer\n'
         '}';
   }
 
-  @override
   Map<String, dynamic> toJson() {
-    return {
-      'networkType': _networkType,
-      'transactionInfo': toStringMetaInfo(),
-      'type': transactionTypes.lookup(_type)._raw,
-      'version': _version,
-      'fee': _fee,
-      'deadline': _deadline,
-      'signature': _signature,
-      'signer': _signer,
-    };
+    return _abstractTransactionToJson();
+  }
+
+  Map<String, dynamic> _abstractTransactionToJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data.addAll(_transactionInfoToJson());
+    data['networkType'] = networkType;
+    data['type'] = transactionTypes.lookup(type)._raw;
+    data['version'] = version;
+    data['fee'] = fee;
+    data['deadline'] = deadline;
+    data['signature'] = signature;
+    data['signer'] = signer;
+    return data;
   }
 }
 
+// TransferTransaction
 class TransferTransaction extends AbstractTransaction implements Transaction {
-  AbstractTransaction _abs;
   List<Mosaic> mosaics;
   Address recipient;
   Message message;
 
-  @override
-  AbstractTransaction GetAbstractTransaction() {
-    return _abs;
+  TransferTransaction(Deadline deadline, Address recipient,
+      List<Mosaic> mosaics, Message message, int networkType)
+      : super() {
+    if (recipient == null) {
+      throw ErrNullRecipient;
+    }
+    if (mosaics == null) {
+      throw ErrNullMosaics;
+    }
+    if (message == null) {
+      throw ErrNullMessage;
+    }
+
+    this.version = TransferVersion;
+    this.deadline = deadline;
+    this.type = TransactionTypeFromRaw(16724);
+    this.recipient = recipient;
+    this.mosaics = mosaics;
+    this.message = message;
   }
 
   TransferTransaction.fromDTO(_transferTransactionInfoDTO value)
@@ -233,22 +297,17 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
             value._meta._hash,
             value._meta._merkleComponentHash) {
     if (value == null) return;
-    _abs = AbstractTransaction(
-        this.height, this.index, this.id, this.hash, this.merkleComponentHash);
 
-    _abs._type = TransactionTypeFromRaw(value._transaction.Type);
-    _abs._deadline = value._transaction.Deadline.toBigInt();
-    _abs._signature = value._transaction.Signature;
-    _abs._networkType = ExtractNetworkType(value._transaction.Version);
-    _abs._version = ExtractVersion(value._transaction.Version);
-    _abs._fee = value._transaction.Fee.toBigInt();
-    _abs._signer =
-        new PublicAccount.fromPublicKey(value._transaction.Signer, _abs._networkType);
-    List<Mosaic> m = new List(value._transaction._mosaics.length);
-    for (var i = 0; i < value._transaction._mosaics.length; i++) {
-      m[i] = new Mosaic.fromDTO(value._transaction._mosaics[i]);
-    }
-    mosaics = m;
+    this.type = TransactionTypeFromRaw(value._transaction.Type);
+    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
+    this.signature = value._transaction.Signature;
+    this.networkType = ExtractNetworkType(value._transaction.Version);
+    this.version = ExtractVersion(value._transaction.Version);
+    this.fee = value._transaction.Fee.toBigInt();
+    this.signer = new PublicAccount.fromPublicKey(
+        value._transaction.Signer, this.networkType);
+
+    mosaics = Mosaic.listFromDTO(value._transaction._mosaics);
     recipient = new Address.fromEncoded(value._transaction._recipient);
     message = new Message.fromDTO(value._transaction._message);
   }
@@ -262,20 +321,34 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
   @override
   String toString() {
-    return '"abstractTransaction":${_abs},\n'
-        ' "mosaics":${this.mosaics.map((v) => v.toJson()).toList()},\n'
-        ' "message":${message}';
+    return '{\n'
+        ' "abstractTransaction":${_abstractTransactionToString()}\n'
+        ' "recipient":${recipient},\n'
+        ' "mosaics":${mosaics.map((v) => v.toJson()).toList()},\n'
+        ' "message":${message}\n'
+        '}\n';
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['abstractTransaction'] = _abs.toJson();
+    data['abstractTransaction'] = _abstractTransactionToJson();
     if (this.mosaics != null) {
       data['mosaics'] = this.mosaics.map((v) => v.toJson()).toList();
     }
     data['recipient'] = recipient?.toJson();
     data['message'] = message;
     return data;
+  }
+
+  @override
+  AbstractTransaction getAbstractTransaction() {
+    return _getAbstractTransaction();
+  }
+
+  @override
+  Uint8List generateBytes() {
+    // TODO: implement generateBytes
+    return null;
   }
 }
 
@@ -303,6 +376,11 @@ class Message {
 
     _type = value._type;
     _payload = b.toString();
+  }
+
+  Message.PlainMessage(String payload) {
+    this._payload = payload;
+    this._type = 0;
   }
 
   @override
@@ -333,32 +411,40 @@ Transaction _deserializeTxn(dynamic value) {
 }
 
 var TimestampNemesisBlock =
-    DateTime.fromMicrosecondsSinceEpoch(1459468800 * 1000);
+    new DateTime.fromMicrosecondsSinceEpoch(1459468800 * 1000);
 
 class Deadline {
   DateTime time;
-  Deadline(this.time);
+
+  Deadline(
+      {int days = 0,
+      int hours = 0,
+      int minutes = 0,
+      int seconds = 0,
+      int milliseconds = 0,
+      int microseconds = 0}) {
+    var d = Duration(
+        days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        milliseconds: milliseconds,
+        microseconds: microseconds);
+    time = new DateTime.now().add(d);
+  }
+
+  @override
+  String toString() {
+    return '${time}';
+  }
 
   Int64 GetInstant() {
     var x = Int64((this.time.microsecondsSinceEpoch * 1000) ~/ 1e6);
     var y = Int64((TimestampNemesisBlock.microsecondsSinceEpoch * 1e+6) ~/ 1e6);
     return x - y;
   }
-}
 
-Deadline NewDeadline(
-    {int days = 0,
-    int hours = 0,
-    int minutes = 0,
-    int seconds = 0,
-    int milliseconds = 0,
-    int microseconds = 0}) {
-  var d = Duration(
-      days: days,
-      hours: hours,
-      minutes: minutes,
-      seconds: seconds,
-      milliseconds: milliseconds,
-      microseconds: microseconds);
-  return new Deadline(new DateTime.now().add(d));
+  Deadline.fromUInt64DTO(UInt64DTO d) {
+    this.time = new DateTime.fromMillisecondsSinceEpoch(d.toBigInt().toInt());
+  }
 }
