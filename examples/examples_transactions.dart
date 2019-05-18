@@ -18,11 +18,12 @@ void main() async {
   var client = NewClient(config, null);
 
   /// Returns transaction information given a transactionId or hash.
-  try {
-    var result = await client.Transaction.GetTransaction(
-            "C0B0C87B76C9C8333F734EA5EA758B4C2144DC47F1AA62981931BAF489726333")
-        as TransferTransaction;
+  var d = new TransactionIds();
+  d.transactionIds.add("C0B0C87B76C9C8333F734EA5EA758B4C2144DC47F1AA62981931BAF489726333");
+  d.transactionIds.add("BDD805FEAD00C53D114D670188046F3B0A12F9B1C2E6AF12FB8035FC9B0576EA");
 
+  try {
+    var result = await client.Transaction.GetTransactions(d);
     print(result);
   } catch (e) {
     print("Exception when calling Transaction->GetTransaction: $e\n");

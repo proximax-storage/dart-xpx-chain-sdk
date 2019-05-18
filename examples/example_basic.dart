@@ -11,7 +11,7 @@ const publicKey =
 /// Simple Generate Account
 void main() async {
   /// Create an Account from a given private key.
-  var account = NewAccountFromPrivateKey(privateKey, networkType);
+  var account = new Account.fromPrivateKey(privateKey, networkType);
 
   print("Address: ${account.publicAccount.address}\n");
   print("PublicKey: \t${account.publicAccount.publicKey}");
@@ -20,6 +20,6 @@ void main() async {
   print("-----------------------------------------------------");
 
   /// Create an Address from a given public key.
-  var address = NewAddressFromPublicKey(publicKey, networkType);
+  var address = new Address.fromPublicKey(publicKey, networkType);
   print("Address: ${address}\n");
 }

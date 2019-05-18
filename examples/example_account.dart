@@ -18,7 +18,7 @@ void main() async {
   var client = NewClient(config, null);
 
   /// Create an Address from a given public key.
-  var address = NewAddressFromPublicKey(
+  var address = new Address.fromPublicKey(
       "B4F12E7C9F6946091E2CB8B6D3A12B50D17CCBBF646386EA27CE2946A7423DCF",
       networkType);
 
