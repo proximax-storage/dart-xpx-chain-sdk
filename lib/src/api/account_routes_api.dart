@@ -22,7 +22,6 @@ class AccountRoutesApi {
         .replaceAll("{format}", "json")
         .replaceAll("{" + "accountId" + "}", address.address);
 
-    print(path);
     // query params
     List<QueryParam> queryParams = [];
     Map<String, String> headerParams = {};

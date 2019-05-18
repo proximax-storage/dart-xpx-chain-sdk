@@ -27,7 +27,7 @@ class BlockInfo {
         '\tTotalFee: $TotalFee,\n'
         '\tNumTransactions: $NumTransactions,\n'
         '\tSignature: $Signature,\n'
-        '\tSigner: $Signer'
+        '\tSigner: $Signer\n'
         '\tVersion: $Version,\n'
         '\tType: $Type,\n'
         '\tHeight: $Height,\n'

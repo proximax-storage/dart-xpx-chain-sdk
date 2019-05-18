@@ -26,7 +26,9 @@ class Address {
   Address.fromEncoded(String encoded) {
     final pH = HEX.decode(encoded);
     final parsed = base32.encode(pH);
-    Address.fromRaw(parsed);
+    var a = Address.fromRaw(parsed);
+    this.address = a.address;
+    this.networkType = a.networkType;
   }
 
   /// Create an Address from a given public key.
