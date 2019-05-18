@@ -71,7 +71,7 @@ class NamespaceInfo {
     active = value.meta.active;
     index = value.meta.index;
     owner =
-        NewAccountFromPublicKey(value.namespace.owner, value.namespace.type);
+        new PublicAccount.fromPublicKey(value.namespace.owner, value.namespace.type);
     startHeight = value.namespace.startHeight.toBigInt();
     endHeight = value.namespace.endHeight.toBigInt();
     depth = value.namespace.depth;

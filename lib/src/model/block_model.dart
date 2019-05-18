@@ -64,7 +64,7 @@ class BlockInfo {
     TotalFee = v.meta.totalFee.toBigInt();
     NumTransactions = v.meta.numTransactions;
     Signature = v.block.signature;
-    Signer = NewAccountFromPublicKey(v.block.signer, NetworkType);
+    Signer = new PublicAccount.fromPublicKey(v.block.signer, NetworkType);
     Version = v.block.version;
     Type = v.block.type;
     Height = v.block.height.toBigInt();

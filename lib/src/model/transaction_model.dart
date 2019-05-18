@@ -243,14 +243,14 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     _abs._version = ExtractVersion(value._transaction.Version);
     _abs._fee = value._transaction.Fee.toBigInt();
     _abs._signer =
-        NewAccountFromPublicKey(value._transaction.Signer, _abs._networkType);
+        new PublicAccount.fromPublicKey(value._transaction.Signer, _abs._networkType);
     List<Mosaic> m = new List(value._transaction._mosaics.length);
     for (var i = 0; i < value._transaction._mosaics.length; i++) {
       m[i] = new Mosaic.fromDTO(value._transaction._mosaics[i]);
     }
     mosaics = m;
-    recipient = NewAddressFromEncoded(value._transaction._recipient);
-    message = Message.fromDTO(value._transaction._message);
+    recipient = new Address.fromEncoded(value._transaction._recipient);
+    message = new Message.fromDTO(value._transaction._message);
   }
 
   static List<TransferTransaction> listFromDTO(
