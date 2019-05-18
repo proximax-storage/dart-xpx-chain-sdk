@@ -12,11 +12,26 @@ Mosaic XpxRelative(int amount) {
 }
 
 class Mosaic {
-  BigInt id = null;
+  BigInt id;
 
-  BigInt amount = null;
+  BigInt amount;
 
-  Mosaic([this.id, this.amount]);
+  Mosaic(BigInt mosaicId, amount) {
+    if (mosaicId == null) {
+      throw ErrNilMosaicId;
+    }
+
+    if (amount == null) {
+      throw ErrNilMosaicAmount;
+    }
+
+    if (EqualsBigInts(amount, BigInt.zero)) {
+      throw ErrNilMosaicAmount;
+    }
+
+    this.id = mosaicId;
+    this.amount = amount;
+  }
 
   @override
   String toString() {
@@ -89,7 +104,8 @@ class MosaicInfo {
     mosaicId = value.mosaic.mosaicId.toBigInt();
     supply = value.mosaic.supply.toBigInt();
     height = value.mosaic.height.toBigInt();
-    owner = new PublicAccount.fromPublicKey(value.mosaic.owner, ConfigNetworkType);
+    owner =
+        new PublicAccount.fromPublicKey(value.mosaic.owner, ConfigNetworkType);
     revision = value.mosaic.revision;
     properties = new MosaicProperties.fromJson(value.mosaic.properties);
   }
@@ -181,22 +197,6 @@ BigInt NewMosaicIdFromNonceAndOwner(int nonce, String ownerPublicKey) {
   }
 
   return _generateMosaicId(nonce, ownerPublicKey);
-}
-
-Mosaic NewMosaic(BigInt mosaicId, amount) {
-  if (mosaicId == null) {
-    throw ErrNilMosaicId;
-  }
-
-  if (amount == null) {
-    throw ErrNilMosaicAmount;
-  }
-
-  if (EqualsBigInts(amount, BigInt.zero)) {
-    throw ErrNilMosaicAmount;
-  }
-
-  return new Mosaic(mosaicId, amount);
 }
 
 BigInt _generateMosaicId(int nonce, String ownerPublicKey) {
