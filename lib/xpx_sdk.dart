@@ -11,6 +11,7 @@ import "package:hex/hex.dart";
 import 'package:base32/base32.dart';
 import "package:nem2_crypto/nem2_crypto.dart" as crypto;
 import "package:nem2_crypto/imp/sha3.dart" as sha3;
+import 'package:flat_buffers/flat_buffers.dart' as fb;
 
 part 'consts.dart';
 part 'buffer.dart';
@@ -62,5 +63,21 @@ part 'src/model/transaction_ids.dart';
 part 'src/model/transaction_payload.dart';
 part 'src/model/transaction_status_dto.dart';
 part 'src/model/u_int64_dto.dart';
+
+part 'src/transactions/aggregate_transaction_buffer.dart';
+part 'src/transactions/alias_transaction_buffer.dart';
+part 'src/transactions/lock_funds_transaction_buffer.dart';
+part 'src/transactions/modify_contract_transaction_buffer.dart';
+part 'src/transactions/modify_metadata_transaction_buffer.dart';
+part 'src/transactions/modify_multisig_account_transaction_buffer.dart';
+part 'src/transactions/mosaic_alias_transaction_buffer.dart';
+part 'src/transactions/mosaic_definition_transaction_buffer.dart';
+part 'src/transactions/mosaic_supply_change_transaction_buffer.dart';
+part 'src/transactions/register_namespace_transaction_buffer.dart';
+part 'src/transactions/secret_lock_transaction_buffer.dart';
+part 'src/transactions/secret_proof_transaction_buffer.dart';
+part 'src/transactions/transfer_transaction_buffer.dart';
+
+
 
 ApiClient defaultApiClient = new ApiClient(null, null);
