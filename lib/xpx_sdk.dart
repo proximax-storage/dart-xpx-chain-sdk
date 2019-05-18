@@ -2,7 +2,6 @@ library xpx_catapult_sdk;
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:typed_data';
 import 'dart:math';
 
