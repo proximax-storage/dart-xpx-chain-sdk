@@ -1,5 +1,33 @@
 part of xpx_catapult_sdk;
 
+class NamespaceName {
+  BigInt parentId;
+
+  BigInt namespaceId;
+
+  String name = null;
+
+  NamespaceName();
+
+  @override
+  String toString() {
+    return '{ParentId:${bigIntegerToHex(parentId)}, NamespaceId:${bigIntegerToHex(namespaceId).toUpperCase()}, Name:$name}';
+  }
+
+  NamespaceName.fromDTO(_namespaceNameDTO value) {
+    if (json == null) return;
+    parentId = value.parentId == null ? value.parentId.toBigInt() : null;
+    namespaceId = value.namespaceId.toBigInt();
+    name = value.name;
+  }
+
+  static List<NamespaceName> listFromDTO(List<_namespaceNameDTO> json) {
+    return json == null
+        ? new List<NamespaceName>()
+        : json.map((value) => new NamespaceName.fromDTO(value)).toList();
+  }
+}
+
 class NamespaceInfo {
   bool active;
 
@@ -92,13 +120,6 @@ class NamespaceInfo {
   }
 }
 
-/// NewNamespaceIdFromName generate Id from namespaceName
-BigInt NewNamespaceIdFromName(String namespaceName) {
-  var id = _generateNamespaceId(namespaceName);
-
-  return id;
-}
-
 class NamespaceIds {
   List<BigInt> namespaceIds = [];
 
@@ -121,36 +142,15 @@ class NamespaceIds {
   }
 }
 
-class NamespaceName {
-  BigInt parentId;
+/// NewNamespaceIdFromName generate Id from namespaceName
+BigInt NewNamespaceIdFromName(String namespaceName) {
+  var id = _generateNamespaceId(namespaceName);
 
-  BigInt namespaceId;
-
-  String name = null;
-
-  NamespaceName();
-
-  @override
-  String toString() {
-    return '{ParentId:${bigIntegerToHex(parentId)}, NamespaceId:${bigIntegerToHex(namespaceId).toUpperCase()}, Name:$name}';
-  }
-
-  NamespaceName.fromDTO(_namespaceNameDTO value) {
-    if (json == null) return;
-    parentId = value.parentId == null ? value.parentId.toBigInt() : null;
-    namespaceId = value.namespaceId.toBigInt();
-    name = value.name;
-  }
-
-  static List<NamespaceName> listFromDTO(List<_namespaceNameDTO> json) {
-    return json == null
-        ? new List<NamespaceName>()
-        : json.map((value) => new NamespaceName.fromDTO(value)).toList();
-  }
+  return id;
 }
 
-// GenerateNamespacePath create list NamespaceId from string
-List<BigInt> GenerateNamespacePath(String name) {
+/// GenerateNamespacePath create list NamespaceId from string
+List<BigInt> generateNamespacePath(String name) {
   var parts = name.split(".");
   if (parts.length == 0) {
     throw ErrInvalidNamespaceName;
@@ -172,6 +172,27 @@ List<BigInt> GenerateNamespacePath(String name) {
   }
 
   return path;
+}
+
+List<BigInt> extractLevels(_namespaceInfoDTO ref) {
+  List<BigInt> levels = [];
+
+  if (ref.namespace.level0.higher != null) {
+    final nsName = ref.namespace.level0.toBigInt();
+    levels.add(nsName);
+  }
+
+  if (ref.namespace.level1.higher != null) {
+    final nsName = ref.namespace.level1.toBigInt();
+    levels.add(nsName);
+  }
+
+  if (ref.namespace.level2.higher != null) {
+    final nsName = ref.namespace.level2.toBigInt();
+    levels.add(nsName);
+  }
+
+  return levels;
 }
 
 BigInt _generateId(String name, BigInt parentId) {
@@ -201,34 +222,8 @@ BigInt _generateId(String name, BigInt parentId) {
   return new UInt64DTO.fromJson(raw()).toBigInt();
 }
 
-// generateNamespaceId create NamespaceId from namespace string name (ex: nem or domain.subdom.subdome)
+/// generateNamespaceId create NamespaceId from namespace string name (ex: nem or domain.subdom.subdome)
 BigInt _generateNamespaceId(namespaceName) {
-  var list = GenerateNamespacePath(namespaceName);
+  var list = generateNamespacePath(namespaceName);
   return list[list.length - 1];
-}
-
-List<BigInt> extractLevels(_namespaceInfoDTO ref) {
-  List<BigInt> levels = [];
-
-  if (ref.namespace.level0.higher != null) {
-    final nsName = ref.namespace.level0.toBigInt();
-    levels.add(nsName);
-  }
-
-  if (ref.namespace.level1.higher != null) {
-    final nsName = ref.namespace.level1.toBigInt();
-    levels.add(nsName);
-  }
-
-  if (ref.namespace.level2.higher != null) {
-    final nsName = ref.namespace.level2.toBigInt();
-    levels.add(nsName);
-  }
-
-  return levels;
-}
-
-String getPrettyJSONString(jsonObject) {
-  var encoder = new JsonEncoder.withIndent(" ");
-  return encoder.convert(jsonObject);
 }
