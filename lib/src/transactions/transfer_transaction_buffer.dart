@@ -93,6 +93,7 @@ class MessageBufferObjectBuilder extends fb.ObjectBuilder {
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }
+
 class MosaicBuffer {
   MosaicBuffer._(this._bc, this._bcOffset);
   factory MosaicBuffer(List<int> bytes) {
@@ -188,6 +189,7 @@ class MosaicBufferObjectBuilder extends fb.ObjectBuilder {
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }
+
 class TransferTransactionBuffer {
   TransferTransactionBuffer._(this._bc, this._bcOffset);
   factory TransferTransactionBuffer(List<int> bytes) {
@@ -396,3 +398,4 @@ class TransferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }
+

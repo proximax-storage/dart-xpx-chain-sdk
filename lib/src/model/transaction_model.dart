@@ -185,6 +185,17 @@ class AbstractTransaction with TransactionInfo {
     this.merkleComponentHash = merkleComponentHash;
   }
 
+  Map<String, int> generateVector(Builder builder) {
+    final Map<String, int> data = new Map<String, int>();
+    data['versionV'] = (this.networkType << 8) + this.version;
+    data['signatureV'] = builder.writeListUint8(new Uint8List(64));
+    data['signerV'] = builder.writeListUint8(new Uint8List(32));
+    data['feeV'] = builder.writeListUint32(fromBigInt(this.fee));
+    data['deadlineV'] = builder.writeListUint32(
+        fromBigInt(BigInt.from(this.deadline.GetInstant().toInt())));
+    return data;
+  }
+
   AbstractTransaction _getAbstractTransaction() {
     final abs = AbstractTransaction();
     abs.height = this.height;
@@ -287,6 +298,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     this.recipient = recipient;
     this.mosaics = mosaics;
     this.message = message;
+    this.networkType = networkType;
   }
 
   TransferTransaction.fromDTO(_transferTransactionInfoDTO value)
@@ -319,7 +331,6 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
         : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
   }
 
-  @override
   String toString() {
     return '{\n'
         ' "abstractTransaction":${_abstractTransactionToString()}\n'

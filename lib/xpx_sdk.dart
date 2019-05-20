@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:math';
 
+import 'package:flat_buffers/flat_buffers.dart';
 import 'package:http/http.dart' as http;
 import 'package:fixnum/fixnum.dart';
 import "package:hex/hex.dart";
