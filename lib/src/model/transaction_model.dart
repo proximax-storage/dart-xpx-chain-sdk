@@ -358,8 +358,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
   @override
   Uint8List generateBytes() {
-    // TODO: implement generateBytes
-    return null;
+    return _generateBytes(this);
   }
 }
 
@@ -458,4 +457,67 @@ class Deadline {
   Deadline.fromUInt64DTO(UInt64DTO d) {
     this.time = new DateTime.fromMillisecondsSinceEpoch(d.toBigInt().toInt());
   }
+}
+
+Uint8List _generateBytes(TransferTransaction tx) {
+  final builder = new fb.Builder(initialSize: 0);
+
+  // Create message;
+  var payload = utf8.encode(tx.message.payload);
+  final mp = tx.message._type == 0 ? builder.writeListUint8(payload) : null;
+  final message = new MessageBufferBuilder(builder)
+    ..begin()
+    ..addType(tx.message.type)
+    ..addPayloadOffset(mp);
+  final int m = message.finish();
+
+// Create mosaics
+  List<int> mb = [];
+  tx.mosaics.forEach((Mosaic mosaic) {
+    final id = builder.writeListUint32(fromBigInt(mosaic.id));
+    final amount = builder.writeListUint32(fromBigInt(mosaic.amount));
+    final ms = new MosaicBufferBuilder(builder)
+      ..begin()
+      ..addIdOffset(id)
+      ..addAmountOffset(amount);
+    final v = ms.finish();
+    mb.add(v);
+  });
+
+  var recipient = base32.decode(tx.recipient.address);
+
+  final vector = tx.generateVector(builder);
+
+  final rV = builder.writeListUint8(recipient);
+  final mV = builder.writeList(mb);
+
+  var txnBuilder = TransferTransactionBufferBuilder(builder)
+    ..begin()
+    ..addSize(148 + 1 + (16 * tx.mosaics.length) + payload.length)
+    ..addSignatureOffset(vector['signatureV'])
+    ..addSignerOffset(vector['signerV'])
+    ..addVersion(vector['versionV'])
+    ..addType(tx.type._hex)
+    ..addFeeOffset(vector['feeV'])
+    ..addDeadlineOffset(vector['deadlineV'])
+    ..addRecipientOffset(rV)
+    ..addNumMosaics(tx.mosaics.length)
+    ..addMessageSize(payload.length + 1)
+    ..addMessageOffset(m)
+    ..addMosaicsOffset(mV);
+
+  final codedTransfer = txnBuilder.finish();
+
+  return builder.finish(codedTransfer);
+}
+
+List<int> fromBigInt(BigInt v) {
+  if (v == null) {
+    return [0, 0];
+  }
+  var u64 = v.toInt();
+  List<int> r = List(2);
+  r[0] = (u64 & 0xFFFFFFFF);
+  r[1] = (u64 >> 32);
+  return r;
 }
