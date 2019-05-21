@@ -77,6 +77,17 @@ Uint8List integerToBytes(int e, int length) {
   return byteList;
 }
 
+Uint8List ListToBytes(List<int> v) {
+  var byteList = new Uint8List(v.length);
+  if (v == 0) {
+    return byteList;
+  }
+
+  for (int i = 0; i < 4; i++) byteList[i] = v[i];
+
+  return byteList;
+}
+
 bool EqualsBigInts(BigInt first, second) {
   if (first == null && second == null) {
     return true;
@@ -90,8 +101,22 @@ bool EqualsBigInts(BigInt first, second) {
 }
 
 Uint8List addUint8List(Uint8List a, Uint8List b) {
+  if (a == null){
+    return b;
+  }
   Uint8List hash = Uint8List(b.length + a.length);
   for (int i = 0; i < a.length; i++) hash[i] = a[i];
   for (int i = 0; i < b.length; i++) hash[i + a.length] = b[i];
   return hash;
+}
+
+List<int> fromBigInt(BigInt v) {
+  if (v == null) {
+    return [0, 0];
+  }
+  var u64 = v.toInt();
+  List<int> r = List(2);
+  r[0] = (u64 & 0xFFFFFFFF);
+  r[1] = (u64 >> 32);
+  return r;
 }

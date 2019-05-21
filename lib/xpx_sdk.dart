@@ -79,6 +79,8 @@ part 'src/transactions/secret_lock_transaction_buffer.dart';
 part 'src/transactions/secret_proof_transaction_buffer.dart';
 part 'src/transactions/transfer_transaction_buffer.dart';
 
+part 'src/schema/schema.dart';
+part 'src/schema/xpx_catapult_sdk_schema.dart';
 
 
 ApiClient defaultApiClient = new ApiClient(null, null);

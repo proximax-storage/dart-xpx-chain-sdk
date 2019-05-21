@@ -472,16 +472,17 @@ Uint8List _generateBytes(TransferTransaction tx) {
   final int m = message.finish();
 
 // Create mosaics
-  List<int> mb = [];
+  List<int> mb = new List(tx.mosaics.length);
   tx.mosaics.forEach((Mosaic mosaic) {
+    int i = 0;
     final id = builder.writeListUint32(fromBigInt(mosaic.id));
     final amount = builder.writeListUint32(fromBigInt(mosaic.amount));
     final ms = new MosaicBufferBuilder(builder)
       ..begin()
       ..addIdOffset(id)
       ..addAmountOffset(amount);
-    final v = ms.finish();
-    mb.add(v);
+    mb[i] = ms.finish();
+    i++;
   });
 
   var recipient = base32.decode(tx.recipient.address);
@@ -508,7 +509,7 @@ Uint8List _generateBytes(TransferTransaction tx) {
 
   final codedTransfer = txnBuilder.finish();
 
-  return builder.finish(codedTransfer);
+  return transferTransactionSchema().serialize(builder.finish(codedTransfer));
 }
 
 List<int> fromBigInt(BigInt v) {
