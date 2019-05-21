@@ -406,6 +406,40 @@ class Message {
   }
 }
 
+class SignedTransaction {
+  int _transactionType;
+  String _payload;
+  String _hash;
+
+  SignedTransaction({int transactionType, String payload, String hash}) {
+    this._transactionType = transactionType;
+    this._payload = payload;
+    this._hash = hash;
+  }
+
+  int get transactionType => _transactionType;
+  set transactionType(int transactionType) =>
+      _transactionType = transactionType;
+  String get payload => _payload;
+  set payload(String payload) => _payload = payload;
+  String get hash => _hash;
+  set hash(String hash) => _hash = hash;
+
+  SignedTransaction.fromJson(Map<String, dynamic> json) {
+    _transactionType = json['transactionType'];
+    _payload = json['payload'];
+    _hash = json['hash'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['transactionType'] = this._transactionType;
+    data['payload'] = this._payload;
+    data['hash'] = this._hash;
+    return data;
+  }
+}
+
 // ignore: missing_return
 Transaction _deserializeTxn(dynamic value) {
   switch (value.runtimeType) {
