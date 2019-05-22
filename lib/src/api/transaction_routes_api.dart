@@ -9,7 +9,7 @@ class TransactionRoutesApi {
   /// Announce a cosignature transaction
   ///
   /// Announces a [cosignature transaction](https://nemtech.github.io/concepts/aggregate-transaction.html#cosignature-transaction) to the network.
-  Future<Object> announceCosignatureTransaction(
+  Future<Object> _announceCosignatureTransaction(
       TransactionPayload payload) async {
     Object postBody = payload;
 
@@ -53,7 +53,7 @@ class TransactionRoutesApi {
   /// Announce an aggregate bonded transaction
   ///
   /// Announces an [aggregate bonded transaction](https://nemtech.github.io/concepts/aggregate-transaction.html#aggregate-bonded) to the network.
-  Future<Object> announcePartialTransaction(TransactionPayload payload) async {
+  Future<Object> _announcePartialTransaction(TransactionPayload payload) async {
     Object postBody = payload;
 
     // verify required params are set
@@ -96,11 +96,11 @@ class TransactionRoutesApi {
   /// Announce a new transaction
   ///
   /// Announces a transaction to the network. It is recommended to use the NEM2-SDK to announce transactions as they should be [serialized](https://nemtech.github.io/api.html#serialization).
-  Future<Object> announceTransaction(TransactionPayload payload) async {
-    Object postBody = payload;
+  Future<Object> AnnounceTransaction(SignedTransaction tx) async {
+    Object postBody = tx;
 
     // verify required params are set
-    if (payload == null) {
+    if (tx == null) {
       throw new ApiException(400, "Missing required param: payload");
     }
 
@@ -130,7 +130,7 @@ class TransactionRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'Object') as Object;
+      return response.body.toString();
     } else {
       return null;
     }
@@ -232,7 +232,7 @@ class TransactionRoutesApi {
   /// Get transaction status
   ///
   /// Returns the transaction status for a given hash.
-  Future<TransactionStatusDTO> getTransactionStatus(String hash) async {
+  Future<TransactionStatusDTO> GetTransactionStatus(String hash) async {
     Object postBody = null;
 
     // verify required params are set
@@ -278,7 +278,7 @@ class TransactionRoutesApi {
   /// Get transactions status.
   ///
   /// Returns an array of transaction statuses for a given array of transaction hashes.
-  Future<List<TransactionStatusDTO>> getTransactionsStatuses(
+  Future<List<TransactionStatusDTO>> _getTransactionsStatuses(
       TransactionHashes transactionHashes) async {
     Object postBody = transactionHashes;
 

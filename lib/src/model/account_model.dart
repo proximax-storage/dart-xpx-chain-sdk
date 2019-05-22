@@ -98,6 +98,12 @@ class Account {
     this.publicAccount = pa;
     this.account = kp;
   }
+
+  SignedTransaction sign(Transaction tx){
+    return _signTransactionWith(tx, this);
+  }
+
+
 }
 
 class AccountInfo {

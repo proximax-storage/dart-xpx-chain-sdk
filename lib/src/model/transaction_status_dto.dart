@@ -1,15 +1,15 @@
 part of xpx_catapult_sdk;
 
 class TransactionStatusDTO {
-  String group = null;
+  String group;
 
-  String status = null;
+  String status;
 
-  String hash = null;
+  String hash;
 
-  UInt64DTO deadline = null;
+  UInt64DTO deadline;
 
-  UInt64DTO height = null;
+  UInt64DTO height;
 
   TransactionStatusDTO();
 

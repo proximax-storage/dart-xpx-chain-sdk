@@ -54,6 +54,7 @@ enum TransactionType {
 }
 
 _transactionTypeClass TransactionTypeFromRaw(int value) {
+
   for (var t in transactionTypes) {
     if (t.raw == value) {
       return t;
@@ -383,9 +384,8 @@ class Message {
     }
 
     var b = HEX.decode(value._payload);
-
     _type = value._type;
-    _payload = b.toString();
+    _payload = utf8.decode(b);
   }
 
   Message.PlainMessage(String payload) {
@@ -411,7 +411,7 @@ class SignedTransaction {
   String _payload;
   String _hash;
 
-  SignedTransaction({int transactionType, String payload, String hash}) {
+  SignedTransaction([int transactionType, String payload, String hash]) {
     this._transactionType = transactionType;
     this._payload = payload;
     this._hash = hash;
@@ -507,10 +507,11 @@ Uint8List _generateBytes(TransferTransaction tx) {
 
 // Create mosaics
   List<int> mb = new List(tx.mosaics.length);
+  int i = 0;
   tx.mosaics.forEach((Mosaic mosaic) {
-    int i = 0;
     final id = builder.writeListUint32(fromBigInt(mosaic.id));
     final amount = builder.writeListUint32(fromBigInt(mosaic.amount));
+
     final ms = new MosaicBufferBuilder(builder)
       ..begin()
       ..addIdOffset(id)
@@ -546,13 +547,38 @@ Uint8List _generateBytes(TransferTransaction tx) {
   return transferTransactionSchema().serialize(builder.finish(codedTransfer));
 }
 
-List<int> fromBigInt(BigInt v) {
-  if (v == null) {
-    return [0, 0];
-  }
-  var u64 = v.toInt();
-  List<int> r = List(2);
-  r[0] = (u64 & 0xFFFFFFFF);
-  r[1] = (u64 >> 32);
-  return r;
+SignedTransaction _signTransactionWith(Transaction tx, Account a) {
+  final s = a.account;
+  var b = tx.generateBytes();
+
+  final sb = ListToBytes(b.getRange(100, b.length).toList());
+
+  final signature = s.sign(sb);
+  var p = [];
+  p.insertAll(0, b.getRange(0, 4));
+  p.insertAll(4, signature);
+  p.insertAll(4 + 64, a.account.publicKey.Raw);
+  p.insertAll(100, b.getRange(100, b.length));
+
+  List<int> f = List(p.length);
+  for (int i = 0; i < p.length; i++) f[i] = p[i];
+
+  final ph = HEX.encode(f);
+
+  final hash = createTransactionHash(ph);
+
+  return new SignedTransaction(tx.getAbstractTransaction().type.raw, ph.toUpperCase(), hash);
+}
+
+String createTransactionHash(String p){
+  final b = HEX.decode(p);
+
+  List<int> sb = [];
+
+  sb.insertAll(0, b.getRange(4, 32+4));
+  sb.insertAll(32, b.getRange(68, b.length));
+
+  final r = crypto.HashesSha3_256(ListToBytes(sb));
+
+  return HEX.encode(r).toUpperCase();
 }

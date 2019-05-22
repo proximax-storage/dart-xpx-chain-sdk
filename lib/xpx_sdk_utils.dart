@@ -79,11 +79,7 @@ Uint8List integerToBytes(int e, int length) {
 
 Uint8List ListToBytes(List<int> v) {
   var byteList = new Uint8List(v.length);
-  if (v == 0) {
-    return byteList;
-  }
-
-  for (int i = 0; i < 4; i++) byteList[i] = v[i];
+  for (int i = 0; i < v.length; i++) byteList[i] = v[i];
 
   return byteList;
 }

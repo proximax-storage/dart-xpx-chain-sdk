@@ -51,6 +51,7 @@ abstract class abstractSchemaAttribute {
     final offsetLong = offset + innerObjectPosition;
     final vecStart = this.vector(offsetLong, buffer);
     final vecLength = this.vectorLength(offsetLong, buffer) * size;
+
     if (offset == 0) {
       return Uint8List(0);
     }
@@ -63,11 +64,12 @@ abstract class abstractSchemaAttribute {
   }
 
   int offset(int innerObjectPosition, int position, Uint8List buffer) {
-    var vtable = innerObjectPosition - this.readUint32(innerObjectPosition, buffer);
 
+    var vtable = innerObjectPosition - this.readUint32(innerObjectPosition, buffer);
     if (position < this.readUint16(vtable, buffer)) {
       return this.readUint16(vtable + position, buffer);
     }
+
     return 0;
   }
 
@@ -77,6 +79,7 @@ abstract class abstractSchemaAttribute {
   }
 
   int readUint32(int offset, Uint8List buffer) {
+
     var b = buffer.getRange(offset, offset+4).toList();
     return (b[0]) | (b[1]) << 8 | (b[2]) << 16 | (b[3]) << 24;
   }
@@ -150,23 +153,24 @@ class tableArrayAttribute extends abstractSchemaAttribute implements schemaAttri
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
     List<int> resultBytes= [];
 
-    var arrayLength =
-        this.findArrayLength(innerObjectPosition, position, buffer);
+    var arrayLength = this.findArrayLength(innerObjectPosition, position, buffer);
     for (int i = 0; i < arrayLength; i++) {
-      var startArrayPosition = this.findObjectArrayElementStartPosition(
-          innerObjectPosition, position, buffer, i);
+      var startArrayPosition = this.findObjectArrayElementStartPosition(innerObjectPosition, position, buffer, i);
+      int j = 0;
       for (var element in this.schema) {
-        int j = 0;
         var tmp = element.serialize(buffer, 4 + j * 2, startArrayPosition);
+
         if (tmp.length == 1){
           resultBytes = [tmp.elementAt(0)];
         }else{
           resultBytes.addAll(tmp);
         }
+        ++j;
       }
     }
     var byteList = new Uint8List(resultBytes.length);
     for (int i = 0; i < resultBytes.length; i++) byteList[i] = resultBytes[i];
+
     return byteList;
   }
 }

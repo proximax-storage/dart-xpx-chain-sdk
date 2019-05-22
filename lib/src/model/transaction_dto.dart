@@ -122,7 +122,7 @@ class _transferTransactionDTO extends _abstractTransactionDTO {
         _mosaics.add(new _mosaicDTO.fromJson(v));
       });
     }
-    this._message = json['message'];
+    this._message = _messageDTO.fromJson(json['message']);
   }
 
   Map<String, dynamic> toJson() {
@@ -158,14 +158,14 @@ class _messageDTO {
   set payload(String payload) => _payload = payload;
 
   _messageDTO.fromJson(Map<String, dynamic> json) {
-    _type = json['Type'];
-    _payload = json['Payload'];
+    _type = json['type'];
+    _payload = json['payload'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Type'] = this._type;
-    data['Payload'] = this._payload;
+    data['type'] = this._type;
+    data['tayload'] = this._payload;
     return data;
   }
 }
