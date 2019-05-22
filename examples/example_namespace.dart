@@ -1,6 +1,6 @@
 import 'package:xpx_catapult_sdk/xpx_sdk.dart';
 
-const baseUrl = "http://bcstage1.xpxsirius.io:3000";
+const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
 final networkType = PublicTest;
 
