@@ -53,7 +53,7 @@ enum TransactionType {
   MosaicAlias
 }
 
-_transactionTypeClass TransactionTypeFromRaw(int value) {
+_transactionTypeClass transactionTypeFromRaw(int value) {
 
   for (var t in transactionTypes) {
     if (t.raw == value) {
@@ -63,10 +63,10 @@ _transactionTypeClass TransactionTypeFromRaw(int value) {
   return null;
 }
 
-String MapTransaction(dynamic decodedJson) {
+String mapTransaction(dynamic decodedJson) {
   final rawT = decodedJson["transaction"]["type"];
 
-  final t = TransactionTypeFromRaw(rawT).transactionType;
+  final t = transactionTypeFromRaw(rawT).transactionType;
 
   switch (t) {
     case TransactionType.AggregateCompleted:
@@ -295,7 +295,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
     this.version = TransferVersion;
     this.deadline = deadline;
-    this.type = TransactionTypeFromRaw(16724);
+    this.type = transactionTypeFromRaw(16724);
     this.recipient = recipient;
     this.mosaics = mosaics;
     this.message = message;
@@ -311,7 +311,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
             value._meta._merkleComponentHash) {
     if (value == null) return;
 
-    this.type = TransactionTypeFromRaw(value._transaction.Type);
+    this.type = transactionTypeFromRaw(value._transaction.Type);
     this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
     this.signature = value._transaction.Signature;
     this.networkType = ExtractNetworkType(value._transaction.Version);

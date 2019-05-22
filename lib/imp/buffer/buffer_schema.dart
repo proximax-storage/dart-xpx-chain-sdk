@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk;
+part of xpx_catapult_sdk.buffer;
 
 const ByteSize = 1, ShortSize = 2, IntSize = 4;
 
@@ -17,9 +17,10 @@ class schema {
     var i = 0;
     for (var schemaDefinition in this.schemaDefinition) {
       var v = schemaDefinition.serialize(buffer, 4 + (i * 2), buffer[0]);
-      resultBytes = addUint8List(resultBytes, v);
+      resultBytes = _addUint8List(resultBytes, v);
       ++i;
     }
+    print(resultBytes);
     return resultBytes;
   }
 }
@@ -204,18 +205,28 @@ class tableAttribute extends abstractSchemaAttribute implements schemaAttribute 
   }
 }
 
-arrayAttribute newArrayAttribute(String name, int size) {
+arrayAttribute _newArrayAttribute(String name, int size) {
   return new arrayAttribute(name, size);
 }
 
-scalarAttribute newScalarAttribute(String name, int size) {
+scalarAttribute _newScalarAttribute(String name, int size) {
   return new scalarAttribute(name, size);
 }
 
-tableArrayAttribute newTableArrayAttribute(String name, List<schemaAttribute> schema) {
+tableArrayAttribute _newTableArrayAttribute(String name, List<schemaAttribute> schema) {
   return new tableArrayAttribute(name, schema);
 }
 
-tableAttribute newTableAttribute(String name, List<schemaAttribute> schema) {
+tableAttribute _newTableAttribute(String name, List<schemaAttribute> schema) {
   return new tableAttribute(name, schema);
+}
+
+Uint8List _addUint8List(Uint8List a, Uint8List b) {
+  if (a == null){
+    return b;
+  }
+  Uint8List hash = Uint8List(b.length + a.length);
+  for (int i = 0; i < a.length; i++) hash[i] = a[i];
+  for (int i = 0; i < b.length; i++) hash[i + a.length] = b[i];
+  return hash;
 }

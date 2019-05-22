@@ -12,6 +12,7 @@ import "package:hex/hex.dart";
 import 'package:base32/base32.dart';
 import "package:nem2_crypto/nem2_crypto.dart" as crypto;
 import "package:nem2_crypto/imp/sha3.dart" as sha3;
+import 'imp/buffer/buffer.dart';
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 
 part 'consts.dart';
@@ -78,9 +79,6 @@ part 'src/transactions/register_namespace_transaction_buffer.dart';
 part 'src/transactions/secret_lock_transaction_buffer.dart';
 part 'src/transactions/secret_proof_transaction_buffer.dart';
 part 'src/transactions/transfer_transaction_buffer.dart';
-
-part 'src/schema/schema.dart';
-part 'src/schema/xpx_catapult_sdk_schema.dart';
 
 
 ApiClient defaultApiClient = new ApiClient(null, null);

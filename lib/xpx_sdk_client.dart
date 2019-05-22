@@ -173,7 +173,7 @@ class ApiClient {
   }
 
   dynamic _txnDeserialize(dynamic value, String targetType) {
-    targetType = MapTransaction(value);
+    targetType = mapTransaction(value);
     try {
       switch (targetType) {
         case 'Transfer':
