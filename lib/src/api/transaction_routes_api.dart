@@ -7,8 +7,6 @@ class TransactionRoutesApi {
       : apiClient = apiClient ?? defaultApiClient;
 
   /// Announce a cosignature transaction
-  ///
-  /// Announces a [cosignature transaction](https://nemtech.github.io/concepts/aggregate-transaction.html#cosignature-transaction) to the network.
   Future<Object> _announceCosignatureTransaction(
       TransactionPayload payload) async {
     Object postBody = payload;
@@ -51,8 +49,6 @@ class TransactionRoutesApi {
   }
 
   /// Announce an aggregate bonded transaction
-  ///
-  /// Announces an [aggregate bonded transaction](https://nemtech.github.io/concepts/aggregate-transaction.html#aggregate-bonded) to the network.
   Future<Object> _announcePartialTransaction(TransactionPayload payload) async {
     Object postBody = payload;
 
@@ -95,7 +91,7 @@ class TransactionRoutesApi {
 
   /// Announce a new transaction
   ///
-  /// Announces a transaction to the network. It is recommended to use the NEM2-SDK to announce transactions as they should be [serialized](https://nemtech.github.io/api.html#serialization).
+  /// Announces a transaction to the network.
   Future<Object> AnnounceTransaction(SignedTransaction tx) async {
     Object postBody = tx;
 
@@ -130,7 +126,7 @@ class TransactionRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return response.body.toString();
+      return apiClient.deserialize(response.body, 'String');
     } else {
       return null;
     }

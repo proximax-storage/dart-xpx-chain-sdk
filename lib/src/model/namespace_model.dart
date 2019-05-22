@@ -222,7 +222,7 @@ BigInt _generateId(String name, BigInt parentId) {
   return new UInt64DTO.fromJson(raw()).toBigInt();
 }
 
-/// generateNamespaceId create NamespaceId from namespace string name (ex: nem or domain.subdom.subdome)
+/// generateNamespaceId create NamespaceId from namespace string name (ex: prx or domain.subdom.subdome)
 BigInt _generateNamespaceId(namespaceName) {
   var list = generateNamespacePath(namespaceName);
   return list[list.length - 1];
