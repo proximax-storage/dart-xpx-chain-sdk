@@ -10,8 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:fixnum/fixnum.dart';
 import "package:hex/hex.dart";
 import 'package:base32/base32.dart';
-import "package:nem2_crypto/nem2_crypto.dart" as crypto;
-import "package:nem2_crypto/imp/sha3.dart" as sha3;
+import "package:xpx_crypto/xpx_crypto.dart" as crypto;
+import "package:xpx_crypto/imp/sha3.dart" as sha3;
 import 'imp/buffer/buffer.dart';
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 

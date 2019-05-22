@@ -102,8 +102,6 @@ class Account {
   SignedTransaction sign(Transaction tx){
     return _signTransactionWith(tx, this);
   }
-
-
 }
 
 class AccountInfo {

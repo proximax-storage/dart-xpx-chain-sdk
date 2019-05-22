@@ -20,7 +20,6 @@ class schema {
       resultBytes = _addUint8List(resultBytes, v);
       ++i;
     }
-    print(resultBytes);
     return resultBytes;
   }
 }
