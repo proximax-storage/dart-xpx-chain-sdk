@@ -116,13 +116,13 @@ class AccountInfo {
   @override
   String toString() {
     return '{\n'
-        '\t"Address": $address,\n'
-        '\t"AddressHeight": $addressHeight,\n'
-        '\t"PublicKey": $publicKey,\n'
-        '\t"PublicKeyHeight": $publicKeyHeight,\n'
-        '\t"AccountType": $accountType,\n'
-        '\t"LinkedAccountKey": $linkedAccountKey,\n'
-        '\t"Mosaics": $mosaics,\n'
+        '\t"address": $address,\n'
+        '\t"addressHeight": $addressHeight,\n'
+        '\t"publicKey": $publicKey,\n'
+        '\t"publicKeyHeight": $publicKeyHeight,\n'
+        '\t"accountType": $accountType,\n'
+        '\t"linkedAccountKey": $linkedAccountKey,\n'
+        '\t"mosaics": $mosaics,\n'
         '}\n';
   }
 

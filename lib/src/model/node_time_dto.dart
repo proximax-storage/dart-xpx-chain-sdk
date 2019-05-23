@@ -1,16 +1,18 @@
 part of xpx_catapult_sdk;
 
-class NodeTimeDTO {
-  CommunicationTimestamps communicationTimestamps = null;
+class NodeTime {
+  CommunicationTimestamps communicationTimestamps;
 
-  NodeTimeDTO();
+  NodeTime();
 
   @override
   String toString() {
-    return 'NodeTimeDTO[communicationTimestamps=$communicationTimestamps, ]';
+    return '{\n'
+        '\t"CommunicationTimestamps":${communicationTimestamps}'
+        '}\n';
   }
 
-  NodeTimeDTO.fromJson(Map<String, dynamic> json) {
+  NodeTime.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     communicationTimestamps =
         new CommunicationTimestamps.fromJson(json['communicationTimestamps']);
@@ -20,18 +22,18 @@ class NodeTimeDTO {
     return {'communicationTimestamps': communicationTimestamps};
   }
 
-  static List<NodeTimeDTO> listFromJson(List<dynamic> json) {
+  static List<NodeTime> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<NodeTimeDTO>()
-        : json.map((value) => new NodeTimeDTO.fromJson(value)).toList();
+        ? new List<NodeTime>()
+        : json.map((value) => new NodeTime.fromJson(value)).toList();
   }
 
-  static Map<String, NodeTimeDTO> mapFromJson(
+  static Map<String, NodeTime> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, NodeTimeDTO>();
+    var map = new Map<String, NodeTime>();
     if (json != null && json.length > 0) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new NodeTimeDTO.fromJson(value));
+          map[key] = new NodeTime.fromJson(value));
     }
     return map;
   }

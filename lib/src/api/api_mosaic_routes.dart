@@ -8,7 +8,7 @@ class MosaicRoutesApi {
 
   /// Get mosaic information
   ///
-  /// Gets the mosaic definition for a given mosaicId.
+  /// Gets a [MosaicInfo] definition for a given mosaicId.
   Future<MosaicInfo> GetMosaic(BigInt mosaicId) async {
     Object postBody = null;
 
@@ -55,7 +55,7 @@ class MosaicRoutesApi {
 
   /// Get mosaics information for an array of mosaics
   ///
-  /// Gets an array of mosaic definition.
+  /// Gets an List of [MosaicInfo].
   Future<List<MosaicInfo>> GetMosaics(MosaicIds mosaicIds) async {
     Object postBody = mosaicIds;
 
@@ -102,7 +102,7 @@ class MosaicRoutesApi {
 
   /// Get readable names for a set of mosaics
   ///
-  /// Returns friendly names for mosaics.
+  /// Returns a [MosaicName] friendly names for mosaics.
   Future<List<MosaicName>> GetMosaicsName(MosaicIds mosaicIds) async {
     Object postBody = mosaicIds;
 

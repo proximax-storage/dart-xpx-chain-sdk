@@ -21,7 +21,7 @@ class NamespaceRoutesApi {
 
   /// Get namespace information
   ///
-  /// Gets the namespace for a given namespaceId.
+  /// Gets a [NamespaceInfo] for a given namespaceId.
   Future<NamespaceInfo> GetNamespace(BigInt namespaceId) async {
     Object postBody = null;
 
@@ -74,7 +74,7 @@ class NamespaceRoutesApi {
 
   /// Get namespaces owned by an account
   ///
-  /// Gets an array of namespaces for a given account address.
+  /// Gets an List of [NamespaceInfo] for a given account address.
   Future<List<NamespaceInfo>> GetNamespacesFromAccount(Address accountIds,
       {int pageSize, String id}) async {
     Object postBody = null;
@@ -132,9 +132,9 @@ class NamespaceRoutesApi {
     }
   }
 
-  /// Get namespaces for given array of addresses
+  /// Get namespaces for given List of addresses
   ///
-  /// Gets namespaces for a given array of addresses.
+  /// Gets namespaces for a given List of addresses.
   Future<List<NamespaceInfo>> GetNamespacesFromAccounts(Addresses addresses,
       {int pageSize, String id}) async {
     Object postBody = addresses;
@@ -192,7 +192,7 @@ class NamespaceRoutesApi {
 
   /// Get readable names for a set of namespaces
   ///
-  /// Returns friendly names for mosaics.
+  /// Returns a [NamespaceName] friendly names for mosaics.
   Future<List<NamespaceName>> GetNamespacesNames(NamespaceIds nsIds) async {
     Object postBody = nsIds;
 

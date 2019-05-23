@@ -9,7 +9,7 @@ class NetworkRoutesApi {
   /// Get the current network type of the chain
   ///
   /// Returns the current network type.
-  Future<NetworkTypeDTO> getNetworkType() async {
+  Future<NetworkType> getNetworkType() async {
     Object postBody = null;
 
     // verify required params are set
@@ -41,7 +41,7 @@ class NetworkRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       return apiClient.deserialize(response.body, 'NetworkTypeDTO')
-          as NetworkTypeDTO;
+          as NetworkType;
     } else {
       return null;
     }

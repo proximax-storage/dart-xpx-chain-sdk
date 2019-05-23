@@ -5,32 +5,32 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:math';
 
-import 'package:flat_buffers/flat_buffers.dart';
+import 'imp/buffer/buffer.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:fixnum/fixnum.dart';
 import "package:hex/hex.dart";
 import 'package:base32/base32.dart';
 import "package:xpx_crypto/xpx_crypto.dart" as crypto;
 import "package:xpx_crypto/imp/sha3.dart" as sha3;
-import 'imp/buffer/buffer.dart';
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 
-part 'consts.dart';
-part 'buffer.dart';
+part 'xpx_sdk_consts.dart';
+part 'xpx_sdk_endian.dart';
 
-part 'all_errors.dart';
+part 'xpx_sdk_all_errors.dart';
 part 'xpx_sdk_utils.dart';
-part 'xpx_sdk_client.dart';
 part 'xpx_sdk_helper.dart';
-part 'xpx_sdk_exception.dart';
 
 part 'src/api/api_conf.dart';
-part 'src/api/account_routes_api.dart';
-part 'src/api/blockchain_routes_api.dart';
-part 'src/api/mosaic_routes_api.dart';
-part 'src/api/namespace_routes_api.dart';
-part 'src/api/network_routes_api.dart';
-part 'src/api/node_routes_api.dart';
+part 'src/api/api_client.dart';
+part 'src/api/api_exception.dart';
+part 'src/api/api_account_routes.dart';
+part 'src/api/api_blockchain_routes.dart';
+part 'src/api/api_mosaic_routes.dart';
+part 'src/api/api_namespace_routes.dart';
+part 'src/api/api_network_routes.dart';
+part 'src/api/api_node_routes.dart';
 part 'src/api/transaction_routes_api.dart';
 
 part 'src/model/account_dto.dart';
@@ -45,7 +45,6 @@ part 'src/model/alias_model.dart';
 part 'src/model/announce_transaction_info_dto.dart';
 part 'src/model/block_dto.dart';
 part 'src/model/block_model.dart';
-part 'src/model/communication_timestamps.dart';
 part 'src/model/height_dto.dart';
 part 'src/model/merkle_path_item.dart';
 part 'src/model/merkle_proof_info_dto.dart';
@@ -55,8 +54,8 @@ part 'src/model/mosaic_model.dart';
 part 'src/model/multisig_dto.dart';
 part 'src/model/namespace_dto.dart';
 part 'src/model/namespace_model.dart';
-part 'src/model/network_type_dto.dart';
-part 'src/model/node_info_dto.dart';
+part 'src/model/network_type.dart';
+part 'src/model/node_info.dart';
 part 'src/model/node_time_dto.dart';
 part 'src/model/transaction_dto.dart';
 part 'src/model/transaction_model.dart';

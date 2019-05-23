@@ -53,10 +53,56 @@ class AccountRoutesApi {
     }
   }
 
+  /// Get accounts information
+  ///
+  /// Returns the account information for an List of accounts.
+  Future<List<_accountInfoDTO>> _getAccountsInfo(Addresses addresses) async {
+    Object postBody = addresses;
+
+    // verify required params are set
+    if (addresses == null) {
+      throw new ApiException(400, "Missing required param: addresses");
+    }
+
+    // create path and map variables
+    String path = "/account".replaceAll("{format}", "json");
+
+    // query params
+    List<QueryParam> queryParams = [];
+    Map<String, String> headerParams = {};
+    Map<String, String> formParams = {};
+
+    List<String> contentTypes = [];
+
+    String contentType =
+    contentTypes.length > 0 ? contentTypes[0] : "application/json";
+
+    if (contentType.startsWith("multipart/form-data")) {
+      bool hasFields = false;
+      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+
+      if (hasFields) postBody = mp;
+    } else {}
+
+    var response = await _apiClient.invokeAPI(path, 'POST', queryParams,
+        postBody, headerParams, formParams, contentType);
+
+    if (response.statusCode >= 400) {
+      throw new ApiException(response.statusCode, response.body);
+    } else if (response.body != null) {
+      return (_apiClient.deserialize(response.body, 'List<_accountInfoDTO>')
+      as List)
+          .map((item) => item as _accountInfoDTO)
+          .toList();
+    } else {
+      return null;
+    }
+  }
+
   /// Get multisig account information
   ///
-  /// Returns the [multisig account](https://nemtech.github.io/concepts/multisig-account.html) information.
-  Future<MultisigAccountInfoDTO> getAccountMultisig(String accountId) async {
+  /// Returns the [multisig account] information.
+  Future<MultisigAccountInfoDTO> _getAccountMultisig(String accountId) async {
     Object postBody = null;
 
     // verify required params are set
@@ -101,8 +147,8 @@ class AccountRoutesApi {
 
   /// Get multisig account graph information
   ///
-  /// Returns the [multisig account](https://nemtech.github.io/concepts/multisig-account.html) graph.
-  Future<List<MultisigAccountGraphInfoDTO>> getAccountMultisigGraph(
+  /// Returns the [multisig account] graph.
+  Future<List<MultisigAccountGraphInfoDTO>> _getAccountMultisigGraph(
       String accountId) async {
     Object postBody = null;
 
@@ -150,8 +196,8 @@ class AccountRoutesApi {
 
   /// Get account configurable properties information
   ///
-  /// Returns the [configurable properties](https://nemtech.github.io/concepts/account-filter.html) for a given account.
-  Future<AccountPropertiesInfoDTO> getAccountProperties(
+  /// Returns the [configurable properties] for a given account.
+  Future<AccountPropertiesInfoDTO> _getAccountProperties(
       String accountId) async {
     Object postBody = null;
 
@@ -197,8 +243,8 @@ class AccountRoutesApi {
 
   /// Get account properties for given array of addresses
   ///
-  /// Returns the [configurable properties](https://nemtech.github.io/concepts/account-filter.html) for a given array of addresses.
-  Future<List<AccountPropertiesInfoDTO>> getAccountPropertiesFromAccounts(
+  /// Returns the [configurable properties] for a given array of addresses.
+  Future<List<AccountPropertiesInfoDTO>> _getAccountPropertiesFromAccounts(
       Addresses addresses) async {
     Object postBody = addresses;
 
@@ -242,56 +288,12 @@ class AccountRoutesApi {
     }
   }
 
-  /// Get accounts information
-  ///
-  /// Returns the account information for an array of accounts.
-  Future<List<_accountInfoDTO>> getAccountsInfo(Addresses addresses) async {
-    Object postBody = addresses;
-
-    // verify required params are set
-    if (addresses == null) {
-      throw new ApiException(400, "Missing required param: addresses");
-    }
-
-    // create path and map variables
-    String path = "/account".replaceAll("{format}", "json");
-
-    // query params
-    List<QueryParam> queryParams = [];
-    Map<String, String> headerParams = {};
-    Map<String, String> formParams = {};
-
-    List<String> contentTypes = [];
-
-    String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
-
-    if (contentType.startsWith("multipart/form-data")) {
-      bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
-
-      if (hasFields) postBody = mp;
-    } else {}
-
-    var response = await _apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType);
-
-    if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
-    } else if (response.body != null) {
-      return (_apiClient.deserialize(response.body, 'List<_accountInfoDTO>')
-              as List)
-          .map((item) => item as _accountInfoDTO)
-          .toList();
-    } else {
-      return null;
-    }
-  }
-
   /// Get incoming transactions
   ///
-  /// Gets an array of incoming transactions. A transaction is said to be incoming with respect to an account if the account is the recipient of the transaction.
-  Future<List<Object>> incomingTransactions(String publicKey,
+  /// Gets an List of incoming transactions.
+  /// A transaction is said to be incoming with respect to an
+  /// account if the account is the recipient of the transaction.
+  Future<List<Object>> _incomingTransactions(String publicKey,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
@@ -349,8 +351,10 @@ class AccountRoutesApi {
 
   /// Get outgoing transactions
   ///
-  /// Gets an array of outgoing transactions. A transaction is said to be outgoing with respect to an account if the account is the sender of the transaction.
-  Future<List<Object>> outgoingTransactions(String publicKey,
+  /// Gets an List of outgoing transactions.
+  /// A transaction is said to be outgoing with respect to an
+  /// account if the account is the sender of the transaction.
+  Future<List<Object>> _outgoingTransactions(String publicKey,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
@@ -408,8 +412,9 @@ class AccountRoutesApi {
 
   /// Get aggregate bonded transactions information
   ///
-  /// Gets an array of [aggregate bonded transactions](https://nemtech.github.io/concepts/aggregate-transaction.html) where the account is the sender or requires to cosign the transaction.
-  Future<List<Object>> partialTransactions(String publicKey,
+  /// Gets an List of [aggregate bonded transactions] where the account is
+  /// the sender or requires to cosign the transaction.
+  Future<List<Object>> _partialTransactions(String publicKey,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
@@ -467,8 +472,8 @@ class AccountRoutesApi {
 
   /// Get confirmed transactions
   ///
-  /// Gets an array of transactions for which an account is the sender or receiver.
-  Future<List<Object>> transactions(String publicKey,
+  /// Gets an List of transactions for which an account is the sender or receiver.
+  Future<List<Object>> _transactions(String publicKey,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
@@ -526,8 +531,8 @@ class AccountRoutesApi {
 
   /// Get unconfirmed transactions
   ///
-  /// Gets the array of transactions not included in a block where an account is the sender or receiver.
-  Future<List<Object>> unconfirmedTransactions(String publicKey,
+  /// Gets the List of transactions not included in a block where an account is the sender or receiver.
+  Future<List<Object>> _unconfirmedTransactions(String publicKey,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 

@@ -186,7 +186,7 @@ class AbstractTransaction with TransactionInfo {
     this.merkleComponentHash = merkleComponentHash;
   }
 
-  Map<String, int> generateVector(Builder builder) {
+  Map<String, int> generateVector(fb.Builder builder) {
     final Map<String, int> data = new Map<String, int>();
     data['versionV'] = (this.networkType << 8) + this.version;
     data['signatureV'] = builder.writeListUint8(new Uint8List(64));
@@ -564,6 +564,7 @@ SignedTransaction _signTransactionWith(Transaction tx, Account a) {
   for (int i = 0; i < p.length; i++) f[i] = p[i];
 
   final ph = HEX.encode(f);
+  print(ph);
 
   final hash = createTransactionHash(ph);
 

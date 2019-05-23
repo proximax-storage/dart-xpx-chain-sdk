@@ -50,9 +50,7 @@ class ApiClient {
   final _RegList = new RegExp(r'^List<(.*)>$');
   final _RegMap = new RegExp(r'^Map<String,(.*)>$');
 
-  ApiClient(this.conf, this.client) {
-    // Setup authentications (key: authentication name, value: authentication).
-  }
+  ApiClient(this.conf, this.client);
 
   void addDefaultHeader(String key, String value) {
     _defaultHeaderMap[key] = value;
@@ -134,11 +132,11 @@ class ApiClient {
         case '_namespaceNameDTO':
           return new _namespaceNameDTO.fromJson(value);
         case 'NetworkTypeDTO':
-          return new NetworkTypeDTO.fromJson(value);
-        case 'NodeInfoDTO':
-          return new NodeInfoDTO.fromJson(value);
-        case 'NodeTimeDTO':
-          return new NodeTimeDTO.fromJson(value);
+          return new NetworkType.fromJson(value);
+        case 'NodeInfo':
+          return new NodeInfo.fromJson(value);
+        case 'NodeTime':
+          return new NodeTime.fromJson(value);
         case 'TransactionHashes':
           return new TransactionHashes.fromJson(value);
         case 'TransactionIds':

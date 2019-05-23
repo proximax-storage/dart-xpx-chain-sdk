@@ -134,7 +134,7 @@ class TransactionRoutesApi {
 
   /// Get transaction information
   ///
-  /// Returns transaction information given a transactionId or hash.
+  /// Returns a [Transaction] information given a transactionId or hash.
   Future<Transaction> GetTransaction(String transactionId) async {
     Object postBody = null;
 
@@ -179,7 +179,7 @@ class TransactionRoutesApi {
 
   /// Get transactions information
   ///
-  /// Returns transactions information for a given array of transactionIds.
+  /// Returns a List of [Transaction] information for a given List of transactionIds.
   Future<List<Transaction>> GetTransactions(
       TransactionIds transactionIds) async {
     Object postBody = transactionIds;
@@ -228,7 +228,7 @@ class TransactionRoutesApi {
   /// Get transaction status
   ///
   /// Returns the transaction status for a given hash.
-  Future<TransactionStatusDTO> GetTransactionStatus(String hash) async {
+  Future<TransactionStatusDTO> _getTransactionStatus(String hash) async {
     Object postBody = null;
 
     // verify required params are set
@@ -273,7 +273,7 @@ class TransactionRoutesApi {
 
   /// Get transactions status.
   ///
-  /// Returns an array of transaction statuses for a given array of transaction hashes.
+  /// Returns an List of transaction statuses for a given List of transaction hashes.
   Future<List<TransactionStatusDTO>> _getTransactionsStatuses(
       TransactionHashes transactionHashes) async {
     Object postBody = transactionHashes;

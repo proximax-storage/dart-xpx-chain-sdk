@@ -50,7 +50,7 @@ class BlockchainRoutesApi {
 
   /// Get block information
   ///
-  /// Gets a block from the chain that has the given height.
+  /// Gets a [BlockInfo] from the chain that has the given height.
   Future<BlockInfo> GetBlockByHeight(BigInt height) async {
     Object postBody = null;
 
@@ -97,7 +97,7 @@ class BlockchainRoutesApi {
 
   /// Get the current score of the chain
   ///
-  /// Gets the current score of the blockchain.
+  /// Gets the current [BlockchainScore].
   /// The higher the score, the better the chain.
   /// During synchronization, nodes try to get the best blockchain in the network.
   /// The score for a block is derived from its difficulty and the time (in seconds)
@@ -144,7 +144,7 @@ class BlockchainRoutesApi {
 
   /// Get the storage information
   ///
-  /// Returns statistical information about the blockchain.
+  /// Returns a [BlockchainStorageInfo] statistical information about the blockchain.
   Future<BlockchainStorageInfo> GetDiagnosticStorage() async {
     Object postBody = null;
 
@@ -185,7 +185,7 @@ class BlockchainRoutesApi {
 
   /// Get transactions from a block
   ///
-  /// Returns an array of [transactions](https://nemtech.github.io/concepts/transaction.html) included in a block for a given block height.
+  /// Returns an List of [Transaction] included in a block for a given block height.
   Future<List<Object>> GetBlockTransactions(int height,
       {int pageSize, String id}) async {
     Object postBody = null;
