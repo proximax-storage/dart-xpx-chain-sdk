@@ -63,8 +63,8 @@ abstract class abstractSchemaAttribute {
   }
 
   int offset(int innerObjectPosition, int position, Uint8List buffer) {
-    var vtable =
-        innerObjectPosition - this.readUint32(innerObjectPosition, buffer);
+    var f = this.readUint32(innerObjectPosition, buffer);
+    var vtable = fromBigInt(BigInt.from(innerObjectPosition - f)).elementAt(0);
     if (position < this.readUint16(vtable, buffer)) {
       return this.readUint16(vtable + position, buffer);
     }

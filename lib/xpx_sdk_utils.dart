@@ -77,13 +77,6 @@ Uint8List integerToBytes(int e, int length) {
   return byteList;
 }
 
-Uint8List ListToBytes(List<int> v) {
-  var byteList = new Uint8List(v.length);
-  for (int i = 0; i < v.length; i++) byteList[i] = v[i];
-
-  return byteList;
-}
-
 bool EqualsBigInts(BigInt first, second) {
   if (first == null && second == null) {
     return true;

@@ -551,26 +551,23 @@ SignedTransaction _signTransactionWith(Transaction tx, Account a) {
   final s = a.account;
   var b = tx.generateBytes();
 
-  final sb = ListToBytes(b.getRange(100, b.length).toList());
+  final sb = Uint8List.fromList(b.getRange(100, b.length).toList());
 
   final signature = s.sign(sb);
-  var p = [];
+  List<int> p = [];
   p.insertAll(0, b.getRange(0, 4));
   p.insertAll(4, signature);
   p.insertAll(4 + 64, a.account.publicKey.Raw);
   p.insertAll(100, b.getRange(100, b.length));
 
-  List<int> f = List(p.length);
-  for (int i = 0; i < p.length; i++) f[i] = p[i];
+  final ph = HEX.encode(p);
 
-  final ph = HEX.encode(f);
-
-  final hash = createTransactionHash(ph);
+  final hash = _createTransactionHash(ph);
 
   return new SignedTransaction(tx.getAbstractTransaction().type.raw, ph.toUpperCase(), hash);
 }
 
-String createTransactionHash(String p){
+String _createTransactionHash(String p){
   final b = HEX.decode(p);
 
   List<int> sb = [];
@@ -578,7 +575,7 @@ String createTransactionHash(String p){
   sb.insertAll(0, b.getRange(4, 32+4));
   sb.insertAll(32, b.getRange(68, b.length));
 
-  final r = crypto.HashesSha3_256(ListToBytes(sb));
+  final r = crypto.HashesSha3_256(Uint8List.fromList(sb));
 
   return HEX.encode(r).toUpperCase();
 }
