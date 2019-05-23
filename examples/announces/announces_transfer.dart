@@ -10,22 +10,25 @@ void main() async {
 
   var client = NewClient(config, null);
 
-  /// Create an Address from a given Private key.
+  /// Create an Account from a given Private key.
   var account = new Account.fromPrivateKey(
       "C7724760A0C4E13723FF2EF491A51534D5EC45AE9A248E52DE52E91E2566ED16",
       networkType);
 
-  /// Create an Address from a given public key.
+  /// Create an Address from a given Public key.
   var recipient = new Address.fromPublicKey(
       "68f50e10e5b8be2b7e9ddb687a667d6e94dd55fe02b4aed8195f51f9a242558b",
       networkType);
 
-  List<Mosaic> mosaics = [XpxRelative(15)];
-
+  /// Create a new transaction type transfer
   var tx = new TransferTransaction(
+      // The maximum amount of time to include the transaction in the blockchain.
       new Deadline(hours: 1),
+      // The Address of the recipient account.
       recipient,
-      mosaics,
+      // The List of mosaic to be sent.
+      [XpxRelative(1)],
+      // The transaction message of 1024 characters.
       new Message.PlainMessage("From ProximaX Dart SDK"),
       networkType);
 
