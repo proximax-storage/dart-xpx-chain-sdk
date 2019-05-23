@@ -564,7 +564,6 @@ SignedTransaction _signTransactionWith(Transaction tx, Account a) {
   for (int i = 0; i < p.length; i++) f[i] = p[i];
 
   final ph = HEX.encode(f);
-  print(ph);
 
   final hash = createTransactionHash(ph);
 
