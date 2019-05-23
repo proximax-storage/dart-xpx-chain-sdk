@@ -20,8 +20,7 @@ void main() async {
       "68f50e10e5b8be2b7e9ddb687a667d6e94dd55fe02b4aed8195f51f9a242558b",
       networkType);
 
-  List<Mosaic> mosaics = List(1);
-  mosaics[0] = XpxRelative(10);
+  List<Mosaic> mosaics = [XpxRelative(15)];
 
   var tx = new TransferTransaction(
       new Deadline(hours: 1),
