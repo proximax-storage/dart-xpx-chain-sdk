@@ -5,3 +5,5 @@ final PrxNamespaceId =
 
 final XpxMosaicId =
     new UInt64DTO(Int64(481110499), Int64(231112638)).toBigInt();
+
+enum NamespaceType { Root, Sub }

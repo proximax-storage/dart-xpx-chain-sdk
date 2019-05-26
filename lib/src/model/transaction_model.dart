@@ -54,7 +54,6 @@ enum TransactionType {
 }
 
 _transactionTypeClass transactionTypeFromRaw(int value) {
-
   for (var t in transactionTypes) {
     if (t.raw == value) {
       return t;
@@ -359,7 +358,185 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
   @override
   Uint8List generateBytes() {
-    return _generateBytes(this);
+    final builder = new fb.Builder(initialSize: 0);
+
+    // Create message;
+    var payload = utf8.encode(this.message.payload);
+    final mp = this.message._type == 0 ? builder.writeListUint8(payload) : null;
+    final message = new MessageBufferBuilder(builder)
+      ..begin()
+      ..addType(this.message.type)
+      ..addPayloadOffset(mp);
+    final int m = message.finish();
+
+// Create mosaics
+    List<int> mb = new List(this.mosaics.length);
+    int i = 0;
+    this.mosaics.forEach((Mosaic mosaic) {
+      final id = builder.writeListUint32(fromBigInt(mosaic.id));
+      final amount = builder.writeListUint32(fromBigInt(mosaic.amount));
+
+      final ms = new MosaicBufferBuilder(builder)
+        ..begin()
+        ..addIdOffset(id)
+        ..addAmountOffset(amount);
+      mb[i] = ms.finish();
+      i++;
+    });
+
+    var recipient = base32.decode(this.recipient.address);
+
+    final vectors = this.generateVector(builder);
+
+    final rV = builder.writeListUint8(recipient);
+    final mV = builder.writeList(mb);
+
+    var txnBuilder = TransferTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(148 + 1 + (16 * this.mosaics.length) + payload.length)
+      ..addSignatureOffset(vectors['signatureV'])
+      ..addSignerOffset(vectors['signerV'])
+      ..addVersion(vectors['versionV'])
+      ..addType(this.type._hex)
+      ..addFeeOffset(vectors['feeV'])
+      ..addDeadlineOffset(vectors['deadlineV'])
+      ..addRecipientOffset(rV)
+      ..addNumMosaics(this.mosaics.length)
+      ..addMessageSize(payload.length + 1)
+      ..addMessageOffset(m)
+      ..addMosaicsOffset(mV);
+
+    final codedTransfer = txnBuilder.finish();
+
+    return transferTransactionSchema().serialize(builder.finish(codedTransfer));
+  }
+}
+
+class RegisterNamespaceTransaction extends AbstractTransaction
+    implements Transaction {
+  BigInt namespaceId;
+  NamespaceType namespaceType;
+  String namspaceName;
+  BigInt duration;
+  BigInt parentId;
+
+  RegisterNamespaceTransaction(
+      Deadline deadline, String namespaceName, BigInt duration, int networkType)
+      : super() {
+    if (namespaceName == null) {
+      throw ErrInvalidNamespaceName;
+    }
+
+    if (duration == null) {
+      throw ErrNullDuration;
+    }
+
+    this.version = RegisterNamespaceVersion;
+    this.deadline = deadline;
+    this.type = transactionTypeFromRaw(16718);
+    this.namespaceId = NewNamespaceIdFromName(namespaceName);
+    this.networkType = networkType;
+    this.namspaceName = namespaceName;
+    this.namespaceType = NamespaceType.Root;
+    this.duration = duration;
+  }
+
+  RegisterNamespaceTransaction.fromDTO(
+      _registerNamespaceTransactionInfoDTO value)
+      : super(
+            value._meta._height.toBigInt(),
+            value._meta._index,
+            value._meta._id,
+            value._meta._hash,
+            value._meta._merkleComponentHash) {
+    if (value == null) return;
+
+    this.type = transactionTypeFromRaw(value._transaction.Type);
+    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
+    this.signature = value._transaction.Signature;
+    this.networkType = ExtractNetworkType(value._transaction.Version);
+    this.version = ExtractVersion(value._transaction.Version);
+    this.fee = value._transaction.Fee.toBigInt();
+    this.signer = new PublicAccount.fromPublicKey(
+        value._transaction.Signer, this.networkType);
+
+    namespaceId = value._transaction._namespaceId.toBigInt();
+    namespaceType = value._transaction._namespaceType == 0
+        ? NamespaceType.Root
+        : NamespaceType.Sub;
+    namspaceName = value._transaction._name;
+    duration = value._transaction._duration.toBigInt();
+  }
+
+  static List<RegisterNamespaceTransaction> listFromDTO(
+      List<_transferTransactionInfoDTO> json) {
+    return json == null
+        ? new List<RegisterNamespaceTransaction>()
+        : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
+  }
+
+  String toString() {
+    return '{\n'
+        ' "abstractTransaction":${_abstractTransactionToString()}\n'
+        ' "namespaceId":${namespaceId},\n'
+        ' "namespaceType":${namespaceType},\n'
+        ' "namspaceName":${namspaceName},\n'
+        ' "duration":${duration},\n'
+        '}\n';
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['abstractTransaction'] = _abstractTransactionToJson();
+    data['namespaceId'] = this.namespaceId;
+    data['namespaceType'] = this.namespaceType;
+    data['namspaceName'] = this.namspaceName;
+    data['duration'] = duration;
+    return data;
+  }
+
+  @override
+  AbstractTransaction getAbstractTransaction() {
+    return _getAbstractTransaction();
+  }
+
+  @override
+  Uint8List generateBytes() {
+    final builder = new fb.Builder(initialSize: 0);
+    var u = FromBigInt(this.namespaceId);
+    var f = fromBigInt(BigInt.from(u[1].toInt())).elementAt(0);
+    var g = fromBigInt(BigInt.from(u[0].toInt())).elementAt(0);
+
+    final nV = builder.writeListUint32([g, f]);
+    int dV;
+    if (this.namespaceType == NamespaceType.Root) {
+      dV = builder.writeListUint32(fromBigInt(this.duration));
+    } else {
+      dV = builder.writeListUint32(fromBigInt(this.parentId));
+    }
+
+    final n = builder.writeString(this.namspaceName);
+
+    final vectors = this.generateVector(builder);
+
+    var txnBuilder = RegisterNamespaceTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(138 + this.namspaceName.length)
+      ..addSignatureOffset(vectors['signatureV'])
+      ..addSignerOffset(vectors['signerV'])
+      ..addVersion(vectors['versionV'])
+      ..addType(this.type._hex)
+      ..addFeeOffset(vectors['feeV'])
+      ..addDeadlineOffset(vectors['deadlineV'])
+      ..addNamespaceType(this.namespaceType.index)
+      ..addDurationParentIdOffset(dV)
+      ..addNamespaceIdOffset(nV)
+      ..addNamespaceNameSize(this.namspaceName.length)
+      ..addNamespaceNameOffset(n);
+    final codedNamespace = txnBuilder.finish();
+
+    return registerNamespaceTransactionSchema()
+        .serialize(builder.finish(codedNamespace));
   }
 }
 
@@ -493,60 +670,6 @@ class Deadline {
   }
 }
 
-Uint8List _generateBytes(TransferTransaction tx) {
-  final builder = new fb.Builder(initialSize: 0);
-
-  // Create message;
-  var payload = utf8.encode(tx.message.payload);
-  final mp = tx.message._type == 0 ? builder.writeListUint8(payload) : null;
-  final message = new MessageBufferBuilder(builder)
-    ..begin()
-    ..addType(tx.message.type)
-    ..addPayloadOffset(mp);
-  final int m = message.finish();
-
-// Create mosaics
-  List<int> mb = new List(tx.mosaics.length);
-  int i = 0;
-  tx.mosaics.forEach((Mosaic mosaic) {
-    final id = builder.writeListUint32(fromBigInt(mosaic.id));
-    final amount = builder.writeListUint32(fromBigInt(mosaic.amount));
-
-    final ms = new MosaicBufferBuilder(builder)
-      ..begin()
-      ..addIdOffset(id)
-      ..addAmountOffset(amount);
-    mb[i] = ms.finish();
-    i++;
-  });
-
-  var recipient = base32.decode(tx.recipient.address);
-
-  final vector = tx.generateVector(builder);
-
-  final rV = builder.writeListUint8(recipient);
-  final mV = builder.writeList(mb);
-
-  var txnBuilder = TransferTransactionBufferBuilder(builder)
-    ..begin()
-    ..addSize(148 + 1 + (16 * tx.mosaics.length) + payload.length)
-    ..addSignatureOffset(vector['signatureV'])
-    ..addSignerOffset(vector['signerV'])
-    ..addVersion(vector['versionV'])
-    ..addType(tx.type._hex)
-    ..addFeeOffset(vector['feeV'])
-    ..addDeadlineOffset(vector['deadlineV'])
-    ..addRecipientOffset(rV)
-    ..addNumMosaics(tx.mosaics.length)
-    ..addMessageSize(payload.length + 1)
-    ..addMessageOffset(m)
-    ..addMosaicsOffset(mV);
-
-  final codedTransfer = txnBuilder.finish();
-
-  return transferTransactionSchema().serialize(builder.finish(codedTransfer));
-}
-
 SignedTransaction _signTransactionWith(Transaction tx, Account a) {
   final s = a.account;
   var b = tx.generateBytes();
@@ -564,18 +687,38 @@ SignedTransaction _signTransactionWith(Transaction tx, Account a) {
 
   final hash = _createTransactionHash(ph);
 
-  return new SignedTransaction(tx.getAbstractTransaction().type.raw, ph.toUpperCase(), hash);
+  return new SignedTransaction(
+      tx.getAbstractTransaction().type.raw, ph.toUpperCase(), hash);
 }
 
-String _createTransactionHash(String p){
+String _createTransactionHash(String p) {
   final b = HEX.decode(p);
 
   List<int> sb = [];
 
-  sb.insertAll(0, b.getRange(4, 32+4));
+  sb.insertAll(0, b.getRange(4, 32 + 4));
   sb.insertAll(32, b.getRange(68, b.length));
 
   final r = crypto.HashesSha3_256(Uint8List.fromList(sb));
 
   return HEX.encode(r).toUpperCase();
+}
+
+Transaction deserializeDTO(dynamic value) {
+  try {
+    switch (value.runtimeType) {
+      case _transferTransactionInfoDTO:
+        return TransferTransaction.fromDTO(value);
+      case _registerNamespaceTransactionInfoDTO:
+        final f = new RegisterNamespaceTransaction.fromDTO(value);
+        return f;
+      default:
+        return null;
+    }
+  } catch (e, stack) {
+    throw new ApiException.withInner(
+        500, 'Exception during deserialization.', e, stack);
+  }
+  throw new ApiException(
+      500, 'Could not find a suitable class for deserialization');
 }

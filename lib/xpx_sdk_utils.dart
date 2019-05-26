@@ -37,12 +37,6 @@ int EndianLittleUint32(List<int> v) {
   return bdata.getUint32(0, Endian.little);
 }
 
-List<Int64> FromBigInt(BigInt v) {
-  final u64 = new Int64.fromBytesBigEndian(crypto.encodeBigInt(v));
-  final l = (u64 & 0xFFFFFFFF);
-  final r = (u64 >> 32);
-  return [l, r];
-}
 
 String _intToHex(int u) {
   var raw = integerToBytes(u, 4).reversed;
@@ -55,7 +49,8 @@ String bigIntegerToHex(BigInt id) {
   }
 
   var u = FromBigInt(id);
-  return _intToHex(u[1].toInt()) + _intToHex(u[0].toInt());
+
+  return _intToHex(fromBigInt(BigInt.from(u[1].toInt())).elementAt(0)) + _intToHex(u[0].toInt());
 }
 
 int bytesToInteger(List<int> bytes) {
@@ -103,9 +98,18 @@ List<int> fromBigInt(BigInt v) {
   if (v == null) {
     return [0, 0];
   }
+
   var u64 = v.toInt();
   List<int> r = List(2);
   r[0] = (u64 & 0xFFFFFFFF);
   r[1] = (u64 >> 32);
+
   return r;
+}
+
+List<Int64> FromBigInt(BigInt v) {
+  final u64 = new Int64.fromBytesBigEndian(crypto.encodeBigInt(v));
+  final l = (u64 & 0xFFFFFFFF);
+  final r = (u64 >> 32);
+  return [l, r];
 }

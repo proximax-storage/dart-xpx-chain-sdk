@@ -170,8 +170,7 @@ class TransactionRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, 'Transaction');
-      return TransferTransaction.fromDTO(resp as _transferTransactionInfoDTO);
+      return deserializeDTO(apiClient.deserialize(response.body, 'Transaction'));
     } else {
       return null;
     }

@@ -176,6 +176,9 @@ class ApiClient {
       switch (targetType) {
         case 'Transfer':
           return new _transferTransactionInfoDTO.fromJson(value);
+        case 'RegisterNamespace':
+          final v = new _registerNamespaceTransactionInfoDTO.fromJson(value);
+          return v;
         default:
           {
             Match match;

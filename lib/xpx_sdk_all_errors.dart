@@ -40,4 +40,6 @@ final ErrInvalidAddress = new Exception("wrong address");
 
 /// Transactions errors
 final ErrNullRecipient = new Exception("recipient must not be null");
-final ErrNullMessage = new Exception("message must not be null, but could be with empty payload");
+final ErrNullDuration = new Exception("duration must not be null");
+final ErrNullMessage =
+    new Exception("message must not be null, but could be with empty payload");
