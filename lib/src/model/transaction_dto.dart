@@ -1,6 +1,5 @@
 part of xpx_catapult_sdk;
 
-// ignore: unused_element
 class _abstractTransactionDTO  {
 	int Type;
   int Version;

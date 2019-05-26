@@ -117,7 +117,7 @@ class _transactionTypeClass {
 
 abstract class Transaction {
   AbstractTransaction getAbstractTransaction();
-  Uint8List generateBytes();
+  Uint8List _generateBytes();
 }
 
 // Transaction Info
@@ -185,7 +185,7 @@ class AbstractTransaction with TransactionInfo {
     this.merkleComponentHash = merkleComponentHash;
   }
 
-  Map<String, int> generateVector(fb.Builder builder) {
+  Map<String, int> _generateVector(fb.Builder builder) {
     final Map<String, int> data = new Map<String, int>();
     data['versionV'] = (this.networkType << 8) + this.version;
     data['signatureV'] = builder.writeListUint8(new Uint8List(64));
@@ -218,23 +218,20 @@ class AbstractTransaction with TransactionInfo {
   }
 
   bool IsUnconfirmed() {
-    return TransactionInfo != null && this.height.toInt() > 0;
+    return this.height.toInt() == 0 && this.hash == this.merkleComponentHash;
   }
 
   bool IsConfirmed() {
-    return TransactionInfo != null &&
-        this.height.toInt() == 0 &&
-        this.hash == this.merkleComponentHash;
+    return this.height.toInt() > 0;
   }
 
   bool HasMissingSignatures() {
-    return TransactionInfo != null &&
-        this.height.toInt() == 0 &&
+    return this.height.toInt() == 0 &&
         this.hash != this.merkleComponentHash;
   }
 
   bool IsUnannounced() {
-    return TransactionInfo == null;
+    return this == null;
   }
 
   @override
@@ -357,7 +354,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
   }
 
   @override
-  Uint8List generateBytes() {
+  Uint8List _generateBytes() {
     final builder = new fb.Builder(initialSize: 0);
 
     // Create message;
@@ -386,7 +383,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
     var recipient = base32.decode(this.recipient.address);
 
-    final vectors = this.generateVector(builder);
+    final vectors = this._generateVector(builder);
 
     final rV = builder.writeListUint8(recipient);
     final mV = builder.writeList(mb);
@@ -501,7 +498,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   }
 
   @override
-  Uint8List generateBytes() {
+  Uint8List _generateBytes() {
     final builder = new fb.Builder(initialSize: 0);
     var u = FromBigInt(this.namespaceId);
     var f = fromBigInt(BigInt.from(u[1].toInt())).elementAt(0);
@@ -517,7 +514,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 
     final n = builder.writeString(this.namspaceName);
 
-    final vectors = this.generateVector(builder);
+    final vectors = this._generateVector(builder);
 
     var txnBuilder = RegisterNamespaceTransactionBufferBuilder(builder)
       ..begin()
@@ -672,7 +669,7 @@ class Deadline {
 
 SignedTransaction _signTransactionWith(Transaction tx, Account a) {
   final s = a.account;
-  var b = tx.generateBytes();
+  var b = tx._generateBytes();
 
   final sb = Uint8List.fromList(b.getRange(100, b.length).toList());
 
