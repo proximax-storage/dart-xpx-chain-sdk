@@ -201,7 +201,7 @@ BigInt _generateId(String name, BigInt parentId) {
     b = crypto.encodeBigInt(parentId);
   }
 
-  b.reversed;
+  b = new Uint8List.fromList(b.reversed.toList());
 
   var result = sha3.New256();
 

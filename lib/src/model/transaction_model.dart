@@ -419,7 +419,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   BigInt duration;
   BigInt parentId;
 
-  RegisterNamespaceTransaction.root(
+  RegisterNamespaceTransaction.createRoot(
       Deadline deadline, String namespaceName, BigInt duration, int networkType)
       : super() {
     if (namespaceName == null) {
@@ -438,6 +438,27 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     this.namspaceName = namespaceName;
     this.namespaceType = NamespaceType.Root;
     this.duration = duration;
+  }
+
+  RegisterNamespaceTransaction.createSub(
+      Deadline deadline, String subnamespaceName, String rootNamespaceName, int networkType)
+      : super() {
+    if (subnamespaceName == null || subnamespaceName == "") {
+      throw ErrInvalidNamespaceName;
+    }
+
+    if (rootNamespaceName == null || rootNamespaceName == "") {
+      throw ErrInvalidNamespaceName;
+    }
+
+    this.version = RegisterNamespaceVersion;
+    this.deadline = deadline;
+    this.type = transactionTypeFromRaw(16718);
+    this.parentId = NewNamespaceIdFromName(rootNamespaceName);
+    this.namespaceId = _generateId(subnamespaceName, this.parentId);
+    this.networkType = networkType;
+    this.namspaceName = subnamespaceName;
+    this.namespaceType = NamespaceType.Sub;
   }
 
   RegisterNamespaceTransaction.fromDTO(
@@ -480,6 +501,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
         ' "namespaceId":${namespaceId},\n'
         ' "namespaceType":${namespaceType},\n'
         ' "namspaceName":${namspaceName},\n'
+        ' "parentId":${parentId},\n'
         ' "duration":${duration},\n'
         '}\n';
   }
@@ -511,7 +533,10 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     if (this.namespaceType == NamespaceType.Root) {
       dV = builder.writeListUint32(fromBigInt(this.duration));
     } else {
-      dV = builder.writeListUint32(fromBigInt(this.parentId));
+      var ua = FromBigInt(this.parentId);
+      var fa = fromBigInt(BigInt.from(ua[1].toInt())).elementAt(0);
+      var ga = fromBigInt(BigInt.from(ua[0].toInt())).elementAt(0);
+      dV = builder.writeListUint32([ga, fa]);
     }
 
     final n = builder.writeString(this.namspaceName);
@@ -533,7 +558,6 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       ..addNamespaceNameSize(this.namspaceName.length)
       ..addNamespaceNameOffset(n);
     final codedNamespace = txnBuilder.finish();
-
     return registerNamespaceTransactionSchema()
         .serialize(builder.finish(codedNamespace));
   }
