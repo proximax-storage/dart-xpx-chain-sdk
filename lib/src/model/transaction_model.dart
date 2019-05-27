@@ -419,7 +419,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   BigInt duration;
   BigInt parentId;
 
-  RegisterNamespaceTransaction(
+  RegisterNamespaceTransaction.root(
       Deadline deadline, String namespaceName, BigInt duration, int networkType)
       : super() {
     if (namespaceName == null) {
