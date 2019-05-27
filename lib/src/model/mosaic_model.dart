@@ -189,6 +189,23 @@ class MosaicProperties {
     divisibility = value[1].toBigInt().toInt();
     duration = value[2].toBigInt();
   }
+
+  MosaicProperties.fromDTO(List<_mosaicPropertiesDTO> value) {
+    if (json == null) throw ErrInvalidMosaicProperties;
+
+    if (value.length < 3) {
+      throw ErrInvalidMosaicProperties;
+    }
+
+    final flags = "00" + value[0].value.toBigInt().toRadixString(2);
+    final bitMapFlags = flags.substring(flags.length - 3, flags.length);
+
+    supplyMutable = bitMapFlags[2] == '1';
+    transferable = bitMapFlags[1] == '1';
+    levyMutable = bitMapFlags[0] == '1';
+    divisibility = value[1].value.toBigInt().toInt();
+    duration = value[2].value.toBigInt();
+  }
 }
 
 MosaicProperties NewMosaicProperties(bool SupplyMutable, Transferable,
@@ -225,4 +242,9 @@ BigInt _generateMosaicId(int nonce, String ownerPublicKey) {
   }
 
   return new UInt64DTO.fromJson(raw()).toBigInt();
+}
+
+int MosaicNonce() {
+  var random = Random.secure();
+  return random.nextInt(1000000000);
 }

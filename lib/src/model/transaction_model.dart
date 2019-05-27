@@ -6,8 +6,8 @@ var transactionTypes = <_transactionTypeClass>{
   _transactionTypeClass(TransactionType.MetadataAddress, 16701, 0x413d),
   _transactionTypeClass(TransactionType.MetadataMosaic, 16957, 0x423d),
   _transactionTypeClass(TransactionType.MetadataNamespace, 17213, 0x433d),
-  _transactionTypeClass(TransactionType.MosaicDefinition, 17230, 0x414d),
-  _transactionTypeClass(TransactionType.MosaicAlias, 16717, 0x434e),
+  _transactionTypeClass(TransactionType.MosaicDefinition, 16717, 0x414d),
+  _transactionTypeClass(TransactionType.MosaicAlias, 17230, 0x434e),
   _transactionTypeClass(TransactionType.MosaicSupplyChange, 16973, 0x424d),
   _transactionTypeClass(TransactionType.ModifyMultisig, 16725, 0x4155),
   _transactionTypeClass(TransactionType.ModifyContract, 16727, 0x4157),
@@ -52,6 +52,9 @@ enum TransactionType {
   SecretProof,
   MosaicAlias
 }
+
+var TimestampNemesisBlock =
+    new DateTime.fromMicrosecondsSinceEpoch(1459468800 * 1000);
 
 _transactionTypeClass transactionTypeFromRaw(int value) {
   for (var t in transactionTypes) {
@@ -226,8 +229,7 @@ class AbstractTransaction with TransactionInfo {
   }
 
   bool HasMissingSignatures() {
-    return this.height.toInt() == 0 &&
-        this.hash != this.merkleComponentHash;
+    return this.height.toInt() == 0 && this.hash != this.merkleComponentHash;
   }
 
   bool IsUnannounced() {
@@ -537,7 +539,142 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   }
 }
 
-// Message
+class MosaicDefinitionTransaction extends AbstractTransaction
+    implements Transaction {
+  MosaicProperties mosaicProperties;
+  BigInt duration;
+  int mosaicNonce;
+  BigInt mosaicId;
+
+  MosaicDefinitionTransaction(
+      Deadline deadline,
+      int nonce,
+      String ownerPublicKey,
+      MosaicProperties mosaicProps,
+      BigInt duration,
+      int networkType)
+      : super() {
+    if (ownerPublicKey.length != 64) {
+      throw ErrInvalidOwnerPublicKey;
+    }
+
+    if (mosaicProps == null) {
+      throw ErrNullMosaicProperties;
+    }
+
+    this.version = MosaicDefinitionVersion;
+    this.deadline = deadline;
+    this.type = transactionTypeFromRaw(17230);
+    this.networkType = networkType;
+    this.mosaicNonce = nonce;
+    this.mosaicProperties = mosaicProps;
+    // Signer of transaction must be the same with ownerPublicKey
+    this.mosaicId = NewMosaicIdFromNonceAndOwner(nonce, ownerPublicKey);
+    this.duration = duration;
+  }
+
+  MosaicDefinitionTransaction.fromDTO(
+      _mosaicDefinitionTransactionInfoDTO value)
+      : super(
+            value._meta._height.toBigInt(),
+            value._meta._index,
+            value._meta._id,
+            value._meta._hash,
+            value._meta._merkleComponentHash) {
+    if (value == null) return;
+
+    this.type = transactionTypeFromRaw(value._transaction.Type);
+    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
+    this.signature = value._transaction.Signature;
+    this.networkType = ExtractNetworkType(value._transaction.Version);
+    this.version = ExtractVersion(value._transaction.Version);
+    this.fee = value._transaction.Fee.toBigInt();
+    this.signer = new PublicAccount.fromPublicKey(
+        value._transaction.Signer, this.networkType);
+    this.mosaicProperties = new MosaicProperties.fromDTO(value._transaction._properties);
+    this.mosaicNonce = value._transaction._mosaicNonce;
+    this.mosaicId = value._transaction._mosaicId.toBigInt();
+  }
+
+  static List<MosaicDefinitionTransaction> listFromDTO(
+      List<_transferTransactionInfoDTO> json) {
+    return json == null
+        ? new List<RegisterNamespaceTransaction>()
+        : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
+  }
+
+  String toString() {
+    return '{\n'
+        ' "abstractTransaction":${_abstractTransactionToString()}\n'
+        ' "mosaicProperties":${mosaicProperties},\n'
+        ' "mosaicNonce":${mosaicNonce},\n'
+        ' "mosaicId":${mosaicId},\n'
+        '}\n';
+  }
+
+//  Map<String, dynamic> toJson() {
+//    final Map<String, dynamic> data = new Map<String, dynamic>();
+//    data['abstractTransaction'] = _abstractTransactionToJson();
+//    data['namespaceId'] = this.namespaceId;
+//    data['namespaceType'] = this.namespaceType;
+//    data['namspaceName'] = this.namspaceName;
+//    data['duration'] = duration;
+//    return data;
+//  }
+
+  @override
+  AbstractTransaction getAbstractTransaction() {
+    return _getAbstractTransaction();
+  }
+
+  @override
+  Uint8List _generateBytes() {
+    final builder = new fb.Builder(initialSize: 0);
+
+    int f = 0;
+    if (this.mosaicProperties.supplyMutable) {
+      f += 1;
+    }
+    if (this.mosaicProperties.transferable) {
+      f += 2;
+    }
+    if (this.mosaicProperties.levyMutable) {
+      f += 4;
+    }
+
+    var u = FromBigInt(this.mosaicId);
+    var v = fromBigInt(BigInt.from(u[1].toInt())).elementAt(0);
+    var g = fromBigInt(BigInt.from(u[0].toInt())).elementAt(0);
+
+    final mV = builder.writeListUint32([g, v]);
+
+    final dV = builder.writeListUint32(fromBigInt(this.duration));
+
+    final vectors = this._generateVector(builder);
+
+    var txnBuilder = MosaicDefinitionTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(120 + 24)
+      ..addSignatureOffset(vectors['signatureV'])
+      ..addSignerOffset(vectors['signerV'])
+      ..addVersion(vectors['versionV'])
+      ..addType(this.type._hex)
+      ..addFeeOffset(vectors['feeV'])
+      ..addDeadlineOffset(vectors['deadlineV'])
+      ..addMosaicNonce(this.mosaicNonce)
+      ..addMosaicIdOffset(mV)
+      ..addNumOptionalProperties(1)
+      ..addFlags(f)
+      ..addDivisibility(this.mosaicProperties.divisibility)
+      ..addIndicateDuration(2)
+      ..addDurationOffset(dV);
+    final codedNamespace = txnBuilder.finish();
+
+    return mosaicDefinitionTransactionSchema()
+        .serialize(builder.finish(codedNamespace));
+  }
+}
+
 class Message {
   int _type;
   String _payload;
@@ -580,57 +717,6 @@ class Message {
   }
 }
 
-class SignedTransaction {
-  int _transactionType;
-  String _payload;
-  String _hash;
-
-  SignedTransaction([int transactionType, String payload, String hash]) {
-    this._transactionType = transactionType;
-    this._payload = payload;
-    this._hash = hash;
-  }
-
-  int get transactionType => _transactionType;
-  set transactionType(int transactionType) =>
-      _transactionType = transactionType;
-  String get payload => _payload;
-  set payload(String payload) => _payload = payload;
-  String get hash => _hash;
-  set hash(String hash) => _hash = hash;
-
-  SignedTransaction.fromJson(Map<String, dynamic> json) {
-    _transactionType = json['transactionType'];
-    _payload = json['payload'];
-    _hash = json['hash'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['transactionType'] = this._transactionType;
-    data['payload'] = this._payload;
-    data['hash'] = this._hash;
-    return data;
-  }
-}
-
-// ignore: missing_return
-Transaction _deserializeTxn(dynamic value) {
-  switch (value.runtimeType) {
-    case _transferTransactionInfoDTO:
-      return TransferTransaction.fromDTO(value as _transferTransactionInfoDTO);
-    default:
-      {
-        if (value is List) {
-          value.map((v) => _deserializeTxn(v)).toList();
-        }
-      }
-  }
-}
-
-var TimestampNemesisBlock =
-    new DateTime.fromMicrosecondsSinceEpoch(1459468800 * 1000);
-
 class Deadline {
   DateTime time;
 
@@ -664,6 +750,40 @@ class Deadline {
 
   Deadline.fromUInt64DTO(UInt64DTO d) {
     this.time = new DateTime.fromMillisecondsSinceEpoch(d.toBigInt().toInt());
+  }
+}
+
+class SignedTransaction {
+  int _transactionType;
+  String _payload;
+  String _hash;
+
+  SignedTransaction([int transactionType, String payload, String hash]) {
+    this._transactionType = transactionType;
+    this._payload = payload;
+    this._hash = hash;
+  }
+
+  int get transactionType => _transactionType;
+  set transactionType(int transactionType) =>
+      _transactionType = transactionType;
+  String get payload => _payload;
+  set payload(String payload) => _payload = payload;
+  String get hash => _hash;
+  set hash(String hash) => _hash = hash;
+
+  SignedTransaction.fromJson(Map<String, dynamic> json) {
+    _transactionType = json['transactionType'];
+    _payload = json['payload'];
+    _hash = json['hash'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['transactionType'] = this._transactionType;
+    data['payload'] = this._payload;
+    data['hash'] = this._hash;
+    return data;
   }
 }
 
@@ -702,20 +822,17 @@ String _createTransactionHash(String p) {
 }
 
 Transaction deserializeDTO(dynamic value) {
-  try {
-    switch (value.runtimeType) {
-      case _transferTransactionInfoDTO:
-        return TransferTransaction.fromDTO(value);
-      case _registerNamespaceTransactionInfoDTO:
-        final f = new RegisterNamespaceTransaction.fromDTO(value);
-        return f;
-      default:
-        return null;
-    }
-  } catch (e, stack) {
-    throw new ApiException.withInner(
-        500, 'Exception during deserialization.', e, stack);
+  switch (value.runtimeType) {
+    case _transferTransactionInfoDTO:
+      return TransferTransaction.fromDTO(value);
+    case _registerNamespaceTransactionInfoDTO:
+      return RegisterNamespaceTransaction.fromDTO(value);
+    case _mosaicDefinitionTransactionInfoDTO:
+      return MosaicDefinitionTransaction.fromDTO(value);
+    default:
+      if (value is List) {
+        value.map((v) => deserializeDTO(v)).toList();
+      }
+      return null;
   }
-  throw new ApiException(
-      500, 'Could not find a suitable class for deserialization');
 }
