@@ -166,40 +166,42 @@ class ApiClient {
       throw new ApiException.withInner(
           500, 'Exception during deserialization.', e, stack);
     }
-    throw new ApiException(
-        500, 'Could not find a suitable class for deserialization');
+    return null;
   }
 
   dynamic _txnDeserialize(dynamic value, String targetType) {
+    if (targetType == 'List<Transaction>' ){
+      {
+        Match match;
+        if (value is List &&
+            (match = _RegList.firstMatch(targetType)) != null) {
+          var newTargetType = match[1];
+          return value.map((v) => _txnDeserialize(v, newTargetType)).toList();
+        } else if (value is Map &&
+            (match = _RegMap.firstMatch(targetType)) != null) {
+          var newTargetType = match[1];
+          return new Map.fromIterables(value.keys,
+              value.values.map((v) => _txnDeserialize(v, newTargetType)));
+        }
+      }
+    }
+
     targetType = mapTransaction(value);
     try {
       switch (targetType) {
         case 'Transfer':
           return new _transferTransactionInfoDTO.fromJson(value);
         case 'RegisterNamespace':
-          final v = new _registerNamespaceTransactionInfoDTO.fromJson(value);
-          return v;
+          return new _registerNamespaceTransactionInfoDTO.fromJson(value);
+        case 'MosaicDefinition':
+          return new _mosaicDefinitionTransactionInfoDTO.fromJson(value);
         default:
-          {
-            Match match;
-            if (value is List &&
-                (match = _RegList.firstMatch(targetType)) != null) {
-              var newTargetType = match[1];
-              return value.map((v) => _txnDeserialize(v, newTargetType)).toList();
-            } else if (value is Map &&
-                (match = _RegMap.firstMatch(targetType)) != null) {
-              var newTargetType = match[1];
-              return new Map.fromIterables(value.keys,
-                  value.values.map((v) => _txnDeserialize(v, newTargetType)));
-            }
-          }
+          return null;
       }
     } catch (e, stack) {
       throw new ApiException.withInner(
           500, 'Exception during deserialization.', e, stack);
     }
-    throw new ApiException(
-        500, 'Could not find a suitable class for deserialization');
   }
 
   dynamic deserialize(String jsonVal, String targetType) {
@@ -208,7 +210,7 @@ class ApiClient {
 
     var decodedJson = json.decode(jsonVal);
 
-    if (targetType == 'Transaction') {
+     if (targetType == 'Transaction' || targetType == 'List<Transaction>') {
       return _txnDeserialize(decodedJson, targetType);
     }
 

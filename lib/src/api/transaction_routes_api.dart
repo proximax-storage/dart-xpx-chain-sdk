@@ -218,7 +218,7 @@ class TransactionRoutesApi {
           (apiClient.deserialize(response.body, 'List<Transaction>') as List)
               .map((item) => item as Object)
               .toList();
-      return resp.map((t) => _deserializeTxn(t)).toList();
+      return resp.map((t) => deserializeDTO(t)).toList();
     } else {
       return null;
     }
