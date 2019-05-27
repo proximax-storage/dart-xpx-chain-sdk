@@ -440,8 +440,8 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     this.duration = duration;
   }
 
-  RegisterNamespaceTransaction.createSub(
-      Deadline deadline, String subnamespaceName, String rootNamespaceName, int networkType)
+  RegisterNamespaceTransaction.createSub(Deadline deadline,
+      String subnamespaceName, String rootNamespaceName, int networkType)
       : super() {
     if (subnamespaceName == null || subnamespaceName == "") {
       throw ErrInvalidNamespaceName;
@@ -485,7 +485,11 @@ class RegisterNamespaceTransaction extends AbstractTransaction
         ? NamespaceType.Root
         : NamespaceType.Sub;
     namspaceName = value._transaction._name;
-    duration = value._transaction._duration.toBigInt();
+    if (namespaceType == NamespaceType.Root) {
+      duration = value._transaction._duration.toBigInt();
+    } else {
+      parentId = value._transaction._parentId.toBigInt();
+    }
   }
 
   static List<RegisterNamespaceTransaction> listFromDTO(
@@ -512,6 +516,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     data['namespaceId'] = this.namespaceId;
     data['namespaceType'] = this.namespaceType;
     data['namspaceName'] = this.namspaceName;
+    data['parentId'] = parentId;
     data['duration'] = duration;
     return data;
   }
@@ -597,8 +602,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     this.duration = duration;
   }
 
-  MosaicDefinitionTransaction.fromDTO(
-      _mosaicDefinitionTransactionInfoDTO value)
+  MosaicDefinitionTransaction.fromDTO(_mosaicDefinitionTransactionInfoDTO value)
       : super(
             value._meta._height.toBigInt(),
             value._meta._index,
@@ -615,7 +619,8 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     this.fee = value._transaction.Fee.toBigInt();
     this.signer = new PublicAccount.fromPublicKey(
         value._transaction.Signer, this.networkType);
-    this.mosaicProperties = new MosaicProperties.fromDTO(value._transaction._properties);
+    this.mosaicProperties =
+        new MosaicProperties.fromDTO(value._transaction._properties);
     this.mosaicNonce = value._transaction._mosaicNonce;
     this.mosaicId = value._transaction._mosaicId.toBigInt();
   }

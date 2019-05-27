@@ -235,6 +235,7 @@ class _registerNamespaceTransactionDTO extends _abstractTransactionDTO {
   int _namespaceType;
   String _name;
   UInt64DTO _duration;
+  UInt64DTO _parentId;
 
   _registerNamespaceTransactionDTO(
       {String signature,
@@ -246,6 +247,7 @@ class _registerNamespaceTransactionDTO extends _abstractTransactionDTO {
       UInt64DTO namespaceId,
       int namespaceType,
       String name,
+      UInt64DTO parenId,
       UInt64DTO duration}) {
     this.Signature = signature;
     this.Signer = signer;
@@ -257,6 +259,7 @@ class _registerNamespaceTransactionDTO extends _abstractTransactionDTO {
     this._namespaceType = namespaceType;
     this._name = name;
     this._duration = duration;
+    this._parentId = UInt64DTO.fromJson(deadline);
   }
 
   _registerNamespaceTransactionDTO.fromJson(Map<String, dynamic> json) {
@@ -269,7 +272,11 @@ class _registerNamespaceTransactionDTO extends _abstractTransactionDTO {
     this._namespaceId = UInt64DTO.fromJson(json['namespaceId']);
     this._namespaceType = json['namespaceType'];
     this._name = json['name'];
-    this._duration = UInt64DTO.fromJson(json['duration']);
+    this._parentId =
+        json['parentId'] != null ? UInt64DTO.fromJson(json['parentId']) : null;
+
+    this._duration =
+        json['duration'] != null ? UInt64DTO.fromJson(json['duration']) : null;
   }
 
   Map<String, dynamic> toJson() {
