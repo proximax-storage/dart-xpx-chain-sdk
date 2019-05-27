@@ -16,15 +16,15 @@ void main() async {
       networkType);
 
   /// The namespace name.
-  var namespaceName = "dartnamespace";
+  var parentNamespace = "dartnamespace";
 
   /// Create a new transaction type RegisterNamespaceTransaction.
-  /// type root.
-  var tx = new RegisterNamespaceTransaction.root(
+  /// type RootNamespace.
+  var tx = new RegisterNamespaceTransaction.createRoot(
       // The maximum amount of time to include the transaction in the blockchain.
       new Deadline(hours: 1),
       // The namespace name.
-      namespaceName,
+      parentNamespace,
       // The duration of the namespace.
       new BigInt.from(1000),
       // The network type
@@ -34,5 +34,19 @@ void main() async {
   var restTx = await client.Transaction.AnnounceTransaction(stx);
   print(restTx);
   print("Hash: ${stx.hash}");
+  print("Signer: ${account.publicAccount.publicKey}");
+
+  /// Create a new transaction type RegisterNamespaceTransaction.
+  /// type SubNamespace.
+  var tx2 = new RegisterNamespaceTransaction.createSub(
+      new Deadline(hours: 1),
+      "ven",
+      parentNamespace,
+      networkType);
+  var stx2 = account.sign(tx2);
+
+  var restTx2 = await client.Transaction.AnnounceTransaction(stx2);
+  print(restTx2);
+  print("Hash: ${stx2.hash}");
   print("Signer: ${account.publicAccount.publicKey}");
 }
