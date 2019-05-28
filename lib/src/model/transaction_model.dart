@@ -529,19 +529,13 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   @override
   Uint8List _generateBytes() {
     final builder = new fb.Builder(initialSize: 0);
-    var u = FromBigInt(this.namespaceId);
-    var f = fromBigInt(BigInt.from(u[1].toInt())).elementAt(0);
-    var g = fromBigInt(BigInt.from(u[0].toInt())).elementAt(0);
 
-    final nV = builder.writeListUint32([g, f]);
+    final nV = builder.writeListUint32(FromBigInt(this.namespaceId));
     int dV;
     if (this.namespaceType == NamespaceType.Root) {
       dV = builder.writeListUint32(fromBigInt(this.duration));
     } else {
-      var ua = FromBigInt(this.parentId);
-      var fa = fromBigInt(BigInt.from(ua[1].toInt())).elementAt(0);
-      var ga = fromBigInt(BigInt.from(ua[0].toInt())).elementAt(0);
-      dV = builder.writeListUint32([ga, fa]);
+      dV = builder.writeListUint32(FromBigInt(this.parentId));
     }
 
     final n = builder.writeString(this.namspaceName);
@@ -671,11 +665,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       f += 4;
     }
 
-    var u = FromBigInt(this.mosaicId);
-    var v = fromBigInt(BigInt.from(u[1].toInt())).elementAt(0);
-    var g = fromBigInt(BigInt.from(u[0].toInt())).elementAt(0);
-
-    final mV = builder.writeListUint32([g, v]);
+    final mV = builder.writeListUint32(FromBigInt(this.mosaicId));
 
     final dV = builder.writeListUint32(fromBigInt(this.duration));
 
