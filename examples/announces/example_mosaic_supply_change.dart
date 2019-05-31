@@ -16,16 +16,16 @@ void main() async {
       networkType);
 
   /// Create a Mosaic Supply Change transaction.
-  var mosaicDefinition = new MosaicSupplyChangeTransaction(
+  var mosaicSupplyChange = new MosaicSupplyChangeTransaction(
       // The maximum amount of time to include the transaction in the blockchain.
       new Deadline(hours: 1),
-      MosaicSupplyType.Increase,
-      BigInt.from(7625074121122579335),
-      new BigInt.from(100000000000),
+      Increase,
+      BigInt.from(6392874329628787772),
+      new BigInt.from(10000),
       // The network type
       networkType);
 
-  var stx = account.sign(mosaicDefinition);
+  var stx = account.sign(mosaicSupplyChange);
 
   var restTx = await client.Transaction.AnnounceTransaction(stx);
   print(restTx);
