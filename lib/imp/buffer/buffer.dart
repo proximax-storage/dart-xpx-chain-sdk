@@ -10,6 +10,7 @@ part 'package:xpx_catapult_sdk/imp/buffer/schema/buffer_schema.dart';
 part 'package:xpx_catapult_sdk/imp/buffer/schema/buffer_schema_transfer.dart';
 part 'package:xpx_catapult_sdk/imp/buffer/schema/buffer_schema_register_namespace.dart';
 part 'package:xpx_catapult_sdk/imp/buffer/schema/buffer_schema_mosaic_definition.dart';
+part 'package:xpx_catapult_sdk/imp/buffer/schema/buffer_schema_mosaic_supply_change.dart';
 
 part 'transactions/aggregate_transaction_buffer.dart';
 part 'transactions/alias_transaction_buffer.dart';

@@ -1,7 +1,5 @@
 part of xpx_catapult_sdk;
 
-const Decrease = 0, Increase = 1;
-
 // Create xpx with using xpx as unit
 Mosaic Xpx(int amount) {
   return new Mosaic(XpxMosaicId, new BigInt.from(amount));

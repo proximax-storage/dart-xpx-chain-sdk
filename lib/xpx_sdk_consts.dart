@@ -7,3 +7,8 @@ final XpxMosaicId =
     new UInt64DTO(Int64(481110499), Int64(231112638)).toBigInt();
 
 enum NamespaceType { Root, Sub }
+
+enum MosaicSupplyType { Decrease, Increase }
+
+const Decrease = MosaicSupplyType.Decrease,
+    Increase = MosaicSupplyType.Increase;

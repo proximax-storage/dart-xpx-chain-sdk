@@ -195,6 +195,8 @@ class ApiClient {
           return new _registerNamespaceTransactionInfoDTO.fromJson(value);
         case 'MosaicDefinition':
           return new _mosaicDefinitionTransactionInfoDTO.fromJson(value);
+        case 'MosaicSupplyChange':
+          return new _mosaicSupplyChangeTransactionInfoDTO.fromJson(value);
         default:
           return null;
       }

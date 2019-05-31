@@ -118,6 +118,118 @@ class _transactionTypeClass {
   _transactionTypeClass([this._transactionType, this._raw, this._hex]);
 }
 
+class Message {
+  int _type;
+  String _payload;
+
+  Message({int type, String payload}) {
+    this._type = type;
+    this._payload = payload;
+  }
+
+  int get type => _type;
+  set type(int type) => _type = type;
+  String get payload => _payload;
+  set payload(String payload) => _payload = payload;
+
+  Message.fromDTO(_messageDTO value) {
+    if (value?._payload == null) {
+      return;
+    }
+
+    var b = HEX.decode(value._payload);
+    _type = value._type;
+    _payload = utf8.decode(b);
+  }
+
+  Message.PlainMessage(String payload) {
+    this._payload = payload;
+    this._type = 0;
+  }
+
+  @override
+  String toString() {
+    return '${toJson()}';
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Type'] = this._type;
+    data['Payload'] = this._payload;
+    return data;
+  }
+}
+
+class Deadline {
+  DateTime time;
+
+  Deadline(
+      {int days = 0,
+      int hours = 0,
+      int minutes = 0,
+      int seconds = 0,
+      int milliseconds = 0,
+      int microseconds = 0}) {
+    var d = Duration(
+        days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        milliseconds: milliseconds,
+        microseconds: microseconds);
+    time = new DateTime.now().add(d);
+  }
+
+  @override
+  String toString() {
+    return '${time}';
+  }
+
+  Int64 GetInstant() {
+    var x = Int64((this.time.microsecondsSinceEpoch * 1000) ~/ 1e6);
+    var y = Int64((TimestampNemesisBlock.microsecondsSinceEpoch * 1e+6) ~/ 1e6);
+    return x - y;
+  }
+
+  Deadline.fromUInt64DTO(UInt64DTO d) {
+    this.time = new DateTime.fromMillisecondsSinceEpoch(d.toBigInt().toInt());
+  }
+}
+
+class SignedTransaction {
+  int _transactionType;
+  String _payload;
+  String _hash;
+
+  SignedTransaction([int transactionType, String payload, String hash]) {
+    this._transactionType = transactionType;
+    this._payload = payload;
+    this._hash = hash;
+  }
+
+  int get transactionType => _transactionType;
+  set transactionType(int transactionType) =>
+      _transactionType = transactionType;
+  String get payload => _payload;
+  set payload(String payload) => _payload = payload;
+  String get hash => _hash;
+  set hash(String hash) => _hash = hash;
+
+  SignedTransaction.fromJson(Map<String, dynamic> json) {
+    _transactionType = json['transactionType'];
+    _payload = json['payload'];
+    _hash = json['hash'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['transactionType'] = this._transactionType;
+    data['payload'] = this._payload;
+    data['hash'] = this._hash;
+    return data;
+  }
+}
+
 abstract class Transaction {
   AbstractTransaction getAbstractTransaction();
   Uint8List _generateBytes();
@@ -694,115 +806,112 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   }
 }
 
-class Message {
-  int _type;
-  String _payload;
+class MosaicSupplyChangeTransaction extends AbstractTransaction
+    implements Transaction {
+  MosaicSupplyType mosaicSupplyType;
+  BigInt delta;
+  BigInt mosaicId;
 
-  Message({int type, String payload}) {
-    this._type = type;
-    this._payload = payload;
-  }
-
-  int get type => _type;
-  set type(int type) => _type = type;
-  String get payload => _payload;
-  set payload(String payload) => _payload = payload;
-
-  Message.fromDTO(_messageDTO value) {
-    if (value?._payload == null) {
-      return;
+  MosaicSupplyChangeTransaction(Deadline deadline, MosaicSupplyType supplyType,
+      BigInt mosaicId, BigInt delta, int networkType)
+      : super() {
+    if (mosaicId == null) {
+      throw ErrNullMosaicId;
     }
 
-    var b = HEX.decode(value._payload);
-    _type = value._type;
-    _payload = utf8.decode(b);
+    if (supplyType == null) {
+      throw ErrNullSupplyType;
+    }
+
+    this.version = MosaicSupplyChangeVersion;
+    this.deadline = deadline;
+    this.type = transactionTypeFromRaw(16973);
+    this.networkType = networkType;
+    this.mosaicId = mosaicId;
+    this.mosaicSupplyType = supplyType;
+    this.delta = delta;
   }
 
-  Message.PlainMessage(String payload) {
-    this._payload = payload;
-    this._type = 0;
+  MosaicSupplyChangeTransaction.fromDTO(
+      _mosaicSupplyChangeTransactionInfoDTO value)
+      : super(
+            value._meta._height.toBigInt(),
+            value._meta._index,
+            value._meta._id,
+            value._meta._hash,
+            value._meta._merkleComponentHash) {
+    if (value == null) return;
+
+    this.type = transactionTypeFromRaw(value._transaction.Type);
+    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
+    this.signature = value._transaction.Signature;
+    this.networkType = ExtractNetworkType(value._transaction.Version);
+    this.version = ExtractVersion(value._transaction.Version);
+    this.fee = value._transaction.Fee.toBigInt();
+    this.signer = new PublicAccount.fromPublicKey(
+        value._transaction.Signer, this.networkType);
+    this.mosaicSupplyType =
+        value._transaction._direction == 0 ? Decrease : Increase;
+    this.mosaicId = value._transaction._mosaicId.toBigInt();
+    this.delta = value._transaction._delta.toBigInt();
   }
 
-  @override
+  static List<MosaicSupplyChangeTransaction> listFromDTO(
+      List<_transferTransactionInfoDTO> json) {
+    return json == null
+        ? new List<MosaicSupplyChangeTransaction>()
+        : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
+  }
+
   String toString() {
-    return '${toJson()}';
+    return '{\n'
+        ' "abstractTransaction":${_abstractTransactionToString()}\n'
+        ' "mosaicId":${mosaicId},\n'
+        ' "mosaicSupplyType":${mosaicSupplyType},\n'
+        ' "delta":${delta},\n'
+        '}\n';
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Type'] = this._type;
-    data['Payload'] = this._payload;
+    data['abstractTransaction'] = _abstractTransactionToJson();
+    data['mosaicId'] = this.mosaicId;
+    data['mosaicSupplyType'] = this.mosaicSupplyType;
+    data['delta'] = this.delta;
     return data;
-  }
-}
-
-class Deadline {
-  DateTime time;
-
-  Deadline(
-      {int days = 0,
-      int hours = 0,
-      int minutes = 0,
-      int seconds = 0,
-      int milliseconds = 0,
-      int microseconds = 0}) {
-    var d = Duration(
-        days: days,
-        hours: hours,
-        minutes: minutes,
-        seconds: seconds,
-        milliseconds: milliseconds,
-        microseconds: microseconds);
-    time = new DateTime.now().add(d);
   }
 
   @override
-  String toString() {
-    return '${time}';
+  AbstractTransaction getAbstractTransaction() {
+    return _getAbstractTransaction();
   }
 
-  Int64 GetInstant() {
-    var x = Int64((this.time.microsecondsSinceEpoch * 1000) ~/ 1e6);
-    var y = Int64((TimestampNemesisBlock.microsecondsSinceEpoch * 1e+6) ~/ 1e6);
-    return x - y;
-  }
+  @override
+  Uint8List _generateBytes() {
+    final builder = new fb.Builder(initialSize: 0);
 
-  Deadline.fromUInt64DTO(UInt64DTO d) {
-    this.time = new DateTime.fromMillisecondsSinceEpoch(d.toBigInt().toInt());
-  }
-}
+    final mV = builder.writeListUint32(FromBigInt(this.mosaicId));
 
-class SignedTransaction {
-  int _transactionType;
-  String _payload;
-  String _hash;
+    final dV = builder.writeListUint32(fromBigInt(this.delta));
 
-  SignedTransaction([int transactionType, String payload, String hash]) {
-    this._transactionType = transactionType;
-    this._payload = payload;
-    this._hash = hash;
-  }
+    final vectors = this._generateVector(builder);
 
-  int get transactionType => _transactionType;
-  set transactionType(int transactionType) =>
-      _transactionType = transactionType;
-  String get payload => _payload;
-  set payload(String payload) => _payload = payload;
-  String get hash => _hash;
-  set hash(String hash) => _hash = hash;
+    var txnBuilder = MosaicSupplyChangeTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(120 + 24)
+      ..addSignatureOffset(vectors['signatureV'])
+      ..addSignerOffset(vectors['signerV'])
+      ..addVersion(vectors['versionV'])
+      ..addType(this.type._hex)
+      ..addFeeOffset(vectors['feeV'])
+      ..addDeadlineOffset(vectors['deadlineV'])
+      ..addMosaicIdOffset(mV)
+      ..addDirection(this.mosaicSupplyType.index)
+      ..addDeadlineOffset(dV);
+    final codedNamespace = txnBuilder.finish();
 
-  SignedTransaction.fromJson(Map<String, dynamic> json) {
-    _transactionType = json['transactionType'];
-    _payload = json['payload'];
-    _hash = json['hash'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['transactionType'] = this._transactionType;
-    data['payload'] = this._payload;
-    data['hash'] = this._hash;
-    return data;
+    return mosaicSupplyChangeTransactionSchema()
+        .serialize(builder.finish(codedNamespace));
   }
 }
 
@@ -848,6 +957,8 @@ Transaction deserializeDTO(dynamic value) {
       return RegisterNamespaceTransaction.fromDTO(value);
     case _mosaicDefinitionTransactionInfoDTO:
       return MosaicDefinitionTransaction.fromDTO(value);
+    case _mosaicSupplyChangeTransactionInfoDTO:
+      return MosaicSupplyChangeTransaction.fromDTO(value);
     default:
       if (value is List) {
         value.map((v) => deserializeDTO(v)).toList();
