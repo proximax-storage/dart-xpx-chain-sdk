@@ -699,7 +699,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
     this.version = MosaicDefinitionVersion;
     this.deadline = deadline;
-    this.type = transactionTypeFromRaw(17230);
+    this.type = transactionTypeFromRaw(16717);
     this.networkType = networkType;
     this.mosaicNonce = nonce;
     this.mosaicProperties = mosaicProps;
@@ -864,10 +864,11 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   }
 
   String toString() {
+    String _supplyType = mosaicSupplyType.index == 0 ? "Decrease" : "Increase";
     return '{\n'
         ' "abstractTransaction":${_abstractTransactionToString()}\n'
         ' "mosaicId":${mosaicId},\n'
-        ' "mosaicSupplyType":${mosaicSupplyType},\n'
+        ' "mosaicSupplyType":${_supplyType},\n'
         ' "delta":${delta},\n'
         '}\n';
   }
@@ -876,7 +877,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['abstractTransaction'] = _abstractTransactionToJson();
     data['mosaicId'] = this.mosaicId;
-    data['mosaicSupplyType'] = this.mosaicSupplyType;
+    data['mosaicSupplyType'] = this.mosaicSupplyType.index;
     data['delta'] = this.delta;
     return data;
   }
@@ -898,7 +899,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 
     var txnBuilder = MosaicSupplyChangeTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(120 + 24)
+      ..addSize(137)
       ..addSignatureOffset(vectors['signatureV'])
       ..addSignerOffset(vectors['signerV'])
       ..addVersion(vectors['versionV'])
@@ -907,18 +908,17 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
       ..addDeadlineOffset(vectors['deadlineV'])
       ..addMosaicIdOffset(mV)
       ..addDirection(this.mosaicSupplyType.index)
-      ..addDeadlineOffset(dV);
-    final codedNamespace = txnBuilder.finish();
+      ..addDeltaOffset(dV);
+    final codedMosaicSupply = txnBuilder.finish();
 
     return mosaicSupplyChangeTransactionSchema()
-        .serialize(builder.finish(codedNamespace));
+        .serialize(builder.finish(codedMosaicSupply));
   }
 }
 
 SignedTransaction _signTransactionWith(Transaction tx, Account a) {
   final s = a.account;
   var b = tx._generateBytes();
-
   final sb = Uint8List.fromList(b.getRange(100, b.length).toList());
 
   final signature = s.sign(sb);
