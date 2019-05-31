@@ -196,6 +196,29 @@ class Deadline {
   }
 }
 
+// AggregateTransactionCosignature
+class AggregateTransactionCosignature {
+  String _signature;
+  PublicAccount _signer;
+
+  AggregateTransactionCosignature(this._signature, this._signer);
+
+  @override
+  String toString() {
+    return '{\n'
+        '\t"signature": $_signature\n'
+        '\t"signer": $_signer\n'
+        '}\n';
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['signature'] = this._signature;
+    data['signer'] = this._signer;
+    return data;
+  }
+}
+
 class SignedTransaction {
   int _transactionType;
   String _payload;
