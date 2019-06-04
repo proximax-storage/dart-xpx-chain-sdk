@@ -825,6 +825,11 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   }
 
   @override
+  int _size() {
+    return MosaicDefinitionTransactionSize;
+  }
+
+  @override
   AbstractTransaction getAbstractTransaction() {
     return _getAbstractTransaction();
   }
@@ -852,7 +857,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
     var txnBuilder = MosaicDefinitionTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(120 + 24)
+      ..addSize(this._size())
       ..addSignatureOffset(vectors['signatureV'])
       ..addSignerOffset(vectors['signerV'])
       ..addVersion(vectors['versionV'])
@@ -870,12 +875,6 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
     return mosaicDefinitionTransactionSchema()
         .serialize(builder.finish(codedNamespace));
-  }
-
-  @override
-  int _size() {
-    // TODO: implement _size
-    return null;
   }
 }
 
@@ -956,6 +955,11 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   }
 
   @override
+  int _size() {
+    return MosaicSupplyChangeTransactionSize;
+  }
+
+  @override
   AbstractTransaction getAbstractTransaction() {
     return _getAbstractTransaction();
   }
@@ -972,7 +976,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 
     var txnBuilder = MosaicSupplyChangeTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(137)
+      ..addSize(this._size())
       ..addSignatureOffset(vectors['signatureV'])
       ..addSignerOffset(vectors['signerV'])
       ..addVersion(vectors['versionV'])
@@ -986,12 +990,6 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 
     return mosaicSupplyChangeTransactionSchema()
         .serialize(builder.finish(codedMosaicSupply));
-  }
-
-  @override
-  int _size() {
-    // TODO: implement _size
-    return null;
   }
 }
 
