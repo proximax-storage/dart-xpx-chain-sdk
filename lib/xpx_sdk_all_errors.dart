@@ -44,3 +44,5 @@ final ErrNullRecipient = new Exception("recipient must not be null");
 final ErrNullDuration = new Exception("duration must not be null");
 final ErrNullMessage =
     new Exception("message must not be null, but could be with empty payload");
+final ErrNullInnerTransactions = new Exception("innerTransactions must not be null");
+final ErrTransactionSigner = new Exception("some of the transaction does not have a signer");
