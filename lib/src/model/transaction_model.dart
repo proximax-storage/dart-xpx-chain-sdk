@@ -737,8 +737,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 
   @override
   int _size() {
-    // TODO: implement _size
-    return null;
+    return RegisterNamespaceHeaderSize + this.namspaceName.length;
   }
 }
 
