@@ -282,6 +282,7 @@ class AggregateTransactionCosignature {
 abstract class Transaction {
   AbstractTransaction getAbstractTransaction();
   Uint8List _generateBytes();
+  int _size();
 }
 
 // Transaction Info
@@ -403,10 +404,11 @@ class AbstractTransaction with TransactionInfo {
   }
 
   String _abstractTransactionToString() {
+    final t = sprintf("%02x", [transactionTypes.lookup(type)?.hex]);
     return '{\n'
         '\t"transactionInfo":${_transactionInfoToString()}\n'
         '\t"networkType": $networkType,\n'
-        '\t"type": ${transactionTypes.lookup(type)?._raw},\n'
+        '\t"type": $t,\n'
         '\t"version": $version,\n'
         '\t"fee": $fee,\n'
         '\t"deadline": $deadline,\n'
@@ -511,6 +513,17 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     return data;
   }
 
+  int messageSize() {
+    return this.message.payload.length + 1;
+  }
+
+  @override
+  int _size() {
+    return TransferHeaderSize +
+        (MosaicSize + AmountSize) * this.mosaics.length +
+        this.messageSize();
+  }
+
   @override
   AbstractTransaction getAbstractTransaction() {
     return _getAbstractTransaction();
@@ -553,7 +566,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
     var txnBuilder = TransferTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(148 + 1 + (16 * this.mosaics.length) + payload.length)
+      ..addSize(this._size())
       ..addSignatureOffset(vectors['signatureV'])
       ..addSignerOffset(vectors['signerV'])
       ..addVersion(vectors['versionV'])
@@ -721,6 +734,12 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     return registerNamespaceTransactionSchema()
         .serialize(builder.finish(codedNamespace));
   }
+
+  @override
+  int _size() {
+    // TODO: implement _size
+    return null;
+  }
 }
 
 class MosaicDefinitionTransaction extends AbstractTransaction
@@ -796,15 +815,14 @@ class MosaicDefinitionTransaction extends AbstractTransaction
         '}\n';
   }
 
-//  Map<String, dynamic> toJson() {
-//    final Map<String, dynamic> data = new Map<String, dynamic>();
-//    data['abstractTransaction'] = _abstractTransactionToJson();
-//    data['namespaceId'] = this.namespaceId;
-//    data['namespaceType'] = this.namespaceType;
-//    data['namspaceName'] = this.namspaceName;
-//    data['duration'] = duration;
-//    return data;
-//  }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['abstractTransaction'] = _abstractTransactionToJson();
+    data['mosaicProperties'] = this.mosaicProperties;
+    data['mosaicNonce'] = this.mosaicNonce;
+    data['mosaicId'] = this.mosaicId;
+    return data;
+  }
 
   @override
   AbstractTransaction getAbstractTransaction() {
@@ -852,6 +870,12 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
     return mosaicDefinitionTransactionSchema()
         .serialize(builder.finish(codedNamespace));
+  }
+
+  @override
+  int _size() {
+    // TODO: implement _size
+    return null;
   }
 }
 
@@ -963,6 +987,124 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
     return mosaicSupplyChangeTransactionSchema()
         .serialize(builder.finish(codedMosaicSupply));
   }
+
+  @override
+  int _size() {
+    // TODO: implement _size
+    return null;
+  }
+}
+
+class AggregateTransaction extends AbstractTransaction implements Transaction {
+  List<Transaction> innerTransactions;
+  List<AggregateTransactionCosignature> cosignatures;
+
+  AggregateTransaction(
+      Deadline deadline, List<Transaction> innerTxs, int networkType)
+      : super() {
+    if (innerTxs == null) {
+      throw ErrNullInnerTransactions;
+    }
+
+    this.version = MosaicSupplyChangeVersion;
+    this.deadline = deadline;
+    this.type = transactionTypeFromRaw(16705);
+    this.networkType = networkType;
+    this.innerTransactions = innerTxs;
+  }
+
+//  AggregateTransaction.fromDTO(
+//      _mosaicSupplyChangeTransactionInfoDTO value)
+//      : super(
+//      value._meta._height.toBigInt(),
+//      value._meta._index,
+//      value._meta._id,
+//      value._meta._hash,
+//      value._meta._merkleComponentHash) {
+//    if (value == null) return;
+//
+//    this.type = transactionTypeFromRaw(value._transaction.Type);
+//    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
+//    this.signature = value._transaction.Signature;
+//    this.networkType = ExtractNetworkType(value._transaction.Version);
+//    this.version = ExtractVersion(value._transaction.Version);
+//    this.fee = value._transaction.Fee.toBigInt();
+//    this.signer = new PublicAccount.fromPublicKey(
+//        value._transaction.Signer, this.networkType);
+//    this.mosaicSupplyType =
+//    value._transaction._direction == 0 ? Decrease : Increase;
+//    this.mosaicId = value._transaction._mosaicId.toBigInt();
+//    this.delta = value._transaction._delta.toBigInt();
+//  }
+
+  static List<AggregateTransaction> listFromDTO(
+      List<_transferTransactionInfoDTO> json) {
+    return json == null
+        ? new List<MosaicSupplyChangeTransaction>()
+        : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
+  }
+
+  String toString() {
+    return '{\n'
+        ' "abstractTransaction":${_abstractTransactionToString()}\n'
+        ' "innerTransactions":${innerTransactions},\n'
+        ' "cosignatures":${cosignatures},\n'
+        '}\n';
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['abstractTransaction'] = _abstractTransactionToJson();
+    data['innerTransactions'] = this.innerTransactions;
+    data['cosignatures'] = this.cosignatures;
+    return data;
+  }
+
+  @override
+  int _size() {
+    int sizeOfInnerTransactions = 0;
+    this.innerTransactions.forEach((itx) {
+      sizeOfInnerTransactions += itx._size() - SignatureSize - MaxFeeSize - DeadLineSize;
+    });
+    return AggregateBondedHeader + sizeOfInnerTransactions;
+  }
+
+  @override
+  AbstractTransaction getAbstractTransaction() {
+    return _getAbstractTransaction();
+  }
+
+  @override
+  Uint8List _generateBytes() {
+    final builder = new fb.Builder(initialSize: 0);
+
+    // InnerTransactions
+    List<int> txsb = [];
+    this.innerTransactions.forEach((Transaction itx) {
+      final txb = toAggregateTransactionBytes(itx);
+      txsb.addAll(txb);
+    });
+
+    final tV = builder.writeListUint8(Uint8List.fromList(txsb));
+
+    final vectors = this._generateVector(builder);
+
+    var txnBuilder = AggregateTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(this._size())
+      ..addSignatureOffset(vectors['signatureV'])
+      ..addSignerOffset(vectors['signerV'])
+      ..addVersion(vectors['versionV'])
+      ..addType(this.type._hex)
+      ..addFeeOffset(vectors['feeV'])
+      ..addDeadlineOffset(vectors['deadlineV'])
+      ..addTransactionsSize(txsb.length)
+      ..addTransactionsOffset(tV);
+
+    final codedTransfer = txnBuilder.finish();
+
+    return aggregateTransactionSchema().serialize(builder.finish(codedTransfer));
+  }
 }
 
 SignedTransaction _signTransactionWith(Transaction tx, Account a) {
@@ -996,6 +1138,31 @@ String _createTransactionHash(String p) {
   final r = crypto.HashesSha3_256(Uint8List.fromList(sb));
 
   return HEX.encode(r).toUpperCase();
+}
+
+Uint8List toAggregateTransactionBytes(Transaction tx) {
+  if (tx.getAbstractTransaction().signer == null) {
+    throw ErrTransactionSigner;
+  }
+
+  final sb = HEX.decode(tx.getAbstractTransaction().signer.publicKey);
+
+  final b = tx._generateBytes();
+
+  List<int> rB = [];
+  rB.insertAll(0, [0, 0, 0, 0]);
+  rB.insertAll(4, sb.getRange(0, 32));
+  rB.insertAll(32 + 4, b.getRange(100, 104));
+  rB.insertAll(32 + 4 + 4,
+      b.getRange(100 + 2 + 2 + 16, 100 + 2 + 2 + 16 + b.length - 120));
+
+  final s = crypto.encodeBigInt(BigInt.from(b.length - 64 - 16));
+
+  var sr = s.reversed;
+
+  rB.replaceRange(0, s.length, sr);
+
+  return Uint8List.fromList(rB);
 }
 
 Transaction deserializeDTO(dynamic value) {
