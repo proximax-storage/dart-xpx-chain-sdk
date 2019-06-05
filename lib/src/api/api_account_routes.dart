@@ -538,7 +538,7 @@ class AccountRoutesApi {
   /// Get unconfirmed transactions
   ///
   /// Gets the List of transactions not included in a block where an account is the sender or receiver.
-  Future<List<Object>> _unconfirmedTransactions(String publicKey,
+  Future<List<Transaction>> UnconfirmedTransactions(String publicKey,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
@@ -586,9 +586,11 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (_apiClient.deserialize(response.body, 'List<Object>') as List)
+      final resp =
+      (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
           .map((item) => item as Object)
           .toList();
+      return resp.map((t) => deserializeDTO(t)).toList();
     } else {
       return null;
     }
