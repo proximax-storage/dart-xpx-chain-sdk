@@ -418,7 +418,7 @@ class AccountRoutesApi {
   ///
   /// Gets an List of [aggregate bonded transactions] where the account is
   /// the sender or requires to cosign the transaction.
-  Future<List<Object>> _partialTransactions(String publicKey,
+  Future<List<Transaction>> PartialTransactions(String publicKey,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
@@ -466,9 +466,11 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (_apiClient.deserialize(response.body, 'List<Object>') as List)
+      final resp =
+      (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
           .map((item) => item as Object)
           .toList();
+      return resp.map((t) => deserializeDTO(t)).toList();
     } else {
       return null;
     }
