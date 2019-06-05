@@ -354,7 +354,7 @@ class AccountRoutesApi {
   /// Gets an List of outgoing transactions.
   /// A transaction is said to be outgoing with respect to an
   /// account if the account is the sender of the transaction.
-  Future<List<Object>> _outgoingTransactions(String publicKey,
+  Future<List<Transaction>> OutgoingTransactions(String publicKey,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
@@ -402,9 +402,11 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (_apiClient.deserialize(response.body, 'List<Object>') as List)
+      final resp =
+      (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
           .map((item) => item as Object)
           .toList();
+      return resp.map((t) => deserializeDTO(t)).toList();
     } else {
       return null;
     }

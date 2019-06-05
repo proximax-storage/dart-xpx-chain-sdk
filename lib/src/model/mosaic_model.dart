@@ -34,13 +34,13 @@ class Mosaic {
   @override
   String toString() {
     return '\n\t{\n'
-        '\t"MosaicId": $id,\n'
+        '\t"MosaicId": ${bigIntegerToHex(id)},\n'
         '\t"Amount": $amount\n'
         '\t}';
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'amount': amount};
+    return {'id': bigIntegerToHex(id).toUpperCase(), 'amount': amount};
   }
 
   Mosaic.fromDTO(_mosaicDTO v) {
