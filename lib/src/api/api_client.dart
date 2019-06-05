@@ -1,5 +1,8 @@
 part of xpx_catapult_sdk;
 
+final _RegList = new RegExp(r'^List<(.*)>$');
+final _RegMap = new RegExp(r'^Map<String,(.*)>$');
+
 class QueryParam {
   String name;
   String value;
@@ -46,9 +49,6 @@ class ApiClient {
   var client = new http.Client();
 
   Map<String, String> _defaultHeaderMap = {};
-
-  final _RegList = new RegExp(r'^List<(.*)>$');
-  final _RegMap = new RegExp(r'^Map<String,(.*)>$');
 
   ApiClient(this.conf, this.client);
 
@@ -169,43 +169,6 @@ class ApiClient {
     return null;
   }
 
-  dynamic _txnDeserialize(dynamic value, String targetType) {
-    if (targetType == 'List<Transaction>' ){
-      {
-        Match match;
-        if (value is List &&
-            (match = _RegList.firstMatch(targetType)) != null) {
-          var newTargetType = match[1];
-          return value.map((v) => _txnDeserialize(v, newTargetType)).toList();
-        } else if (value is Map &&
-            (match = _RegMap.firstMatch(targetType)) != null) {
-          var newTargetType = match[1];
-          return new Map.fromIterables(value.keys,
-              value.values.map((v) => _txnDeserialize(v, newTargetType)));
-        }
-      }
-    }
-
-    targetType = mapTransaction(value);
-    try {
-      switch (targetType) {
-        case 'Transfer':
-          return new _transferTransactionInfoDTO.fromJson(value);
-        case 'RegisterNamespace':
-          return new _registerNamespaceTransactionInfoDTO.fromJson(value);
-        case 'MosaicDefinition':
-          return new _mosaicDefinitionTransactionInfoDTO.fromJson(value);
-        case 'MosaicSupplyChange':
-          return new _mosaicSupplyChangeTransactionInfoDTO.fromJson(value);
-        default:
-          return null;
-      }
-    } catch (e, stack) {
-      throw new ApiException.withInner(
-          500, 'Exception during deserialization.', e, stack);
-    }
-  }
-
   dynamic deserialize(String jsonVal, String targetType) {
     // Remove all spaces.  Necessary for reg expressions as well.
     targetType = targetType.replaceAll(' ', '');
@@ -275,5 +238,44 @@ class ApiClient {
           return response;
       }
     }
+  }
+}
+
+dynamic _txnDeserialize(dynamic value, String targetType) {
+  if (targetType == 'List<Transaction>' ){
+    {
+      Match match;
+      if (value is List &&
+          (match = _RegList.firstMatch(targetType)) != null) {
+        var newTargetType = match[1];
+        return value.map((v) => _txnDeserialize(v, newTargetType)).toList();
+      } else if (value is Map &&
+          (match = _RegMap.firstMatch(targetType)) != null) {
+        var newTargetType = match[1];
+        return new Map.fromIterables(value.keys,
+            value.values.map((v) => _txnDeserialize(v, newTargetType)));
+      }
+    }
+  }
+
+  targetType = mapTransaction(value);
+  try {
+    switch (targetType) {
+      case 'Transfer':
+        return new _transferTransactionInfoDTO.fromJson(value);
+      case 'RegisterNamespace':
+        return new _registerNamespaceTransactionInfoDTO.fromJson(value);
+      case 'MosaicDefinition':
+        return new _mosaicDefinitionTransactionInfoDTO.fromJson(value);
+      case 'MosaicSupplyChange':
+        return new _mosaicSupplyChangeTransactionInfoDTO.fromJson(value);
+      case 'AggregateCompleted':
+        return new _aggregateTransactionInfoDTO.fromJson(value);
+      default:
+        return null;
+    }
+  } catch (e, stack) {
+    throw new ApiException.withInner(
+        500, 'Exception during deserialization.', e, stack);
   }
 }

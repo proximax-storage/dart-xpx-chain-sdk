@@ -45,6 +45,10 @@ class UInt64DTO {
   }
 
   BigInt toBigInt() {
+    if (this.lower == null || this.higher == null){
+      return null;
+    }
+
     var buffer = new Buffer.BigEndian(8);
 
     buffer.writeInt32(this.lower.toInt());

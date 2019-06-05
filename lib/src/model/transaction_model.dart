@@ -192,6 +192,7 @@ class Deadline {
   }
 
   Deadline.fromUInt64DTO(UInt64DTO d) {
+    if (d.toJson().isEmpty) return;
     this.time = new DateTime.fromMillisecondsSinceEpoch(d.toBigInt().toInt());
   }
 }
@@ -269,6 +270,26 @@ class AggregateTransactionCosignature {
         '\t"signature": $_signature\n'
         '\t"signer": $_signer\n'
         '}\n';
+  }
+
+  AggregateTransactionCosignature.fromDTO(
+      int networkType, _aggregateTransactionCosignatureDTO value) {
+    if (value?._signer == null) {
+      return;
+    }
+
+    _signature = value._signature;
+    _signer = new PublicAccount.fromPublicKey(value._signer, networkType);
+  }
+
+  static List<AggregateTransactionCosignature> listFromDTO(
+      int networkType, List<_aggregateTransactionCosignatureDTO> json) {
+    return json == null
+        ? new List<AggregateTransactionCosignature>()
+        : json
+            .map((value) =>
+                new AggregateTransactionCosignature.fromDTO(networkType, value))
+            .toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -1010,29 +1031,28 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
     this.innerTransactions = innerTxs;
   }
 
-//  AggregateTransaction.fromDTO(
-//      _mosaicSupplyChangeTransactionInfoDTO value)
-//      : super(
-//      value._meta._height.toBigInt(),
-//      value._meta._index,
-//      value._meta._id,
-//      value._meta._hash,
-//      value._meta._merkleComponentHash) {
-//    if (value == null) return;
-//
-//    this.type = transactionTypeFromRaw(value._transaction.Type);
-//    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
-//    this.signature = value._transaction.Signature;
-//    this.networkType = ExtractNetworkType(value._transaction.Version);
-//    this.version = ExtractVersion(value._transaction.Version);
-//    this.fee = value._transaction.Fee.toBigInt();
-//    this.signer = new PublicAccount.fromPublicKey(
-//        value._transaction.Signer, this.networkType);
-//    this.mosaicSupplyType =
-//    value._transaction._direction == 0 ? Decrease : Increase;
-//    this.mosaicId = value._transaction._mosaicId.toBigInt();
-//    this.delta = value._transaction._delta.toBigInt();
-//  }
+  AggregateTransaction.fromDTO(_aggregateTransactionInfoDTO value)
+      : super(
+            value._meta._height.toBigInt(),
+            value._meta._index,
+            value._meta._id,
+            value._meta._hash,
+            value._meta._merkleComponentHash) {
+    if (value == null) return;
+
+    this.type = transactionTypeFromRaw(value._transaction.Type);
+    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
+    this.signature = value._transaction.Signature;
+    this.networkType = ExtractNetworkType(value._transaction.Version);
+    this.version = ExtractVersion(value._transaction.Version);
+    this.fee = value._transaction.Fee.toBigInt();
+    this.signer = new PublicAccount.fromPublicKey(
+        value._transaction.Signer, this.networkType);
+    this.innerTransactions =
+        value._transaction._transactions.map((t) => deserializeDTO(t)).toList();
+    this.cosignatures = AggregateTransactionCosignature.listFromDTO(
+        this.networkType, value._transaction._cosignatures);
+  }
 
   static List<AggregateTransaction> listFromDTO(
       List<_transferTransactionInfoDTO> json) {
@@ -1061,7 +1081,8 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   int _size() {
     int sizeOfInnerTransactions = 0;
     this.innerTransactions.forEach((itx) {
-      sizeOfInnerTransactions += itx._size() - SignatureSize - MaxFeeSize - DeadLineSize;
+      sizeOfInnerTransactions +=
+          itx._size() - SignatureSize - MaxFeeSize - DeadLineSize;
     });
     return AggregateBondedHeader + sizeOfInnerTransactions;
   }
@@ -1100,7 +1121,8 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
     final codedTransfer = txnBuilder.finish();
 
-    return aggregateTransactionSchema().serialize(builder.finish(codedTransfer));
+    return aggregateTransactionSchema()
+        .serialize(builder.finish(codedTransfer));
   }
 }
 
@@ -1165,13 +1187,16 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
 Transaction deserializeDTO(dynamic value) {
   switch (value.runtimeType) {
     case _transferTransactionInfoDTO:
-      return TransferTransaction.fromDTO(value);
+      var a = TransferTransaction.fromDTO(value);
+      return a;
     case _registerNamespaceTransactionInfoDTO:
       return RegisterNamespaceTransaction.fromDTO(value);
     case _mosaicDefinitionTransactionInfoDTO:
       return MosaicDefinitionTransaction.fromDTO(value);
     case _mosaicSupplyChangeTransactionInfoDTO:
       return MosaicSupplyChangeTransaction.fromDTO(value);
+    case _aggregateTransactionInfoDTO:
+      return AggregateTransaction.fromDTO(value);
     default:
       if (value is List) {
         value.map((v) => deserializeDTO(v)).toList();

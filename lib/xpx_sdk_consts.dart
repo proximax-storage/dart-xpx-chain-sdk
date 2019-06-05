@@ -10,8 +10,13 @@ enum NamespaceType { Root, Sub }
 
 enum MosaicSupplyType { Decrease, Increase }
 
+enum MultisigCosignatoryModificationType { Add, Remove }
+
 const Decrease = MosaicSupplyType.Decrease,
     Increase = MosaicSupplyType.Increase;
+
+const Add = MultisigCosignatoryModificationType.Add,
+    Remove = MultisigCosignatoryModificationType.Remove;
 
 const AddressSize = 25,
     AmountSize = 8,
