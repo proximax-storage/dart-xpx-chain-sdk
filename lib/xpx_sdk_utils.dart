@@ -48,7 +48,7 @@ String bigIntegerToHex(BigInt id) {
     return null;
   }
 
-  var u = FromBigInt(id);
+  var u = fromBigInt(id);
 
   return _intToHex(u[1]) + _intToHex(u[0]);
 }
@@ -108,7 +108,9 @@ List<int> fromBigInt(BigInt v) {
 }
 
 List<int> FromBigInt(BigInt v) {
+
   final u64 = new Int64.fromBytesBigEndian(crypto.encodeBigInt(v));
+
   final l = (u64 & 0xFFFFFFFF);
   final r = (u64 >> 32 & 0xFFFFFFFF);
   return [l.toInt(), r.toInt()];

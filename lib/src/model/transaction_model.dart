@@ -1187,8 +1187,7 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
 Transaction deserializeDTO(dynamic value) {
   switch (value.runtimeType) {
     case _transferTransactionInfoDTO:
-      var a = TransferTransaction.fromDTO(value);
-      return a;
+      return TransferTransaction.fromDTO(value);
     case _registerNamespaceTransactionInfoDTO:
       return RegisterNamespaceTransaction.fromDTO(value);
     case _mosaicDefinitionTransactionInfoDTO:
