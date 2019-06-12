@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk;
+part of xpx_chain_sdk;
 
 var transactionTypes = <_transactionTypeClass>{
   _transactionTypeClass(TransactionType.AggregateCompleted, 16705, 0x4141),

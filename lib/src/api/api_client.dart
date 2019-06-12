@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk;
+part of xpx_chain_sdk;
 
 final _RegList = new RegExp(r'^List<(.*)>$');
 final _RegMap = new RegExp(r'^Map<String,(.*)>$');

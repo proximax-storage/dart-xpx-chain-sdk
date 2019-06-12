@@ -1,4 +1,4 @@
-library xpx_catapult_sdk;
+library xpx_chain_sdk;
 
 import 'dart:async';
 import 'dart:convert';

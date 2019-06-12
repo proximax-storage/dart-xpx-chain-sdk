@@ -1,6 +1,6 @@
-import 'package:xpx_catapult_sdk/xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
-const baseUrl = "http://bcstage1.xpxsirius.io:3000";
+const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
 const networkType = PublicTest;
 
@@ -9,7 +9,7 @@ void main() async {
   var config = new NewConfig(baseUrl, networkType);
 
   /// Creating a client instance
-  /// xpx_catapult_sdk uses the Dart's native HttpClient.
+  /// xpx_chain_sdk uses the Dart's native HttpClient.
   /// Depending on the platform, you may want to use either
   /// the one which comes from dart:io or the BrowserClient
   /// example:
@@ -19,13 +19,13 @@ void main() async {
 
   /// Create an Address from a given public key.
   var address = new Address.fromPublicKey(
-      "B4F12E7C9F6946091E2CB8B6D3A12B50D17CCBBF646386EA27CE2946A7423DCF",
+      "95DE2FFDCC397BB9688DA28A18A70FDD23F4CE2EF4240A4A7B6BAF5DFA07E5DC",
       networkType);
 
   try {
     /// Get AccountInfo for an account.
     /// Param address - A Address object.
-    var result = await client.Account.GetAccountInfo(address);
+    var result = await client.Account.PartialTransactions("95DE2FFDCC397BB9688DA28A18A70FDD23F4CE2EF4240A4A7B6BAF5DFA07E5DC");
     print(result);
   } catch (e) {
     print("Exception when calling Account->GetAccountInfo: $e\n");

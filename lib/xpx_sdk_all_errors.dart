@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk;
+part of xpx_chain_sdk;
 
 /// Catapult REST API errors
 final ErrResourceNotFound = new Exception("resource is not found");

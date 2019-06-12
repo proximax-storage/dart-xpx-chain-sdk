@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk;
+part of xpx_chain_sdk;
 
 // Create xpx with using xpx as unit
 Mosaic Xpx(int amount) {

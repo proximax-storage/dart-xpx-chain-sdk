@@ -1,4 +1,4 @@
-import 'package:xpx_catapult_sdk/xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bcstage1.xpxsirius.io:3000";
 
@@ -9,7 +9,7 @@ void main() async {
   var config = new NewConfig(baseUrl, networkType);
 
   /// Creating a client instance
-  /// xpx_catapult_sdk uses the Dart's native HttpClient.
+  /// xpx_chain_sdk uses the Dart's native HttpClient.
   /// Depending on the platform, you may want to use either
   /// the one which comes from dart:io or the BrowserClient
   /// example:

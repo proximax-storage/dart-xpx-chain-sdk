@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk.buffer;
+part of xpx_chain_sdk.buffer;
 
 const ByteSize = 1, ShortSize = 2, IntSize = 4;
 

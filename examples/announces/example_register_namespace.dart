@@ -1,4 +1,4 @@
-import 'package:xpx_catapult_sdk/xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
@@ -36,17 +36,17 @@ void main() async {
   print("Hash: ${stx.hash}");
   print("Signer: ${account.publicAccount.publicKey}");
 
-  /// Create a new transaction type RegisterNamespaceTransaction.
-  /// type SubNamespace.
-  var tx2 = new RegisterNamespaceTransaction.createSub(
-      new Deadline(hours: 1),
-      "ven",
-      parentNamespace,
-      networkType);
-  var stx2 = account.sign(tx2);
-
-  var restTx2 = await client.Transaction.AnnounceTransaction(stx2);
-  print(restTx2);
-  print("Hash: ${stx2.hash}");
-  print("Signer: ${account.publicAccount.publicKey}");
+//  /// Create a new transaction type RegisterNamespaceTransaction.
+//  /// type SubNamespace.
+//  var tx2 = new RegisterNamespaceTransaction.createSub(
+//      new Deadline(hours: 1),
+//      "vensubnamespace",
+//      parentNamespace,
+//      networkType);
+//  var stx2 = account.sign(tx2);
+//
+//  var restTx2 = await client.Transaction.AnnounceTransaction(stx2);
+//  print(restTx2);
+//  print("Hash: ${stx2.hash}");
+//  print("Signer: ${account.publicAccount.publicKey}");
 }

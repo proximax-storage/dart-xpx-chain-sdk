@@ -1,17 +1,17 @@
-library xpx_catapult_sdk.buffer;
+library xpx_chain_sdk.buffer;
 
 import 'dart:typed_data';
 
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 
-import 'package:xpx_catapult_sdk/xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
-part 'package:xpx_catapult_sdk/imp/buffer/schema/buffer_schema.dart';
-part 'package:xpx_catapult_sdk/imp/buffer/schema/buffer_schema_transfer.dart';
-part 'package:xpx_catapult_sdk/imp/buffer/schema/buffer_schema_register_namespace.dart';
-part 'package:xpx_catapult_sdk/imp/buffer/schema/buffer_schema_mosaic_definition.dart';
-part 'package:xpx_catapult_sdk/imp/buffer/schema/buffer_schema_mosaic_supply_change.dart';
-part 'package:xpx_catapult_sdk/imp/buffer/schema/buffer_schema_aggregate.dart';
+part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema.dart';
+part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_transfer.dart';
+part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_register_namespace.dart';
+part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_mosaic_definition.dart';
+part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_mosaic_supply_change.dart';
+part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_aggregate.dart';
 
 part 'transactions/aggregate_transaction_buffer.dart';
 part 'transactions/alias_transaction_buffer.dart';

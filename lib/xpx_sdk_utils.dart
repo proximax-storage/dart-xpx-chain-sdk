@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk;
+part of xpx_chain_sdk;
 
 final RegExp regValidNamespace = new RegExp(
   r'^[a-zA-Z0-9]+$',

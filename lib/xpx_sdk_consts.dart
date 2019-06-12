@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk;
+part of xpx_chain_sdk;
 
 final PrxNamespaceId =
     new UInt64DTO(Int64(2339353534), Int64(2976741373)).toBigInt();

@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk;
+part of xpx_chain_sdk;
 
 /// Buffer wraps a fixed size Uint8List and writes values into it using
 /// big-endian byte order.

@@ -1,4 +1,4 @@
-part of xpx_catapult_sdk.buffer;
+part of xpx_chain_sdk.buffer;
 
 schema mosaicSupplyChangeTransactionSchema() {
   List<schemaAttribute> schemaDefinition = [
