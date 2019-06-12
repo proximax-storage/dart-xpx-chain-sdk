@@ -34,8 +34,8 @@ class Mosaic {
   @override
   String toString() {
     return '\n\t{\n'
-        '\t"MosaicId": ${bigIntegerToHex(id)},\n'
-        '\t"Amount": $amount\n'
+        '\t"mosaicId": ${bigIntegerToHex(id).toUpperCase()},\n'
+        '\t"mmount": $amount\n'
         '\t}';
   }
 

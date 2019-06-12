@@ -56,7 +56,7 @@ class AccountRoutesApi {
   /// Get accounts information
   ///
   /// Returns the account information for an List of accounts.
-  Future<List<_accountInfoDTO>> _getAccountsInfo(Addresses addresses) async {
+  Future<List<AccountInfo>> GetAccountsInfo(Addresses addresses) async {
     Object postBody = addresses;
 
     // verify required params are set
@@ -75,7 +75,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-    contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.length > 0 ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -90,10 +90,11 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (_apiClient.deserialize(response.body, 'List<_accountInfoDTO>')
-      as List)
-          .map((item) => item as _accountInfoDTO)
+      final resp = (_apiClient.deserialize(
+              response.body, 'List<_accountInfoDTO>') as List)
+          .map((item) => item as Object)
           .toList();
+      return resp.map((t) => AccountInfo.fromDTO(t)).toList();
     } else {
       return null;
     }
@@ -342,9 +343,9 @@ class AccountRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
-      (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
-          .map((item) => item as Object)
-          .toList();
+          (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
+              .map((item) => item as Object)
+              .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
       return null;
@@ -405,9 +406,9 @@ class AccountRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
-      (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
-          .map((item) => item as Object)
-          .toList();
+          (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
+              .map((item) => item as Object)
+              .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
       return null;
@@ -467,9 +468,9 @@ class AccountRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
-      (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
-          .map((item) => item as Object)
-          .toList();
+          (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
+              .map((item) => item as Object)
+              .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
       return null;
@@ -528,9 +529,9 @@ class AccountRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
-      (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
-          .map((item) => item as Object)
-          .toList();
+          (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
+              .map((item) => item as Object)
+              .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
       return null;
@@ -589,9 +590,9 @@ class AccountRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
-      (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
-          .map((item) => item as Object)
-          .toList();
+          (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
+              .map((item) => item as Object)
+              .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
       return null;

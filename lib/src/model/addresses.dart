@@ -7,7 +7,7 @@ class Addresses {
 
   @override
   String toString() {
-    return 'Addresses[addresses=$addresses, ]';
+    return 'addresses:$addresses';
   }
 
   Addresses.fromJson(Map<String, dynamic> json) {
