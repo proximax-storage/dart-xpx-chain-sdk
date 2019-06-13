@@ -88,7 +88,7 @@ class Height {
 
   @override
   String toString() {
-    return 'Height[height = ${_height}]';
+    return '{height: ${_height}}';
   }
 
   Height.fromDTO(_HeightDTO v) {

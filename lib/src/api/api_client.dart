@@ -248,6 +248,7 @@ dynamic _txnDeserialize(dynamic value, String targetType) {
       if (value is List &&
           (match = _RegList.firstMatch(targetType)) != null) {
         var newTargetType = match[1];
+
         return value.map((v) => _txnDeserialize(v, newTargetType)).toList();
       } else if (value is Map &&
           (match = _RegMap.firstMatch(targetType)) != null) {
@@ -259,6 +260,7 @@ dynamic _txnDeserialize(dynamic value, String targetType) {
   }
 
   targetType = mapTransaction(value);
+
   try {
     switch (targetType) {
       case 'Transfer':

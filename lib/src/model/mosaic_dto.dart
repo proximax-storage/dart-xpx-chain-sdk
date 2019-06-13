@@ -153,24 +153,24 @@ class _mosaicNameDTO {
 
   UInt64DTO mosaicId = null;
 
-  String name = null;
+  List<String> names = null;
 
   _mosaicNameDTO();
 
   @override
   String toString() {
-    return '_mosaicNameDTO[parentId=$parentId, mosaicId=$mosaicId, name=$name, ]';
+    return '_mosaicNameDTO[parentId=$parentId, mosaicId=$mosaicId, names=$names, ]';
   }
 
   _mosaicNameDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     parentId = new UInt64DTO.fromJson(json['parentId']);
     mosaicId = new UInt64DTO.fromJson(json['mosaicId']);
-    name = json['name'];
+    names = List.from(json['names']);
   }
 
   Map<String, dynamic> toJson() {
-    return {'parentId': parentId, 'mosaicId': mosaicId, 'name': name};
+    return {'parentId': parentId, 'mosaicId': mosaicId, 'names': names};
   }
 
   static List<_mosaicNameDTO> listFromJson(List<dynamic> json) {

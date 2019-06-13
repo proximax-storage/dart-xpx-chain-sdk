@@ -154,8 +154,8 @@ class Message {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Type'] = this._type;
-    data['Payload'] = this._payload;
+    data['type'] = this._type;
+    data['payload'] = this._payload;
     return data;
   }
 }

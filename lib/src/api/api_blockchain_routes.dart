@@ -186,7 +186,7 @@ class BlockchainRoutesApi {
   /// Get transactions from a block
   ///
   /// Returns an List of [Transaction] included in a block for a given block height.
-  Future<List<Object>> GetBlockTransactions(int height,
+  Future<List<Transaction>> GetBlockTransactions(BigInt height,
       {int pageSize, String id}) async {
     Object postBody = null;
 
@@ -230,9 +230,11 @@ class BlockchainRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<Object>') as List)
+      final resp =
+      (apiClient.deserialize(response.body, 'List<Transaction>') as List)
           .map((item) => item as Object)
           .toList();
+      return resp.map((t) => deserializeDTO(t)).toList();
     } else {
       return null;
     }

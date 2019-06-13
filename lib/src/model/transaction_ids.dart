@@ -7,7 +7,9 @@ class TransactionIds {
 
   @override
   String toString() {
-    return 'TransactionIds[transactionIds=$transactionIds, ]';
+    return '{\n'
+        '\ttransactionIds: $transactionIds\n'
+        '}\n';
   }
 
   TransactionIds.fromJson(Map<String, dynamic> json) {

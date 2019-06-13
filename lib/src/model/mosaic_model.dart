@@ -126,20 +126,20 @@ class MosaicName {
 
   BigInt mosaicId;
 
-  String name;
+  List<String> names;
 
   MosaicName();
 
   @override
   String toString() {
-    return '{ParentId:${bigIntegerToHex(parentId)}, MosaicId:${bigIntegerToHex(mosaicId).toUpperCase()}, Name:$name}';
+    return '{parentId:${bigIntegerToHex(parentId)}, mosaicId:${bigIntegerToHex(mosaicId).toUpperCase()}, names:$names}';
   }
 
   MosaicName.fromDTO(_mosaicNameDTO value) {
     if (json == null) return;
     parentId = value.parentId == null ? value.parentId.toBigInt() : null;
     mosaicId = value.mosaicId.toBigInt();
-    name = value?.name;
+    names = value.names != null ? List.from(value.names) : null;
   }
 
   static List<MosaicName> listFromDTO(List<_mosaicNameDTO> json) {

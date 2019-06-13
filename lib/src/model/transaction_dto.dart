@@ -36,6 +36,8 @@ class _messageDTO {
   set payload(String payload) => _payload = payload;
 
   _messageDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+
     _type = json['type'];
     _payload = json['payload'];
   }
@@ -248,6 +250,7 @@ class _transferTransactionDTO extends _abstractTransactionDTO {
     this.Fee = UInt64DTO.fromJson(json['maxFee']);
     this.Deadline = UInt64DTO.fromJson(json['deadline']);
     _recipient = json['recipient'];
+
     if (json['mosaics'] != null) {
       _mosaics = new List<_mosaicDTO>();
       json['mosaics'].forEach((v) {

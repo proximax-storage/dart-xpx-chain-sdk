@@ -294,19 +294,19 @@ class AccountRoutesApi {
   /// Gets an List of incoming transactions.
   /// A transaction is said to be incoming with respect to an
   /// account if the account is the recipient of the transaction.
-  Future<List<Transaction>> IncomingTransactions(String publicKey,
+  Future<List<Transaction>> IncomingTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
     // verify required params are set
-    if (publicKey == null) {
+    if (account == null) {
       throw new ApiException(400, "Missing required param: publicKey");
     }
 
     // create path and map variables
     String path = "/account/{publicKey}/transactions/incoming"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "publicKey" + "}", publicKey.toString());
+        .replaceAll("{" + "publicKey" + "}", account.publicKey.toString());
 
     // query params
     List<QueryParam> queryParams = [];
@@ -357,19 +357,19 @@ class AccountRoutesApi {
   /// Gets an List of outgoing transactions.
   /// A transaction is said to be outgoing with respect to an
   /// account if the account is the sender of the transaction.
-  Future<List<Transaction>> OutgoingTransactions(String publicKey,
+  Future<List<Transaction>> OutgoingTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
     // verify required params are set
-    if (publicKey == null) {
+    if (account == null) {
       throw new ApiException(400, "Missing required param: publicKey");
     }
 
     // create path and map variables
     String path = "/account/{publicKey}/transactions/outgoing"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "publicKey" + "}", publicKey.toString());
+        .replaceAll("{" + "publicKey" + "}", account.publicKey.toString());
 
     // query params
     List<QueryParam> queryParams = [];
@@ -419,19 +419,19 @@ class AccountRoutesApi {
   ///
   /// Gets an List of [aggregate bonded transactions] where the account is
   /// the sender or requires to cosign the transaction.
-  Future<List<Transaction>> PartialTransactions(String publicKey,
+  Future<List<Transaction>> PartialTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
     // verify required params are set
-    if (publicKey == null) {
+    if (account == null) {
       throw new ApiException(400, "Missing required param: publicKey");
     }
 
     // create path and map variables
     String path = "/account/{publicKey}/transactions/partial"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "publicKey" + "}", publicKey.toString());
+        .replaceAll("{" + "publicKey" + "}", account.publicKey.toString());
 
     // query params
     List<QueryParam> queryParams = [];
@@ -480,19 +480,19 @@ class AccountRoutesApi {
   /// Get confirmed transactions
   ///
   /// Gets an List of transactions for which an account is the sender or receiver.
-  Future<List<Transaction>> Transactions(String publicKey,
+  Future<List<Transaction>> Transactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
     // verify required params are set
-    if (publicKey == null) {
+    if (account == null) {
       throw new ApiException(400, "Missing required param: publicKey");
     }
 
     // create path and map variables
     String path = "/account/{publicKey}/transactions"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "publicKey" + "}", publicKey.toString());
+        .replaceAll("{" + "publicKey" + "}", account.publicKey.toString());
 
     // query params
     List<QueryParam> queryParams = [];
@@ -541,19 +541,19 @@ class AccountRoutesApi {
   /// Get unconfirmed transactions
   ///
   /// Gets the List of transactions not included in a block where an account is the sender or receiver.
-  Future<List<Transaction>> UnconfirmedTransactions(String publicKey,
+  Future<List<Transaction>> UnconfirmedTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
     Object postBody = null;
 
     // verify required params are set
-    if (publicKey == null) {
+    if (account == null) {
       throw new ApiException(400, "Missing required param: publicKey");
     }
 
     // create path and map variables
     String path = "/account/{publicKey}/transactions/unconfirmed"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "publicKey" + "}", publicKey.toString());
+        .replaceAll("{" + "publicKey" + "}", account.publicKey.toString());
 
     // query params
     List<QueryParam> queryParams = [];
