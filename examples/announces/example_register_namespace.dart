@@ -12,7 +12,7 @@ void main() async {
 
   /// Create an Account from a given Private key.
   var account = new Account.fromPrivateKey(
-      "C7724760A0C4E13723FF2EF491A51534D5EC45AE9A248E52DE52E91E2566ED16",
+      "1ACE45EAD3C2F0811D9F4355F35BF78483324975083BE4E503EA49DFFEA691A0",
       networkType);
 
   /// The namespace name.
@@ -36,17 +36,17 @@ void main() async {
   print("Hash: ${stx.hash}");
   print("Signer: ${account.publicAccount.publicKey}");
 
-//  /// Create a new transaction type RegisterNamespaceTransaction.
-//  /// type SubNamespace.
-//  var tx2 = new RegisterNamespaceTransaction.createSub(
-//      new Deadline(hours: 1),
-//      "vensubnamespace",
-//      parentNamespace,
-//      networkType);
-//  var stx2 = account.sign(tx2);
-//
-//  var restTx2 = await client.Transaction.AnnounceTransaction(stx2);
-//  print(restTx2);
-//  print("Hash: ${stx2.hash}");
-//  print("Signer: ${account.publicAccount.publicKey}");
+  /// Create a new transaction type RegisterNamespaceTransaction.
+  /// type SubNamespace.
+  var tx2 = new RegisterNamespaceTransaction.createSub(
+      new Deadline(hours: 1),
+      "vensubnamespace",
+      parentNamespace,
+      networkType);
+  var stx2 = account.sign(tx2);
+
+  var restTx2 = await client.Transaction.AnnounceTransaction(stx2);
+  print(restTx2);
+  print("Hash: ${stx2.hash}");
+  print("Signer: ${account.publicAccount.publicKey}");
 }

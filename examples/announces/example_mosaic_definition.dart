@@ -12,7 +12,7 @@ void main() async {
 
   /// Create an Account from a given Private key.
   var account = new Account.fromPrivateKey(
-      "C7724760A0C4E13723FF2EF491A51534D5EC45AE9A248E52DE52E91E2566ED16",
+      "1ACE45EAD3C2F0811D9F4355F35BF78483324975083BE4E503EA49DFFEA691A0",
       networkType);
 
   /// Create a Mosaic definition transaction.
