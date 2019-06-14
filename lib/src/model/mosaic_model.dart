@@ -10,11 +10,11 @@ Mosaic XpxRelative(int amount) {
 }
 
 class Mosaic {
-  BigInt id;
+  MosaicId id;
 
   BigInt amount;
 
-  Mosaic(BigInt mosaicId, amount) {
+  Mosaic(MosaicId mosaicId, amount) {
     if (mosaicId == null) {
       throw ErrNullMosaicId;
     }
@@ -34,17 +34,17 @@ class Mosaic {
   @override
   String toString() {
     return '\n\t{\n'
-        '\t"mosaicId": ${bigIntegerToHex(id).toUpperCase()},\n'
+        '\t"mosaicId": ${id.toHex()},\n'
         '\t"mmount": $amount\n'
         '\t}';
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': bigIntegerToHex(id).toUpperCase(), 'amount': amount};
+    return {'id': id.toHex(), 'amount': amount};
   }
 
   Mosaic.fromDTO(_mosaicDTO v) {
-    id = v.id.toBigInt();
+    id = MosaicId.fromId(v.id.toBigInt());
     amount = v.amount.toBigInt();
   }
 
@@ -55,12 +55,43 @@ class Mosaic {
   }
 }
 
+class MosaicId extends Id {
+  const MosaicId._(id) : super(id);
+
+  factory MosaicId({final BigInt id}) {
+    if (id == null) {
+      throw new ArgumentError('The id must not be null');
+    }
+
+    return new MosaicId._(id);
+  }
+
+  static MosaicId fromId(final BigInt id) {
+    return new MosaicId(id: id);
+  }
+
+  static MosaicId fromBigInt(final BigInt bigInt) {
+    if (bigInt == null) {
+      throw ErrNullBigInt;
+    }
+    return new MosaicId(id: bigInt);
+  }
+
+  @override
+  int get hashCode => 'MosaicId'.hashCode ^ id.hashCode;
+
+  @override
+  bool operator ==(final other) =>
+      identical(this, other) ||
+          other is MosaicId && runtimeType == other.runtimeType && id == other.id;
+}
+
 class MosaicIds {
-  List<BigInt> _list = [];
+  List<MosaicId> _list = [];
 
   MosaicIds();
 
-  MosaicIds add(BigInt id) {
+  MosaicIds add(MosaicId id) {
     _list.add(id);
     return this;
   }
@@ -71,12 +102,8 @@ class MosaicIds {
   }
 
   Map<String, dynamic> toJson() {
-    List<String> nsIds = List(_list.length);
-
-    for (int i = 0; i < _list.length; i++) nsIds[i] = bigIntegerToHex(_list[i]);
-
     return {
-      'mosaicIds': nsIds,
+      'mosaicIds': _list.map((id) => id.toHex()).toList(),
     };
   }
 }
@@ -122,9 +149,9 @@ class MosaicInfo {
 }
 
 class MosaicName {
-  BigInt parentId;
+  MosaicId parentId;
 
-  BigInt mosaicId;
+  MosaicId mosaicId;
 
   List<String> names;
 
@@ -132,13 +159,13 @@ class MosaicName {
 
   @override
   String toString() {
-    return '{parentId:${bigIntegerToHex(parentId)}, mosaicId:${bigIntegerToHex(mosaicId)}, names:$names}';
+    return '{parentId:${parentId?.toHex()}, mosaicId:${mosaicId.toHex()}, names:$names}';
   }
 
   MosaicName.fromDTO(_mosaicNameDTO value) {
     if (json == null) return;
-    parentId = value.parentId == null ? value.parentId.toBigInt() : null;
-    mosaicId = value.mosaicId.toBigInt();
+    parentId = value.parentId == null ? MosaicId.fromId(value.parentId.toBigInt()) : null;
+    mosaicId = MosaicId.fromId(value.mosaicId.toBigInt());
     names = value.names != null ? List.from(value.names) : null;
   }
 
@@ -212,12 +239,12 @@ MosaicProperties NewMosaicProperties(bool SupplyMutable, Transferable,
       SupplyMutable, Transferable, LevyMutable, Divisibility, Duration);
 }
 
-BigInt NewMosaicIdFromNonceAndOwner(int nonce, String ownerPublicKey) {
+MosaicId NewMosaicIdFromNonceAndOwner(int nonce, String ownerPublicKey) {
   if (ownerPublicKey.length != 64) {
     throw ErrInvalidOwnerPublicKey;
   }
 
-  return _generateMosaicId(nonce, ownerPublicKey);
+  return MosaicId.fromId(_generateMosaicId(nonce, ownerPublicKey));
 }
 
 BigInt _generateMosaicId(int nonce, String ownerPublicKey) {

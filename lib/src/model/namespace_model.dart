@@ -11,7 +11,7 @@ class NamespaceName {
 
   @override
   String toString() {
-    return '{ParentId:${bigIntegerToHex(parentId)}, NamespaceId:${bigIntegerToHex(namespaceId).toUpperCase()}, Name:$name}';
+    return '{ParentId:${bigIntegerToHex(parentId)}, NamespaceId:${bigIntegerToHex(namespaceId)}, Name:$name}';
   }
 
   NamespaceName.fromDTO(_namespaceNameDTO value) {

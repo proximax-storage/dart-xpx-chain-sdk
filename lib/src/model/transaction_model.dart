@@ -120,6 +120,23 @@ class _transactionTypeClass {
   _transactionTypeClass([this._transactionType, this._raw, this._hex]);
 }
 
+abstract class Id {
+  final BigInt id;
+
+  const Id(this.id);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Id && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => 'Id'.hashCode ^ id.hashCode;
+
+  String toHex() {
+    return bigIntegerToHex(this.id);
+  }
+}
+
 class Message {
   int _type;
   String _payload;
@@ -571,7 +588,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     List<int> mb = new List(this.mosaics.length);
     int i = 0;
     this.mosaics.forEach((Mosaic mosaic) {
-      final id = builder.writeListUint32(fromBigInt(mosaic.id));
+      final id = builder.writeListUint32(fromBigInt(mosaic.id.id));
       final amount = builder.writeListUint32(fromBigInt(mosaic.amount));
 
       final ms = new MosaicBufferBuilder(builder)
@@ -771,7 +788,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   MosaicProperties mosaicProperties;
   BigInt duration;
   int mosaicNonce;
-  BigInt mosaicId;
+  MosaicId mosaicId;
 
   MosaicDefinitionTransaction(
       Deadline deadline,
@@ -820,7 +837,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     this.mosaicProperties =
         new MosaicProperties.fromDTO(value._transaction._properties);
     this.mosaicNonce = value._transaction._mosaicNonce;
-    this.mosaicId = value._transaction._mosaicId.toBigInt();
+    this.mosaicId = MosaicId.fromId(value._transaction._mosaicId.toBigInt());
   }
 
   static List<MosaicDefinitionTransaction> listFromDTO(
@@ -873,7 +890,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       f += 4;
     }
 
-    final mV = builder.writeListUint32(FromBigInt(this.mosaicId));
+    final mV = builder.writeListUint32(FromBigInt(this.mosaicId.id));
 
     final dV = builder.writeListUint32(fromBigInt(this.duration));
 
@@ -906,10 +923,10 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
     implements Transaction {
   MosaicSupplyType mosaicSupplyType;
   BigInt delta;
-  BigInt mosaicId;
+  MosaicId mosaicId;
 
   MosaicSupplyChangeTransaction(Deadline deadline, MosaicSupplyType supplyType,
-      BigInt mosaicId, BigInt delta, int networkType)
+      MosaicId mosaicId, BigInt delta, int networkType)
       : super() {
     if (mosaicId == null) {
       throw ErrNullMosaicId;
@@ -948,7 +965,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
         value._transaction.Signer, this.networkType);
     this.mosaicSupplyType =
         value._transaction._direction == 0 ? Decrease : Increase;
-    this.mosaicId = value._transaction._mosaicId.toBigInt();
+    this.mosaicId = MosaicId.fromId(value._transaction._mosaicId.toBigInt());
     this.delta = value._transaction._delta.toBigInt();
   }
 
@@ -992,7 +1009,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   Uint8List _generateBytes() {
     final builder = new fb.Builder(initialSize: 0);
 
-    final mV = builder.writeListUint32(FromBigInt(this.mosaicId));
+    final mV = builder.writeListUint32(FromBigInt(this.mosaicId.id));
 
     final dV = builder.writeListUint32(fromBigInt(this.delta));
 
@@ -1174,9 +1191,9 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
 
   List<int> rB = <int>[];
   rB.insertAll(0, [0, 0, 0, 0]);
-  rB.insertAll(4, sb.skip(0).take(32));
-  rB.insertAll(32 + 4, b.skip(100).take(104));
-  rB.insertAll(32 + 4 + 4, b.skip(100 + 2 + 2 + 16).take(100 + 2 + 2 + 16 + b.length - 120));
+  rB.insertAll(4, sb.getRange(0, 32));
+  rB.insertAll(32 + 4, b.getRange(100, 104));
+  rB.insertAll(32 + 4 + 4, b.getRange(100 + 2 + 2 + 16, 100 + 2 + 2 + 16 + b.length - 120));
 
   final s = crypto.encodeBigInt(BigInt.from(b.length - 64 - 16));
 

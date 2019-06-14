@@ -13,6 +13,7 @@ final ErrEmptyMosaicIds = new Exception("list mosaics ids must not by empty");
 final ErrNullMosaicId = new Exception("mosaicId must not be null");
 final ErrNullSupplyType = new Exception("supplyType must not be null");
 final ErrNullMosaics = new Exception("mosaics must not be null");
+final ErrNullBigInt = new Exception("The bigInt must not be null");
 final ErrNullMosaicAmount = new Exception("amount must be not null");
 final ErrInvalidMosaicName = new Exception("mosaic name is invalid");
 final ErrNullMosaicProperties =
