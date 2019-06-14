@@ -1189,11 +1189,10 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
 
   final b = tx._generateBytes();
 
-  List<int> rB = <int>[];
-  rB.insertAll(0, [0, 0, 0, 0]);
-  rB.insertAll(4, sb.getRange(0, 32));
-  rB.insertAll(32 + 4, b.getRange(100, 104));
-  rB.insertAll(32 + 4 + 4, b.getRange(100 + 2 + 2 + 16, 100 + 2 + 2 + 16 + b.length - 120));
+  List<int> rB = <int>[0, 0, 0, 0];
+  rB.insertAll(4, sb.take(32));
+  rB.insertAll(rB.length, b.skip(100).take(4));
+  rB.insertAll(rB.length, b.skip(100 + 2 + 2 + 16).take(b.length - 120));
 
   final s = crypto.encodeBigInt(BigInt.from(b.length - 64 - 16));
 
