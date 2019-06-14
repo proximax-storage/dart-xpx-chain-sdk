@@ -224,6 +224,7 @@ class ApiClient {
       var msgBody = contentType == "application/x-www-form-urlencoded"
           ? formParams
           : serialize(body);
+
       switch (method) {
         case "POST":
           return client.post(url, headers: headerParams, body: msgBody);

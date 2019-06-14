@@ -24,7 +24,7 @@ class Address {
   }
 
   Address.fromEncoded(String encoded) {
-    final pH = HEX.decode(encoded);
+    final pH = hex.decode(encoded);
     final parsed = base32.encode(pH);
     var a = Address.fromRaw(parsed);
     this.address = a.address;
@@ -156,7 +156,7 @@ class AccountInfo {
 
 String _generateEncodedAddress(String pKey, int version) {
   // step 1: sha3 hash of the public key
-  var pKeyD = HEX.decode(pKey);
+  var pKeyD = hex.decode(pKey);
 
   var sha3PublicKeyHash = crypto.HashesSha3_256(pKeyD);
 

@@ -11,7 +11,7 @@ Uint8List HexDecodeStringOdd(String s) {
   if (s.length % 2 != 0) {
     s = "0" + s;
   }
-  return HEX.decode(s);
+  return hex.decode(s);
 }
 
 // ExtractNetworkType return networkType from version
@@ -37,21 +37,17 @@ int EndianLittleUint32(List<int> v) {
   return bdata.getUint32(0, Endian.little);
 }
 
-
-String _intToHex(int u) {
-  var raw = integerToBytes(u, 4).reversed;
-
-  return HEX.encode(raw.toList());
-}
-
 String bigIntegerToHex(BigInt id) {
   if (id == null) {
     return null;
   }
 
-  var u = fromBigInt(id);
+  var s = id.toRadixString(16).toUpperCase();
+  if (s.length % 2 != 0) {
+    s = "0" + s;
+  }
 
-  return _intToHex(u[1]) + _intToHex(u[0]);
+  return s;
 }
 
 int bytesToInteger(List<int> bytes) {

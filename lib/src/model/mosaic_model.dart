@@ -132,7 +132,7 @@ class MosaicName {
 
   @override
   String toString() {
-    return '{parentId:${bigIntegerToHex(parentId)}, mosaicId:${bigIntegerToHex(mosaicId).toUpperCase()}, names:$names}';
+    return '{parentId:${bigIntegerToHex(parentId)}, mosaicId:${bigIntegerToHex(mosaicId)}, names:$names}';
   }
 
   MosaicName.fromDTO(_mosaicNameDTO value) {
@@ -228,7 +228,7 @@ BigInt _generateMosaicId(int nonce, String ownerPublicKey) {
 
   result.update(nonceB.out, 0, nonceB.out.length);
 
-  var ownerBytes = HEX.decode(ownerPublicKey);
+  var ownerBytes = hex.decode(ownerPublicKey);
 
   var t = result.process(ownerBytes);
 
