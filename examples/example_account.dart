@@ -1,5 +1,4 @@
 import 'package:xpx_chain_sdk/xpx_sdk.dart';
-import 'package:validators/validators.dart';
 
 const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
