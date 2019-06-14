@@ -10,6 +10,8 @@ import 'imp/buffer/buffer.dart';
 import 'package:http/http.dart' as http;
 import 'package:fixnum/fixnum.dart';
 import "package:hex/hex.dart";
+import 'package:convert/convert.dart' show hex;
+
 import 'package:base32/base32.dart';
 import 'package:sprintf/sprintf.dart';
 import "package:xpx_crypto/xpx_crypto.dart" as crypto;

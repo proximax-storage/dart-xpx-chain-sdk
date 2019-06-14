@@ -1,5 +1,7 @@
 part of xpx_chain_sdk;
 
+RegExp _hexadecimal = new RegExp(r'^[0-9a-fA-F]+$');
+
 var transactionTypes = <_transactionTypeClass>{
   _transactionTypeClass(TransactionType.AggregateCompleted, 16705, 0x4141),
   _transactionTypeClass(TransactionType.AggregateBonded, 16961, 0x4241),
@@ -137,9 +139,12 @@ class Message {
       return;
     }
 
-    var b = HEX.decode(value._payload);
+    if (_hexadecimal.hasMatch(value._payload)) {
+      _payload = value._payload;
+    }else {
+      _payload = utf8.decode(hex.decode(value._payload));
+    }
     _type = value._type;
-    _payload = utf8.decode(b);
   }
 
   Message.PlainMessage(String payload) {
@@ -492,7 +497,6 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
             value._meta._hash,
             value._meta._merkleComponentHash) {
     if (value == null) return;
-
     this.type = transactionTypeFromRaw(value._transaction.Type);
     this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
     this.signature = value._transaction.Signature;
