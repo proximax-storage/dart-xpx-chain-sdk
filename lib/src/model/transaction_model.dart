@@ -124,7 +124,7 @@ class Message {
   int _type;
   String _payload;
 
-  Message({int type, String payload}) {
+  Message._({int type, String payload}) {
     this._type = type;
     this._payload = payload;
   }
@@ -141,7 +141,7 @@ class Message {
 
     if (_hexadecimal.hasMatch(value._payload)) {
       _payload = value._payload;
-    }else {
+    } else {
       _payload = utf8.decode(hex.decode(value._payload));
     }
     _type = value._type;
@@ -1133,34 +1133,34 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 SignedTransaction _signTransactionWith(Transaction tx, Account a) {
   final s = a.account;
   var b = tx._generateBytes();
-  final sb = Uint8List.fromList(b.getRange(100, b.length).toList());
+  final sb = Uint8List.fromList(b.skip(100).take(b.length).toList());
 
   final signature = s.sign(sb);
   List<int> p = [];
-  p.insertAll(0, b.getRange(0, 4));
+  p.insertAll(0, b.skip(0).take(4));
   p.insertAll(4, signature);
   p.insertAll(4 + 64, a.account.publicKey.Raw);
-  p.insertAll(100, b.getRange(100, b.length));
+  p.insertAll(100, b.skip(100).take(b.length));
 
-  final ph = HEX.encode(p);
+  final pHex = hex.encode(p);
 
-  final hash = _createTransactionHash(ph);
+  final hash = _createTransactionHash(pHex);
 
   return new SignedTransaction(
-      tx.getAbstractTransaction().type.raw, ph.toUpperCase(), hash);
+      tx.getAbstractTransaction().type.raw, pHex.toUpperCase(), hash);
 }
 
-String _createTransactionHash(String p) {
-  final b = HEX.decode(p);
+String _createTransactionHash(String pHex) {
+  final p = hex.decode(pHex);
 
-  List<int> sb = [];
+  List<int> sb = <int>[];
 
-  sb.insertAll(0, b.getRange(4, 32 + 4));
-  sb.insertAll(32, b.getRange(68, b.length));
+  sb.insertAll(0, p.skip(4).take(32));
+  sb.insertAll(32, p.skip(68).take(p.length));
 
   final r = crypto.HashesSha3_256(Uint8List.fromList(sb));
 
-  return HEX.encode(r).toUpperCase();
+  return hex.encode(r).toUpperCase();
 }
 
 Uint8List toAggregateTransactionBytes(Transaction tx) {
@@ -1168,16 +1168,15 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
     throw ErrTransactionSigner;
   }
 
-  final sb = HEX.decode(tx.getAbstractTransaction().signer.publicKey);
+  final sb = hex.decode(tx.getAbstractTransaction().signer.publicKey);
 
   final b = tx._generateBytes();
 
-  List<int> rB = [];
+  List<int> rB = <int>[];
   rB.insertAll(0, [0, 0, 0, 0]);
-  rB.insertAll(4, sb.getRange(0, 32));
-  rB.insertAll(32 + 4, b.getRange(100, 104));
-  rB.insertAll(32 + 4 + 4,
-      b.getRange(100 + 2 + 2 + 16, 100 + 2 + 2 + 16 + b.length - 120));
+  rB.insertAll(4, sb.skip(0).take(32));
+  rB.insertAll(32 + 4, b.skip(100).take(104));
+  rB.insertAll(32 + 4 + 4, b.skip(100 + 2 + 2 + 16).take(100 + 2 + 2 + 16 + b.length - 120));
 
   final s = crypto.encodeBigInt(BigInt.from(b.length - 64 - 16));
 
