@@ -1,21 +1,21 @@
 part of xpx_chain_sdk.buffer;
 
-schema mosaicDefinitionTransactionSchema() {
-  List<schemaAttribute> schemaDefinition = [
-    _newScalarAttribute("size", IntSize),
-    _newArrayAttribute("signature", ByteSize),
-    _newArrayAttribute("signer", ByteSize),
-    _newScalarAttribute("version", ShortSize),
-    _newScalarAttribute("type", ShortSize),
-    _newArrayAttribute("fee", IntSize),
-    _newArrayAttribute("deadline", IntSize),
-    _newScalarAttribute("mosaicNonce", IntSize),
-    _newArrayAttribute("mosaicId", IntSize),
-    _newScalarAttribute("numOptionalProperties", ByteSize),
-    _newScalarAttribute("flags", ByteSize),
-    _newScalarAttribute("divisibility", ByteSize),
-    _newScalarAttribute("indicateDuration", ByteSize),
-  _newArrayAttribute("duration", IntSize)
+Schema mosaicDefinitionTransactionSchema() {
+  List<SchemaAttribute> schemaDefinition = [
+    _newScalarAttribute("size", intSize),
+    _newArrayAttribute("signature", byteSize),
+    _newArrayAttribute("signer", byteSize),
+    _newScalarAttribute("version", shortSize),
+    _newScalarAttribute("type", shortSize),
+    _newArrayAttribute("fee", intSize),
+    _newArrayAttribute("deadline", intSize),
+    _newScalarAttribute("mosaicNonce", intSize),
+    _newArrayAttribute("mosaicId", intSize),
+    _newScalarAttribute("numOptionalProperties", byteSize),
+    _newScalarAttribute("flags", byteSize),
+    _newScalarAttribute("divisibility", byteSize),
+    _newScalarAttribute("indicateDuration", byteSize),
+  _newArrayAttribute("duration", intSize)
   ];
-  return schema(schemaDefinition);
+  return Schema(schemaDefinition);
 }

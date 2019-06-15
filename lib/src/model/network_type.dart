@@ -1,12 +1,12 @@
 part of xpx_chain_sdk;
 
 // NetworkType enums
-const Mijin = 96,
-    MijinTest = 144,
-    Public = 184,
-    PublicTest = 168,
-    Private = 200,
-    PrivateTest = 176,
+const Mijin = 0x60,
+    MijinTest = 0x90,
+    Public = 0xb8,
+    PublicTest = 0xa8,
+    Private = 0xc8,
+    PrivateTest = 0xb0,
     NotSupportedNet = 0;
 
 const Map<String, int> addressNet = {
@@ -18,14 +18,12 @@ const Map<String, int> addressNet = {
   'W': PrivateTest,
 };
 
-final networkType = networkTypeList;
-
 class NetworkType {
   String name;
 
   String description;
 
-  NetworkType();
+  NetworkType._(this.name, this.description);
 
   @override
   String toString() {
@@ -34,34 +32,30 @@ class NetworkType {
 
   NetworkType.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    name = json['name'];
-    description = json['description'];
+    this.name = json['name'];
+    this.description = json['description'];
+  }
+
+  static int getType(int networkType) {
+    switch (networkType) {
+      case Mijin:
+        return addressNet["M"];
+      case MijinTest:
+        return addressNet["S"];
+      case Public:
+        return addressNet["X"];
+      case PublicTest:
+        return addressNet["V"];
+      case Private:
+        return addressNet["Z"];
+      case PrivateTest:
+        return addressNet["W"];
+      default:
+        return NotSupportedNet;
+    }
   }
 
   Map<String, dynamic> toJson() {
     return {'name': name, 'description': description};
   }
-}
-
-/// Static class containing network type constants.
-mixin networkTypeList {
-  final NOTSUPPORTED_NET = 0,
-
-      /// Public net network
-      PUBLIC = 0xb8,
-
-      /// Public Test net network
-      PUBLIC_TEST = 0xa8,
-
-      /// Private network
-      PRIVATE = 0xc8,
-
-      /// Private test network
-      PRIVATE_TEST = 0xb0,
-
-      /// Mijin net network
-      MIJIN = 0x60,
-
-      /// Mijin test net network
-      MIJIN_TEST = 0x90;
 }

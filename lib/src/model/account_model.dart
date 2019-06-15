@@ -1,16 +1,27 @@
 part of xpx_chain_sdk;
 
-const NUM_CHECKSUM_BYTES = 4;
-
 class Address {
-  int networkType = null;
-  String address = null;
+  int _networkType;
+  String _address;
 
-  /// Create an Address from a given raw address
-  Address(String address, int networkType) {
-    address = address.replaceAll("-", "");
-    this.address = address.toUpperCase();
-    this.networkType = networkType;
+  int get networkType => _networkType;
+
+  String get address => _address;
+
+  String get pretty => _pretty(this._address);
+
+  Address._(this._address, this._networkType);
+
+  /// Create an [Address] from a given raw address
+  static fromRawAddress(String address) {
+    address = address.trim().replaceAll("-", "").toUpperCase();
+
+    if (address.length != addressEncodeSize) {
+      throw new ArgumentError(
+          'Address $address has to be $addressEncodeSize characters long');
+    }
+
+    return new Address._(address, addressNet[address[0]]);
   }
 
   @override
@@ -18,23 +29,32 @@ class Address {
     return '${toJson()}';
   }
 
-  Address.fromRaw(String address) {
-    this.networkType = addressNet[address[0]];
-    this.address = address;
-  }
-
   Address.fromEncoded(String encoded) {
     final pH = hex.decode(encoded);
     final parsed = base32.encode(pH);
-    var a = Address.fromRaw(parsed);
-    this.address = a.address;
-    this.networkType = a.networkType;
+    var a = Address.fromRawAddress(parsed);
+    this._address = a.address;
+    this._networkType = a.networkType;
   }
 
   /// Create an Address from a given public key.
   Address.fromPublicKey(String pKey, int networkType) {
-    this.address = _generateEncodedAddress(pKey, networkType);
-    this.networkType = networkType;
+    if (networkType == null || NetworkType.getType(networkType) == 0) {
+      throw new ArgumentError('Network type unsupported');
+    }
+
+    this._address = _generateEncodedAddress(pKey, networkType);
+    this._networkType = networkType;
+  }
+
+  static String _pretty(final String address) {
+    var res = "";
+
+    for (int i = 0; i < 6; i++) {
+      res += address.substring(i * 6, i * 6 + 6) + "-";
+    }
+    res += address.substring(address.length - 4);
+    return res;
   }
 
   Map<String, dynamic> toJson() {
@@ -46,21 +66,44 @@ class Address {
 }
 
 class PublicAccount {
-  String publicKey = null;
-  Address address = null;
+  String _publicKey = null;
+  Address _address = null;
 
-  PublicAccount(this.publicKey, this.address);
+  String get publicKey => _publicKey;
+
+  Address get address => _address;
+
+  PublicAccount._(this._publicKey, this._address);
+
   @override
   String toString() {
     return '${toJson()}';
   }
 
-  /// Create an Account from a given raw address.
+  /// Create an Account from a given publicKey hex string.
   PublicAccount.fromPublicKey(String pKey, int networkType) {
-    var ad = _generateEncodedAddress(pKey, networkType);
-    var address = new Address(ad, networkType);
-    this.address = address;
-    this.publicKey = pKey;
+    if (pKey == null || (publicKeySize != pKey.length && 66 != pKey.length)) {
+      throw errInvalidPublicKey;
+    }
+    this._address = new Address.fromPublicKey(pKey, networkType);
+    this._publicKey = pKey;
+  }
+
+  bool verify(String data, String signature) {
+    if (signature == null) {
+      throw errNullSignature;
+    }
+    if (64 != (signature.length / 2)) {
+      throw errInvalidSignature;
+    }
+    if (signature.length % 2 != 0) {
+      throw errInvalidHexadecimal;
+    }
+
+    var kp = new crypto.KeyPair();
+    kp.publicKey.Raw = hex.decode(this._publicKey);
+
+    return kp.verify(hex.decode(data), hex.decode(signature));
   }
 
   Map<String, dynamic> toJson() {
@@ -72,10 +115,15 @@ class PublicAccount {
 }
 
 class Account {
-  PublicAccount publicAccount = null;
-  crypto.KeyPair account = null;
+  PublicAccount _publicAccount = null;
+  crypto.KeyPair _account = null;
 
-  Account(this.publicAccount, this.account);
+  Account._(this._publicAccount, this._account);
+
+  PublicAccount get publicAccount => _publicAccount;
+
+  crypto.KeyPair get account => _account;
+
   @override
   String toString() {
     return publicAccount.toString();
@@ -95,11 +143,19 @@ class Account {
 
     var pa =
         new PublicAccount.fromPublicKey(kp.publicKey.toString(), networkType);
-    this.publicAccount = pa;
-    this.account = kp;
+    this._publicAccount = pa;
+    this._account = kp;
   }
 
-  SignedTransaction sign(Transaction tx){
+  /// Create an Account from a given networkType.
+  Account.random(int networkType) {
+    var kp = crypto.NewRandomKeyPair();
+    final acc = Account.fromPrivateKey(kp.privateKey.toString(), networkType);
+    this._publicAccount = acc._publicAccount;
+    this._account = acc._account;
+  }
+
+  SignedTransaction sign(Transaction tx) {
     return _signTransactionWith(tx, this);
   }
 }
@@ -182,9 +238,9 @@ Uint8List _generateChecksum(Uint8List b) {
   // step 1: sha3 hash of (input
   var sha3StepThreeHash = crypto.HashesSha3_256(b);
 
-  // step 2: get the first NUM_CHECKSUM_BYTES bytes of (1)
-  var p = sha3StepThreeHash.getRange(0, NUM_CHECKSUM_BYTES);
-  Uint8List hash = Uint8List(NUM_CHECKSUM_BYTES);
-  for (int i = 0; i < NUM_CHECKSUM_BYTES; i++) hash[i] = p.toList()[i];
+  // step 2: get the first numChecksumBytes bytes of (1)
+  var p = sha3StepThreeHash.getRange(0, numChecksumBytes);
+  Uint8List hash = Uint8List(numChecksumBytes);
+  for (int i = 0; i < numChecksumBytes; i++) hash[i] = p.toList()[i];
   return hash;
 }

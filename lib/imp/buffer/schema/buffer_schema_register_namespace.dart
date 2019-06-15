@@ -1,19 +1,19 @@
 part of xpx_chain_sdk.buffer;
 
-schema registerNamespaceTransactionSchema() {
-  List<schemaAttribute> schemaDefinition = [
-    _newScalarAttribute("size", IntSize),
-    _newArrayAttribute("signature", ByteSize),
-    _newArrayAttribute("signer", ByteSize),
-    _newScalarAttribute("version", ShortSize),
-    _newScalarAttribute("type", ShortSize),
-    _newArrayAttribute("fee", IntSize),
-    _newArrayAttribute("deadline", IntSize),
-    _newScalarAttribute("namespaceType", ByteSize),
-    _newArrayAttribute("durationParentId", IntSize),
-    _newArrayAttribute("namespaceId", IntSize),
-    _newScalarAttribute("namespaceNameSize", ByteSize),
-    _newArrayAttribute("name", ByteSize)
+Schema registerNamespaceTransactionSchema() {
+  List<SchemaAttribute> schemaDefinition = [
+    _newScalarAttribute("size", intSize),
+    _newArrayAttribute("signature", byteSize),
+    _newArrayAttribute("signer", byteSize),
+    _newScalarAttribute("version", shortSize),
+    _newScalarAttribute("type", shortSize),
+    _newArrayAttribute("fee", intSize),
+    _newArrayAttribute("deadline", intSize),
+    _newScalarAttribute("namespaceType", byteSize),
+    _newArrayAttribute("durationParentId", intSize),
+    _newArrayAttribute("namespaceId", intSize),
+    _newScalarAttribute("namespaceNameSize", byteSize),
+    _newArrayAttribute("name", byteSize)
   ];
-  return schema(schemaDefinition);
+  return Schema(schemaDefinition);
 }

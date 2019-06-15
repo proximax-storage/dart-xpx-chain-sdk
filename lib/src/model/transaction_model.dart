@@ -1,6 +1,6 @@
 part of xpx_chain_sdk;
 
-RegExp _hexadecimal = new RegExp(r'^[0-9a-fA-F]+$');
+RegExp _Hexadecimal = new RegExp(r'^[0-9a-fA-F]+$');
 
 var transactionTypes = <_transactionTypeClass>{
   _transactionTypeClass(TransactionType.AggregateCompleted, 16705, 0x4141),
@@ -127,7 +127,8 @@ abstract class Id {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is Id && runtimeType == other.runtimeType && id == other.id;
+      identical(this, other) ||
+      other is Id && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => 'Id'.hashCode ^ id.hashCode;
@@ -156,7 +157,7 @@ class Message {
       return;
     }
 
-    if (_hexadecimal.hasMatch(value._payload)) {
+    if (_Hexadecimal.hasMatch(value._payload)) {
       _payload = value._payload;
     } else {
       _payload = utf8.decode(hex.decode(value._payload));
@@ -488,13 +489,13 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
       List<Mosaic> mosaics, Message message, int networkType)
       : super() {
     if (recipient == null) {
-      throw ErrNullRecipient;
+      throw errNullRecipient;
     }
     if (mosaics == null) {
-      throw ErrNullMosaics;
+      throw errNullMosaics;
     }
     if (message == null) {
-      throw ErrNullMessage;
+      throw errNullMessage;
     }
 
     this.version = TransferVersion;
@@ -561,8 +562,8 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
   @override
   int _size() {
-    return TransferHeaderSize +
-        (MosaicSize + AmountSize) * this.mosaics.length +
+    return transferHeaderSize +
+        (mosaicSize + amountSize) * this.mosaics.length +
         this.messageSize();
   }
 
@@ -639,11 +640,11 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       Deadline deadline, String namespaceName, BigInt duration, int networkType)
       : super() {
     if (namespaceName == null) {
-      throw ErrInvalidNamespaceName;
+      throw errInvalidNamespaceName;
     }
 
     if (duration == null) {
-      throw ErrNullDuration;
+      throw errNullDuration;
     }
 
     this.version = RegisterNamespaceVersion;
@@ -660,11 +661,11 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       String subnamespaceName, String rootNamespaceName, int networkType)
       : super() {
     if (subnamespaceName == null || subnamespaceName == "") {
-      throw ErrInvalidNamespaceName;
+      throw errInvalidNamespaceName;
     }
 
     if (rootNamespaceName == null || rootNamespaceName == "") {
-      throw ErrInvalidNamespaceName;
+      throw errInvalidNamespaceName;
     }
 
     this.version = RegisterNamespaceVersion;
@@ -779,7 +780,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 
   @override
   int _size() {
-    return RegisterNamespaceHeaderSize + this.namspaceName.length;
+    return registerNamespaceHeaderSize + this.namspaceName.length;
   }
 }
 
@@ -799,11 +800,11 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       int networkType)
       : super() {
     if (ownerPublicKey.length != 64) {
-      throw ErrInvalidOwnerPublicKey;
+      throw errInvalidOwnerPublicKey;
     }
 
     if (mosaicProps == null) {
-      throw ErrNullMosaicProperties;
+      throw errNullMosaicProperties;
     }
 
     this.version = MosaicDefinitionVersion;
@@ -867,7 +868,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
   @override
   int _size() {
-    return MosaicDefinitionTransactionSize;
+    return mosaicDefinitionTransactionSize;
   }
 
   @override
@@ -929,11 +930,11 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
       MosaicId mosaicId, BigInt delta, int networkType)
       : super() {
     if (mosaicId == null) {
-      throw ErrNullMosaicId;
+      throw errNullMosaicId;
     }
 
     if (supplyType == null) {
-      throw ErrNullSupplyType;
+      throw errNullSupplyType;
     }
 
     this.version = MosaicSupplyChangeVersion;
@@ -964,7 +965,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
     this.signer = new PublicAccount.fromPublicKey(
         value._transaction.Signer, this.networkType);
     this.mosaicSupplyType =
-        value._transaction._direction == 0 ? Decrease : Increase;
+        value._transaction._direction == 0 ? decrease : increase;
     this.mosaicId = MosaicId.fromId(value._transaction._mosaicId.toBigInt());
     this.delta = value._transaction._delta.toBigInt();
   }
@@ -977,7 +978,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   }
 
   String toString() {
-    String _supplyType = mosaicSupplyType.index == 0 ? "Decrease" : "Increase";
+    String _supplyType = mosaicSupplyType.index == 0 ? "decrease" : "increase";
     return '{\n'
         ' "abstractTransaction":${_abstractTransactionToString()}\n'
         ' "mosaicId":${mosaicId},\n'
@@ -997,7 +998,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 
   @override
   int _size() {
-    return MosaicSupplyChangeTransactionSize;
+    return mosaicSupplyChangeTransactionSize;
   }
 
   @override
@@ -1042,7 +1043,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
       Deadline deadline, List<Transaction> innerTxs, int networkType)
       : super() {
     if (innerTxs == null) {
-      throw ErrNullInnerTransactions;
+      throw errNullInnerTransactions;
     }
 
     this.version = MosaicSupplyChangeVersion;
@@ -1103,9 +1104,9 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
     int sizeOfInnerTransactions = 0;
     this.innerTransactions.forEach((itx) {
       sizeOfInnerTransactions +=
-          itx._size() - SignatureSize - MaxFeeSize - DeadLineSize;
+          itx._size() - signatureSize - maxFeeSize - deadLineSize;
     });
-    return AggregateBondedHeader + sizeOfInnerTransactions;
+    return aggregateBondedHeader + sizeOfInnerTransactions;
   }
 
   @override
@@ -1182,7 +1183,7 @@ String _createTransactionHash(String pHex) {
 
 Uint8List toAggregateTransactionBytes(Transaction tx) {
   if (tx.getAbstractTransaction().signer == null) {
-    throw ErrTransactionSigner;
+    throw errTransactionSigner;
   }
 
   final sb = hex.decode(tx.getAbstractTransaction().signer.publicKey);

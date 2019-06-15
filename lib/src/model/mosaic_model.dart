@@ -2,7 +2,7 @@ part of xpx_chain_sdk;
 
 // Create xpx with using xpx as unit
 Mosaic Xpx(int amount) {
-  return new Mosaic(XpxMosaicId, new BigInt.from(amount));
+  return new Mosaic(xpxMosaicId, new BigInt.from(amount));
 }
 
 Mosaic XpxRelative(int amount) {
@@ -16,15 +16,15 @@ class Mosaic {
 
   Mosaic(MosaicId mosaicId, amount) {
     if (mosaicId == null) {
-      throw ErrNullMosaicId;
+      throw errNullMosaicId;
     }
 
     if (amount == null) {
-      throw ErrNullMosaicAmount;
+      throw errNullMosaicAmount;
     }
 
     if (EqualsBigInts(amount, BigInt.zero)) {
-      throw ErrNullMosaicAmount;
+      throw errNullMosaicAmount;
     }
 
     this.id = mosaicId;
@@ -60,7 +60,7 @@ class MosaicId extends Id {
 
   factory MosaicId({final BigInt id}) {
     if (id == null) {
-      throw new ArgumentError('The id must not be null');
+      throw errNullId;
     }
 
     return new MosaicId._(id);
@@ -72,7 +72,7 @@ class MosaicId extends Id {
 
   static MosaicId fromBigInt(final BigInt bigInt) {
     if (bigInt == null) {
-      throw ErrNullBigInt;
+      throw errNullBigInt;
     }
     return new MosaicId(id: bigInt);
   }
@@ -102,9 +102,9 @@ class MosaicIds {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'mosaicIds': _list.map((id) => id.toHex()).toList(),
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['mosaicIds'] = _list.map((id) => id.toHex()).toList();
+    return data;
   }
 }
 
@@ -187,22 +187,11 @@ class MosaicProperties {
   MosaicProperties(this.supplyMutable, this.transferable, this.levyMutable,
       this.divisibility, this.duration);
 
-  @override
-  String toString() {
-    return '{\n'
-        '\t"SupplyMutable": $supplyMutable,\n'
-        '\t"Transferable": $transferable,\n'
-        '\t"LevyMutable": $levyMutable,\n'
-        '\t"Divisibility": $divisibility,\n'
-        '\t"Duratione": $duration\n'
-        '\t}';
-  }
-
   MosaicProperties.fromJson(List<UInt64DTO> value) {
-    if (json == null) throw ErrInvalidMosaicProperties;
+    if (json == null) throw errInvalidMosaicProperties;
 
     if (value.length < 3) {
-      throw ErrInvalidMosaicProperties;
+      throw errInvalidMosaicProperties;
     }
 
     final flags = "00" + value[0].toBigInt().toRadixString(2);
@@ -216,10 +205,10 @@ class MosaicProperties {
   }
 
   MosaicProperties.fromDTO(List<_mosaicPropertiesDTO> value) {
-    if (json == null) throw ErrInvalidMosaicProperties;
+    if (json == null) throw errInvalidMosaicProperties;
 
     if (value.length < 3) {
-      throw ErrInvalidMosaicProperties;
+      throw errInvalidMosaicProperties;
     }
 
     final flags = "00" + value[0].value.toBigInt().toRadixString(2);
@@ -231,17 +220,23 @@ class MosaicProperties {
     divisibility = value[1].value.toBigInt().toInt();
     duration = value[2].value.toBigInt();
   }
-}
 
-MosaicProperties NewMosaicProperties(bool SupplyMutable, Transferable,
-    LevyMutable, int Divisibility, BigInt Duration) {
-  return new MosaicProperties(
-      SupplyMutable, Transferable, LevyMutable, Divisibility, Duration);
+  @override
+  String toString() {
+    return '{\n'
+        '\t"supplyMutable": $supplyMutable,\n'
+        '\t"transferable": $transferable,\n'
+        '\t"levyMutable": $levyMutable,\n'
+        '\t"divisibility": $divisibility,\n'
+        '\t"duratione": $duration\n'
+        '\t}';
+  }
+
 }
 
 MosaicId NewMosaicIdFromNonceAndOwner(int nonce, String ownerPublicKey) {
   if (ownerPublicKey.length != 64) {
-    throw ErrInvalidOwnerPublicKey;
+    throw errInvalidOwnerPublicKey;
   }
 
   return MosaicId.fromId(_generateMosaicId(nonce, ownerPublicKey));

@@ -153,10 +153,10 @@ BigInt NewNamespaceIdFromName(String namespaceName) {
 List<BigInt> generateNamespacePath(String name) {
   var parts = name.split(".");
   if (parts.length == 0) {
-    throw ErrInvalidNamespaceName;
+    throw errInvalidNamespaceName;
   }
   if (parts.length > 3) {
-    throw ErrInvalidNamespaceName;
+    throw errInvalidNamespaceName;
   }
 
   var namespaceId = BigInt.zero;
@@ -164,7 +164,7 @@ List<BigInt> generateNamespacePath(String name) {
 
   for (final i in parts) {
     if (!regValidNamespace.hasMatch('$i')) {
-      throw ErrInvalidNamespaceName;
+      throw errInvalidNamespaceName;
     }
     ;
     namespaceId = _generateId('$i', BigInt.zero);

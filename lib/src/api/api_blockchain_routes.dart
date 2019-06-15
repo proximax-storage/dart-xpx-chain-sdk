@@ -249,10 +249,10 @@ class BlockchainRoutesApi {
 
     // verify required params are set
     if (height == null) {
-      throw ErrNullOrZeroHeight;
+      throw errNullOrZeroHeight;
     }
     if (limit == null) {
-      throw ErrNullOrZeroLimit;
+      throw errNullOrZeroLimit;
     }
 
     // create path and map variables

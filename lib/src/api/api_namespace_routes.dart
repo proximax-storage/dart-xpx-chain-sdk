@@ -202,7 +202,7 @@ class NamespaceRoutesApi {
     }
 
     if (nsIds.namespaceIds.length == 0) {
-      throw ErrEmptyNamespaceIds;
+      throw errEmptyNamespaceIds;
     }
     // create path and map variables
     String path = "/namespace/names".replaceAll("{format}", "json");
