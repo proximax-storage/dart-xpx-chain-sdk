@@ -2,7 +2,7 @@ import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
-const networkType = PublicTest;
+const networkType = publicTest;
 
 /// Simple Account API AnnounceTransaction
 void main() async {
@@ -21,9 +21,10 @@ void main() async {
       networkType);
 
   final deadline = new Deadline(hours: 1);
+
   /// Create a new transaction type transfer
   var ttxOne = new TransferTransaction(
-    // The maximum amount of time to include the transaction in the blockchain.
+      // The maximum amount of time to include the transaction in the blockchain.
       deadline,
       // The Address of the recipient account.
       recipient,
@@ -35,7 +36,7 @@ void main() async {
 
   /// Create a new transaction type transfer
   var ttxTwo = new TransferTransaction(
-    // The maximum amount of time to include the transaction in the blockchain.
+      // The maximum amount of time to include the transaction in the blockchain.
       deadline,
       // The Address of the recipient account.
       recipient,
@@ -49,7 +50,8 @@ void main() async {
   ttxTwo.ToAggregate(account.publicAccount);
 
   // Create Aggregate complete transaction.
-  var aggregateTransaction = new AggregateTransaction(deadline, [ttxOne, ttxTwo], networkType);
+  var aggregateTransaction =
+      new AggregateTransaction(deadline, [ttxOne, ttxTwo], networkType);
 
   var stx = account.sign(aggregateTransaction);
 

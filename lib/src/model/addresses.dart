@@ -1,7 +1,6 @@
 part of xpx_chain_sdk;
 
 class Addresses {
-
   Addresses();
 
   Addresses.fromJson(Map<String, dynamic> json) {

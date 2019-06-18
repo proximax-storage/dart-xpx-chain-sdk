@@ -46,12 +46,13 @@ final errNullRecipient = new Exception("recipient must not be null");
 final errNullDuration = new Exception("duration must not be null");
 final errNullMessage =
     new Exception("message must not be null, but could be with empty payload");
-final errNullInnerTransactions = new Exception("innerTransactions must not be null");
-final errTransactionSigner = new Exception("some of the transaction does not have a signer");
+final errNullInnerTransactions =
+    new Exception("innerTransactions must not be null");
+final errTransactionSigner =
+    new Exception("some of the transaction does not have a signer");
 
 /// Accounts errors
 final errInvalidPublicKey = new Exception("not a valid public key");
 final errNullSignature = new Exception("signature must not be null");
 final errInvalidSignature = new Exception("signature length is incorrect");
 final errInvalidHexadecimal = new Exception("must be hexadecimal");
-

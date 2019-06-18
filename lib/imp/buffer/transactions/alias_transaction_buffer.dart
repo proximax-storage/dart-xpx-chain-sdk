@@ -10,22 +10,30 @@ class AliasTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<AliasTransactionBuffer> reader = const _AliasTransactionBufferReader();
+  static const fb.Reader<AliasTransactionBuffer> reader =
+      const _AliasTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 8, null);
+  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 16, null);
+  List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 16, null);
   int get actionType => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
-  List<int> get namespaceId => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 20, null);
-///  In case of address it is 25 bytes array. In case of mosaic it is 8 byte array(or 2 uint32 array)
-  List<int> get aliasId => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 22, null);
+  List<int> get namespaceId => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 20, null);
+
+  ///  In case of address it is 25 bytes array. In case of mosaic it is 8 byte array(or 2 uint32 array)
+  List<int> get aliasId => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 22, null);
 
   @override
   String toString() {
@@ -33,12 +41,13 @@ class AliasTransactionBuffer {
   }
 }
 
-class _AliasTransactionBufferReader extends fb.TableReader<AliasTransactionBuffer> {
+class _AliasTransactionBufferReader
+    extends fb.TableReader<AliasTransactionBuffer> {
   const _AliasTransactionBufferReader();
 
   @override
-  AliasTransactionBuffer createObject(fb.BufferContext bc, int offset) => 
-    new AliasTransactionBuffer._(bc, offset);
+  AliasTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
+      new AliasTransactionBuffer._(bc, offset);
 }
 
 class AliasTransactionBufferBuilder {
@@ -56,38 +65,47 @@ class AliasTransactionBufferBuilder {
     fbBuilder.addUint32(0, size);
     return fbBuilder.offset;
   }
+
   int addSignatureOffset(int offset) {
     fbBuilder.addOffset(1, offset);
     return fbBuilder.offset;
   }
+
   int addSignerOffset(int offset) {
     fbBuilder.addOffset(2, offset);
     return fbBuilder.offset;
   }
+
   int addVersion(int version) {
     fbBuilder.addUint16(3, version);
     return fbBuilder.offset;
   }
+
   int addType(int type) {
     fbBuilder.addUint16(4, type);
     return fbBuilder.offset;
   }
+
   int addMaxFeeOffset(int offset) {
     fbBuilder.addOffset(5, offset);
     return fbBuilder.offset;
   }
+
   int addDeadlineOffset(int offset) {
     fbBuilder.addOffset(6, offset);
     return fbBuilder.offset;
   }
+
   int addActionType(int actionType) {
     fbBuilder.addUint8(7, actionType);
     return fbBuilder.offset;
   }
+
   int addNamespaceIdOffset(int offset) {
     fbBuilder.addOffset(8, offset);
     return fbBuilder.offset;
   }
+
   int addAliasIdOffset(int offset) {
     fbBuilder.addOffset(9, offset);
     return fbBuilder.offset;
@@ -121,8 +139,7 @@ class AliasTransactionBufferObjectBuilder extends fb.ObjectBuilder {
     int actionType,
     List<int> namespaceId,
     List<int> aliasId,
-  })
-      : _size = size,
+  })  : _size = size,
         _signature = signature,
         _signer = signer,
         _version = version,
@@ -135,18 +152,15 @@ class AliasTransactionBufferObjectBuilder extends fb.ObjectBuilder {
 
   /// Finish building, and store into the [fbBuilder].
   @override
-  int finish(
-    fb.Builder fbBuilder) {
+  int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null);
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
-    final int signerOffset = _signer?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_signer)
-        : null;
-    final int maxFeeOffset = _maxFee?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_maxFee)
-        : null;
+    final int signerOffset =
+        _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
+    final int maxFeeOffset =
+        _maxFee?.isNotEmpty == true ? fbBuilder.writeListUint32(_maxFee) : null;
     final int deadlineOffset = _deadline?.isNotEmpty == true
         ? fbBuilder.writeListUint32(_deadline)
         : null;

@@ -2,7 +2,7 @@ import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
-const networkType = PublicTest;
+const networkType = publicTest;
 
 /// Simple Account API AnnounceTransaction
 void main() async {
@@ -15,18 +15,24 @@ void main() async {
       "1ACE45EAD3C2F0811D9F4355F35BF78483324975083BE4E503EA49DFFEA691A0",
       networkType);
 
-  /// Create a Mosaic definition transaction.
-  var mosaicDefinition = new MosaicDefinitionTransaction(
-      // The maximum amount of time to include the transaction in the blockchain.
-      new Deadline(hours: 1),
-      MosaicNonce(),
-      account.publicAccount.publicKey,
-      new MosaicProperties(true, true, true, 4, BigInt.from(1000)),
-      new BigInt.from(1000),
-      // The network type
+  /// Create an Address from a given Public key.
+  var recipient = new Address.fromPublicKey(
+      "68f50e10e5b8be2b7e9ddb687a667d6e94dd55fe02b4aed8195f51f9a242558b",
       networkType);
 
-  var stx = account.sign(mosaicDefinition);
+  /// Create a new transaction type transfer
+  var tx = new TransferTransaction(
+      // The maximum amount of time to include the transaction in the blockchain.
+      new Deadline(hours: 1),
+      // The Address of the recipient account.
+      recipient,
+      // The List of mosaic to be sent.
+      [Xpx(15)],
+      // The transaction message of 1024 characters.
+      new Message.PlainMessage("From ProximaX Dart SDK"),
+      networkType);
+
+  var stx = account.sign(tx);
 
   var restTx = await client.Transaction.AnnounceTransaction(stx);
   print(restTx);

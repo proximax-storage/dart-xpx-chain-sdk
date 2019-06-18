@@ -3,7 +3,6 @@ part of xpx_chain_sdk;
 /// Buffer wraps a fixed size Uint8List and writes values into it using
 /// big-endian byte order.
 abstract class Buffer {
-
   Buffer._create(this.out);
 
   factory Buffer.BigEndian(int size) {

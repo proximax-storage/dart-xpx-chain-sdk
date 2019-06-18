@@ -1,8 +1,9 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bcstage1.xpxsirius.io:3000";
 
-final networkType = PublicTest;
+final networkType = publicTest;
 
 /// Simple Mosaic API request
 void main() async {
@@ -17,9 +18,14 @@ void main() async {
   /// 2- var client = NewClient(config, new BrowserClient());
   var client = NewClient(config, null);
 
+  var toto = Int64.fromInts(231112638, 481110499);
+//  final BigInt bigInt = BigInt.parse(toto, radix: 16);
+  print(toto.toHexString());
+
+//  print(bigIntegerToHex(BigInt.parse(toto, radix: 16)));
   /// Gets the mosaic definition for a given mosaicId.
   try {
-    var result = await client.Mosaic.GetMosaic(XpxMosaicId);
+    var result = await client.Mosaic.GetMosaic(xpxMosaicId);
     print(result);
   } catch (e) {
     print("Exception when calling Mosaic->GetMosaic: $e\n");
@@ -27,7 +33,7 @@ void main() async {
 
   /// Gets an array of mosaic definition.
   MosaicIds Ids = new MosaicIds();
-  Ids.add(XpxMosaicId);
+  Ids.add(xpxMosaicId);
   try {
     var result = await client.Mosaic.GetMosaics(Ids);
     print(result);

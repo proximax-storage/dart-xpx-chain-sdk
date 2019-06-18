@@ -15,7 +15,7 @@ Schema mosaicDefinitionTransactionSchema() {
     _newScalarAttribute("flags", byteSize),
     _newScalarAttribute("divisibility", byteSize),
     _newScalarAttribute("indicateDuration", byteSize),
-  _newArrayAttribute("duration", intSize)
+    _newArrayAttribute("duration", intSize)
   ];
   return Schema(schemaDefinition);
 }

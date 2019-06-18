@@ -1,7 +1,6 @@
 part of xpx_chain_sdk;
 
 class ApiException implements Exception {
-
   ApiException(this.code, this.message);
 
   ApiException.withInner(

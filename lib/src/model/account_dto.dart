@@ -1,7 +1,6 @@
 part of xpx_chain_sdk;
 
 class _AccountDTO {
-
   _AccountDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
 
@@ -62,7 +61,6 @@ class _AccountDTO {
 
 class _AccountInfoDTO {
   _AccountInfoDTO.fromJson(Map<String, dynamic> json) {
-
     if (json == null) return;
     meta = new _AccountMetaDTO.fromJson(json['meta'] as Map<String, dynamic>);
     account = new _AccountDTO.fromJson(json['account'] as Map<String, dynamic>);

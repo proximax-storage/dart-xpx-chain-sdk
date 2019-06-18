@@ -1,7 +1,6 @@
 part of xpx_chain_sdk;
 
 class AccountRoutesApi {
-
   AccountRoutesApi([ApiClient _apiClient])
       : _apiClient = _apiClient ?? defaultApiClient;
 
@@ -95,7 +94,9 @@ class AccountRoutesApi {
               response.body, 'List<_AccountInfoDTO>') as List)
           .map((dynamic item) => item as Object)
           .toList();
-      return resp.map((t) => AccountInfo.fromDTO(t as _AccountInfoDTO)).toList();
+      return resp
+          .map((t) => AccountInfo.fromDTO(t as _AccountInfoDTO))
+          .toList();
     } else {
       return null;
     }

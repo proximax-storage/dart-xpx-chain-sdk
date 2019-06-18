@@ -82,7 +82,7 @@ bool EqualsBigInts(BigInt first, BigInt second) {
 }
 
 Uint8List addUint8List(Uint8List a, Uint8List b) {
-  if (a == null){
+  if (a == null) {
     return b;
   }
   Uint8List hash = Uint8List(b.length + a.length);
@@ -105,7 +105,6 @@ List<int> fromBigInt(BigInt v) {
 }
 
 List<int> FromBigInt(BigInt v) {
-
   final u64 = new Int64.fromBytesBigEndian(crypto.encodeBigInt(v));
 
   final l = (u64 & 0xFFFFFFFF);

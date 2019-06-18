@@ -2,7 +2,7 @@ import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
-final networkType = PublicTest;
+final networkType = publicTest;
 
 /// Simple Transactions API request
 void main() async {
@@ -18,7 +18,7 @@ void main() async {
   var client = NewClient(config, null);
 
   /// Returns transaction information given a transactionId or hash.
-  var hash = "A14F926601D2E4804EA6BE0E2EF8A7F6112BB29C9988DDA3E6F1195B5F825647";
+  var hash = "07CC9EAB83D182AE036B1FADD5EE4A343E2CBFD965784D4CB28B6A9B6C582508";
 
   try {
     var result = await client.Transaction.GetTransaction(hash);
@@ -29,8 +29,10 @@ void main() async {
 
   /// Returns transaction information given a TransactionIds object.
   var d = new TransactionIds();
-  d.transactionIds.add("C0B0C87B76C9C8333F734EA5EA758B4C2144DC47F1AA62981931BAF489726333");
-  d.transactionIds.add("BDD805FEAD00C53D114D670188046F3B0A12F9B1C2E6AF12FB8035FC9B0576EA");
+  d.transactionIds
+      .add("C0B0C87B76C9C8333F734EA5EA758B4C2144DC47F1AA62981931BAF489726333");
+  d.transactionIds
+      .add("BDD805FEAD00C53D114D670188046F3B0A12F9B1C2E6AF12FB8035FC9B0576EA");
 
   try {
     var result = await client.Transaction.GetTransactions(d);

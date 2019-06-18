@@ -2,7 +2,7 @@ import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
-final networkType = PublicTest;
+final networkType = publicTest;
 
 /// Simple BlockChain API request
 void main() async {
@@ -44,7 +44,7 @@ void main() async {
 
   /// Gets up to limit number of blocks after given block height.
   final height = BigInt.from(1);
-  final limit = BigInt.from(50);
+  final limit = 50;
   try {
     var result =
         await client.BlockChain.GetBlocksByHeightWithLimit(height, limit);
@@ -56,12 +56,10 @@ void main() async {
 
   /// Get transactions from a block
   try {
-    var result =
-    await client.BlockChain.GetBlockTransactions(height);
+    var result = await client.BlockChain.GetBlockTransactions(height);
     print(result);
   } catch (e) {
-    print(
-        "Exception when calling BlockChain->GetBlockTransactions: $e\n");
+    print("Exception when calling BlockChain->GetBlockTransactions: $e\n");
   }
 
   /// Get the current score of the chain

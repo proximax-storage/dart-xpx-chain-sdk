@@ -2,7 +2,7 @@ import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
-const networkType = PublicTest;
+const networkType = publicTest;
 
 /// Simple Account API AnnounceTransaction
 void main() async {
@@ -39,10 +39,7 @@ void main() async {
   /// Create a new transaction type RegisterNamespaceTransaction.
   /// type SubNamespace.
   var tx2 = new RegisterNamespaceTransaction.createSub(
-      new Deadline(hours: 1),
-      "vensubnamespace",
-      parentNamespace,
-      networkType);
+      new Deadline(hours: 1), "vensubnamespace", parentNamespace, networkType);
   var stx2 = account.sign(tx2);
 
   var restTx2 = await client.Transaction.AnnounceTransaction(stx2);

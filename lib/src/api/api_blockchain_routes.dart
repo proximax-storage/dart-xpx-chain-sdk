@@ -1,7 +1,6 @@
 part of xpx_chain_sdk;
 
 class BlockchainRoutesApi {
-
   BlockchainRoutesApi([ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
 
@@ -232,9 +231,9 @@ class BlockchainRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
-      (apiClient.deserialize(response.body, 'List<Transaction>') as List)
-          .map((dynamic item) => item as Object)
-          .toList();
+          (apiClient.deserialize(response.body, 'List<Transaction>') as List)
+              .map((dynamic item) => item as Object)
+              .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
       return null;
