@@ -2,7 +2,7 @@ import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
-const networkType = PublicTest;
+const networkType = publicTest;
 
 /// Simple Account API AnnounceTransaction
 void main() async {
@@ -19,8 +19,8 @@ void main() async {
   var mosaicSupplyChange = new MosaicSupplyChangeTransaction(
       // The maximum amount of time to include the transaction in the blockchain.
       new Deadline(hours: 1),
-      Increase,
-      BigInt.from(6392874329628787772),
+      increase,
+      MosaicId.fromId(BigInt.from(5138136129947827848)),
       new BigInt.from(10000),
       // The network type
       networkType);

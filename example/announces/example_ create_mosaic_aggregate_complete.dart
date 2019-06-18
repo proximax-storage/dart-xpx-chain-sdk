@@ -2,7 +2,7 @@ import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
-const networkType = PublicTest;
+const networkType = publicTest;
 
 /// Simple Account API AnnounceTransaction
 void main() async {
@@ -19,7 +19,7 @@ void main() async {
 
   /// Create a Mosaic definition transaction.
   var mosaicDefinition = new MosaicDefinitionTransaction(
-    // The maximum amount of time to include the transaction in the blockchain.
+      // The maximum amount of time to include the transaction in the blockchain.
       new Deadline(hours: 1),
       MosaicNonce(),
       account.publicAccount.publicKey,
@@ -30,9 +30,9 @@ void main() async {
 
   /// Create a Mosaic Supply Change transaction.
   var mosaicSupplyChange = new MosaicSupplyChangeTransaction(
-    // The maximum amount of time to include the transaction in the blockchain.
+      // The maximum amount of time to include the transaction in the blockchain.
       new Deadline(hours: 1),
-      Increase,
+      increase,
       mosaicDefinition.mosaicId,
       new BigInt.from(10000),
       // The network type
@@ -42,10 +42,10 @@ void main() async {
   mosaicSupplyChange.ToAggregate(account.publicAccount);
 
   // Create Aggregate complete transaction.
-  var aggregateTransaction = new AggregateTransaction(deadline, [mosaicDefinition, mosaicSupplyChange], networkType);
+  var aggregateTransaction = new AggregateTransaction(
+      deadline, [mosaicDefinition, mosaicSupplyChange], networkType);
 
   var stx = account.sign(aggregateTransaction);
-  print(stx.payload);
 
   var restTx = await client.Transaction.AnnounceTransaction(stx);
   print(restTx);

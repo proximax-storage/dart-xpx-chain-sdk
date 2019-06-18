@@ -170,7 +170,8 @@ class TransactionRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return deserializeDTO(apiClient.deserialize(response.body, 'Transaction'));
+      return deserializeDTO(
+          apiClient.deserialize(response.body, 'Transaction'));
     } else {
       return null;
     }
@@ -308,8 +309,8 @@ class TransactionRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<_TransactionStatusDTO>')
-              as List)
+      return (apiClient.deserialize(
+              response.body, 'List<_TransactionStatusDTO>') as List)
           .map((dynamic item) => item as _TransactionStatusDTO)
           .toList();
     } else {

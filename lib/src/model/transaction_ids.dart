@@ -1,7 +1,6 @@
 part of xpx_chain_sdk;
 
 class TransactionIds {
-
   TransactionIds();
 
   TransactionIds.fromJson(Map<String, dynamic> json) {

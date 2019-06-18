@@ -1,7 +1,6 @@
 part of xpx_chain_sdk;
 
 class MosaicRoutesApi {
-
   MosaicRoutesApi([ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
 
@@ -138,10 +137,10 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = (apiClient.deserialize(response.body, 'List<_MosaicNameDTO>')
-              as List)
-          .map((dynamic item) => item as _MosaicNameDTO)
-          .toList();
+      final resp =
+          (apiClient.deserialize(response.body, 'List<_MosaicNameDTO>') as List)
+              .map((dynamic item) => item as _MosaicNameDTO)
+              .toList();
       return MosaicName.listFromDTO(resp);
     } else {
       return null;

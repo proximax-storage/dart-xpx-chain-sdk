@@ -10,24 +10,36 @@ class SecretLockTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<SecretLockTransactionBuffer> reader = const _SecretLockTransactionBufferReader();
+  static const fb.Reader<SecretLockTransactionBuffer> reader =
+      const _SecretLockTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 8, null);
+  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get fee => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 16, null);
-  List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 18, null);
-  List<int> get mosaicAmount => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 20, null);
-  List<int> get duration => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 22, null);
-  int get hashAlgorithm => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 24, 0);
-  List<int> get secret => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 26, null);
-  List<int> get recipient => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 28, null);
+  List<int> get fee => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 16, null);
+  List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 18, null);
+  List<int> get mosaicAmount =>
+      const fb.ListReader<int>(const fb.Uint32Reader())
+          .vTableGet(_bc, _bcOffset, 20, null);
+  List<int> get duration => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 22, null);
+  int get hashAlgorithm =>
+      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 24, 0);
+  List<int> get secret => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 26, null);
+  List<int> get recipient => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 28, null);
 
   @override
   String toString() {
@@ -35,12 +47,13 @@ class SecretLockTransactionBuffer {
   }
 }
 
-class _SecretLockTransactionBufferReader extends fb.TableReader<SecretLockTransactionBuffer> {
+class _SecretLockTransactionBufferReader
+    extends fb.TableReader<SecretLockTransactionBuffer> {
   const _SecretLockTransactionBufferReader();
 
   @override
-  SecretLockTransactionBuffer createObject(fb.BufferContext bc, int offset) => 
-    new SecretLockTransactionBuffer._(bc, offset);
+  SecretLockTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
+      new SecretLockTransactionBuffer._(bc, offset);
 }
 
 class SecretLockTransactionBufferBuilder {
@@ -58,50 +71,62 @@ class SecretLockTransactionBufferBuilder {
     fbBuilder.addUint32(0, size);
     return fbBuilder.offset;
   }
+
   int addSignatureOffset(int offset) {
     fbBuilder.addOffset(1, offset);
     return fbBuilder.offset;
   }
+
   int addSignerOffset(int offset) {
     fbBuilder.addOffset(2, offset);
     return fbBuilder.offset;
   }
+
   int addVersion(int version) {
     fbBuilder.addUint16(3, version);
     return fbBuilder.offset;
   }
+
   int addType(int type) {
     fbBuilder.addUint16(4, type);
     return fbBuilder.offset;
   }
+
   int addFeeOffset(int offset) {
     fbBuilder.addOffset(5, offset);
     return fbBuilder.offset;
   }
+
   int addDeadlineOffset(int offset) {
     fbBuilder.addOffset(6, offset);
     return fbBuilder.offset;
   }
+
   int addMosaicIdOffset(int offset) {
     fbBuilder.addOffset(7, offset);
     return fbBuilder.offset;
   }
+
   int addMosaicAmountOffset(int offset) {
     fbBuilder.addOffset(8, offset);
     return fbBuilder.offset;
   }
+
   int addDurationOffset(int offset) {
     fbBuilder.addOffset(9, offset);
     return fbBuilder.offset;
   }
+
   int addHashAlgorithm(int hashAlgorithm) {
     fbBuilder.addUint8(10, hashAlgorithm);
     return fbBuilder.offset;
   }
+
   int addSecretOffset(int offset) {
     fbBuilder.addOffset(11, offset);
     return fbBuilder.offset;
   }
+
   int addRecipientOffset(int offset) {
     fbBuilder.addOffset(12, offset);
     return fbBuilder.offset;
@@ -141,8 +166,7 @@ class SecretLockTransactionBufferObjectBuilder extends fb.ObjectBuilder {
     int hashAlgorithm,
     List<int> secret,
     List<int> recipient,
-  })
-      : _size = size,
+  })  : _size = size,
         _signature = signature,
         _signer = signer,
         _version = version,
@@ -158,18 +182,15 @@ class SecretLockTransactionBufferObjectBuilder extends fb.ObjectBuilder {
 
   /// Finish building, and store into the [fbBuilder].
   @override
-  int finish(
-    fb.Builder fbBuilder) {
+  int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null);
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
-    final int signerOffset = _signer?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_signer)
-        : null;
-    final int feeOffset = _fee?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_fee)
-        : null;
+    final int signerOffset =
+        _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
+    final int feeOffset =
+        _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
     final int deadlineOffset = _deadline?.isNotEmpty == true
         ? fbBuilder.writeListUint32(_deadline)
         : null;
@@ -182,9 +203,8 @@ class SecretLockTransactionBufferObjectBuilder extends fb.ObjectBuilder {
     final int durationOffset = _duration?.isNotEmpty == true
         ? fbBuilder.writeListUint32(_duration)
         : null;
-    final int secretOffset = _secret?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_secret)
-        : null;
+    final int secretOffset =
+        _secret?.isNotEmpty == true ? fbBuilder.writeListUint8(_secret) : null;
     final int recipientOffset = _recipient?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_recipient)
         : null;

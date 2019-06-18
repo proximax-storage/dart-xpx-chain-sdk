@@ -8,7 +8,6 @@ abstract class SchemaAttribute {
 }
 
 class Schema {
-
   Schema(this.schemaDefinition);
 
   List<SchemaAttribute> schemaDefinition;
@@ -29,7 +28,6 @@ class Schema {
 }
 
 abstract class AbstractSchemaAttribute {
-
   AbstractSchemaAttribute(this.name);
 
   String name;
@@ -123,7 +121,6 @@ abstract class AbstractSchemaAttribute {
 
 class ArrayAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-
   ArrayAttribute(String name, int size) : super(name) {
     this.size = size;
   }
@@ -138,7 +135,6 @@ class ArrayAttribute extends AbstractSchemaAttribute
 
 class ScalarAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-
   ScalarAttribute(String name, int size) : super(name) {
     this.size = size;
   }
@@ -153,7 +149,6 @@ class ScalarAttribute extends AbstractSchemaAttribute
 
 class TableArrayAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-
   TableArrayAttribute(String name, List<SchemaAttribute> schema) : super(name) {
     this.schema = schema;
   }
@@ -188,7 +183,6 @@ class TableArrayAttribute extends AbstractSchemaAttribute
 
 class TableAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-
   TableAttribute(String name, List<SchemaAttribute> schema) : super(name) {
     this.schema = schema;
   }

@@ -2,7 +2,7 @@ import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 const baseUrl = "http://bctestnet1.xpxsirius.io:3000";
 
-final networkType = PublicTest;
+final networkType = publicTest;
 
 /// Simple Node API request
 void main() async {
@@ -19,7 +19,7 @@ void main() async {
 
   /// Get the node information.
   try {
-    var result = await client.Node.GetNodeInfo();
+    var result = await client.Network.getNetworkType();
     print(result);
   } catch (e) {
     print("Exception when calling Transaction->GetNodeInfo: $e\n");

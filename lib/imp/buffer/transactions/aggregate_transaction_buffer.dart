@@ -10,20 +10,27 @@ class AggregateTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<AggregateTransactionBuffer> reader = const _AggregateTransactionBufferReader();
+  static const fb.Reader<AggregateTransactionBuffer> reader =
+      const _AggregateTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 8, null);
+  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get fee => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 16, null);
-  int get transactionsSize => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 18, 0);
-  List<int> get transactions => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 20, null);
+  List<int> get fee => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 16, null);
+  int get transactionsSize =>
+      const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 18, 0);
+  List<int> get transactions => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 20, null);
 
   @override
   String toString() {
@@ -31,12 +38,13 @@ class AggregateTransactionBuffer {
   }
 }
 
-class _AggregateTransactionBufferReader extends fb.TableReader<AggregateTransactionBuffer> {
+class _AggregateTransactionBufferReader
+    extends fb.TableReader<AggregateTransactionBuffer> {
   const _AggregateTransactionBufferReader();
 
   @override
-  AggregateTransactionBuffer createObject(fb.BufferContext bc, int offset) => 
-    new AggregateTransactionBuffer._(bc, offset);
+  AggregateTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
+      new AggregateTransactionBuffer._(bc, offset);
 }
 
 class AggregateTransactionBufferBuilder {
@@ -54,34 +62,42 @@ class AggregateTransactionBufferBuilder {
     fbBuilder.addUint32(0, size);
     return fbBuilder.offset;
   }
+
   int addSignatureOffset(int offset) {
     fbBuilder.addOffset(1, offset);
     return fbBuilder.offset;
   }
+
   int addSignerOffset(int offset) {
     fbBuilder.addOffset(2, offset);
     return fbBuilder.offset;
   }
+
   int addVersion(int version) {
     fbBuilder.addUint16(3, version);
     return fbBuilder.offset;
   }
+
   int addType(int type) {
     fbBuilder.addUint16(4, type);
     return fbBuilder.offset;
   }
+
   int addFeeOffset(int offset) {
     fbBuilder.addOffset(5, offset);
     return fbBuilder.offset;
   }
+
   int addDeadlineOffset(int offset) {
     fbBuilder.addOffset(6, offset);
     return fbBuilder.offset;
   }
+
   int addTransactionsSize(int transactionsSize) {
     fbBuilder.addUint32(7, transactionsSize);
     return fbBuilder.offset;
   }
+
   int addTransactionsOffset(int offset) {
     fbBuilder.addOffset(8, offset);
     return fbBuilder.offset;
@@ -113,8 +129,7 @@ class AggregateTransactionBufferObjectBuilder extends fb.ObjectBuilder {
     List<int> deadline,
     int transactionsSize,
     List<int> transactions,
-  })
-      : _size = size,
+  })  : _size = size,
         _signature = signature,
         _signer = signer,
         _version = version,
@@ -126,18 +141,15 @@ class AggregateTransactionBufferObjectBuilder extends fb.ObjectBuilder {
 
   /// Finish building, and store into the [fbBuilder].
   @override
-  int finish(
-    fb.Builder fbBuilder) {
+  int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null);
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
-    final int signerOffset = _signer?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_signer)
-        : null;
-    final int feeOffset = _fee?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_fee)
-        : null;
+    final int signerOffset =
+        _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
+    final int feeOffset =
+        _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
     final int deadlineOffset = _deadline?.isNotEmpty == true
         ? fbBuilder.writeListUint32(_deadline)
         : null;

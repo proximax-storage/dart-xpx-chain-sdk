@@ -33,13 +33,17 @@ class NamespaceId extends Id {
   @override
   bool operator ==(final other) =>
       identical(this, other) ||
-          other is NamespaceId && runtimeType == other.runtimeType && id == other.id;
+      other is NamespaceId &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
 }
 
 class NamespaceName {
   NamespaceName.fromDTO(_NamespaceNameDTO value) {
     if (json == null) return;
-    parentId = value.parentId == null ? new NamespaceId._(value.parentId.toBigInt()) : null;
+    parentId = value.parentId == null
+        ? new NamespaceId._(value.parentId.toBigInt())
+        : null;
     namespaceId = new NamespaceId._(value.namespaceId.toBigInt());
     name = value.name;
   }
@@ -76,7 +80,6 @@ class NamespaceName {
 }
 
 class NamespaceInfo {
-
   NamespaceInfo();
 
   NamespaceInfo.fromDTO(_NamespaceInfoDTO value) {
@@ -99,8 +102,9 @@ class NamespaceInfo {
     if (value.namespace.parentId.toBigInt().toInt() != 0) {
       this.namespaceId = new NamespaceId._(levels[0]);
       parent = new NamespaceInfo();
-      parent.namespaceId = new NamespaceId._(value.namespace.parentId.toBigInt());
-    }else{
+      parent.namespaceId =
+          new NamespaceId._(value.namespace.parentId.toBigInt());
+    } else {
       this.namespaceId = new NamespaceId._(levels[0]);
     }
   }

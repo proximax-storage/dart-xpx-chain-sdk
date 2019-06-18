@@ -25,7 +25,6 @@ Client NewClient(NewConfig conf, http.Client client) {
 }
 
 class Client {
-
   Client(this._apiClient)
       : BlockChain = new BlockchainRoutesApi(_apiClient),
         Account = new AccountRoutesApi(_apiClient),
@@ -46,7 +45,6 @@ class Client {
 }
 
 class ApiClient {
-
   ApiClient(this.conf, this.client);
 
   NewConfig conf;
@@ -76,11 +74,14 @@ class ApiClient {
         case '_AccountMetaDTO':
           return new _AccountMetaDTO.fromJson(value as Map<String, dynamic>);
         case '_AccountPropertiesDTO':
-          return new _AccountPropertiesDTO.fromJson(value as Map<String, dynamic>);
+          return new _AccountPropertiesDTO.fromJson(
+              value as Map<String, dynamic>);
         case '_AccountPropertiesInfoDTO':
-          return new _AccountPropertiesInfoDTO.fromJson(value as Map<String, dynamic>);
+          return new _AccountPropertiesInfoDTO.fromJson(
+              value as Map<String, dynamic>);
         case '_AccountPropertiesMetaDTO':
-          return new _AccountPropertiesMetaDTO.fromJson(value as Map<String, dynamic>);
+          return new _AccountPropertiesMetaDTO.fromJson(
+              value as Map<String, dynamic>);
         case 'AccountPropertyDTO':
           return new AccountPropertyDTO.fromJson(value as Map<String, dynamic>);
         case 'Addresses':
@@ -88,7 +89,8 @@ class ApiClient {
         case '_AliasDTO':
           return new _AliasDTO.fromJson(value as Map<String, dynamic>);
         case 'AnnounceTransactionInfoDTO':
-          return new AnnounceTransactionInfoDTO.fromJson(value as Map<String, dynamic>);
+          return new AnnounceTransactionInfoDTO.fromJson(
+              value as Map<String, dynamic>);
         case 'BlockDTO':
           return new _BlockDTO.fromJson(value as Map<String, dynamic>);
         case 'BlockInfoDTO':
@@ -96,23 +98,29 @@ class ApiClient {
         case 'BlockMetaDTO':
           return new _BlockMetaDTO.fromJson(value as Map<String, dynamic>);
         case '_BlockchainScoreDTO':
-          return new _BlockchainScoreDTO.fromJson(value as Map<String, dynamic>);
+          return new _BlockchainScoreDTO.fromJson(
+              value as Map<String, dynamic>);
         case 'BlockchainStorageInfo':
-          return new BlockchainStorageInfo.fromJson(value as Map<String, dynamic>);
+          return new BlockchainStorageInfo.fromJson(
+              value as Map<String, dynamic>);
         case 'CommunicationTimestamps':
-          return new CommunicationTimestamps.fromJson(value as Map<String, dynamic>);
+          return new CommunicationTimestamps.fromJson(
+              value as Map<String, dynamic>);
         case 'HeightDTO':
           return new _HeightDTO.fromJson(value as Map<String, dynamic>);
         case 'MerklePathItem':
           return new MerklePathItem.fromJson(value as Map<String, dynamic>);
         case '_MerkleProofInfoDTO':
-          return new _MerkleProofInfoDTO.fromJson(value as Map<String, dynamic>);
+          return new _MerkleProofInfoDTO.fromJson(
+              value as Map<String, dynamic>);
         case 'MerkleProofInfoPayload':
-          return new MerkleProofInfoPayload.fromJson(value as Map<String, dynamic>);
+          return new MerkleProofInfoPayload.fromJson(
+              value as Map<String, dynamic>);
         case '_MosaicDTO':
           return new _MosaicDTO.fromJson(value as Map<String, dynamic>);
         case '_MosaicDefinitionDTO':
-          return new _MosaicDefinitionDTO.fromJson(value as Map<String, dynamic>);
+          return new _MosaicDefinitionDTO.fromJson(
+              value as Map<String, dynamic>);
         case '_MosaicInfoDTO':
           return new _MosaicInfoDTO.fromJson(value as Map<String, dynamic>);
         case '_MosaicMetaDTO':
@@ -120,9 +128,11 @@ class ApiClient {
         case '_MosaicNameDTO':
           return new _MosaicNameDTO.fromJson(value as Map<String, dynamic>);
         case '_MultisigAccountGraphInfoDTO':
-          return new _MultisigAccountGraphInfoDTO.fromJson(value as Map<String, dynamic>);
+          return new _MultisigAccountGraphInfoDTO.fromJson(
+              value as Map<String, dynamic>);
         case '_MultisigAccountInfoDTO':
-          return new _MultisigAccountInfoDTO.fromJson(value as Map<String, dynamic>);
+          return new _MultisigAccountInfoDTO.fromJson(
+              value as Map<String, dynamic>);
         case '_MultisigDTO':
           return new _MultisigDTO.fromJson(value as Map<String, dynamic>);
         case '_NamespaceDTO':
@@ -146,7 +156,8 @@ class ApiClient {
         case 'TransactionPayload':
           return new TransactionPayload.fromJson(value as Map<String, dynamic>);
         case '_TransactionStatusDTO':
-          return new _TransactionStatusDTO.fromJson(value as Map<String, dynamic>);
+          return new _TransactionStatusDTO.fromJson(
+              value as Map<String, dynamic>);
         case 'UInt64DTO':
           return new UInt64DTO.fromJson(value);
         default:
@@ -155,12 +166,16 @@ class ApiClient {
             if (value is List &&
                 (match = _RegList.firstMatch(targetType)) != null) {
               var newTargetType = match[1];
-              return value.map((dynamic v) => _deserialize(v, newTargetType)).toList();
+              return value
+                  .map((dynamic v) => _deserialize(v, newTargetType))
+                  .toList();
             } else if (value is Map &&
                 (match = _RegMap.firstMatch(targetType)) != null) {
               var newTargetType = match[1];
-              return new Map.fromIterables(value.keys,
-                  value.values.map((dynamic v) => _deserialize(v, newTargetType)));
+              return new Map.fromIterables(
+                  value.keys,
+                  value.values
+                      .map((dynamic v) => _deserialize(v, newTargetType)));
             }
           }
       }
@@ -177,7 +192,7 @@ class ApiClient {
 
     final dynamic decodedJson = json.decode(jsonVal);
 
-     if (targetType == 'Transaction' || targetType == 'List<Transaction>') {
+    if (targetType == 'Transaction' || targetType == 'List<Transaction>') {
       return _txnDeserialize(decodedJson, targetType);
     }
 
@@ -245,18 +260,20 @@ class ApiClient {
 }
 
 dynamic _txnDeserialize(dynamic value, String targetType) {
-  if (targetType == 'List<Transaction>' ){
+  if (targetType == 'List<Transaction>') {
     {
       Match match;
-      if (value is List &&
-          (match = _RegList.firstMatch(targetType)) != null) {
+      if (value is List && (match = _RegList.firstMatch(targetType)) != null) {
         var newTargetType = match[1];
 
-        return value.map((dynamic v) => _txnDeserialize(v, newTargetType)).toList();
+        return value
+            .map((dynamic v) => _txnDeserialize(v, newTargetType))
+            .toList();
       } else if (value is Map &&
           (match = _RegMap.firstMatch(targetType)) != null) {
         var newTargetType = match[1];
-        return new Map.fromIterables(value.keys, value.values.map((dynamic v) => _txnDeserialize(v, newTargetType)));
+        return new Map.fromIterables(value.keys,
+            value.values.map((dynamic v) => _txnDeserialize(v, newTargetType)));
       }
     }
   }
@@ -266,15 +283,20 @@ dynamic _txnDeserialize(dynamic value, String targetType) {
   try {
     switch (targetType) {
       case 'Transfer':
-        return new _TransferTransactionInfoDTO.fromJson(value as Map<String, dynamic>);
+        return new _TransferTransactionInfoDTO.fromJson(
+            value as Map<String, dynamic>);
       case 'RegisterNamespace':
-        return new _RegisterNamespaceTransactionInfoDTO.fromJson(value as Map<String, dynamic>);
+        return new _RegisterNamespaceTransactionInfoDTO.fromJson(
+            value as Map<String, dynamic>);
       case 'MosaicDefinition':
-        return new _MosaicDefinitionTransactionInfoDTO.fromJson(value as Map<String, dynamic>);
+        return new _MosaicDefinitionTransactionInfoDTO.fromJson(
+            value as Map<String, dynamic>);
       case 'MosaicSupplyChange':
-        return new _MosaicSupplyChangeTransactionInfoDTO.fromJson(value as Map<String, dynamic>);
+        return new _MosaicSupplyChangeTransactionInfoDTO.fromJson(
+            value as Map<String, dynamic>);
       case 'AggregateCompleted':
-        return new _AggregateTransactionInfoDTO.fromJson(value as Map<String, dynamic>);
+        return new _AggregateTransactionInfoDTO.fromJson(
+            value as Map<String, dynamic>);
       default:
         return null;
     }

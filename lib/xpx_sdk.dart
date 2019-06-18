@@ -16,7 +16,6 @@ import 'package:flat_buffers/flat_buffers.dart' as fb;
 
 import 'imp/buffer/buffer.dart';
 
-
 part 'xpx_sdk_consts.dart';
 part 'xpx_sdk_endian.dart';
 
