@@ -42,7 +42,7 @@ import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 ## Wiki and Examples ##
 
-Examples are in the [examples](https://github.com/proximax-storage/dart-xpx-chain-sdk/tree/master/examples) folder
+Examples are in the [examples](https://github.com/proximax-storage/dart-xpx-chain-sdk/tree/master/example) folder
 
 For more examples, go to our [wiki](https://github.com/proximax-storage/dart-xpx-chain-sdk/wiki)
 
