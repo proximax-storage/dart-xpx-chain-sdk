@@ -1,22 +1,29 @@
 part of xpx_chain_sdk;
 
 final prxNamespaceId =
-    new UInt64DTO(Int64(2339353534), Int64(2976741373)).toBigInt();
+    new UInt64DTO(Int32(2339353534), Int32(2976741373)).toBigInt();
 
 final xpxMosaicId = MosaicId.fromBigInt(
-    new UInt64DTO(Int64(481110499), Int64(231112638)).toBigInt());
+    new UInt64DTO(Int32(481110499), Int32(231112638)).toBigInt());
 
-enum NamespaceType { Root, Sub }
+enum NamespaceType { root, sub }
 
 enum MosaicSupplyType { decrease, increase }
 
-enum MultisigCosignatoryModificationType { Add, Remove }
+enum MultisigCosignatoryModificationType { add, remove }
+
+// AliasType enums
+enum AliasType {
+  noneAliasType,
+  mosaicAliasType,
+  addressAliasType,
+}
 
 const decrease = MosaicSupplyType.decrease,
     increase = MosaicSupplyType.increase;
 
-const add = MultisigCosignatoryModificationType.Add,
-    remove = MultisigCosignatoryModificationType.Remove;
+const add = MultisigCosignatoryModificationType.add,
+    remove = MultisigCosignatoryModificationType.remove;
 
 const numChecksumBytes = 4,
     addressDecodeSize = 25,
@@ -111,5 +118,7 @@ const numChecksumBytes = 4,
         transactionHeaderSize + hashTypeSize + hash256 + proofSizeSize,
     mosaicsSizeSize = 1,
     messageSizeSize = 2,
-    transferHeaderSize =
-        transactionHeaderSize + addressDecodeSize + mosaicsSizeSize + messageSizeSize;
+    transferHeaderSize = transactionHeaderSize +
+        addressDecodeSize +
+        mosaicsSizeSize +
+        messageSizeSize;

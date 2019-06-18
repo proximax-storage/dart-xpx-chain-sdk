@@ -2,14 +2,16 @@ part of xpx_chain_sdk.buffer;
 
 const byteSize = 1, shortSize = 2, intSize = 4;
 
+// ignore: one_member_abstracts
 abstract class SchemaAttribute {
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition);
 }
 
 class Schema {
-  List<SchemaAttribute> schemaDefinition;
 
   Schema(this.schemaDefinition);
+
+  List<SchemaAttribute> schemaDefinition;
 
   Uint8List serialize(Uint8List buffer) {
     List<int> resultBytes = [];
@@ -27,8 +29,10 @@ class Schema {
 }
 
 abstract class AbstractSchemaAttribute {
-  String name;
+
   AbstractSchemaAttribute(this.name);
+
+  String name;
 
   Uint8List findParam(
       int innerObjectPosition, int position, Uint8List buffer, int size) {
@@ -119,12 +123,14 @@ abstract class AbstractSchemaAttribute {
 
 class ArrayAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-  int size;
 
   ArrayAttribute(String name, int size) : super(name) {
     this.size = size;
   }
 
+  int size;
+
+  @override
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
     return this.findVector(innerObjectPosition, position, buffer, this.size);
   }
@@ -132,12 +138,14 @@ class ArrayAttribute extends AbstractSchemaAttribute
 
 class ScalarAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-  int size;
 
   ScalarAttribute(String name, int size) : super(name) {
     this.size = size;
   }
 
+  int size;
+
+  @override
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
     return this.findParam(innerObjectPosition, position, buffer, this.size);
   }
@@ -145,12 +153,14 @@ class ScalarAttribute extends AbstractSchemaAttribute
 
 class TableArrayAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-  List<SchemaAttribute> schema;
 
   TableArrayAttribute(String name, List<SchemaAttribute> schema) : super(name) {
     this.schema = schema;
   }
 
+  List<SchemaAttribute> schema;
+
+  @override
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
     List<int> resultBytes = [];
 
@@ -178,12 +188,14 @@ class TableArrayAttribute extends AbstractSchemaAttribute
 
 class TableAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-  List<SchemaAttribute> schema;
 
   TableAttribute(String name, List<SchemaAttribute> schema) : super(name) {
     this.schema = schema;
   }
 
+  List<SchemaAttribute> schema;
+
+  @override
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
     List<int> resultBytes = [];
     var tableStartPosition =

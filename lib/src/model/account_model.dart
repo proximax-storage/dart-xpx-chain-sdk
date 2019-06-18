@@ -1,36 +1,10 @@
 part of xpx_chain_sdk;
 
 class Address {
-  int _networkType;
-  String _address;
-
-  int get networkType => _networkType;
-
-  String get address => _address;
-
-  String get pretty => _pretty(this._address);
-
   Address._(this._address, this._networkType);
 
-  /// Create an [Address] from a given raw address
-  static fromRawAddress(String address) {
-    address = address.trim().replaceAll("-", "").toUpperCase();
-
-    if (address.length != addressEncodeSize) {
-      throw new ArgumentError(
-          'Address $address has to be $addressEncodeSize characters long');
-    }
-
-    return new Address._(address, addressNet[address[0]]);
-  }
-
-  @override
-  String toString() {
-    return '${toJson()}';
-  }
-
   Address.fromEncoded(String encoded) {
-    final pH = hex.decode(encoded);
+    final pH = HEX.decode(encoded);
     final parsed = base32.encode(pH);
     var a = Address.fromRawAddress(parsed);
     this._address = a.address;
@@ -47,6 +21,33 @@ class Address {
     this._networkType = networkType;
   }
 
+  int _networkType;
+
+  String _address;
+
+  int get networkType => _networkType;
+
+  String get address => _address;
+
+  String get pretty => _pretty(this._address);
+
+  /// Create an [Address] from a given raw address
+  static Address fromRawAddress(String address) {
+    address = address.trim().replaceAll("-", "").toUpperCase();
+
+    if (address.length != addressEncodeSize) {
+      throw new ArgumentError(
+          'Address $address has to be $addressEncodeSize characters long');
+    }
+
+    return new Address._(address, addressNet[address[0]]);
+  }
+
+  @override
+  String toString() {
+    return '${toJson()}';
+  }
+
   static String _pretty(final String address) {
     var res = "";
 
@@ -58,27 +59,16 @@ class Address {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'networkType': networkType,
-      'address': address,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['networkType'] = networkType;
+    data['address'] = address;
+
+    return data;
   }
 }
 
 class PublicAccount {
-  String _publicKey = null;
-  Address _address = null;
-
-  String get publicKey => _publicKey;
-
-  Address get address => _address;
-
   PublicAccount._(this._publicKey, this._address);
-
-  @override
-  String toString() {
-    return '${toJson()}';
-  }
 
   /// Create an Account from a given publicKey hex string.
   PublicAccount.fromPublicKey(String pKey, int networkType) {
@@ -87,6 +77,18 @@ class PublicAccount {
     }
     this._address = new Address.fromPublicKey(pKey, networkType);
     this._publicKey = pKey;
+  }
+
+  String _publicKey;
+  Address _address;
+
+  String get publicKey => _publicKey;
+
+  Address get address => _address;
+
+  @override
+  String toString() {
+    return '${toJson()}';
   }
 
   bool verify(String data, String signature) {
@@ -101,40 +103,23 @@ class PublicAccount {
     }
 
     var kp = new crypto.KeyPair();
-    kp.publicKey.Raw = hex.decode(this._publicKey);
+    kp.publicKey.Raw = Uint8List.fromList(HEX.decode(this._publicKey));
 
-    return kp.verify(hex.decode(data), hex.decode(signature));
+    return kp.verify(Uint8List.fromList(HEX.decode(data)),
+        Uint8List.fromList(HEX.decode(signature)));
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'address': address,
-      'publicKey': publicKey,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['address'] = address;
+    data['publicKey'] = publicKey;
+
+    return data;
   }
 }
 
 class Account {
-  PublicAccount _publicAccount = null;
-  crypto.KeyPair _account = null;
-
   Account._(this._publicAccount, this._account);
-
-  PublicAccount get publicAccount => _publicAccount;
-
-  crypto.KeyPair get account => _account;
-
-  @override
-  String toString() {
-    return publicAccount.toString();
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'publicAccount': publicAccount,
-      'account': account,
-    };
-  }
 
   /// Create an Account from a given hex private key.
   Account.fromPrivateKey(String sHex, int networkType) {
@@ -155,12 +140,47 @@ class Account {
     this._account = acc._account;
   }
 
+  PublicAccount _publicAccount;
+  crypto.KeyPair _account;
+
+  PublicAccount get publicAccount => _publicAccount;
+
+  crypto.KeyPair get account => _account;
+
+  @override
+  String toString() {
+    return publicAccount.toString();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['publicAccount'] = publicAccount;
+    data['account'] = account;
+
+    return data;
+  }
+
   SignedTransaction sign(Transaction tx) {
     return _signTransactionWith(tx, this);
   }
 }
 
 class AccountInfo {
+  AccountInfo.fromDTO(_AccountInfoDTO v) {
+    List<Mosaic> m = new List(v.account.mosaics.length);
+    for (var i = 0; i < v.account.mosaics.length; i++) {
+      m[i] = new Mosaic.fromDTO(v.account.mosaics[i]);
+    }
+
+    address = new Address.fromEncoded(v.account.address);
+    addressHeight = v.account.addressHeight.toBigInt();
+    publicKey = v.account.publicKey;
+    publicKeyHeight = v.account.publicKeyHeight.toBigInt();
+    accountType = v.account.accountType;
+    linkedAccountKey = v.account.linkedAccountKey;
+    mosaics = m;
+  }
+
   Address address;
   BigInt addressHeight;
   String publicKey;
@@ -183,38 +203,24 @@ class AccountInfo {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'address': address,
-      'addressHeight': addressHeight,
-      'publicKey': publicKey,
-      'publicKeyHeight': publicKeyHeight,
-      'accountType': accountType,
-      'linkedAccountKey': linkedAccountKey,
-      'mosaics': mosaics,
-    };
-  }
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['address'] = address;
+    data['addressHeight'] = addressHeight;
+    data['publicKey'] = publicKey;
+    data['publicKeyHeight'] = publicKeyHeight;
+    data['accountType'] = accountType;
+    data['linkedAccountKey'] = linkedAccountKey;
+    data['mosaics'] = mosaics;
 
-  AccountInfo.fromDTO(_accountInfoDTO v) {
-    List<Mosaic> m = new List(v.account.mosaics.length);
-    for (var i = 0; i < v.account.mosaics.length; i++) {
-      m[i] = new Mosaic.fromDTO(v.account.mosaics[i]);
-    }
-
-    address = new Address.fromEncoded(v.account.address);
-    addressHeight = v.account.addressHeight.toBigInt();
-    publicKey = v.account.publicKey;
-    publicKeyHeight = v.account.publicKeyHeight.toBigInt();
-    accountType = v.account.accountType;
-    linkedAccountKey = v.account.linkedAccountKey;
-    mosaics = m;
+    return data;
   }
 }
 
 String _generateEncodedAddress(String pKey, int version) {
   // step 1: sha3 hash of the public key
-  var pKeyD = hex.decode(pKey);
+  var pKeyD = HEX.decode(pKey);
 
-  var sha3PublicKeyHash = crypto.HashesSha3_256(pKeyD);
+  var sha3PublicKeyHash = crypto.HashesSha3_256(Uint8List.fromList(pKeyD));
 
   // step 2: ripemd160 hash of (1)
   var ripemd160StepOneHash = crypto.HashesRipemd160(sha3PublicKeyHash);

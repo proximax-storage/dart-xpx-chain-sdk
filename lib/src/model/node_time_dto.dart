@@ -1,37 +1,41 @@
 part of xpx_chain_sdk;
 
 class NodeTime {
-  CommunicationTimestamps communicationTimestamps;
+  NodeTime.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    communicationTimestamps = new CommunicationTimestamps.fromJson(
+        json['communicationTimestamps'] as Map<String, dynamic>);
+  }
 
-  NodeTime();
+  CommunicationTimestamps communicationTimestamps;
 
   @override
   String toString() {
     return '{\n'
-        '\t"CommunicationTimestamps":${communicationTimestamps}'
+        '\t"communicationTimestamps":$communicationTimestamps'
         '}\n';
   }
 
-  NodeTime.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    communicationTimestamps =
-        new CommunicationTimestamps.fromJson(json['communicationTimestamps']);
-  }
-
   Map<String, dynamic> toJson() {
-    return {'communicationTimestamps': communicationTimestamps};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['communicationTimestamps'] = this.communicationTimestamps;
+
+    return data;
   }
 
   static List<NodeTime> listFromJson(List<dynamic> json) {
     return json == null
         ? new List<NodeTime>()
-        : json.map((value) => new NodeTime.fromJson(value)).toList();
+        : json
+            .map((dynamic value) =>
+                new NodeTime.fromJson(value as Map<String, dynamic>))
+            .toList();
   }
 
   static Map<String, NodeTime> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
     var map = new Map<String, NodeTime>();
-    if (json != null && json.length > 0) {
+    if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
           map[key] = new NodeTime.fromJson(value));
     }

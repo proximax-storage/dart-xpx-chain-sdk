@@ -1,16 +1,17 @@
 part of xpx_chain_sdk;
 
 class AccountRoutesApi {
-  final ApiClient _apiClient;
 
   AccountRoutesApi([ApiClient _apiClient])
       : _apiClient = _apiClient ?? defaultApiClient;
+
+  final ApiClient _apiClient;
 
   /// Get account information
   ///
   /// Returns the account information.
   Future<AccountInfo> GetAccountInfo(Address address) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (address.address == null) {
@@ -30,7 +31,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -45,8 +46,8 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient.deserialize(response.body, '_accountInfoDTO')
-          as _accountInfoDTO;
+      final resp = _apiClient.deserialize(response.body, '_AccountInfoDTO')
+          as _AccountInfoDTO;
       return AccountInfo.fromDTO(resp);
     } else {
       return null;
@@ -75,7 +76,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -91,10 +92,10 @@ class AccountRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = (_apiClient.deserialize(
-              response.body, 'List<_accountInfoDTO>') as List)
-          .map((item) => item as Object)
+              response.body, 'List<_AccountInfoDTO>') as List)
+          .map((dynamic item) => item as Object)
           .toList();
-      return resp.map((t) => AccountInfo.fromDTO(t)).toList();
+      return resp.map((t) => AccountInfo.fromDTO(t as _AccountInfoDTO)).toList();
     } else {
       return null;
     }
@@ -103,8 +104,8 @@ class AccountRoutesApi {
   /// Get multisig account information
   ///
   /// Returns the [multisig account] information.
-  Future<MultisigAccountInfoDTO> _getAccountMultisig(String accountId) async {
-    Object postBody = null;
+  Future<_MultisigAccountInfoDTO> _getAccountMultisig(String accountId) async {
+    Object postBody;
 
     // verify required params are set
     if (accountId == null) {
@@ -124,7 +125,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -139,8 +140,8 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return _apiClient.deserialize(response.body, 'MultisigAccountInfoDTO')
-          as MultisigAccountInfoDTO;
+      return _apiClient.deserialize(response.body, '_MultisigAccountInfoDTO')
+          as _MultisigAccountInfoDTO;
     } else {
       return null;
     }
@@ -149,9 +150,9 @@ class AccountRoutesApi {
   /// Get multisig account graph information
   ///
   /// Returns the [multisig account] graph.
-  Future<List<MultisigAccountGraphInfoDTO>> _getAccountMultisigGraph(
+  Future<List<_MultisigAccountGraphInfoDTO>> _getAccountMultisigGraph(
       String accountId) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (accountId == null) {
@@ -171,7 +172,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -187,8 +188,8 @@ class AccountRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       return (_apiClient.deserialize(
-              response.body, 'List<MultisigAccountGraphInfoDTO>') as List)
-          .map((item) => item as MultisigAccountGraphInfoDTO)
+              response.body, 'List<_MultisigAccountGraphInfoDTO>') as List)
+          .map((dynamic item) => item as _MultisigAccountGraphInfoDTO)
           .toList();
     } else {
       return null;
@@ -198,9 +199,9 @@ class AccountRoutesApi {
   /// Get account configurable properties information
   ///
   /// Returns the [configurable properties] for a given account.
-  Future<AccountPropertiesInfoDTO> _getAccountProperties(
+  Future<_AccountPropertiesInfoDTO> _getAccountProperties(
       String accountId) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (accountId == null) {
@@ -220,7 +221,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -235,8 +236,8 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return _apiClient.deserialize(response.body, 'AccountPropertiesInfoDTO')
-          as AccountPropertiesInfoDTO;
+      return _apiClient.deserialize(response.body, '_AccountPropertiesInfoDTO')
+          as _AccountPropertiesInfoDTO;
     } else {
       return null;
     }
@@ -245,7 +246,7 @@ class AccountRoutesApi {
   /// Get account properties for given array of addresses
   ///
   /// Returns the [configurable properties] for a given array of addresses.
-  Future<List<AccountPropertiesInfoDTO>> _getAccountPropertiesFromAccounts(
+  Future<List<_AccountPropertiesInfoDTO>> _getAccountPropertiesFromAccounts(
       Addresses addresses) async {
     Object postBody = addresses;
 
@@ -265,7 +266,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -281,8 +282,8 @@ class AccountRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       return (_apiClient.deserialize(
-              response.body, 'List<AccountPropertiesInfoDTO>') as List)
-          .map((item) => item as AccountPropertiesInfoDTO)
+              response.body, 'List<_AccountPropertiesInfoDTO>') as List)
+          .map((dynamic item) => item as _AccountPropertiesInfoDTO)
           .toList();
     } else {
       return null;
@@ -296,7 +297,7 @@ class AccountRoutesApi {
   /// account if the account is the recipient of the transaction.
   Future<List<Transaction>> IncomingTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (account == null) {
@@ -327,7 +328,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -344,7 +345,7 @@ class AccountRoutesApi {
     } else if (response.body != null) {
       final resp =
           (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
-              .map((item) => item as Object)
+              .map((dynamic item) => item as Object)
               .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
@@ -359,7 +360,7 @@ class AccountRoutesApi {
   /// account if the account is the sender of the transaction.
   Future<List<Transaction>> OutgoingTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (account == null) {
@@ -390,7 +391,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -407,7 +408,7 @@ class AccountRoutesApi {
     } else if (response.body != null) {
       final resp =
           (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
-              .map((item) => item as Object)
+              .map((dynamic item) => item as Object)
               .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
@@ -421,7 +422,7 @@ class AccountRoutesApi {
   /// the sender or requires to cosign the transaction.
   Future<List<Transaction>> PartialTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (account == null) {
@@ -452,7 +453,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -469,7 +470,7 @@ class AccountRoutesApi {
     } else if (response.body != null) {
       final resp =
           (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
-              .map((item) => item as Object)
+              .map((dynamic item) => item as Object)
               .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
@@ -482,7 +483,7 @@ class AccountRoutesApi {
   /// Gets an List of transactions for which an account is the sender or receiver.
   Future<List<Transaction>> Transactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (account == null) {
@@ -513,7 +514,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -530,7 +531,7 @@ class AccountRoutesApi {
     } else if (response.body != null) {
       final resp =
           (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
-              .map((item) => item as Object)
+              .map((dynamic item) => item as Object)
               .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
@@ -543,7 +544,7 @@ class AccountRoutesApi {
   /// Gets the List of transactions not included in a block where an account is the sender or receiver.
   Future<List<Transaction>> UnconfirmedTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (account == null) {
@@ -574,7 +575,7 @@ class AccountRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -591,7 +592,7 @@ class AccountRoutesApi {
     } else if (response.body != null) {
       final resp =
           (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
-              .map((item) => item as Object)
+              .map((dynamic item) => item as Object)
               .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {

@@ -1,16 +1,17 @@
 part of xpx_chain_sdk;
 
 class BlockchainRoutesApi {
-  ApiClient apiClient;
 
   BlockchainRoutesApi([ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
+
+  ApiClient apiClient;
 
   /// Get the current height of the chain
   ///
   /// Returns the current height of the blockchain.
   Future<Height> GetBlockchainHeight() async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
 
@@ -25,7 +26,7 @@ class BlockchainRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -52,7 +53,7 @@ class BlockchainRoutesApi {
   ///
   /// Gets a [BlockInfo] from the chain that has the given height.
   Future<BlockInfo> GetBlockByHeight(BigInt height) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (height == null) {
@@ -72,7 +73,7 @@ class BlockchainRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -88,7 +89,7 @@ class BlockchainRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       var resp =
-          apiClient.deserialize(response.body, 'BlockInfoDTO') as _blockInfoDTO;
+          apiClient.deserialize(response.body, 'BlockInfoDTO') as _BlockInfoDTO;
       return new BlockInfo.fromDTO(resp);
     } else {
       return null;
@@ -104,7 +105,7 @@ class BlockchainRoutesApi {
   /// that has elapsed since the last block:
   /// block score &#x3D; difficulty − time elasped since last block
   Future<BlockchainScore> GetBlockchainScore() async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
 
@@ -119,7 +120,7 @@ class BlockchainRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -134,8 +135,8 @@ class BlockchainRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, '_blockchainScoreDTO')
-          as _blockchainScoreDTO;
+      final resp = apiClient.deserialize(response.body, '_BlockchainScoreDTO')
+          as _BlockchainScoreDTO;
       return BlockchainScore.fromDTO(resp);
     } else {
       return null;
@@ -146,7 +147,7 @@ class BlockchainRoutesApi {
   ///
   /// Returns a [BlockchainStorageInfo] statistical information about the blockchain.
   Future<BlockchainStorageInfo> GetDiagnosticStorage() async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
 
@@ -161,7 +162,7 @@ class BlockchainRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -188,7 +189,7 @@ class BlockchainRoutesApi {
   /// Returns an List of [Transaction] included in a block for a given block height.
   Future<List<Transaction>> GetBlockTransactions(BigInt height,
       {int pageSize, String id}) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (height == null) {
@@ -215,7 +216,7 @@ class BlockchainRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -232,7 +233,7 @@ class BlockchainRoutesApi {
     } else if (response.body != null) {
       final resp =
       (apiClient.deserialize(response.body, 'List<Transaction>') as List)
-          .map((item) => item as Object)
+          .map((dynamic item) => item as Object)
           .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
@@ -244,8 +245,8 @@ class BlockchainRoutesApi {
   ///
   /// Gets up to limit number of blocks after given block height.
   Future<List<BlockInfo>> GetBlocksByHeightWithLimit(
-      BigInt height, limit) async {
-    Object postBody = null;
+      BigInt height, int limit) async {
+    Object postBody;
 
     // verify required params are set
     if (height == null) {
@@ -269,7 +270,7 @@ class BlockchainRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -286,7 +287,7 @@ class BlockchainRoutesApi {
     } else if (response.body != null) {
       final resp =
           (apiClient.deserialize(response.body, 'List<BlockInfoDTO>') as List)
-              .map((item) => item as _blockInfoDTO)
+              .map((dynamic item) => item as _BlockInfoDTO)
               .toList();
       return BlockInfo.listFromDTO(resp);
     } else {

@@ -1,38 +1,35 @@
 part of xpx_chain_sdk;
 
-class AccountPropertiesMetaDTO {
-  String id = null;
-
-  AccountPropertiesMetaDTO();
-
-  @override
-  String toString() {
-    return 'AccountPropertiesMetaDTO[id=$id, ]';
-  }
-
-  AccountPropertiesMetaDTO.fromJson(Map<String, dynamic> json) {
+class _AccountPropertiesMetaDTO {
+  _AccountPropertiesMetaDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    id = json['id'];
+    id = json['id'] as String;
   }
+
+  String id;
 
   Map<String, dynamic> toJson() {
-    return {'id': id};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = id;
+
+    return data;
   }
 
-  static List<AccountPropertiesMetaDTO> listFromJson(List<dynamic> json) {
+  static List<_AccountPropertiesMetaDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<AccountPropertiesMetaDTO>()
+        ? new List<_AccountPropertiesMetaDTO>()
         : json
-            .map((value) => new AccountPropertiesMetaDTO.fromJson(value))
+            .map((dynamic value) => new _AccountPropertiesMetaDTO.fromJson(
+                value as Map<String, dynamic>))
             .toList();
   }
 
-  static Map<String, AccountPropertiesMetaDTO> mapFromJson(
+  static Map<String, _AccountPropertiesMetaDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, AccountPropertiesMetaDTO>();
-    if (json != null && json.length > 0) {
+    var map = new Map<String, _AccountPropertiesMetaDTO>();
+    if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new AccountPropertiesMetaDTO.fromJson(value));
+          map[key] = new _AccountPropertiesMetaDTO.fromJson(value));
     }
     return map;
   }

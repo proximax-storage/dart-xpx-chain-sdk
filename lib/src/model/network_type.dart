@@ -1,61 +1,65 @@
 part of xpx_chain_sdk;
 
 // NetworkType enums
-const Mijin = 0x60,
-    MijinTest = 0x90,
-    Public = 0xb8,
-    PublicTest = 0xa8,
-    Private = 0xc8,
-    PrivateTest = 0xb0,
-    NotSupportedNet = 0;
+const mijin = 0x60,
+    mijinTest = 0x90,
+    public = 0xb8,
+    publicTest = 0xa8,
+    private = 0xc8,
+    privateTest = 0xb0,
+    notSupportedNet = 0;
 
 const Map<String, int> addressNet = {
-  'M': Mijin,
-  'S': MijinTest,
-  'X': Public,
-  'V': PublicTest,
-  'Z': Private,
-  'W': PrivateTest,
+  'M': mijin,
+  'S': mijinTest,
+  'X': public,
+  'V': publicTest,
+  'Z': private,
+  'W': privateTest,
 };
 
 class NetworkType {
+  NetworkType._(this.name, this.description);
+
+  NetworkType.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    this.name = json['name'] as String;
+    this.description = json['description'] as String;
+  }
+
   String name;
 
   String description;
-
-  NetworkType._(this.name, this.description);
 
   @override
   String toString() {
     return '{name:$name, description=$description}';
   }
 
-  NetworkType.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    this.name = json['name'];
-    this.description = json['description'];
-  }
-
   static int getType(int networkType) {
     switch (networkType) {
-      case Mijin:
+      case mijin:
         return addressNet["M"];
-      case MijinTest:
+      case mijinTest:
         return addressNet["S"];
-      case Public:
+      case public:
         return addressNet["X"];
-      case PublicTest:
+      case publicTest:
         return addressNet["V"];
-      case Private:
+      case private:
         return addressNet["Z"];
-      case PrivateTest:
+      case privateTest:
         return addressNet["W"];
       default:
-        return NotSupportedNet;
+        return notSupportedNet;
     }
   }
 
   Map<String, dynamic> toJson() {
-    return {'name': name, 'description': description};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['description'] = this.description;
+
+    return data;
   }
 }

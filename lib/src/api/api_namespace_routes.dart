@@ -1,10 +1,10 @@
 part of xpx_chain_sdk;
 
 class NamespaceRoutesApi {
-  final ApiClient apiClient;
-
   NamespaceRoutesApi([ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
+
+  final ApiClient apiClient;
 
   Future<List<NamespaceInfo>> buildNamespacesHierarchy(
       List<NamespaceInfo> namespaceIds) async {
@@ -22,15 +22,15 @@ class NamespaceRoutesApi {
   /// Get namespace information
   ///
   /// Gets a [NamespaceInfo] for a given namespaceId.
-  Future<NamespaceInfo> GetNamespace(BigInt namespaceId) async {
-    Object postBody = null;
+  Future<NamespaceInfo> GetNamespace(NamespaceId namespaceId) async {
+    Object postBody;
 
     // verify required params are set
     if (namespaceId == null) {
       throw new ApiException(400, "Missing required param: namespaceId");
     }
 
-    var nsId = bigIntegerToHex(namespaceId);
+    var nsId = namespaceId.toHex();
 
     // create path and map variables
     String path = "/namespace/{namespaceId}"
@@ -44,7 +44,7 @@ class NamespaceRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -59,8 +59,8 @@ class NamespaceRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      var resp = apiClient.deserialize(response.body, '_namespaceInfoDTO')
-          as _namespaceInfoDTO;
+      var resp = apiClient.deserialize(response.body, '_NamespaceInfoDTO')
+          as _NamespaceInfoDTO;
       var ns = new NamespaceInfo.fromDTO(resp);
 
       if (ns.parent != null) {
@@ -77,7 +77,7 @@ class NamespaceRoutesApi {
   /// Gets an List of [NamespaceInfo] for a given account address.
   Future<List<NamespaceInfo>> GetNamespacesFromAccount(Address accountIds,
       {int pageSize, String id}) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (accountIds == null) {
@@ -104,7 +104,7 @@ class NamespaceRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -120,10 +120,9 @@ class NamespaceRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       var resp = (apiClient.deserialize(
-              response.body, 'List<_namespaceInfoDTO>') as List)
-          .map((item) => item as _namespaceInfoDTO)
+              response.body, 'List<_NamespaceInfoDTO>') as List)
+          .map((dynamic item) => item as _NamespaceInfoDTO)
           .toList();
-
       final nss = NamespaceInfo.listFromDTO(resp);
 
       return buildNamespacesHierarchy(nss);
@@ -162,7 +161,7 @@ class NamespaceRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -178,8 +177,8 @@ class NamespaceRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       var resp = (apiClient.deserialize(
-              response.body, 'List<_namespaceInfoDTO>') as List)
-          .map((item) => item as _namespaceInfoDTO)
+              response.body, 'List<_NamespaceInfoDTO>') as List)
+          .map((dynamic item) => item as _NamespaceInfoDTO)
           .toList();
 
       final nss = NamespaceInfo.listFromDTO(resp);
@@ -201,7 +200,7 @@ class NamespaceRoutesApi {
       throw new ApiException(400, "Missing required param: namespaceIds");
     }
 
-    if (nsIds.namespaceIds.length == 0) {
+    if (nsIds.namespaceIds.isEmpty) {
       throw errEmptyNamespaceIds;
     }
     // create path and map variables
@@ -215,7 +214,7 @@ class NamespaceRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -231,8 +230,8 @@ class NamespaceRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = (apiClient.deserialize(
-              response.body, 'List<_namespaceNameDTO>') as List)
-          .map((item) => item as _namespaceNameDTO)
+              response.body, 'List<_NamespaceNameDTO>') as List)
+          .map((dynamic item) => item as _NamespaceNameDTO)
           .toList();
       return NamespaceName.listFromDTO(resp);
     } else {

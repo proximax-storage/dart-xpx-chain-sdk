@@ -1,22 +1,23 @@
 part of xpx_chain_sdk;
 
 class MosaicRoutesApi {
-  final ApiClient apiClient;
 
   MosaicRoutesApi([ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
 
+  final ApiClient apiClient;
+
   /// Get mosaic information
   ///
   /// Gets a [MosaicInfo] definition for a given mosaicId.
-  Future<MosaicInfo> GetMosaic(BigInt mosaicId) async {
-    Object postBody = null;
+  Future<MosaicInfo> GetMosaic(MosaicId mosaicId) async {
+    Object postBody;
 
     // verify required params are set
     if (mosaicId == null) {
       throw new ApiException(400, "Missing required param: mosaicId");
     }
-    var nsId = bigIntegerToHex(mosaicId);
+    var nsId = mosaicId.toHex();
     // create path and map variables
     String path = "/mosaic/{mosaicId}"
         .replaceAll("{format}", "json")
@@ -30,7 +31,7 @@ class MosaicRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -45,8 +46,8 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      var resp = apiClient.deserialize(response.body, '_mosaicInfoDTO')
-          as _mosaicInfoDTO;
+      var resp = apiClient.deserialize(response.body, '_MosaicInfoDTO')
+          as _MosaicInfoDTO;
       return new MosaicInfo.fromDTO(resp);
     } else {
       return null;
@@ -75,7 +76,7 @@ class MosaicRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -91,8 +92,8 @@ class MosaicRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
-          (apiClient.deserialize(response.body, 'List<_mosaicInfoDTO>') as List)
-              .map((item) => item as _mosaicInfoDTO)
+          (apiClient.deserialize(response.body, 'List<_MosaicInfoDTO>') as List)
+              .map((dynamic item) => item as _MosaicInfoDTO)
               .toList();
       return MosaicInfo.listFromDTO(resp);
     } else {
@@ -122,7 +123,7 @@ class MosaicRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -137,9 +138,9 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = (apiClient.deserialize(response.body, 'List<_mosaicNameDTO>')
+      final resp = (apiClient.deserialize(response.body, 'List<_MosaicNameDTO>')
               as List)
-          .map((item) => item as _mosaicNameDTO)
+          .map((dynamic item) => item as _MosaicNameDTO)
           .toList();
       return MosaicName.listFromDTO(resp);
     } else {

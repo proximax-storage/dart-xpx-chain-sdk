@@ -1,42 +1,41 @@
 part of xpx_chain_sdk;
 
-class AccountPropertiesDTO {
-  String address = null;
+class _AccountPropertiesDTO {
+  _AccountPropertiesDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    address = json['address'] as String;
+    properties =
+        AccountPropertyDTO.listFromJson(json['properties'] as List<dynamic>);
+  }
+
+  String address;
 
   List<AccountPropertyDTO> properties = [];
 
-  AccountPropertiesDTO();
-
-  @override
-  String toString() {
-    return 'AccountPropertiesDTO[address=$address, properties=$properties, ]';
-  }
-
-  AccountPropertiesDTO.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    address = json['address'];
-    properties = AccountPropertyDTO.listFromJson(json['properties']);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'address': address, 'properties': properties};
-  }
-
-  static List<AccountPropertiesDTO> listFromJson(List<dynamic> json) {
+  static List<_AccountPropertiesDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<AccountPropertiesDTO>()
+        ? new List<_AccountPropertiesDTO>()
         : json
-            .map((value) => new AccountPropertiesDTO.fromJson(value))
+            .map((dynamic value) => new _AccountPropertiesDTO.fromJson(
+                value as Map<String, dynamic>))
             .toList();
   }
 
-  static Map<String, AccountPropertiesDTO> mapFromJson(
+  static Map<String, _AccountPropertiesDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, AccountPropertiesDTO>();
-    if (json != null && json.length > 0) {
+    var map = new Map<String, _AccountPropertiesDTO>();
+    if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new AccountPropertiesDTO.fromJson(value));
+          map[key] = new _AccountPropertiesDTO.fromJson(value));
     }
     return map;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['address'] = address;
+    data['properties'] = properties;
+
+    return data;
   }
 }

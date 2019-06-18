@@ -1,34 +1,39 @@
 part of xpx_chain_sdk;
 
 class TransactionHashes {
-  List<String> hashes = [];
+  TransactionHashes.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    hashes =
+        (json['hashes'] as List).map((dynamic item) => item as String).toList();
+  }
 
-  TransactionHashes();
+  List<String> hashes = [];
 
   @override
   String toString() {
-    return 'TransactionHashes[hashes=$hashes, ]';
-  }
-
-  TransactionHashes.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    hashes = (json['hashes'] as List).map((item) => item as String).toList();
+    return '{hashes=$hashes}';
   }
 
   Map<String, dynamic> toJson() {
-    return {'hashes': hashes};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['hashes'] = this.hashes;
+
+    return data;
   }
 
   static List<TransactionHashes> listFromJson(List<dynamic> json) {
     return json == null
         ? new List<TransactionHashes>()
-        : json.map((value) => new TransactionHashes.fromJson(value)).toList();
+        : json
+            .map((dynamic value) =>
+                new TransactionHashes.fromJson(value as Map<String, dynamic>))
+            .toList();
   }
 
   static Map<String, TransactionHashes> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
     var map = new Map<String, TransactionHashes>();
-    if (json != null && json.length > 0) {
+    if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
           map[key] = new TransactionHashes.fromJson(value));
     }
