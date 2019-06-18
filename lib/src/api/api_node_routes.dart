@@ -1,16 +1,17 @@
 part of xpx_chain_sdk;
 
 class NodeRoutesApi {
-  final ApiClient apiClient;
 
   NodeRoutesApi([ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
+
+  final ApiClient apiClient;
 
   /// Get the node information
   ///
   /// Supplies additional information about the application running on a node.
   Future<NodeInfo> GetNodeInfo() async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
 
@@ -25,7 +26,7 @@ class NodeRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -50,7 +51,7 @@ class NodeRoutesApi {
   ///
   /// Supplies additional information about the application running on a node.
   Future<NodeTime> GetNodeTime() async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
 
@@ -65,7 +66,7 @@ class NodeRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;

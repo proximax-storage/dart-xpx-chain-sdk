@@ -11,7 +11,7 @@ Uint8List HexDecodeStringOdd(String s) {
   if (s.length % 2 != 0) {
     s = "0" + s;
   }
-  return hex.decode(s);
+  return Uint8List.fromList(hex.decode(s));
 }
 
 // ExtractNetworkType return networkType from version
@@ -69,7 +69,7 @@ Uint8List integerToBytes(int e, int length) {
   return byteList;
 }
 
-bool EqualsBigInts(BigInt first, second) {
+bool EqualsBigInts(BigInt first, BigInt second) {
   if (first == null && second == null) {
     return true;
   }

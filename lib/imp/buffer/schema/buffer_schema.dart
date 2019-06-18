@@ -1,15 +1,17 @@
 part of xpx_chain_sdk.buffer;
 
-const ByteSize = 1, ShortSize = 2, IntSize = 4;
+const byteSize = 1, shortSize = 2, intSize = 4;
 
-abstract class schemaAttribute {
+// ignore: one_member_abstracts
+abstract class SchemaAttribute {
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition);
 }
 
-class schema {
-  List<schemaAttribute> schemaDefinition;
+class Schema {
 
-  schema(this.schemaDefinition);
+  Schema(this.schemaDefinition);
+
+  List<SchemaAttribute> schemaDefinition;
 
   Uint8List serialize(Uint8List buffer) {
     List<int> resultBytes = [];
@@ -26,9 +28,11 @@ class schema {
   }
 }
 
-abstract class abstractSchemaAttribute {
+abstract class AbstractSchemaAttribute {
+
+  AbstractSchemaAttribute(this.name);
+
   String name;
-  abstractSchemaAttribute(this.name);
 
   Uint8List findParam(
       int innerObjectPosition, int position, Uint8List buffer, int size) {
@@ -117,40 +121,46 @@ abstract class abstractSchemaAttribute {
   }
 }
 
-class arrayAttribute extends abstractSchemaAttribute
-    implements schemaAttribute {
-  int size;
+class ArrayAttribute extends AbstractSchemaAttribute
+    implements SchemaAttribute {
 
-  arrayAttribute(String name, int size) : super(name) {
+  ArrayAttribute(String name, int size) : super(name) {
     this.size = size;
   }
 
+  int size;
+
+  @override
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
     return this.findVector(innerObjectPosition, position, buffer, this.size);
   }
 }
 
-class scalarAttribute extends abstractSchemaAttribute
-    implements schemaAttribute {
-  int size;
+class ScalarAttribute extends AbstractSchemaAttribute
+    implements SchemaAttribute {
 
-  scalarAttribute(String name, int size) : super(name) {
+  ScalarAttribute(String name, int size) : super(name) {
     this.size = size;
   }
 
+  int size;
+
+  @override
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
     return this.findParam(innerObjectPosition, position, buffer, this.size);
   }
 }
 
-class tableArrayAttribute extends abstractSchemaAttribute
-    implements schemaAttribute {
-  List<schemaAttribute> schema;
+class TableArrayAttribute extends AbstractSchemaAttribute
+    implements SchemaAttribute {
 
-  tableArrayAttribute(String name, List<schemaAttribute> schema) : super(name) {
+  TableArrayAttribute(String name, List<SchemaAttribute> schema) : super(name) {
     this.schema = schema;
   }
 
+  List<SchemaAttribute> schema;
+
+  @override
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
     List<int> resultBytes = [];
 
@@ -176,14 +186,16 @@ class tableArrayAttribute extends abstractSchemaAttribute
   }
 }
 
-class tableAttribute extends abstractSchemaAttribute
-    implements schemaAttribute {
-  List<schemaAttribute> schema;
+class TableAttribute extends AbstractSchemaAttribute
+    implements SchemaAttribute {
 
-  tableAttribute(String name, List<schemaAttribute> schema) : super(name) {
+  TableAttribute(String name, List<SchemaAttribute> schema) : super(name) {
     this.schema = schema;
   }
 
+  List<SchemaAttribute> schema;
+
+  @override
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
     List<int> resultBytes = [];
     var tableStartPosition =
@@ -203,19 +215,19 @@ class tableAttribute extends abstractSchemaAttribute
   }
 }
 
-arrayAttribute _newArrayAttribute(String name, int size) {
-  return new arrayAttribute(name, size);
+ArrayAttribute _newArrayAttribute(String name, int size) {
+  return new ArrayAttribute(name, size);
 }
 
-scalarAttribute _newScalarAttribute(String name, int size) {
-  return new scalarAttribute(name, size);
+ScalarAttribute _newScalarAttribute(String name, int size) {
+  return new ScalarAttribute(name, size);
 }
 
-tableArrayAttribute _newTableArrayAttribute(
-    String name, List<schemaAttribute> schema) {
-  return new tableArrayAttribute(name, schema);
+TableArrayAttribute _newTableArrayAttribute(
+    String name, List<SchemaAttribute> schema) {
+  return new TableArrayAttribute(name, schema);
 }
 
-tableAttribute _newTableAttribute(String name, List<schemaAttribute> schema) {
-  return new tableAttribute(name, schema);
+TableAttribute _newTableAttribute(String name, List<SchemaAttribute> schema) {
+  return new TableAttribute(name, schema);
 }

@@ -1,17 +1,17 @@
 part of xpx_chain_sdk.buffer;
 
-schema mosaicSupplyChangeTransactionSchema() {
-  List<schemaAttribute> schemaDefinition = [
-    _newScalarAttribute("size", IntSize),
-    _newArrayAttribute("signature", ByteSize),
-    _newArrayAttribute("signer", ByteSize),
-    _newScalarAttribute("version", ShortSize),
-    _newScalarAttribute("type", ShortSize),
-    _newArrayAttribute("fee", IntSize),
-    _newArrayAttribute("deadline", IntSize),
-    _newArrayAttribute("mosaicId", IntSize),
-    _newScalarAttribute("direction", ByteSize),
-    _newArrayAttribute("delta", IntSize)
+Schema mosaicSupplyChangeTransactionSchema() {
+  List<SchemaAttribute> schemaDefinition = [
+    _newScalarAttribute("size", intSize),
+    _newArrayAttribute("signature", byteSize),
+    _newArrayAttribute("signer", byteSize),
+    _newScalarAttribute("version", shortSize),
+    _newScalarAttribute("type", shortSize),
+    _newArrayAttribute("fee", intSize),
+    _newArrayAttribute("deadline", intSize),
+    _newArrayAttribute("mosaicId", intSize),
+    _newScalarAttribute("direction", byteSize),
+    _newArrayAttribute("delta", intSize)
   ];
-  return schema(schemaDefinition);
+  return Schema(schemaDefinition);
 }

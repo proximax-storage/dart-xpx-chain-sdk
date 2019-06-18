@@ -1,39 +1,40 @@
 part of xpx_chain_sdk;
 
-class MerkleProofInfoDTO {
-  MerkleProofInfoPayload payload = null;
-
-  String type = null;
-
-  MerkleProofInfoDTO();
-
-  @override
-  String toString() {
-    return 'MerkleProofInfoDTO[payload=$payload, type=$type, ]';
-  }
-
-  MerkleProofInfoDTO.fromJson(Map<String, dynamic> json) {
+class _MerkleProofInfoDTO {
+  _MerkleProofInfoDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    payload = new MerkleProofInfoPayload.fromJson(json['payload']);
-    type = json['type'];
+    payload = new MerkleProofInfoPayload.fromJson(
+        json['payload'] as Map<String, dynamic>);
+    type = json['type'] as String;
   }
+
+  MerkleProofInfoPayload payload;
+
+  String type;
 
   Map<String, dynamic> toJson() {
-    return {'payload': payload, 'type': type};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['payload'] = payload;
+    data['type'] = type;
+
+    return data;
   }
 
-  static List<MerkleProofInfoDTO> listFromJson(List<dynamic> json) {
+  static List<_MerkleProofInfoDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<MerkleProofInfoDTO>()
-        : json.map((value) => new MerkleProofInfoDTO.fromJson(value)).toList();
+        ? new List<_MerkleProofInfoDTO>()
+        : json
+            .map((dynamic value) =>
+                new _MerkleProofInfoDTO.fromJson(value as Map<String, dynamic>))
+            .toList();
   }
 
-  static Map<String, MerkleProofInfoDTO> mapFromJson(
+  static Map<String, _MerkleProofInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, MerkleProofInfoDTO>();
-    if (json != null && json.length > 0) {
+    var map = new Map<String, _MerkleProofInfoDTO>();
+    if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new MerkleProofInfoDTO.fromJson(value));
+          map[key] = new _MerkleProofInfoDTO.fromJson(value));
     }
     return map;
   }

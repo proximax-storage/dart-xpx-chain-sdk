@@ -1,110 +1,124 @@
 part of xpx_chain_sdk;
 
-final PrxNamespaceId =
-    new UInt64DTO(Int64(2339353534), Int64(2976741373)).toBigInt();
+final prxNamespaceId =
+    new UInt64DTO(Int32(2339353534), Int32(2976741373)).toBigInt();
 
-final XpxMosaicId = MosaicId.fromBigInt(new UInt64DTO(Int64(481110499), Int64(231112638)).toBigInt());
+final xpxMosaicId = MosaicId.fromBigInt(
+    new UInt64DTO(Int32(481110499), Int32(231112638)).toBigInt());
 
-enum NamespaceType { Root, Sub }
+enum NamespaceType { root, sub }
 
-enum MosaicSupplyType { Decrease, Increase }
+enum MosaicSupplyType { decrease, increase }
 
-enum MultisigCosignatoryModificationType { Add, Remove }
+enum MultisigCosignatoryModificationType { add, remove }
 
-const Decrease = MosaicSupplyType.Decrease,
-    Increase = MosaicSupplyType.Increase;
+// AliasType enums
+enum AliasType {
+  noneAliasType,
+  mosaicAliasType,
+  addressAliasType,
+}
 
-const Add = MultisigCosignatoryModificationType.Add,
-    Remove = MultisigCosignatoryModificationType.Remove;
+const decrease = MosaicSupplyType.decrease,
+    increase = MosaicSupplyType.increase;
 
-const AddressSize = 25,
-    AmountSize = 8,
-    KeySize = 32,
-    Hash256 = 32,
-    MosaicSize = 8,
-    NamespaceSize = 8,
-    SizeSize = 4,
-    SignerSize = KeySize,
-    SignatureSize = 64,
-    VersionSize = 2,
-    TypeSize = 2,
-    MaxFeeSize = 8,
-    DeadLineSize = 8,
-    DurationSize = 8,
-    TransactionHeaderSize = SizeSize +
-        SignerSize +
-        SignatureSize +
-        VersionSize +
-        TypeSize +
-        MaxFeeSize +
-        DeadLineSize,
-    PropertyTypeSize = 2,
-    PropertyModificationTypeSize = 1,
-    AccountPropertiesAddressModificationSize =
-        PropertyModificationTypeSize + AddressSize,
-    AccountPropertiesMosaicModificationSize =
-        PropertyModificationTypeSize + MosaicSize,
-    AccountPropertiesEntityModificationSize =
-        PropertyModificationTypeSize + TypeSize,
-    AccountPropertyAddressHeader = TransactionHeaderSize + PropertyTypeSize,
-    AccountPropertyMosaicHeader = TransactionHeaderSize + PropertyTypeSize,
-    AccountPropertyEntityTypeHeader = TransactionHeaderSize + PropertyTypeSize,
-    LinkActionSize = 1,
-    AccountLinkTransactionSize =
-        TransactionHeaderSize + KeySize + LinkActionSize,
-    AliasActionSize = 1,
-    AliasTransactionHeader =
-        TransactionHeaderSize + NamespaceSize + AliasActionSize,
-    AggregateBondedHeader = TransactionHeaderSize + SizeSize,
-    HashTypeSize = 1,
-    LockSize = TransactionHeaderSize +
-        MosaicSize +
-        AmountSize +
-        DurationSize +
-        Hash256,
-    MetadataTypeSize = 1,
-    MetadataHeaderSize = TransactionHeaderSize + MetadataTypeSize,
-    ModificationsSizeSize = 1,
-    ModifyContractHeaderSize = TransactionHeaderSize +
-        DurationSize +
-        Hash256 +
-        3 * ModificationsSizeSize,
-    MinApprovalSize = 1,
-    MinRemovalSize = 1,
-    ModifyMultisigHeaderSize = TransactionHeaderSize +
-        MinApprovalSize +
-        MinRemovalSize +
-        ModificationsSizeSize,
-    MosaicNonceSize = 4,
-    MosaicPropertySize = 4,
-    MosaicDefinitionTransactionSize = TransactionHeaderSize +
-        MosaicNonceSize +
-        MosaicSize +
-        DurationSize +
-        MosaicPropertySize,
-    MosaicSupplyDirectionSize = 1,
-    MosaicSupplyChangeTransactionSize = TransactionHeaderSize +
-        MosaicSize +
-        AmountSize +
-        MosaicSupplyDirectionSize,
-    NamespaceTypeSize = 1,
-    NamespaceNameSizeSize = 1,
-    RegisterNamespaceHeaderSize = TransactionHeaderSize +
-        NamespaceTypeSize +
-        DurationSize +
-        NamespaceSize +
-        NamespaceNameSizeSize,
-    SecretLockSize = TransactionHeaderSize +
-        MosaicSize +
-        AmountSize +
-        DurationSize +
-        HashTypeSize +
-        Hash256 +
-        AddressSize,
-    ProofSizeSize = 2,
-    SecretProofHeaderSize =
-        TransactionHeaderSize + HashTypeSize + Hash256 + ProofSizeSize,
-    MosaicsSizeSize = 1,
-    MessageSizeSize = 2,
-    TransferHeaderSize =
-        TransactionHeaderSize + AddressSize + MosaicsSizeSize + MessageSizeSize;
+const add = MultisigCosignatoryModificationType.add,
+    remove = MultisigCosignatoryModificationType.remove;
+
+const numChecksumBytes = 4,
+    addressDecodeSize = 25,
+    addressEncodeSize = 40,
+    amountSize = 8,
+    keySize = 32,
+    privateKeySize = 64,
+    publicKeySize = 64,
+    hash256 = 32,
+    mosaicSize = 8,
+    namespaceSize = 8,
+    sizeSize = 4,
+    signerSize = keySize,
+    signatureSize = 64,
+    versionSize = 2,
+    typeSize = 2,
+    maxFeeSize = 8,
+    deadLineSize = 8,
+    durationSize = 8,
+    transactionHeaderSize = sizeSize +
+        signerSize +
+        signatureSize +
+        versionSize +
+        typeSize +
+        maxFeeSize +
+        deadLineSize,
+    propertyTypeSize = 2,
+    propertyModificationTypeSize = 1,
+    accountPropertiesAddressModificationSize =
+        propertyModificationTypeSize + addressDecodeSize,
+    accountPropertiesMosaicModificationSize =
+        propertyModificationTypeSize + mosaicSize,
+    accountPropertiesEntityModificationSize =
+        propertyModificationTypeSize + typeSize,
+    accountPropertyAddressHeader = transactionHeaderSize + propertyTypeSize,
+    accountPropertyMosaicHeader = transactionHeaderSize + propertyTypeSize,
+    accountPropertyEntityTypeHeader = transactionHeaderSize + propertyTypeSize,
+    linkActionSize = 1,
+    accountLinkTransactionSize =
+        transactionHeaderSize + keySize + linkActionSize,
+    aliasActionSize = 1,
+    aliasTransactionHeader =
+        transactionHeaderSize + namespaceSize + aliasActionSize,
+    aggregateBondedHeader = transactionHeaderSize + sizeSize,
+    hashTypeSize = 1,
+    lockSize = transactionHeaderSize +
+        mosaicSize +
+        amountSize +
+        durationSize +
+        hash256,
+    metadataTypeSize = 1,
+    metadataHeaderSize = transactionHeaderSize + metadataTypeSize,
+    modificationsSizeSize = 1,
+    modifyContractHeaderSize = transactionHeaderSize +
+        durationSize +
+        hash256 +
+        3 * modificationsSizeSize,
+    minApprovalSize = 1,
+    minRemovalSize = 1,
+    modifyMultisigHeaderSize = transactionHeaderSize +
+        minApprovalSize +
+        minRemovalSize +
+        modificationsSizeSize,
+    mosaicNonceSize = 4,
+    mosaicPropertySize = 4,
+    mosaicDefinitionTransactionSize = transactionHeaderSize +
+        mosaicNonceSize +
+        mosaicSize +
+        durationSize +
+        mosaicPropertySize,
+    mosaicSupplyDirectionSize = 1,
+    mosaicSupplyChangeTransactionSize = transactionHeaderSize +
+        mosaicSize +
+        amountSize +
+        mosaicSupplyDirectionSize,
+    namespaceTypeSize = 1,
+    namespaceNameSizeSize = 1,
+    registerNamespaceHeaderSize = transactionHeaderSize +
+        namespaceTypeSize +
+        durationSize +
+        namespaceSize +
+        namespaceNameSizeSize,
+    secretLockSize = transactionHeaderSize +
+        mosaicSize +
+        amountSize +
+        durationSize +
+        hashTypeSize +
+        hash256 +
+        addressDecodeSize,
+    proofSizeSize = 2,
+    secretProofHeaderSize =
+        transactionHeaderSize + hashTypeSize + hash256 + proofSizeSize,
+    mosaicsSizeSize = 1,
+    messageSizeSize = 2,
+    transferHeaderSize = transactionHeaderSize +
+        addressDecodeSize +
+        mosaicsSizeSize +
+        messageSizeSize;

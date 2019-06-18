@@ -1,10 +1,10 @@
 part of xpx_chain_sdk;
 
 class TransactionRoutesApi {
-  final ApiClient apiClient;
-
   TransactionRoutesApi([ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
+
+  final ApiClient apiClient;
 
   /// Announce a cosignature transaction
   Future<Object> _announceCosignatureTransaction(
@@ -27,7 +27,7 @@ class TransactionRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -68,7 +68,7 @@ class TransactionRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -111,7 +111,7 @@ class TransactionRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -136,7 +136,7 @@ class TransactionRoutesApi {
   ///
   /// Returns a [Transaction] information given a transactionId or hash.
   Future<Transaction> GetTransaction(String transactionId) async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
     if (transactionId == null) {
@@ -156,7 +156,7 @@ class TransactionRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -199,7 +199,7 @@ class TransactionRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -216,7 +216,7 @@ class TransactionRoutesApi {
     } else if (response.body != null) {
       final resp =
           (apiClient.deserialize(response.body, 'List<Transaction>') as List)
-              .map((item) => item as Object)
+              .map((dynamic item) => item as Object)
               .toList();
       return resp.map((t) => deserializeDTO(t)).toList();
     } else {
@@ -227,8 +227,8 @@ class TransactionRoutesApi {
   /// Get transaction status
   ///
   /// Returns the transaction status for a given hash.
-  Future<TransactionStatusDTO> _getTransactionStatus(String hash) async {
-    Object postBody = null;
+  Future<_TransactionStatusDTO> _getTransactionStatus(String hash) async {
+    Object postBody;
 
     // verify required params are set
     if (hash == null) {
@@ -248,7 +248,7 @@ class TransactionRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -263,8 +263,8 @@ class TransactionRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'TransactionStatusDTO')
-          as TransactionStatusDTO;
+      return apiClient.deserialize(response.body, '_TransactionStatusDTO')
+          as _TransactionStatusDTO;
     } else {
       return null;
     }
@@ -273,7 +273,7 @@ class TransactionRoutesApi {
   /// Get transactions status.
   ///
   /// Returns an List of transaction statuses for a given List of transaction hashes.
-  Future<List<TransactionStatusDTO>> _getTransactionsStatuses(
+  Future<List<_TransactionStatusDTO>> _getTransactionsStatuses(
       TransactionHashes transactionHashes) async {
     Object postBody = transactionHashes;
 
@@ -293,7 +293,7 @@ class TransactionRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -308,9 +308,9 @@ class TransactionRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (apiClient.deserialize(response.body, 'List<TransactionStatusDTO>')
+      return (apiClient.deserialize(response.body, 'List<_TransactionStatusDTO>')
               as List)
-          .map((item) => item as TransactionStatusDTO)
+          .map((dynamic item) => item as _TransactionStatusDTO)
           .toList();
     } else {
       return null;

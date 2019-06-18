@@ -1,16 +1,17 @@
 part of xpx_chain_sdk;
 
 class NetworkRoutesApi {
-  final ApiClient apiClient;
 
   NetworkRoutesApi([ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
+
+  final ApiClient apiClient;
 
   /// Get the current network type of the chain
   ///
   /// Returns the current network type.
   Future<NetworkType> getNetworkType() async {
-    Object postBody = null;
+    Object postBody;
 
     // verify required params are set
 
@@ -25,7 +26,7 @@ class NetworkRoutesApi {
     List<String> contentTypes = [];
 
     String contentType =
-        contentTypes.length > 0 ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;

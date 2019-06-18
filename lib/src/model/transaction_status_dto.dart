@@ -1,6 +1,15 @@
 part of xpx_chain_sdk;
 
-class TransactionStatusDTO {
+class _TransactionStatusDTO {
+  _TransactionStatusDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    group = json['group'] as String;
+    status = json['status'] as String;
+    hash = json['hash'] as String;
+    deadline = new UInt64DTO.fromJson(json['deadline']);
+    height = new UInt64DTO.fromJson(json['height']);
+  }
+
   String group;
 
   String status;
@@ -11,46 +20,32 @@ class TransactionStatusDTO {
 
   UInt64DTO height;
 
-  TransactionStatusDTO();
-
-  @override
-  String toString() {
-    return 'TransactionStatusDTO[group=$group, status=$status, hash=$hash, deadline=$deadline, height=$height, ]';
-  }
-
-  TransactionStatusDTO.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    group = json['group'];
-    status = json['status'];
-    hash = json['hash'];
-    deadline = new UInt64DTO.fromJson(json['deadline']);
-    height = new UInt64DTO.fromJson(json['height']);
-  }
-
   Map<String, dynamic> toJson() {
-    return {
-      'group': group,
-      'status': status,
-      'hash': hash,
-      'deadline': deadline,
-      'height': height
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['group'] = this.group;
+    data['status'] = this.status;
+    data['hash'] = this.hash;
+    data['deadline'] = this.deadline;
+    data['height'] = this.height;
+
+    return data;
   }
 
-  static List<TransactionStatusDTO> listFromJson(List<dynamic> json) {
+  static List<_TransactionStatusDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<TransactionStatusDTO>()
+        ? new List<_TransactionStatusDTO>()
         : json
-            .map((value) => new TransactionStatusDTO.fromJson(value))
+            .map((dynamic value) => new _TransactionStatusDTO.fromJson(
+                value as Map<String, dynamic>))
             .toList();
   }
 
-  static Map<String, TransactionStatusDTO> mapFromJson(
+  static Map<String, _TransactionStatusDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, TransactionStatusDTO>();
-    if (json != null && json.length > 0) {
+    var map = new Map<String, _TransactionStatusDTO>();
+    if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new TransactionStatusDTO.fromJson(value));
+          map[key] = new _TransactionStatusDTO.fromJson(value));
     }
     return map;
   }

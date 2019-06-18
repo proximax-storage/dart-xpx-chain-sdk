@@ -1,64 +1,64 @@
 part of xpx_chain_sdk;
 
-RegExp _hexadecimal = new RegExp(r'^[0-9a-fA-F]+$');
+RegExp _Hexadecimal = new RegExp(r'^[0-9a-fA-F]+$');
 
-var transactionTypes = <_transactionTypeClass>{
-  _transactionTypeClass(TransactionType.AggregateCompleted, 16705, 0x4141),
-  _transactionTypeClass(TransactionType.AggregateBonded, 16961, 0x4241),
-  _transactionTypeClass(TransactionType.MetadataAddress, 16701, 0x413d),
-  _transactionTypeClass(TransactionType.MetadataMosaic, 16957, 0x423d),
-  _transactionTypeClass(TransactionType.MetadataNamespace, 17213, 0x433d),
-  _transactionTypeClass(TransactionType.MosaicDefinition, 16717, 0x414d),
-  _transactionTypeClass(TransactionType.MosaicAlias, 17230, 0x434e),
-  _transactionTypeClass(TransactionType.MosaicSupplyChange, 16973, 0x424d),
-  _transactionTypeClass(TransactionType.ModifyMultisig, 16725, 0x4155),
-  _transactionTypeClass(TransactionType.ModifyContract, 16727, 0x4157),
-  _transactionTypeClass(TransactionType.RegisterNamespace, 16718, 0x414e),
-  _transactionTypeClass(TransactionType.Transfer, 16724, 0x4154),
-  _transactionTypeClass(TransactionType.Lock, 16712, 0x4148),
-  _transactionTypeClass(TransactionType.SecretLock, 16722, 0x4152),
-  _transactionTypeClass(TransactionType.SecretProof, 16978, 0x4252),
+var transactionTypes = <_TransactionTypeClass>{
+  _TransactionTypeClass(TransactionType.aggregateCompleted, 16705, 0x4141),
+  _TransactionTypeClass(TransactionType.aggregateBonded, 16961, 0x4241),
+  _TransactionTypeClass(TransactionType.metadataAddress, 16701, 0x413d),
+  _TransactionTypeClass(TransactionType.metadataMosaic, 16957, 0x423d),
+  _TransactionTypeClass(TransactionType.metadataNamespace, 17213, 0x433d),
+  _TransactionTypeClass(TransactionType.mosaicDefinition, 16717, 0x414d),
+  _TransactionTypeClass(TransactionType.mosaicAlias, 17230, 0x434e),
+  _TransactionTypeClass(TransactionType.mosaicSupplyChange, 16973, 0x424d),
+  _TransactionTypeClass(TransactionType.modifyMultisig, 16725, 0x4155),
+  _TransactionTypeClass(TransactionType.modifyContract, 16727, 0x4157),
+  _TransactionTypeClass(TransactionType.registerNamespace, 16718, 0x414e),
+  _TransactionTypeClass(TransactionType.transfer, 16724, 0x4154),
+  _TransactionTypeClass(TransactionType.lock, 16712, 0x4148),
+  _TransactionTypeClass(TransactionType.secretLock, 16722, 0x4152),
+  _TransactionTypeClass(TransactionType.secretProof, 16978, 0x4252),
 };
 
 // TransactionVersion enums
-const AggregateCompletedVersion = 2,
-    AggregateBondedVersion = 2,
-    MetadataAddressVersion = 1,
-    MetadataMosaicVersion = 1,
-    MetadataNamespaceVersion = 1,
-    MosaicDefinitionVersion = 3,
-    MosaicSupplyChangeVersion = 2,
-    ModifyMultisigVersion = 3,
-    ModifyContractVersion = 3,
-    RegisterNamespaceVersion = 2,
-    TransferVersion = 3,
-    LockVersion = 1,
-    SecretLockVersion = 1,
-    SecretProofVersion = 1;
+const aggregateCompletedVersion = 2,
+    aggregateBondedVersion = 2,
+    metadataAddressVersion = 1,
+    metadataMosaicVersion = 1,
+    metadataNamespaceVersion = 1,
+    mosaicDefinitionVersion = 3,
+    mosaicSupplyChangeVersion = 2,
+    modifyMultisigVersion = 3,
+    modifyContractVersion = 3,
+    registerNamespaceVersion = 2,
+    transferVersion = 3,
+    lockVersion = 1,
+    secretLockVersion = 1,
+    secretProofVersion = 1;
 
 // TransactionType enums
 enum TransactionType {
-  AggregateCompleted,
-  AggregateBonded,
-  MetadataAddress,
-  MetadataMosaic,
-  MetadataNamespace,
-  MosaicDefinition,
-  MosaicSupplyChange,
-  ModifyMultisig,
-  ModifyContract,
-  RegisterNamespace,
-  Transfer,
-  Lock,
-  SecretLock,
-  SecretProof,
-  MosaicAlias
+  aggregateCompleted,
+  aggregateBonded,
+  metadataAddress,
+  metadataMosaic,
+  metadataNamespace,
+  mosaicDefinition,
+  mosaicSupplyChange,
+  modifyMultisig,
+  modifyContract,
+  registerNamespace,
+  transfer,
+  lock,
+  secretLock,
+  secretProof,
+  mosaicAlias
 }
 
 var TimestampNemesisBlock =
     new DateTime.fromMicrosecondsSinceEpoch(1459468800 * 1000);
 
-_transactionTypeClass transactionTypeFromRaw(int value) {
+_TransactionTypeClass transactionTypeFromRaw(int value) {
   for (var t in transactionTypes) {
     if (t.raw == value) {
       return t;
@@ -68,47 +68,49 @@ _transactionTypeClass transactionTypeFromRaw(int value) {
 }
 
 String mapTransaction(dynamic decodedJson) {
-  final rawT = decodedJson["transaction"]["type"];
+  final rawT = decodedJson["transaction"]["type"] as int;
 
   final t = transactionTypeFromRaw(rawT).transactionType;
 
   switch (t) {
-    case TransactionType.AggregateCompleted:
+    case TransactionType.aggregateCompleted:
       return ("AggregateCompleted");
-    case TransactionType.AggregateBonded:
+    case TransactionType.aggregateBonded:
       return ("AggregateBonded");
-    case TransactionType.MetadataAddress:
+    case TransactionType.metadataAddress:
       return ("MetadataAddress");
-    case TransactionType.MetadataMosaic:
+    case TransactionType.metadataMosaic:
       return ("MetadataMosaic");
-    case TransactionType.MetadataNamespace:
+    case TransactionType.metadataNamespace:
       return ("MetadataNamespace");
-    case TransactionType.MosaicDefinition:
+    case TransactionType.mosaicDefinition:
       return ("MosaicDefinition");
-    case TransactionType.MosaicAlias:
+    case TransactionType.mosaicAlias:
       return ("MosaicAlias");
-    case TransactionType.MosaicSupplyChange:
+    case TransactionType.mosaicSupplyChange:
       return ("MosaicSupplyChange");
-    case TransactionType.ModifyMultisig:
+    case TransactionType.modifyMultisig:
       return ("ModifyMultisig");
-    case TransactionType.ModifyContract:
+    case TransactionType.modifyContract:
       return ("ModifyContract");
-    case TransactionType.RegisterNamespace:
+    case TransactionType.registerNamespace:
       return ("RegisterNamespace");
-    case TransactionType.Transfer:
+    case TransactionType.transfer:
       return ("Transfer");
-    case TransactionType.Lock:
+    case TransactionType.lock:
       return ("Lock");
-    case TransactionType.SecretLock:
+    case TransactionType.secretLock:
       return ("SecretLock");
-    case TransactionType.SecretProof:
+    case TransactionType.secretProof:
       return ("SecretProof");
     default:
       return ("NULL");
   }
 }
 
-class _transactionTypeClass {
+class _TransactionTypeClass {
+  _TransactionTypeClass([this._transactionType, this._raw, this._hex]);
+
   TransactionType _transactionType;
   int _raw;
   int _hex;
@@ -116,18 +118,23 @@ class _transactionTypeClass {
   TransactionType get transactionType => this._transactionType;
   int get raw => this._raw;
   int get hex => this._hex;
-
-  _transactionTypeClass([this._transactionType, this._raw, this._hex]);
 }
 
 abstract class Id {
+  const Id(this.id);
+
   final BigInt id;
 
-  const Id(this.id);
+  @override
+  String toString() {
+    print("PASOSOSOSOSOSS");
+    return toHex();
+  }
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is Id && runtimeType == other.runtimeType && id == other.id;
+      identical(this, other) ||
+      other is Id && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => 'Id'.hashCode ^ id.hashCode;
@@ -135,28 +142,28 @@ abstract class Id {
   String toHex() {
     return bigIntegerToHex(this.id);
   }
+
+  int toIn() {
+    return this.id.toInt();
+  }
+
+  BigInt toBigInt() {
+    return this.id;
+  }
 }
 
 class Message {
-  int _type;
-  String _payload;
-
   Message._({int type, String payload}) {
     this._type = type;
     this._payload = payload;
   }
 
-  int get type => _type;
-  set type(int type) => _type = type;
-  String get payload => _payload;
-  set payload(String payload) => _payload = payload;
-
-  Message.fromDTO(_messageDTO value) {
+  Message.fromDTO(_MessageDTO value) {
     if (value?._payload == null) {
       return;
     }
 
-    if (_hexadecimal.hasMatch(value._payload)) {
+    if (_Hexadecimal.hasMatch(value._payload)) {
       _payload = value._payload;
     } else {
       _payload = utf8.decode(hex.decode(value._payload));
@@ -168,6 +175,14 @@ class Message {
     this._payload = payload;
     this._type = 0;
   }
+
+  int _type;
+  String _payload;
+
+  int get type => _type;
+  set type(int type) => _type = type;
+  String get payload => _payload;
+  set payload(String payload) => _payload = payload;
 
   @override
   String toString() {
@@ -183,8 +198,6 @@ class Message {
 }
 
 class Deadline {
-  DateTime time;
-
   Deadline(
       {int days = 0,
       int hours = 0,
@@ -199,36 +212,46 @@ class Deadline {
         seconds: seconds,
         milliseconds: milliseconds,
         microseconds: microseconds);
-    time = new DateTime.now().add(d);
+    this.value = new DateTime.now().add(d);
   }
+
+  Deadline.fromUInt64DTO(UInt64DTO data) {
+    if (data.lower == null || data.higher == null) return;
+
+    this.value =
+        new DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt());
+  }
+
+  DateTime value;
 
   @override
   String toString() {
-    return '${time}';
+    return '${this.value}';
   }
 
   Int64 GetInstant() {
-    var x = Int64((this.time.microsecondsSinceEpoch * 1000) ~/ 1e6);
+    var x = Int64((this.value.microsecondsSinceEpoch * 1000) ~/ 1e6);
     var y = Int64((TimestampNemesisBlock.microsecondsSinceEpoch * 1e+6) ~/ 1e6);
     return x - y;
-  }
-
-  Deadline.fromUInt64DTO(UInt64DTO d) {
-    if (d.toJson().isEmpty) return;
-    this.time = new DateTime.fromMillisecondsSinceEpoch(d.toBigInt().toInt());
   }
 }
 
 class SignedTransaction {
-  int _transactionType;
-  String _payload;
-  String _hash;
-
   SignedTransaction([int transactionType, String payload, String hash]) {
     this._transactionType = transactionType;
     this._payload = payload;
     this._hash = hash;
   }
+
+  SignedTransaction.fromJson(Map<String, dynamic> json) {
+    _transactionType = json['transactionType'] as int;
+    _payload = json['payload'] as String;
+    _hash = json['hash'] as String;
+  }
+
+  int _transactionType;
+  String _payload;
+  String _hash;
 
   int get transactionType => _transactionType;
   set transactionType(int transactionType) =>
@@ -237,12 +260,6 @@ class SignedTransaction {
   set payload(String payload) => _payload = payload;
   String get hash => _hash;
   set hash(String hash) => _hash = hash;
-
-  SignedTransaction.fromJson(Map<String, dynamic> json) {
-    _transactionType = json['transactionType'];
-    _payload = json['payload'];
-    _hash = json['hash'];
-  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -255,11 +272,11 @@ class SignedTransaction {
 
 // CosignatureSignedTransaction
 class CosignatureSignedTransaction {
+  CosignatureSignedTransaction(this._parentHash, this._signature, this._signer);
+
   String _parentHash;
   String _signature;
   String _signer;
-
-  CosignatureSignedTransaction(this._parentHash, this._signature, this._signer);
 
   @override
   String toString() {
@@ -281,10 +298,20 @@ class CosignatureSignedTransaction {
 
 // AggregateTransactionCosignature
 class AggregateTransactionCosignature {
+  AggregateTransactionCosignature(this._signature, this._signer);
+
+  AggregateTransactionCosignature.fromDTO(
+      int networkType, _AggregateTransactionCosignatureDTO value) {
+    if (value?._signer == null) {
+      return;
+    }
+
+    _signature = value._signature;
+    _signer = new PublicAccount.fromPublicKey(value._signer, networkType);
+  }
+
   String _signature;
   PublicAccount _signer;
-
-  AggregateTransactionCosignature(this._signature, this._signer);
 
   @override
   String toString() {
@@ -294,18 +321,8 @@ class AggregateTransactionCosignature {
         '}\n';
   }
 
-  AggregateTransactionCosignature.fromDTO(
-      int networkType, _aggregateTransactionCosignatureDTO value) {
-    if (value?._signer == null) {
-      return;
-    }
-
-    _signature = value._signature;
-    _signer = new PublicAccount.fromPublicKey(value._signer, networkType);
-  }
-
   static List<AggregateTransactionCosignature> listFromDTO(
-      int networkType, List<_aggregateTransactionCosignatureDTO> json) {
+      int networkType, List<_AggregateTransactionCosignatureDTO> json) {
     return json == null
         ? new List<AggregateTransactionCosignature>()
         : json
@@ -366,32 +383,38 @@ class TransactionInfo {
   }
 
   Map<String, dynamic> _transactionInfoToJson() {
-    return {
-      'height': height,
-      'index': index,
-      'id': id,
-      'hash': hash,
-      'merkleComponentHash': merkleComponentHash,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['height'] = this.height;
+    data['index'] = this.index;
+    data['id'] = this.id;
+    data['hash'] = this.hash;
+    data['merkleComponentHash'] = this.merkleComponentHash;
+
+    return data;
   }
 }
 
 class AbstractTransaction with TransactionInfo {
-  int networkType;
-  Deadline deadline;
-  _transactionTypeClass type;
-  int version;
-  BigInt fee;
-  String signature;
-  PublicAccount signer;
-
-  AbstractTransaction([height, index, id, hash, merkleComponentHash]) {
+  AbstractTransaction(
+      [BigInt height,
+      int index,
+      String id,
+      String hash,
+      String merkleComponentHash]) {
     this.height = height;
     this.index = index;
     this.id = id;
     this.hash = hash;
     this.merkleComponentHash = merkleComponentHash;
   }
+
+  int networkType;
+  Deadline deadline;
+  _TransactionTypeClass type;
+  int version;
+  BigInt fee;
+  String signature;
+  PublicAccount signer;
 
   Map<String, int> _generateVector(fb.Builder builder) {
     final Map<String, int> data = new Map<String, int>();
@@ -447,11 +470,10 @@ class AbstractTransaction with TransactionInfo {
   }
 
   String _abstractTransactionToString() {
-    final t = sprintf("%02x", [transactionTypes.lookup(type)?.hex]);
     return '{\n'
         '\t"transactionInfo":${_transactionInfoToString()}\n'
         '\t"networkType": $networkType,\n'
-        '\t"type": $t,\n'
+        '\t"type": ${transactionTypes.lookup(type)?._raw},\n'
         '\t"version": $version,\n'
         '\t"fee": $fee,\n'
         '\t"deadline": $deadline,\n'
@@ -460,6 +482,7 @@ class AbstractTransaction with TransactionInfo {
         '}';
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return _abstractTransactionToJson();
   }
@@ -480,24 +503,20 @@ class AbstractTransaction with TransactionInfo {
 
 // TransferTransaction
 class TransferTransaction extends AbstractTransaction implements Transaction {
-  List<Mosaic> mosaics;
-  Address recipient;
-  Message message;
-
   TransferTransaction(Deadline deadline, Address recipient,
       List<Mosaic> mosaics, Message message, int networkType)
       : super() {
     if (recipient == null) {
-      throw ErrNullRecipient;
+      throw errNullRecipient;
     }
     if (mosaics == null) {
-      throw ErrNullMosaics;
+      throw errNullMosaics;
     }
     if (message == null) {
-      throw ErrNullMessage;
+      throw errNullMessage;
     }
 
-    this.version = TransferVersion;
+    this.version = transferVersion;
     this.deadline = deadline;
     this.type = transactionTypeFromRaw(16724);
     this.recipient = recipient;
@@ -506,7 +525,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     this.networkType = networkType;
   }
 
-  TransferTransaction.fromDTO(_transferTransactionInfoDTO value)
+  TransferTransaction.fromDTO(_TransferTransactionInfoDTO value)
       : super(
             value._meta._height.toBigInt(),
             value._meta._index,
@@ -514,36 +533,44 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
             value._meta._hash,
             value._meta._merkleComponentHash) {
     if (value == null) return;
-    this.type = transactionTypeFromRaw(value._transaction.Type);
-    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
-    this.signature = value._transaction.Signature;
-    this.networkType = ExtractNetworkType(value._transaction.Version);
-    this.version = ExtractVersion(value._transaction.Version);
-    this.fee = value._transaction.Fee.toBigInt();
+
+    this.type = transactionTypeFromRaw(value._transaction.type);
+    this.deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
+
+    this.signature = value._transaction.signature;
+    this.networkType = ExtractNetworkType(value._transaction.version);
+    this.version = ExtractVersion(value._transaction.version);
+    this.fee = value._transaction.fee.toBigInt();
     this.signer = new PublicAccount.fromPublicKey(
-        value._transaction.Signer, this.networkType);
+        value._transaction.signer, this.networkType);
 
     mosaics = Mosaic.listFromDTO(value._transaction._mosaics);
     recipient = new Address.fromEncoded(value._transaction._recipient);
     message = new Message.fromDTO(value._transaction._message);
   }
 
+  List<Mosaic> mosaics;
+  Address recipient;
+  Message message;
+
   static List<TransferTransaction> listFromDTO(
-      List<_transferTransactionInfoDTO> json) {
+      List<_TransferTransactionInfoDTO> json) {
     return json == null
         ? new List<TransferTransaction>()
         : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
   }
 
+  @override
   String toString() {
     return '{\n'
         ' "abstractTransaction":${_abstractTransactionToString()}\n'
-        ' "recipient":${recipient},\n'
+        ' "recipient":$recipient,\n'
         ' "mosaics":${mosaics.map((v) => v.toJson()).toList()},\n'
-        ' "message":${message}\n'
+        ' "message":$message\n'
         '}\n';
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['abstractTransaction'] = _abstractTransactionToJson();
@@ -561,8 +588,8 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
   @override
   int _size() {
-    return TransferHeaderSize +
-        (MosaicSize + AmountSize) * this.mosaics.length +
+    return transferHeaderSize +
+        (mosaicSize + amountSize) * this.mosaics.length +
         this.messageSize();
   }
 
@@ -629,56 +656,51 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
 class RegisterNamespaceTransaction extends AbstractTransaction
     implements Transaction {
-  BigInt namespaceId;
-  NamespaceType namespaceType;
-  String namspaceName;
-  BigInt duration;
-  BigInt parentId;
-
   RegisterNamespaceTransaction.createRoot(
       Deadline deadline, String namespaceName, BigInt duration, int networkType)
       : super() {
     if (namespaceName == null) {
-      throw ErrInvalidNamespaceName;
+      throw errInvalidNamespaceName;
     }
 
     if (duration == null) {
-      throw ErrNullDuration;
+      throw errNullDuration;
     }
 
-    this.version = RegisterNamespaceVersion;
+    this.version = registerNamespaceVersion;
     this.deadline = deadline;
     this.type = transactionTypeFromRaw(16718);
     this.namespaceId = NewNamespaceIdFromName(namespaceName);
     this.networkType = networkType;
     this.namspaceName = namespaceName;
-    this.namespaceType = NamespaceType.Root;
+    this.namespaceType = NamespaceType.root;
     this.duration = duration;
   }
 
   RegisterNamespaceTransaction.createSub(Deadline deadline,
-      String subnamespaceName, String rootNamespaceName, int networkType)
+      String subNamespaceName, String rootNamespaceName, int networkType)
       : super() {
-    if (subnamespaceName == null || subnamespaceName == "") {
-      throw ErrInvalidNamespaceName;
+    if (subNamespaceName == null || subNamespaceName == "") {
+      throw errInvalidNamespaceName;
     }
 
     if (rootNamespaceName == null || rootNamespaceName == "") {
-      throw ErrInvalidNamespaceName;
+      throw errInvalidNamespaceName;
     }
 
-    this.version = RegisterNamespaceVersion;
+    this.version = registerNamespaceVersion;
     this.deadline = deadline;
     this.type = transactionTypeFromRaw(16718);
     this.parentId = NewNamespaceIdFromName(rootNamespaceName);
-    this.namespaceId = _generateId(subnamespaceName, this.parentId);
+    this.namespaceId = new NamespaceId._(
+        _generateId(subNamespaceName, this.parentId.toBigInt()));
     this.networkType = networkType;
-    this.namspaceName = subnamespaceName;
-    this.namespaceType = NamespaceType.Sub;
+    this.namspaceName = subNamespaceName;
+    this.namespaceType = NamespaceType.sub;
   }
 
   RegisterNamespaceTransaction.fromDTO(
-      _registerNamespaceTransactionInfoDTO value)
+      _RegisterNamespaceTransactionInfoDTO value)
       : super(
             value._meta._height.toBigInt(),
             value._meta._index,
@@ -687,53 +709,63 @@ class RegisterNamespaceTransaction extends AbstractTransaction
             value._meta._merkleComponentHash) {
     if (value == null) return;
 
-    this.type = transactionTypeFromRaw(value._transaction.Type);
-    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
-    this.signature = value._transaction.Signature;
-    this.networkType = ExtractNetworkType(value._transaction.Version);
-    this.version = ExtractVersion(value._transaction.Version);
-    this.fee = value._transaction.Fee.toBigInt();
+    this.type = transactionTypeFromRaw(value._transaction.type);
+    this.deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
+    this.signature = value._transaction.signature;
+    this.networkType = ExtractNetworkType(value._transaction.version);
+    this.version = ExtractVersion(value._transaction.version);
+    this.fee = value._transaction.fee.toBigInt();
     this.signer = new PublicAccount.fromPublicKey(
-        value._transaction.Signer, this.networkType);
+        value._transaction.signer, this.networkType);
 
-    namespaceId = value._transaction._namespaceId.toBigInt();
+    namespaceId = new NamespaceId._(value._transaction._namespaceId.toBigInt());
     namespaceType = value._transaction._namespaceType == 0
-        ? NamespaceType.Root
-        : NamespaceType.Sub;
+        ? NamespaceType.root
+        : NamespaceType.sub;
     namspaceName = value._transaction._name;
-    if (namespaceType == NamespaceType.Root) {
+    if (namespaceType == NamespaceType.root) {
       duration = value._transaction._duration.toBigInt();
     } else {
-      parentId = value._transaction._parentId.toBigInt();
+      parentId = new NamespaceId._(value._transaction._parentId.toBigInt());
     }
   }
 
+  NamespaceId namespaceId;
+  NamespaceType namespaceType;
+  String namspaceName;
+  BigInt duration;
+  NamespaceId parentId;
+
   static List<RegisterNamespaceTransaction> listFromDTO(
-      List<_transferTransactionInfoDTO> json) {
-    return json == null
+      List<_RegisterNamespaceTransactionInfoDTO> data) {
+    return data == null
         ? new List<RegisterNamespaceTransaction>()
-        : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
+        : data
+            .map((value) => new RegisterNamespaceTransaction.fromDTO(value))
+            .toList();
   }
 
+  @override
   String toString() {
     return '{\n'
         ' "abstractTransaction":${_abstractTransactionToString()}\n'
-        ' "namespaceId":${namespaceId},\n'
-        ' "namespaceType":${namespaceType},\n'
-        ' "namspaceName":${namspaceName},\n'
-        ' "parentId":${parentId},\n'
-        ' "duration":${duration},\n'
+        ' "namespaceId":$namespaceId,\n'
+        ' "namespaceType":${namespaceType.toString().split(".")[1]},\n'
+        ' "namspaceName":$namspaceName,\n'
+        ' "parentId":$parentId,\n'
+        ' "duration":$duration,\n'
         '}\n';
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['abstractTransaction'] = _abstractTransactionToJson();
-    data['namespaceId'] = this.namespaceId;
+    data['namespaceId'] = this.namespaceId.toHex();
     data['namespaceType'] = this.namespaceType;
     data['namspaceName'] = this.namspaceName;
-    data['parentId'] = parentId;
-    data['duration'] = duration;
+    data['parentId'] = this.parentId.toHex();
+    data['duration'] = this.duration;
     return data;
   }
 
@@ -746,12 +778,12 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   Uint8List _generateBytes() {
     final builder = new fb.Builder(initialSize: 0);
 
-    final nV = builder.writeListUint32(FromBigInt(this.namespaceId));
+    final nV = builder.writeListUint32(FromBigInt(this.namespaceId.toBigInt()));
     int dV;
-    if (this.namespaceType == NamespaceType.Root) {
+    if (this.namespaceType == NamespaceType.root) {
       dV = builder.writeListUint32(fromBigInt(this.duration));
     } else {
-      dV = builder.writeListUint32(FromBigInt(this.parentId));
+      dV = builder.writeListUint32(FromBigInt(this.parentId.toBigInt()));
     }
 
     final n = builder.writeString(this.namspaceName);
@@ -779,17 +811,12 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 
   @override
   int _size() {
-    return RegisterNamespaceHeaderSize + this.namspaceName.length;
+    return registerNamespaceHeaderSize + this.namspaceName.length;
   }
 }
 
 class MosaicDefinitionTransaction extends AbstractTransaction
     implements Transaction {
-  MosaicProperties mosaicProperties;
-  BigInt duration;
-  int mosaicNonce;
-  MosaicId mosaicId;
-
   MosaicDefinitionTransaction(
       Deadline deadline,
       int nonce,
@@ -799,14 +826,14 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       int networkType)
       : super() {
     if (ownerPublicKey.length != 64) {
-      throw ErrInvalidOwnerPublicKey;
+      throw errInvalidOwnerPublicKey;
     }
 
     if (mosaicProps == null) {
-      throw ErrNullMosaicProperties;
+      throw errNullMosaicProperties;
     }
 
-    this.version = MosaicDefinitionVersion;
+    this.version = mosaicDefinitionVersion;
     this.deadline = deadline;
     this.type = transactionTypeFromRaw(16717);
     this.networkType = networkType;
@@ -817,7 +844,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     this.duration = duration;
   }
 
-  MosaicDefinitionTransaction.fromDTO(_mosaicDefinitionTransactionInfoDTO value)
+  MosaicDefinitionTransaction.fromDTO(_MosaicDefinitionTransactionInfoDTO value)
       : super(
             value._meta._height.toBigInt(),
             value._meta._index,
@@ -826,36 +853,45 @@ class MosaicDefinitionTransaction extends AbstractTransaction
             value._meta._merkleComponentHash) {
     if (value == null) return;
 
-    this.type = transactionTypeFromRaw(value._transaction.Type);
-    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
-    this.signature = value._transaction.Signature;
-    this.networkType = ExtractNetworkType(value._transaction.Version);
-    this.version = ExtractVersion(value._transaction.Version);
-    this.fee = value._transaction.Fee.toBigInt();
+    this.type = transactionTypeFromRaw(value._transaction.type);
+    this.deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
+    this.signature = value._transaction.signature;
+    this.networkType = ExtractNetworkType(value._transaction.version);
+    this.version = ExtractVersion(value._transaction.version);
+    this.fee = value._transaction.fee.toBigInt();
     this.signer = new PublicAccount.fromPublicKey(
-        value._transaction.Signer, this.networkType);
+        value._transaction.signer, this.networkType);
     this.mosaicProperties =
         new MosaicProperties.fromDTO(value._transaction._properties);
     this.mosaicNonce = value._transaction._mosaicNonce;
     this.mosaicId = MosaicId.fromId(value._transaction._mosaicId.toBigInt());
   }
 
+  MosaicProperties mosaicProperties;
+  BigInt duration;
+  int mosaicNonce;
+  MosaicId mosaicId;
+
   static List<MosaicDefinitionTransaction> listFromDTO(
-      List<_transferTransactionInfoDTO> json) {
+      List<_MosaicDefinitionTransactionInfoDTO> json) {
     return json == null
-        ? new List<RegisterNamespaceTransaction>()
-        : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
+        ? new List<MosaicDefinitionTransaction>()
+        : json
+            .map((value) => new MosaicDefinitionTransaction.fromDTO(value))
+            .toList();
   }
 
+  @override
   String toString() {
     return '{\n'
         ' "abstractTransaction":${_abstractTransactionToString()}\n'
-        ' "mosaicProperties":${mosaicProperties},\n'
-        ' "mosaicNonce":${mosaicNonce},\n'
-        ' "mosaicId":${mosaicId},\n'
+        ' "mosaicProperties":$mosaicProperties,\n'
+        ' "mosaicNonce":$mosaicNonce,\n'
+        ' "mosaicId":$mosaicId,\n'
         '}\n';
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['abstractTransaction'] = _abstractTransactionToJson();
@@ -867,7 +903,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
   @override
   int _size() {
-    return MosaicDefinitionTransactionSize;
+    return mosaicDefinitionTransactionSize;
   }
 
   @override
@@ -921,22 +957,18 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
 class MosaicSupplyChangeTransaction extends AbstractTransaction
     implements Transaction {
-  MosaicSupplyType mosaicSupplyType;
-  BigInt delta;
-  MosaicId mosaicId;
-
   MosaicSupplyChangeTransaction(Deadline deadline, MosaicSupplyType supplyType,
       MosaicId mosaicId, BigInt delta, int networkType)
       : super() {
     if (mosaicId == null) {
-      throw ErrNullMosaicId;
+      throw errNullMosaicId;
     }
 
     if (supplyType == null) {
-      throw ErrNullSupplyType;
+      throw errNullSupplyType;
     }
 
-    this.version = MosaicSupplyChangeVersion;
+    this.version = mosaicSupplyChangeVersion;
     this.deadline = deadline;
     this.type = transactionTypeFromRaw(16973);
     this.networkType = networkType;
@@ -946,7 +978,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   }
 
   MosaicSupplyChangeTransaction.fromDTO(
-      _mosaicSupplyChangeTransactionInfoDTO value)
+      _MosaicSupplyChangeTransactionInfoDTO value)
       : super(
             value._meta._height.toBigInt(),
             value._meta._index,
@@ -955,37 +987,45 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
             value._meta._merkleComponentHash) {
     if (value == null) return;
 
-    this.type = transactionTypeFromRaw(value._transaction.Type);
-    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
-    this.signature = value._transaction.Signature;
-    this.networkType = ExtractNetworkType(value._transaction.Version);
-    this.version = ExtractVersion(value._transaction.Version);
-    this.fee = value._transaction.Fee.toBigInt();
+    this.type = transactionTypeFromRaw(value._transaction.type);
+    this.deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
+    this.signature = value._transaction.signature;
+    this.networkType = ExtractNetworkType(value._transaction.version);
+    this.version = ExtractVersion(value._transaction.version);
+    this.fee = value._transaction.fee.toBigInt();
     this.signer = new PublicAccount.fromPublicKey(
-        value._transaction.Signer, this.networkType);
+        value._transaction.signer, this.networkType);
     this.mosaicSupplyType =
-        value._transaction._direction == 0 ? Decrease : Increase;
+        value._transaction._direction == 0 ? decrease : increase;
     this.mosaicId = MosaicId.fromId(value._transaction._mosaicId.toBigInt());
     this.delta = value._transaction._delta.toBigInt();
   }
 
+  MosaicSupplyType mosaicSupplyType;
+  BigInt delta;
+  MosaicId mosaicId;
+
   static List<MosaicSupplyChangeTransaction> listFromDTO(
-      List<_transferTransactionInfoDTO> json) {
+      List<_MosaicSupplyChangeTransactionInfoDTO> json) {
     return json == null
         ? new List<MosaicSupplyChangeTransaction>()
-        : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
+        : json
+            .map((value) => new MosaicSupplyChangeTransaction.fromDTO(value))
+            .toList();
   }
 
+  @override
   String toString() {
-    String _supplyType = mosaicSupplyType.index == 0 ? "Decrease" : "Increase";
+    String _supplyType = mosaicSupplyType.index == 0 ? "decrease" : "increase";
     return '{\n'
         ' "abstractTransaction":${_abstractTransactionToString()}\n'
-        ' "mosaicId":${mosaicId},\n'
-        ' "mosaicSupplyType":${_supplyType},\n'
-        ' "delta":${delta},\n'
+        ' "mosaicId":$mosaicId,\n'
+        ' "mosaicSupplyType":$_supplyType,\n'
+        ' "delta":$delta,\n'
         '}\n';
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['abstractTransaction'] = _abstractTransactionToJson();
@@ -997,7 +1037,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 
   @override
   int _size() {
-    return MosaicSupplyChangeTransactionSize;
+    return mosaicSupplyChangeTransactionSize;
   }
 
   @override
@@ -1035,24 +1075,21 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 }
 
 class AggregateTransaction extends AbstractTransaction implements Transaction {
-  List<Transaction> innerTransactions;
-  List<AggregateTransactionCosignature> cosignatures;
-
   AggregateTransaction(
       Deadline deadline, List<Transaction> innerTxs, int networkType)
       : super() {
     if (innerTxs == null) {
-      throw ErrNullInnerTransactions;
+      throw errNullInnerTransactions;
     }
 
-    this.version = MosaicSupplyChangeVersion;
+    this.version = mosaicSupplyChangeVersion;
     this.deadline = deadline;
     this.type = transactionTypeFromRaw(16705);
     this.networkType = networkType;
     this.innerTransactions = innerTxs;
   }
 
-  AggregateTransaction.fromDTO(_aggregateTransactionInfoDTO value)
+  AggregateTransaction.fromDTO(_AggregateTransactionInfoDTO value)
       : super(
             value._meta._height.toBigInt(),
             value._meta._index,
@@ -1061,35 +1098,42 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
             value._meta._merkleComponentHash) {
     if (value == null) return;
 
-    this.type = transactionTypeFromRaw(value._transaction.Type);
-    this.deadline = Deadline.fromUInt64DTO(value._transaction.Deadline);
-    this.signature = value._transaction.Signature;
-    this.networkType = ExtractNetworkType(value._transaction.Version);
-    this.version = ExtractVersion(value._transaction.Version);
-    this.fee = value._transaction.Fee.toBigInt();
+    this.type = transactionTypeFromRaw(value._transaction.type);
+    this.deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
+    this.signature = value._transaction.signature;
+    this.networkType = ExtractNetworkType(value._transaction.version);
+    this.version = ExtractVersion(value._transaction.version);
+    this.fee = value._transaction.fee.toBigInt();
     this.signer = new PublicAccount.fromPublicKey(
-        value._transaction.Signer, this.networkType);
-    this.innerTransactions =
-        value._transaction._transactions.map((t) => deserializeDTO(t)).toList();
+        value._transaction.signer, this.networkType);
+    this.innerTransactions = value._transaction._transactions
+        .map((dynamic t) => deserializeDTO(t))
+        .toList();
+
     this.cosignatures = AggregateTransactionCosignature.listFromDTO(
         this.networkType, value._transaction._cosignatures);
   }
 
+  List<Transaction> innerTransactions;
+  List<AggregateTransactionCosignature> cosignatures;
+
   static List<AggregateTransaction> listFromDTO(
-      List<_transferTransactionInfoDTO> json) {
+      List<_AggregateTransactionInfoDTO> json) {
     return json == null
-        ? new List<MosaicSupplyChangeTransaction>()
-        : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
+        ? new List<AggregateTransaction>()
+        : json.map((value) => new AggregateTransaction.fromDTO(value)).toList();
   }
 
+  @override
   String toString() {
     return '{\n'
         ' "abstractTransaction":${_abstractTransactionToString()}\n'
-        ' "innerTransactions":${innerTransactions},\n'
-        ' "cosignatures":${cosignatures},\n'
+        ' "innerTransactions":$innerTransactions,\n'
+        ' "cosignatures":$cosignatures,\n'
         '}\n';
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['abstractTransaction'] = _abstractTransactionToJson();
@@ -1103,9 +1147,9 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
     int sizeOfInnerTransactions = 0;
     this.innerTransactions.forEach((itx) {
       sizeOfInnerTransactions +=
-          itx._size() - SignatureSize - MaxFeeSize - DeadLineSize;
+          itx._size() - signatureSize - maxFeeSize - deadLineSize;
     });
-    return AggregateBondedHeader + sizeOfInnerTransactions;
+    return aggregateBondedHeader + sizeOfInnerTransactions;
   }
 
   @override
@@ -1182,7 +1226,7 @@ String _createTransactionHash(String pHex) {
 
 Uint8List toAggregateTransactionBytes(Transaction tx) {
   if (tx.getAbstractTransaction().signer == null) {
-    throw ErrTransactionSigner;
+    throw errTransactionSigner;
   }
 
   final sb = hex.decode(tx.getAbstractTransaction().signer.publicKey);
@@ -1205,19 +1249,23 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
 
 Transaction deserializeDTO(dynamic value) {
   switch (value.runtimeType) {
-    case _transferTransactionInfoDTO:
-      return TransferTransaction.fromDTO(value);
-    case _registerNamespaceTransactionInfoDTO:
-      return RegisterNamespaceTransaction.fromDTO(value);
-    case _mosaicDefinitionTransactionInfoDTO:
-      return MosaicDefinitionTransaction.fromDTO(value);
-    case _mosaicSupplyChangeTransactionInfoDTO:
-      return MosaicSupplyChangeTransaction.fromDTO(value);
-    case _aggregateTransactionInfoDTO:
-      return AggregateTransaction.fromDTO(value);
+    case _TransferTransactionInfoDTO:
+      return TransferTransaction.fromDTO(value as _TransferTransactionInfoDTO);
+    case _RegisterNamespaceTransactionInfoDTO:
+      return RegisterNamespaceTransaction.fromDTO(
+          value as _RegisterNamespaceTransactionInfoDTO);
+    case _MosaicDefinitionTransactionInfoDTO:
+      return MosaicDefinitionTransaction.fromDTO(
+          value as _MosaicDefinitionTransactionInfoDTO);
+    case _MosaicSupplyChangeTransactionInfoDTO:
+      return MosaicSupplyChangeTransaction.fromDTO(
+          value as _MosaicSupplyChangeTransactionInfoDTO);
+    case _AggregateTransactionInfoDTO:
+      return AggregateTransaction.fromDTO(
+          value as _AggregateTransactionInfoDTO);
     default:
       if (value is List) {
-        value.map((v) => deserializeDTO(v)).toList();
+        value.map((dynamic v) => deserializeDTO(v)).toList();
       }
       return null;
   }

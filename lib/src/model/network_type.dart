@@ -1,67 +1,65 @@
 part of xpx_chain_sdk;
 
 // NetworkType enums
-const Mijin = 96,
-    MijinTest = 144,
-    Public = 184,
-    PublicTest = 168,
-    Private = 200,
-    PrivateTest = 176,
-    NotSupportedNet = 0;
+const mijin = 0x60,
+    mijinTest = 0x90,
+    public = 0xb8,
+    publicTest = 0xa8,
+    private = 0xc8,
+    privateTest = 0xb0,
+    notSupportedNet = 0;
 
 const Map<String, int> addressNet = {
-  'M': Mijin,
-  'S': MijinTest,
-  'X': Public,
-  'V': PublicTest,
-  'Z': Private,
-  'W': PrivateTest,
+  'M': mijin,
+  'S': mijinTest,
+  'X': public,
+  'V': publicTest,
+  'Z': private,
+  'W': privateTest,
 };
 
-final networkType = networkTypeList;
-
 class NetworkType {
+  NetworkType._(this.name, this.description);
+
+  NetworkType.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    this.name = json['name'] as String;
+    this.description = json['description'] as String;
+  }
+
   String name;
 
   String description;
-
-  NetworkType();
 
   @override
   String toString() {
     return '{name:$name, description=$description}';
   }
 
-  NetworkType.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    name = json['name'];
-    description = json['description'];
+  static int getType(int networkType) {
+    switch (networkType) {
+      case mijin:
+        return addressNet["M"];
+      case mijinTest:
+        return addressNet["S"];
+      case public:
+        return addressNet["X"];
+      case publicTest:
+        return addressNet["V"];
+      case private:
+        return addressNet["Z"];
+      case privateTest:
+        return addressNet["W"];
+      default:
+        return notSupportedNet;
+    }
   }
 
   Map<String, dynamic> toJson() {
-    return {'name': name, 'description': description};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['description'] = this.description;
+
+    return data;
   }
-}
-
-/// Static class containing network type constants.
-mixin networkTypeList {
-  final NOTSUPPORTED_NET = 0,
-
-      /// Public net network
-      PUBLIC = 0xb8,
-
-      /// Public Test net network
-      PUBLIC_TEST = 0xa8,
-
-      /// Private network
-      PRIVATE = 0xc8,
-
-      /// Private test network
-      PRIVATE_TEST = 0xb0,
-
-      /// Mijin net network
-      MIJIN = 0x60,
-
-      /// Mijin test net network
-      MIJIN_TEST = 0x90;
 }

@@ -3,38 +3,38 @@ part of xpx_chain_sdk;
 /// Buffer wraps a fixed size Uint8List and writes values into it using
 /// big-endian byte order.
 abstract class Buffer {
+
+  Buffer._create(this.out);
+
+  factory Buffer.BigEndian(int size) {
+    final out = new Uint8List(size);
+    return new _WriterForBEHost._create(out);
+  }
+
+  factory Buffer.LittleEndian(int size) {
+    final out = new Uint8List(size);
+    return new _WriterForLEHost._create(out);
+  }
+
   /// Output buffer.
   final Uint8List out;
 
   /// Current position within [out].
   var position = 0;
+  void writeInt32(int v);
 
-  Buffer._create(this.out);
+  void writeInt16(int v);
 
-  factory Buffer.BigEndian(size) {
-    final out = new Uint8List(size);
-    return new _WriterForBEHost._create(out);
-  }
-
-  factory Buffer.LittleEndian(size) {
-    final out = new Uint8List(size);
-    return new _WriterForLEHost._create(out);
-  }
-
-  writeInt32(int v);
-
-  writeInt16(int v);
-
-  writeInt8(int v) {
+  void writeInt8(int v) {
     out[position] = v;
     position++;
   }
 
-  writeFloat64(double v);
+  void writeFloat64(double v);
 
-  writeFloat32(double v);
+  void writeFloat32(double v);
 
-  writeString(String str) {
+  void writeString(String str) {
     out.setAll(position, str.codeUnits);
     position += str.codeUnits.length;
   }
@@ -56,15 +56,17 @@ final Float64List _convF64 = new Float64List.view(_convU8.buffer);
 
 /// Writer used on little-endian host.
 class _WriterForLEHost extends Buffer {
-  _WriterForLEHost._create(out) : super._create(out);
+  _WriterForLEHost._create(Uint8List out) : super._create(out);
 
-  writeInt16(int v) {
+  @override
+  void writeInt16(int v) {
     out[position + 0] = v;
     out[position + 1] = (v >> 8);
     position += 2;
   }
 
-  writeInt32(int v) {
+  @override
+  void writeInt32(int v) {
     out[position + 0] = v;
     out[position + 1] = (v >> 8);
     out[position + 2] = (v >> 16);
@@ -72,7 +74,8 @@ class _WriterForLEHost extends Buffer {
     position += 4;
   }
 
-  writeFloat64(double v) {
+  @override
+  void writeFloat64(double v) {
     _convF64[0] = v;
     out[position + 7] = _convU8[0];
     out[position + 6] = _convU8[1];
@@ -85,7 +88,8 @@ class _WriterForLEHost extends Buffer {
     position += 8;
   }
 
-  writeFloat32(double v) {
+  @override
+  void writeFloat32(double v) {
     _convF32[0] = v;
     out[position + 3] = _convU8[0];
     out[position + 2] = _convU8[1];
@@ -97,9 +101,10 @@ class _WriterForLEHost extends Buffer {
 
 /// Writer used on the big-endian host.
 class _WriterForBEHost extends Buffer {
-  _WriterForBEHost._create(out) : super._create(out);
+  _WriterForBEHost._create(Uint8List out) : super._create(out);
 
-  writeInt32(int v) {
+  @override
+  void writeInt32(int v) {
     out[position + 3] = v;
     out[position + 2] = (v >> 8);
     out[position + 1] = (v >> 16);
@@ -107,13 +112,15 @@ class _WriterForBEHost extends Buffer {
     position += 4;
   }
 
-  writeInt16(int v) {
+  @override
+  void writeInt16(int v) {
     out[position + 1] = v;
     out[position + 0] = (v >> 8);
     position += 2;
   }
 
-  writeFloat64(double v) {
+  @override
+  void writeFloat64(double v) {
     _convF64[0] = v;
     out[position + 0] = _convU8[0];
     out[position + 1] = _convU8[1];
@@ -126,7 +133,8 @@ class _WriterForBEHost extends Buffer {
     position += 8;
   }
 
-  writeFloat32(double v) {
+  @override
+  void writeFloat32(double v) {
     _convF32[0] = v;
     out[position + 0] = _convU8[0];
     out[position + 1] = _convU8[1];

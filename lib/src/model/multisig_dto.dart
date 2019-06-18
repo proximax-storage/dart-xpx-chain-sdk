@@ -1,141 +1,133 @@
 part of xpx_chain_sdk;
 
-class MultisigDTO {
-  String account = null;
+class _MultisigDTO {
+  _MultisigDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    account = json['account'] as String;
+    accountAddress = json['accountAddress'] as String;
+    minApproval = json['minApproval'] as int;
+    minRemoval = json['minRemoval'] as int;
+    cosignatories = (json['cosignatories'] as List)
+        .map((dynamic item) => item as String)
+        .toList();
+    multisigAccounts = (json['multisigAccounts'] as List)
+        .map((dynamic item) => item as String)
+        .toList();
+  }
+  String account;
 
-  String accountAddress = null;
+  String accountAddress;
 
-  int minApproval = null;
+  int minApproval;
 
-  int minRemoval = null;
+  int minRemoval;
 
   List<String> cosignatories = [];
 
   List<String> multisigAccounts = [];
 
-  MultisigDTO();
-
-  @override
-  String toString() {
-    return 'MultisigDTO[account=$account, accountAddress=$accountAddress, minApproval=$minApproval, minRemoval=$minRemoval, cosignatories=$cosignatories, multisigAccounts=$multisigAccounts, ]';
-  }
-
-  MultisigDTO.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    account = json['account'];
-    accountAddress = json['accountAddress'];
-    minApproval = json['minApproval'];
-    minRemoval = json['minRemoval'];
-    cosignatories =
-        (json['cosignatories'] as List).map((item) => item as String).toList();
-    multisigAccounts = (json['multisigAccounts'] as List)
-        .map((item) => item as String)
-        .toList();
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'account': account,
-      'accountAddress': accountAddress,
-      'minApproval': minApproval,
-      'minRemoval': minRemoval,
-      'cosignatories': cosignatories,
-      'multisigAccounts': multisigAccounts
-    };
-  }
-
-  static List<MultisigDTO> listFromJson(List<dynamic> json) {
+  static List<_MultisigDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<MultisigDTO>()
-        : json.map((value) => new MultisigDTO.fromJson(value)).toList();
-  }
-
-  static Map<String, MultisigDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, MultisigDTO>();
-    if (json != null && json.length > 0) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new MultisigDTO.fromJson(value));
-    }
-    return map;
-  }
-}
-
-class MultisigAccountGraphInfoDTO {
-  int level = null;
-
-  List<MultisigAccountInfoDTO> multisigEntries = [];
-
-  MultisigAccountGraphInfoDTO();
-
-  @override
-  String toString() {
-    return 'MultisigAccountGraphInfoDTO[level=$level, multisigEntries=$multisigEntries, ]';
-  }
-
-  MultisigAccountGraphInfoDTO.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    level = json['level'];
-    multisigEntries =
-        MultisigAccountInfoDTO.listFromJson(json['multisigEntries']);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'level': level, 'multisigEntries': multisigEntries};
-  }
-
-  static List<MultisigAccountGraphInfoDTO> listFromJson(List<dynamic> json) {
-    return json == null
-        ? new List<MultisigAccountGraphInfoDTO>()
+        ? new List<_MultisigDTO>()
         : json
-            .map((value) => new MultisigAccountGraphInfoDTO.fromJson(value))
+            .map((dynamic value) =>
+                new _MultisigDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
-  static Map<String, MultisigAccountGraphInfoDTO> mapFromJson(
+  static Map<String, _MultisigDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, MultisigAccountGraphInfoDTO>();
-    if (json != null && json.length > 0) {
+    var map = new Map<String, _MultisigDTO>();
+    if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new MultisigAccountGraphInfoDTO.fromJson(value));
+          map[key] = new _MultisigDTO.fromJson(value));
     }
     return map;
   }
-}
-
-class MultisigAccountInfoDTO {
-  MultisigDTO multisig = null;
-
-  MultisigAccountInfoDTO();
-
-  @override
-  String toString() {
-    return 'MultisigAccountInfoDTO[multisig=$multisig, ]';
-  }
-
-  MultisigAccountInfoDTO.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    multisig = new MultisigDTO.fromJson(json['multisig']);
-  }
 
   Map<String, dynamic> toJson() {
-    return {'multisig': multisig};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['account'] = account;
+    data['accountAddress'] = accountAddress;
+    data['minApproval'] = minApproval;
+    data['minRemoval'] = minRemoval;
+    data['cosignatories'] = cosignatories;
+    data['multisigAccounts'] = multisigAccounts;
+
+    return data;
+  }
+}
+
+class _MultisigAccountGraphInfoDTO {
+  _MultisigAccountGraphInfoDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    level = json['level'] as int;
+    multisigEntries = _MultisigAccountInfoDTO.listFromJson(
+        json['multisigEntries'] as List<dynamic>);
   }
 
-  static List<MultisigAccountInfoDTO> listFromJson(List<dynamic> json) {
+  int level;
+
+  List<_MultisigAccountInfoDTO> multisigEntries = [];
+
+  static List<_MultisigAccountGraphInfoDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<MultisigAccountInfoDTO>()
+        ? new List<_MultisigAccountGraphInfoDTO>()
         : json
-            .map((value) => new MultisigAccountInfoDTO.fromJson(value))
+            .map((dynamic value) => new _MultisigAccountGraphInfoDTO.fromJson(
+                value as Map<String, dynamic>))
             .toList();
   }
 
-  static Map<String, MultisigAccountInfoDTO> mapFromJson(
+  static Map<String, _MultisigAccountGraphInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, MultisigAccountInfoDTO>();
-    if (json != null && json.length > 0) {
+    var map = new Map<String, _MultisigAccountGraphInfoDTO>();
+    if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new MultisigAccountInfoDTO.fromJson(value));
+          map[key] = new _MultisigAccountGraphInfoDTO.fromJson(value));
+    }
+    return map;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['level'] = level;
+    data['multisigEntries'] = multisigEntries;
+
+    return data;
+  }
+}
+
+class _MultisigAccountInfoDTO {
+  _MultisigAccountInfoDTO.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    multisig =
+        new _MultisigDTO.fromJson(json['multisig'] as Map<String, dynamic>);
+  }
+
+  _MultisigDTO multisig;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['multisig'] = multisig;
+    return data;
+  }
+
+  static List<_MultisigAccountInfoDTO> listFromJson(List<dynamic> json) {
+    return json == null
+        ? new List<_MultisigAccountInfoDTO>()
+        : json
+            .map((dynamic value) => new _MultisigAccountInfoDTO.fromJson(
+                value as Map<String, dynamic>))
+            .toList();
+  }
+
+  static Map<String, _MultisigAccountInfoDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
+    var map = new Map<String, _MultisigAccountInfoDTO>();
+    if (json != null && json.isNotEmpty) {
+      json.forEach((String key, Map<String, dynamic> value) =>
+          map[key] = new _MultisigAccountInfoDTO.fromJson(value));
     }
     return map;
   }
