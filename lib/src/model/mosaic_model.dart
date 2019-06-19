@@ -256,7 +256,7 @@ BigInt _generateMosaicId(int nonce, String ownerPublicKey) {
 
   result.update(nonceB.out, 0, nonceB.out.length);
 
-  var ownerBytes = HEX.decode(ownerPublicKey);
+  var ownerBytes = hex.decode(ownerPublicKey);
 
   var t = result.process(Uint8List.fromList(ownerBytes));
 

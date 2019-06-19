@@ -4,7 +4,7 @@ class Address {
   Address._(this._address, this._networkType);
 
   Address.fromEncoded(String encoded) {
-    final pH = HEX.decode(encoded);
+    final pH = hex.decode(encoded);
     final parsed = base32.encode(pH);
     var a = Address.fromRawAddress(parsed);
     this._address = a.address;
@@ -103,10 +103,10 @@ class PublicAccount {
     }
 
     var kp = new crypto.KeyPair();
-    kp.publicKey.Raw = Uint8List.fromList(HEX.decode(this._publicKey));
+    kp.publicKey.Raw = Uint8List.fromList(hex.decode(this._publicKey));
 
-    return kp.verify(Uint8List.fromList(HEX.decode(data)),
-        Uint8List.fromList(HEX.decode(signature)));
+    return kp.verify(Uint8List.fromList(hex.decode(data)),
+        Uint8List.fromList(hex.decode(signature)));
   }
 
   Map<String, dynamic> toJson() {
@@ -122,8 +122,8 @@ class Account {
   Account._(this._publicAccount, this._account);
 
   /// Create an Account from a given hex private key.
-  Account.fromPrivateKey(String sHex, int networkType) {
-    var k = crypto.NewPrivateKeyFromHexString(sHex);
+  Account.fromPrivateKey(String shex, int networkType) {
+    var k = crypto.NewPrivateKeyFromHexString(shex);
     var kp = crypto.NewKeyPair(k, null);
 
     var pa =
@@ -218,7 +218,7 @@ class AccountInfo {
 
 String _generateEncodedAddress(String pKey, int version) {
   // step 1: sha3 hash of the public key
-  var pKeyD = HEX.decode(pKey);
+  var pKeyD = hex.decode(pKey);
 
   var sha3PublicKeyHash = crypto.HashesSha3_256(Uint8List.fromList(pKeyD));
 
