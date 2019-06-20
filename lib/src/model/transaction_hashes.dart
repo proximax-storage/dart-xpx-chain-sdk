@@ -7,6 +7,11 @@ class TransactionHashes {
         (json['hashes'] as List).map((dynamic item) => item as String).toList();
   }
 
+  TransactionHashes.fromList(List<String> list) {
+    if (json == null) return;
+    hashes = list.map((dynamic item) => item as String).toList();
+  }
+
   List<String> hashes = [];
 
   @override
@@ -15,7 +20,7 @@ class TransactionHashes {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['hashes'] = this.hashes;
 
     return data;
@@ -23,19 +28,19 @@ class TransactionHashes {
 
   static List<TransactionHashes> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<TransactionHashes>()
+        ?  List<TransactionHashes>()
         : json
             .map((dynamic value) =>
-                new TransactionHashes.fromJson(value as Map<String, dynamic>))
+                 TransactionHashes.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, TransactionHashes> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, TransactionHashes>();
+    var map =  Map<String, TransactionHashes>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new TransactionHashes.fromJson(value));
+          map[key] =  TransactionHashes.fromJson(value));
     }
     return map;
   }

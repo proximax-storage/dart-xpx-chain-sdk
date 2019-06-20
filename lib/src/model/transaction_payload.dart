@@ -9,7 +9,7 @@ class TransactionPayload {
   String payload;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['payload'] = this.payload;
 
     return data;
@@ -17,19 +17,19 @@ class TransactionPayload {
 
   static List<TransactionPayload> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<TransactionPayload>()
+        ?  List<TransactionPayload>()
         : json
             .map((dynamic value) =>
-                new TransactionPayload.fromJson(value as Map<String, dynamic>))
+                 TransactionPayload.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, TransactionPayload> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, TransactionPayload>();
+    var map =  Map<String, TransactionPayload>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new TransactionPayload.fromJson(value));
+          map[key] =  TransactionPayload.fromJson(value));
     }
     return map;
   }

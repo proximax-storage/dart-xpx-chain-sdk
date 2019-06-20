@@ -20,7 +20,7 @@ class TransactionIds {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['transactionIds'] = this.transactionIds;
 
     return data;
@@ -28,19 +28,19 @@ class TransactionIds {
 
   static List<TransactionIds> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<TransactionIds>()
+        ?  List<TransactionIds>()
         : json
-            .map((dynamic value) => new TransactionIds.fromJson(
+            .map((dynamic value) =>  TransactionIds.fromJson(
                 value as Map<String, TransactionIds>))
             .toList();
   }
 
   static Map<String, TransactionIds> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, TransactionIds>();
+    var map =  Map<String, TransactionIds>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new TransactionIds.fromJson(value));
+          map[key] =  TransactionIds.fromJson(value));
     }
     return map;
   }

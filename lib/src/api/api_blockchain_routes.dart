@@ -29,7 +29,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -38,11 +38,11 @@ class BlockchainRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       var resp =
           this.apiClient.deserialize(response.body, 'HeightDTO') as _HeightDTO;
-      return new Height.fromDTO(resp);
+      return  Height.fromDTO(resp);
     } else {
       return null;
     }
@@ -56,7 +56,7 @@ class BlockchainRoutesApi {
 
     // verify required params are set
     if (height == null) {
-      throw new ApiException(400, "Missing required param: height");
+      throw  ApiException(400, "Missing required param: height");
     }
 
     // create path and map variables
@@ -76,7 +76,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -85,11 +85,11 @@ class BlockchainRoutesApi {
         headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       var resp =
           apiClient.deserialize(response.body, 'BlockInfoDTO') as _BlockInfoDTO;
-      return new BlockInfo.fromDTO(resp);
+      return  BlockInfo.fromDTO(resp);
     } else {
       return null;
     }
@@ -123,7 +123,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -132,7 +132,7 @@ class BlockchainRoutesApi {
         headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = apiClient.deserialize(response.body, '_BlockchainScoreDTO')
           as _BlockchainScoreDTO;
@@ -165,7 +165,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -174,7 +174,7 @@ class BlockchainRoutesApi {
         headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       return apiClient.deserialize(response.body, 'BlockchainStorageInfo')
           as BlockchainStorageInfo;
@@ -192,7 +192,7 @@ class BlockchainRoutesApi {
 
     // verify required params are set
     if (height == null) {
-      throw new ApiException(400, "Missing required param: height");
+      throw  ApiException(400, "Missing required param: height");
     }
 
     // create path and map variables
@@ -219,7 +219,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -228,7 +228,7 @@ class BlockchainRoutesApi {
         headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
           (apiClient.deserialize(response.body, 'List<Transaction>') as List)
@@ -273,7 +273,7 @@ class BlockchainRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -282,7 +282,7 @@ class BlockchainRoutesApi {
         headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
           (apiClient.deserialize(response.body, 'List<BlockInfoDTO>') as List)

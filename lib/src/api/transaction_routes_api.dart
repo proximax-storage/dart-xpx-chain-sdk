@@ -6,90 +6,7 @@ class TransactionRoutesApi {
 
   final ApiClient apiClient;
 
-  /// Announce a cosignature transaction
-  Future<Object> _announceCosignatureTransaction(
-      TransactionPayload payload) async {
-    Object postBody = payload;
-
-    // verify required params are set
-    if (payload == null) {
-      throw new ApiException(400, "Missing required param: payload");
-    }
-
-    // create path and map variables
-    String path = "/transaction/cosignature".replaceAll("{format}", "json");
-
-    // query params
-    List<QueryParam> queryParams = [];
-    Map<String, String> headerParams = {};
-    Map<String, String> formParams = {};
-
-    List<String> contentTypes = [];
-
-    String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
-
-    if (contentType.startsWith("multipart/form-data")) {
-      bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
-
-      if (hasFields) postBody = mp;
-    } else {}
-
-    var response = await apiClient.invokeAPI(path, 'PUT', queryParams, postBody,
-        headerParams, formParams, contentType);
-
-    if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
-    } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'Object') as Object;
-    } else {
-      return null;
-    }
-  }
-
-  /// Announce an aggregate bonded transaction
-  Future<Object> _announcePartialTransaction(TransactionPayload payload) async {
-    Object postBody = payload;
-
-    // verify required params are set
-    if (payload == null) {
-      throw new ApiException(400, "Missing required param: payload");
-    }
-
-    // create path and map variables
-    String path = "/transaction/partial".replaceAll("{format}", "json");
-
-    // query params
-    List<QueryParam> queryParams = [];
-    Map<String, String> headerParams = {};
-    Map<String, String> formParams = {};
-
-    List<String> contentTypes = [];
-
-    String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
-
-    if (contentType.startsWith("multipart/form-data")) {
-      bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
-
-      if (hasFields) postBody = mp;
-    } else {}
-
-    var response = await apiClient.invokeAPI(path, 'PUT', queryParams, postBody,
-        headerParams, formParams, contentType);
-
-    if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
-    } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'Object') as Object;
-    } else {
-      return null;
-    }
-  }
-
-  /// Announce a new transaction
+  /// Announce a  transaction
   ///
   /// Announces a transaction to the network.
   Future<Object> AnnounceTransaction(SignedTransaction tx) async {
@@ -97,7 +14,7 @@ class TransactionRoutesApi {
 
     // verify required params are set
     if (tx == null) {
-      throw new ApiException(400, "Missing required param: payload");
+      throw  ApiException(400, "Missing required param: payload");
     }
 
     // create path and map variables
@@ -115,7 +32,7 @@ class TransactionRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -124,7 +41,7 @@ class TransactionRoutesApi {
         headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       return apiClient.deserialize(response.body, 'String');
     } else {
@@ -140,7 +57,7 @@ class TransactionRoutesApi {
 
     // verify required params are set
     if (transactionId == null) {
-      throw new ApiException(400, "Missing required param: transactionId");
+      throw  ApiException(400, "Missing required param: transactionId");
     }
 
     // create path and map variables
@@ -160,7 +77,7 @@ class TransactionRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -168,7 +85,7 @@ class TransactionRoutesApi {
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
         headerParams, formParams, contentType);
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       return deserializeDTO(
           apiClient.deserialize(response.body, 'Transaction'));
@@ -186,7 +103,7 @@ class TransactionRoutesApi {
 
     // verify required params are set
     if (transactionIds == null) {
-      throw new ApiException(400, "Missing required param: transactionIds");
+      throw  ApiException(400, "Missing required param: transactionIds");
     }
 
     // create path and map variables
@@ -204,7 +121,7 @@ class TransactionRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -213,7 +130,7 @@ class TransactionRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
           (apiClient.deserialize(response.body, 'List<Transaction>') as List)
@@ -228,12 +145,12 @@ class TransactionRoutesApi {
   /// Get transaction status
   ///
   /// Returns the transaction status for a given hash.
-  Future<_TransactionStatusDTO> _getTransactionStatus(String hash) async {
+  Future<TransactionStatus> GetTransactionStatus(String hash) async {
     Object postBody;
 
     // verify required params are set
     if (hash == null) {
-      throw new ApiException(400, "Missing required param: hash");
+      throw  ApiException(400, "Missing required param: hash");
     }
 
     // create path and map variables
@@ -253,7 +170,7 @@ class TransactionRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -262,10 +179,10 @@ class TransactionRoutesApi {
         headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, '_TransactionStatusDTO')
-          as _TransactionStatusDTO;
+      return apiClient.deserialize(response.body, 'TransactionStatus')
+          as TransactionStatus;
     } else {
       return null;
     }
@@ -274,13 +191,15 @@ class TransactionRoutesApi {
   /// Get transactions status.
   ///
   /// Returns an List of transaction statuses for a given List of transaction hashes.
-  Future<List<_TransactionStatusDTO>> _getTransactionsStatuses(
-      TransactionHashes transactionHashes) async {
-    Object postBody = transactionHashes;
+  Future<List<TransactionStatus>> GetTransactionsStatuses(
+      List<String> transactionHashes) async {
+
+
+    Object postBody = TransactionHashes.fromList(transactionHashes);
 
     // verify required params are set
     if (transactionHashes == null) {
-      throw new ApiException(400, "Missing required param: transactionHashes");
+      throw  ApiException(400, "Missing required param: transactionHashes");
     }
 
     // create path and map variables
@@ -298,7 +217,7 @@ class TransactionRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -307,11 +226,11 @@ class TransactionRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       return (apiClient.deserialize(
-              response.body, 'List<_TransactionStatusDTO>') as List)
-          .map((dynamic item) => item as _TransactionStatusDTO)
+              response.body, 'List<TransactionStatus>') as List)
+          .map((dynamic item) => item as TransactionStatus)
           .toList();
     } else {
       return null;

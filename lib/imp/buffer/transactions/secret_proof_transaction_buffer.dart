@@ -6,33 +6,33 @@ part of xpx_chain_sdk.buffer;
 class SecretProofTransactionBuffer {
   SecretProofTransactionBuffer._(this._bc, this._bcOffset);
   factory SecretProofTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
   static const fb.Reader<SecretProofTransactionBuffer> reader =
-      const _SecretProofTransactionBufferReader();
+      _SecretProofTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get fee => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
   int get hashAlgorithm =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
-  List<int> get secret => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get secret => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 20, null);
   int get proofSize => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 22, 0);
-  List<int> get proof => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get proof => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 24, null);
 
   @override
@@ -47,7 +47,7 @@ class _SecretProofTransactionBufferReader
 
   @override
   SecretProofTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-      new SecretProofTransactionBuffer._(bc, offset);
+       SecretProofTransactionBuffer._(bc, offset);
 }
 
 class SecretProofTransactionBufferBuilder {
@@ -122,17 +122,6 @@ class SecretProofTransactionBufferBuilder {
 }
 
 class SecretProofTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final int _hashAlgorithm;
-  final List<int> _secret;
-  final int _proofSize;
-  final List<int> _proof;
 
   SecretProofTransactionBufferObjectBuilder({
     int size,
@@ -158,6 +147,18 @@ class SecretProofTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _proofSize = proofSize,
         _proof = proof;
 
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final int _hashAlgorithm;
+  final List<int> _secret;
+  final int _proofSize;
+  final List<int> _proof;
+  
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
@@ -207,7 +208,7 @@ class SecretProofTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }

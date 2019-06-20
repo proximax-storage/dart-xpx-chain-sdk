@@ -14,7 +14,7 @@ class AccountRoutesApi {
 
     // verify required params are set
     if (address.address == null) {
-      throw new ApiException(400, "Missing required param: accountId");
+      throw  ApiException(400, "Missing required param: accountId");
     }
 
     // create path and map variables
@@ -34,7 +34,7 @@ class AccountRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -43,7 +43,7 @@ class AccountRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = _apiClient.deserialize(response.body, '_AccountInfoDTO')
           as _AccountInfoDTO;
@@ -61,7 +61,7 @@ class AccountRoutesApi {
 
     // verify required params are set
     if (addresses == null) {
-      throw new ApiException(400, "Missing required param: addresses");
+      throw  ApiException(400, "Missing required param: addresses");
     }
 
     // create path and map variables
@@ -79,7 +79,7 @@ class AccountRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -88,7 +88,7 @@ class AccountRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = (_apiClient.deserialize(
               response.body, 'List<_AccountInfoDTO>') as List)
@@ -105,18 +105,18 @@ class AccountRoutesApi {
   /// Get multisig account information
   ///
   /// Returns the [multisig account] information.
-  Future<_MultisigAccountInfoDTO> _getAccountMultisig(String accountId) async {
+  Future<MultisigAccountInfo> GetAccountMultisig(Address address) async {
     Object postBody;
 
     // verify required params are set
-    if (accountId == null) {
-      throw new ApiException(400, "Missing required param: accountId");
+    if (address == null) {
+      throw  ApiException(400, "Missing required param: address");
     }
 
     // create path and map variables
     String path = "/account/{accountId}/multisig"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "accountId" + "}", accountId.toString());
+        .replaceAll("{" + "accountId" + "}", address.address);
 
     // query params
     List<QueryParam> queryParams = [];
@@ -130,7 +130,7 @@ class AccountRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -139,10 +139,10 @@ class AccountRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return _apiClient.deserialize(response.body, '_MultisigAccountInfoDTO')
-          as _MultisigAccountInfoDTO;
+      return _apiClient.deserialize(response.body, 'MultisigAccountInfo')
+          as MultisigAccountInfo;
     } else {
       return null;
     }
@@ -151,19 +151,19 @@ class AccountRoutesApi {
   /// Get multisig account graph information
   ///
   /// Returns the [multisig account] graph.
-  Future<List<_MultisigAccountGraphInfoDTO>> _getAccountMultisigGraph(
-      String accountId) async {
+  Future<List<MultisigAccountGraphInfo>> GetAccountMultisigGraph(
+      Address address) async {
     Object postBody;
 
     // verify required params are set
-    if (accountId == null) {
-      throw new ApiException(400, "Missing required param: accountId");
+    if (address == null) {
+      throw  ApiException(400, "Missing required param: accountId");
     }
 
     // create path and map variables
     String path = "/account/{accountId}/multisig/graph"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "accountId" + "}", accountId.toString());
+        .replaceAll("{" + "accountId" + "}", address.address);
 
     // query params
     List<QueryParam> queryParams = [];
@@ -177,7 +177,7 @@ class AccountRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -186,105 +186,11 @@ class AccountRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       return (_apiClient.deserialize(
-              response.body, 'List<_MultisigAccountGraphInfoDTO>') as List)
-          .map((dynamic item) => item as _MultisigAccountGraphInfoDTO)
-          .toList();
-    } else {
-      return null;
-    }
-  }
-
-  /// Get account configurable properties information
-  ///
-  /// Returns the [configurable properties] for a given account.
-  Future<_AccountPropertiesInfoDTO> _getAccountProperties(
-      String accountId) async {
-    Object postBody;
-
-    // verify required params are set
-    if (accountId == null) {
-      throw new ApiException(400, "Missing required param: accountId");
-    }
-
-    // create path and map variables
-    String path = "/account/properties/{accountId}"
-        .replaceAll("{format}", "json")
-        .replaceAll("{" + "accountId" + "}", accountId.toString());
-
-    // query params
-    List<QueryParam> queryParams = [];
-    Map<String, String> headerParams = {};
-    Map<String, String> formParams = {};
-
-    List<String> contentTypes = [];
-
-    String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
-
-    if (contentType.startsWith("multipart/form-data")) {
-      bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
-
-      if (hasFields) postBody = mp;
-    } else {}
-
-    var response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
-
-    if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
-    } else if (response.body != null) {
-      return _apiClient.deserialize(response.body, '_AccountPropertiesInfoDTO')
-          as _AccountPropertiesInfoDTO;
-    } else {
-      return null;
-    }
-  }
-
-  /// Get account properties for given array of addresses
-  ///
-  /// Returns the [configurable properties] for a given array of addresses.
-  Future<List<_AccountPropertiesInfoDTO>> _getAccountPropertiesFromAccounts(
-      Addresses addresses) async {
-    Object postBody = addresses;
-
-    // verify required params are set
-    if (addresses == null) {
-      throw new ApiException(400, "Missing required param: addresses");
-    }
-
-    // create path and map variables
-    String path = "/account/properties".replaceAll("{format}", "json");
-
-    // query params
-    List<QueryParam> queryParams = [];
-    Map<String, String> headerParams = {};
-    Map<String, String> formParams = {};
-
-    List<String> contentTypes = [];
-
-    String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
-
-    if (contentType.startsWith("multipart/form-data")) {
-      bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
-
-      if (hasFields) postBody = mp;
-    } else {}
-
-    var response = await _apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType);
-
-    if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
-    } else if (response.body != null) {
-      return (_apiClient.deserialize(
-              response.body, 'List<_AccountPropertiesInfoDTO>') as List)
-          .map((dynamic item) => item as _AccountPropertiesInfoDTO)
+              response.body, 'List<MultisigAccountGraphInfo>') as List)
+          .map((dynamic item) => item as MultisigAccountGraphInfo)
           .toList();
     } else {
       return null;
@@ -302,7 +208,7 @@ class AccountRoutesApi {
 
     // verify required params are set
     if (account == null) {
-      throw new ApiException(400, "Missing required param: publicKey");
+      throw  ApiException(400, "Missing required param: publicKey");
     }
 
     // create path and map variables
@@ -333,7 +239,7 @@ class AccountRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -342,7 +248,7 @@ class AccountRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
           (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
@@ -365,7 +271,7 @@ class AccountRoutesApi {
 
     // verify required params are set
     if (account == null) {
-      throw new ApiException(400, "Missing required param: publicKey");
+      throw  ApiException(400, "Missing required param: publicKey");
     }
 
     // create path and map variables
@@ -396,7 +302,7 @@ class AccountRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -405,7 +311,7 @@ class AccountRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
           (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
@@ -427,7 +333,7 @@ class AccountRoutesApi {
 
     // verify required params are set
     if (account == null) {
-      throw new ApiException(400, "Missing required param: publicKey");
+      throw  ApiException(400, "Missing required param: publicKey");
     }
 
     // create path and map variables
@@ -458,7 +364,7 @@ class AccountRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -467,7 +373,7 @@ class AccountRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
           (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
@@ -488,7 +394,7 @@ class AccountRoutesApi {
 
     // verify required params are set
     if (account == null) {
-      throw new ApiException(400, "Missing required param: publicKey");
+      throw  ApiException(400, "Missing required param: publicKey");
     }
 
     // create path and map variables
@@ -519,7 +425,7 @@ class AccountRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -528,7 +434,7 @@ class AccountRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
           (_apiClient.deserialize(response.body, 'List<Transaction>') as List)
@@ -549,7 +455,7 @@ class AccountRoutesApi {
 
     // verify required params are set
     if (account == null) {
-      throw new ApiException(400, "Missing required param: publicKey");
+      throw  ApiException(400, "Missing required param: publicKey");
     }
 
     // create path and map variables
@@ -580,7 +486,7 @@ class AccountRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -589,7 +495,7 @@ class AccountRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
           (_apiClient.deserialize(response.body, 'List<Transaction>') as List)

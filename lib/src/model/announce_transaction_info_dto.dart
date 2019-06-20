@@ -9,7 +9,7 @@ class AnnounceTransactionInfoDTO {
   String message;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['message'] = message;
 
     return data;
@@ -17,19 +17,19 @@ class AnnounceTransactionInfoDTO {
 
   static List<AnnounceTransactionInfoDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<AnnounceTransactionInfoDTO>()
+        ?  List<AnnounceTransactionInfoDTO>()
         : json
-            .map((dynamic value) => new AnnounceTransactionInfoDTO.fromJson(
+            .map((dynamic value) =>  AnnounceTransactionInfoDTO.fromJson(
                 value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, AnnounceTransactionInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, AnnounceTransactionInfoDTO>();
+    var map =  Map<String, AnnounceTransactionInfoDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new AnnounceTransactionInfoDTO.fromJson(value));
+          map[key] =  AnnounceTransactionInfoDTO.fromJson(value));
     }
     return map;
   }

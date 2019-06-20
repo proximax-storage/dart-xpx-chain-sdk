@@ -6,35 +6,35 @@ part of xpx_chain_sdk.buffer;
 class LockFundsTransactionBuffer {
   LockFundsTransactionBuffer._(this._bc, this._bcOffset);
   factory LockFundsTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
   static const fb.Reader<LockFundsTransactionBuffer> reader =
-      const _LockFundsTransactionBufferReader();
+      _LockFundsTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get fee => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
-  List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 18, null);
   List<int> get mosaicAmount =>
-      const fb.ListReader<int>(const fb.Uint32Reader())
+      const fb.ListReader<int>(fb.Uint32Reader())
           .vTableGet(_bc, _bcOffset, 20, null);
-  List<int> get duration => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get duration => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 22, null);
-  List<int> get hash => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get hash => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 24, null);
 
   @override
@@ -49,7 +49,7 @@ class _LockFundsTransactionBufferReader
 
   @override
   LockFundsTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-      new LockFundsTransactionBuffer._(bc, offset);
+       LockFundsTransactionBuffer._(bc, offset);
 }
 
 class LockFundsTransactionBufferBuilder {
@@ -124,17 +124,6 @@ class LockFundsTransactionBufferBuilder {
 }
 
 class LockFundsTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final List<int> _mosaicId;
-  final List<int> _mosaicAmount;
-  final List<int> _duration;
-  final List<int> _hash;
 
   LockFundsTransactionBufferObjectBuilder({
     int size,
@@ -159,6 +148,18 @@ class LockFundsTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _mosaicAmount = mosaicAmount,
         _duration = duration,
         _hash = hash;
+
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final List<int> _mosaicId;
+  final List<int> _mosaicAmount;
+  final List<int> _duration;
+  final List<int> _hash;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -220,7 +221,7 @@ class LockFundsTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }

@@ -1,7 +1,7 @@
 part of xpx_chain_sdk;
 
-final _RegList = new RegExp(r'^List<(.*)>$');
-final _RegMap = new RegExp(r'^Map<String,(.*)>$');
+final _RegList =  RegExp(r'^List<(.*)>$');
+final _RegMap =  RegExp(r'^Map<String,(.*)>$');
 
 class QueryParam {
   QueryParam(this.name, this.value);
@@ -12,27 +12,27 @@ class QueryParam {
 
 Client NewClient(NewConfig conf, http.Client client) {
   if (conf == null) {
-    conf = new NewConfig("http://127.0.0.1:3000", mijinTest);
+    conf =  NewConfig("http://127.0.0.1:3000", mijinTest);
   }
 
   if (client == null) {
-    client = new http.Client();
+    client =  http.Client();
   }
 
-  ApiClient apiClient = new ApiClient(conf, client);
+  ApiClient apiClient =  ApiClient(conf, client);
 
-  return new Client(apiClient);
+  return  Client(apiClient);
 }
 
 class Client {
   Client(this._apiClient)
-      : BlockChain = new BlockchainRoutesApi(_apiClient),
-        Account = new AccountRoutesApi(_apiClient),
-        Mosaic = new MosaicRoutesApi(_apiClient),
-        Namespace = new NamespaceRoutesApi(_apiClient),
-        Network = new NetworkRoutesApi(_apiClient),
-        Node = new NodeRoutesApi(_apiClient),
-        Transaction = new TransactionRoutesApi(_apiClient);
+      : BlockChain =  BlockchainRoutesApi(_apiClient),
+        Account =  AccountRoutesApi(_apiClient),
+        Mosaic =  MosaicRoutesApi(_apiClient),
+        Namespace =  NamespaceRoutesApi(_apiClient),
+        Network =  NetworkRoutesApi(_apiClient),
+        Node =  NodeRoutesApi(_apiClient),
+        Transaction =  TransactionRoutesApi(_apiClient);
 
   final ApiClient _apiClient;
   final BlockchainRoutesApi BlockChain;
@@ -48,7 +48,7 @@ class ApiClient {
   ApiClient(this.conf, this.client);
 
   NewConfig conf;
-  var client = new http.Client();
+  var client =  http.Client();
 
   Map<String, String> _defaultHeaderMap = {};
 
@@ -68,98 +68,98 @@ class ApiClient {
         case 'double':
           return value is double ? value : double.parse('$value');
         case '_AccountDTO':
-          return new _AccountDTO.fromJson(value as Map<String, dynamic>);
+          return  _AccountDTO.fromJson(value as Map<String, dynamic>);
         case '_AccountInfoDTO':
-          return new _AccountInfoDTO.fromJson(value as Map<String, dynamic>);
+          return  _AccountInfoDTO.fromJson(value as Map<String, dynamic>);
         case '_AccountMetaDTO':
-          return new _AccountMetaDTO.fromJson(value as Map<String, dynamic>);
+          return  _AccountMetaDTO.fromJson(value as Map<String, dynamic>);
         case '_AccountPropertiesDTO':
-          return new _AccountPropertiesDTO.fromJson(
+          return  _AccountPropertiesDTO.fromJson(
               value as Map<String, dynamic>);
         case '_AccountPropertiesInfoDTO':
-          return new _AccountPropertiesInfoDTO.fromJson(
+          return  _AccountPropertiesInfoDTO.fromJson(
               value as Map<String, dynamic>);
         case '_AccountPropertiesMetaDTO':
-          return new _AccountPropertiesMetaDTO.fromJson(
+          return  _AccountPropertiesMetaDTO.fromJson(
               value as Map<String, dynamic>);
         case 'AccountPropertyDTO':
-          return new AccountPropertyDTO.fromJson(value as Map<String, dynamic>);
+          return  AccountPropertyDTO.fromJson(value as Map<String, dynamic>);
         case 'Addresses':
-          return new Addresses.fromJson(value as Map<String, dynamic>);
+          return  Addresses.fromJson(value as Map<String, dynamic>);
         case '_AliasDTO':
-          return new _AliasDTO.fromJson(value as Map<String, dynamic>);
+          return  _AliasDTO.fromJson(value as Map<String, dynamic>);
         case 'AnnounceTransactionInfoDTO':
-          return new AnnounceTransactionInfoDTO.fromJson(
+          return  AnnounceTransactionInfoDTO.fromJson(
               value as Map<String, dynamic>);
         case 'BlockDTO':
-          return new _BlockDTO.fromJson(value as Map<String, dynamic>);
+          return  _BlockDTO.fromJson(value as Map<String, dynamic>);
         case 'BlockInfoDTO':
-          return new _BlockInfoDTO.fromJson(value as Map<String, dynamic>);
+          return  _BlockInfoDTO.fromJson(value as Map<String, dynamic>);
         case 'BlockMetaDTO':
-          return new _BlockMetaDTO.fromJson(value as Map<String, dynamic>);
+          return  _BlockMetaDTO.fromJson(value as Map<String, dynamic>);
         case '_BlockchainScoreDTO':
-          return new _BlockchainScoreDTO.fromJson(
+          return  _BlockchainScoreDTO.fromJson(
               value as Map<String, dynamic>);
         case 'BlockchainStorageInfo':
-          return new BlockchainStorageInfo.fromJson(
+          return  BlockchainStorageInfo.fromJson(
               value as Map<String, dynamic>);
         case 'CommunicationTimestamps':
-          return new CommunicationTimestamps.fromJson(
+          return  CommunicationTimestamps.fromJson(
               value as Map<String, dynamic>);
         case 'HeightDTO':
-          return new _HeightDTO.fromJson(value as Map<String, dynamic>);
+          return  _HeightDTO.fromJson(value as Map<String, dynamic>);
         case 'MerklePathItem':
-          return new MerklePathItem.fromJson(value as Map<String, dynamic>);
+          return  MerklePathItem.fromJson(value as Map<String, dynamic>);
         case '_MerkleProofInfoDTO':
-          return new _MerkleProofInfoDTO.fromJson(
+          return  _MerkleProofInfoDTO.fromJson(
               value as Map<String, dynamic>);
         case 'MerkleProofInfoPayload':
-          return new MerkleProofInfoPayload.fromJson(
+          return  MerkleProofInfoPayload.fromJson(
               value as Map<String, dynamic>);
         case '_MosaicDTO':
-          return new _MosaicDTO.fromJson(value as Map<String, dynamic>);
+          return  _MosaicDTO.fromJson(value as Map<String, dynamic>);
         case '_MosaicDefinitionDTO':
-          return new _MosaicDefinitionDTO.fromJson(
+          return  _MosaicDefinitionDTO.fromJson(
               value as Map<String, dynamic>);
         case '_MosaicInfoDTO':
-          return new _MosaicInfoDTO.fromJson(value as Map<String, dynamic>);
+          return  _MosaicInfoDTO.fromJson(value as Map<String, dynamic>);
         case '_MosaicMetaDTO':
-          return new _MosaicMetaDTO.fromJson(value as Map<String, dynamic>);
+          return  _MosaicMetaDTO.fromJson(value as Map<String, dynamic>);
         case '_MosaicNameDTO':
-          return new _MosaicNameDTO.fromJson(value as Map<String, dynamic>);
-        case '_MultisigAccountGraphInfoDTO':
-          return new _MultisigAccountGraphInfoDTO.fromJson(
+          return  _MosaicNameDTO.fromJson(value as Map<String, dynamic>);
+        case 'MultisigAccountGraphInfo':
+          return  MultisigAccountGraphInfo.fromJson(
               value as Map<String, dynamic>);
-        case '_MultisigAccountInfoDTO':
-          return new _MultisigAccountInfoDTO.fromJson(
+        case 'MultisigAccountInfo':
+          return  MultisigAccountInfo.fromJson(
               value as Map<String, dynamic>);
-        case '_MultisigDTO':
-          return new _MultisigDTO.fromJson(value as Map<String, dynamic>);
+        case 'Multisig':
+          return  Multisig.fromJson(value as Map<String, dynamic>);
         case '_NamespaceDTO':
-          return new _NamespaceDTO.fromJson(value as Map<String, dynamic>);
+          return  _NamespaceDTO.fromJson(value as Map<String, dynamic>);
         case '_NamespaceInfoDTO':
-          return new _NamespaceInfoDTO.fromJson(value as Map<String, dynamic>);
+          return  _NamespaceInfoDTO.fromJson(value as Map<String, dynamic>);
         case '_NamespaceMetaDTO':
-          return new _NamespaceMetaDTO.fromJson(value as Map<String, dynamic>);
+          return  _NamespaceMetaDTO.fromJson(value as Map<String, dynamic>);
         case '_NamespaceNameDTO':
-          return new _NamespaceNameDTO.fromJson(value as Map<String, dynamic>);
+          return  _NamespaceNameDTO.fromJson(value as Map<String, dynamic>);
         case 'NetworkTypeDTO':
-          return new NetworkType.fromJson(value as Map<String, dynamic>);
+          return  NetworkType.fromJson(value as Map<String, dynamic>);
         case 'NodeInfo':
-          return new NodeInfo.fromJson(value as Map<String, dynamic>);
+          return  NodeInfo.fromJson(value as Map<String, dynamic>);
         case 'NodeTime':
-          return new NodeTime.fromJson(value as Map<String, dynamic>);
+          return  NodeTime.fromJson(value as Map<String, dynamic>);
         case 'TransactionHashes':
-          return new TransactionHashes.fromJson(value as Map<String, dynamic>);
+          return  TransactionHashes.fromJson(value as Map<String, dynamic>);
         case 'TransactionIds':
-          return new TransactionIds.fromJson(value as Map<String, dynamic>);
+          return  TransactionIds.fromJson(value as Map<String, dynamic>);
         case 'TransactionPayload':
-          return new TransactionPayload.fromJson(value as Map<String, dynamic>);
-        case '_TransactionStatusDTO':
-          return new _TransactionStatusDTO.fromJson(
+          return  TransactionPayload.fromJson(value as Map<String, dynamic>);
+        case 'TransactionStatus':
+          return  TransactionStatus.fromJson(
               value as Map<String, dynamic>);
         case 'UInt64DTO':
-          return new UInt64DTO.fromJson(value);
+          return  UInt64DTO.fromJson(value);
         default:
           {
             Match match;
@@ -172,7 +172,7 @@ class ApiClient {
             } else if (value is Map &&
                 (match = _RegMap.firstMatch(targetType)) != null) {
               var newTargetType = match[1];
-              return new Map.fromIterables(
+              return  Map.fromIterables(
                   value.keys,
                   value.values
                       .map((dynamic v) => _deserialize(v, newTargetType)));
@@ -180,7 +180,7 @@ class ApiClient {
           }
       }
     } catch (e, stack) {
-      throw new ApiException.withInner(
+      throw  ApiException.withInner(
           500, 'Exception during deserialization.', e, stack);
     }
     return null;
@@ -230,7 +230,7 @@ class ApiClient {
     headerParams['Content-Type'] = contentType;
 
     if (body is http.MultipartRequest) {
-      var request = new http.MultipartRequest(method, Uri.parse(url));
+      var request =  http.MultipartRequest(method, Uri.parse(url));
       request.fields.addAll(body.fields);
       request.files.addAll(body.files);
       request.headers.addAll(body.headers);
@@ -272,7 +272,7 @@ dynamic _txnDeserialize(dynamic value, String targetType) {
       } else if (value is Map &&
           (match = _RegMap.firstMatch(targetType)) != null) {
         var newTargetType = match[1];
-        return new Map.fromIterables(value.keys,
+        return  Map.fromIterables(value.keys,
             value.values.map((dynamic v) => _txnDeserialize(v, newTargetType)));
       }
     }
@@ -283,25 +283,25 @@ dynamic _txnDeserialize(dynamic value, String targetType) {
   try {
     switch (targetType) {
       case 'Transfer':
-        return new _TransferTransactionInfoDTO.fromJson(
+        return  _TransferTransactionInfoDTO.fromJson(
             value as Map<String, dynamic>);
       case 'RegisterNamespace':
-        return new _RegisterNamespaceTransactionInfoDTO.fromJson(
+        return  _RegisterNamespaceTransactionInfoDTO.fromJson(
             value as Map<String, dynamic>);
       case 'MosaicDefinition':
-        return new _MosaicDefinitionTransactionInfoDTO.fromJson(
+        return  _MosaicDefinitionTransactionInfoDTO.fromJson(
             value as Map<String, dynamic>);
       case 'MosaicSupplyChange':
-        return new _MosaicSupplyChangeTransactionInfoDTO.fromJson(
+        return  _MosaicSupplyChangeTransactionInfoDTO.fromJson(
             value as Map<String, dynamic>);
       case 'AggregateCompleted':
-        return new _AggregateTransactionInfoDTO.fromJson(
+        return  _AggregateTransactionInfoDTO.fromJson(
             value as Map<String, dynamic>);
       default:
         return null;
     }
   } catch (e, stack) {
-    throw new ApiException.withInner(
+    throw  ApiException.withInner(
         500, 'Exception during deserialization.', e as Exception, stack);
   }
 }

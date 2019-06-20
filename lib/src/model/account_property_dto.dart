@@ -14,7 +14,7 @@ class AccountPropertyDTO {
   List<Object> values = [];
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['propertyType'] = propertyType;
     data['values'] = values;
 
@@ -23,19 +23,19 @@ class AccountPropertyDTO {
 
   static List<AccountPropertyDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<AccountPropertyDTO>()
+        ?  List<AccountPropertyDTO>()
         : json
             .map((dynamic value) =>
-                new AccountPropertyDTO.fromJson(value as Map<String, dynamic>))
+                 AccountPropertyDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, AccountPropertyDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, AccountPropertyDTO>();
+    var map =  Map<String, AccountPropertyDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new AccountPropertyDTO.fromJson(value));
+          map[key] =  AccountPropertyDTO.fromJson(value));
     }
     return map;
   }

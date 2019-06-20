@@ -1,6 +1,6 @@
 part of xpx_chain_sdk;
 
-RegExp _Hexadecimal = new RegExp(r'^[0-9a-fA-F]+$');
+RegExp _Hexadecimal =  RegExp(r'^[0-9a-fA-F]+$');
 
 var transactionTypes = <_TransactionTypeClass>{
   _TransactionTypeClass(TransactionType.aggregateCompleted, 16705, 0x4141),
@@ -56,7 +56,7 @@ enum TransactionType {
 }
 
 var TimestampNemesisBlock =
-    new DateTime.fromMicrosecondsSinceEpoch(1459468800 * 1000);
+     DateTime.fromMicrosecondsSinceEpoch(1459468800 * 1000);
 
 _TransactionTypeClass transactionTypeFromRaw(int value) {
   for (var t in transactionTypes) {
@@ -190,7 +190,7 @@ class Message {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['type'] = this._type;
     data['payload'] = this._payload;
     return data;
@@ -212,14 +212,14 @@ class Deadline {
         seconds: seconds,
         milliseconds: milliseconds,
         microseconds: microseconds);
-    this.value = new DateTime.now().add(d);
+    this.value =  DateTime.now().add(d);
   }
 
   Deadline.fromUInt64DTO(UInt64DTO data) {
     if (data.lower == null || data.higher == null) return;
 
     this.value =
-        new DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt());
+         DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt());
   }
 
   DateTime value;
@@ -262,7 +262,7 @@ class SignedTransaction {
   set hash(String hash) => _hash = hash;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['transactionType'] = this._transactionType;
     data['payload'] = this._payload;
     data['hash'] = this._hash;
@@ -288,7 +288,7 @@ class CosignatureSignedTransaction {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['parentHash'] = this._parentHash;
     data['signature'] = this._signature;
     data['signer'] = this._signer;
@@ -307,7 +307,7 @@ class AggregateTransactionCosignature {
     }
 
     _signature = value._signature;
-    _signer = new PublicAccount.fromPublicKey(value._signer, networkType);
+    _signer =  PublicAccount.fromPublicKey(value._signer, networkType);
   }
 
   String _signature;
@@ -324,15 +324,15 @@ class AggregateTransactionCosignature {
   static List<AggregateTransactionCosignature> listFromDTO(
       int networkType, List<_AggregateTransactionCosignatureDTO> json) {
     return json == null
-        ? new List<AggregateTransactionCosignature>()
+        ?  List<AggregateTransactionCosignature>()
         : json
             .map((value) =>
-                new AggregateTransactionCosignature.fromDTO(networkType, value))
+                 AggregateTransactionCosignature.fromDTO(networkType, value))
             .toList();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['signature'] = this._signature;
     data['signer'] = this._signer;
     return data;
@@ -383,7 +383,7 @@ class TransactionInfo {
   }
 
   Map<String, dynamic> _transactionInfoToJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['height'] = this.height;
     data['index'] = this.index;
     data['id'] = this.id;
@@ -417,10 +417,10 @@ class AbstractTransaction with TransactionInfo {
   PublicAccount signer;
 
   Map<String, int> _generateVector(fb.Builder builder) {
-    final Map<String, int> data = new Map<String, int>();
+    final Map<String, int> data =  Map<String, int>();
     data['versionV'] = (this.networkType << 8) + this.version;
-    data['signatureV'] = builder.writeListUint8(new Uint8List(64));
-    data['signerV'] = builder.writeListUint8(new Uint8List(32));
+    data['signatureV'] = builder.writeListUint8( Uint8List(64));
+    data['signerV'] = builder.writeListUint8( Uint8List(32));
     data['feeV'] = builder.writeListUint32(fromBigInt(this.fee));
     data['deadlineV'] = builder.writeListUint32(
         fromBigInt(BigInt.from(this.deadline.GetInstant().toInt())));
@@ -488,7 +488,7 @@ class AbstractTransaction with TransactionInfo {
   }
 
   Map<String, dynamic> _abstractTransactionToJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data.addAll(_transactionInfoToJson());
     data['networkType'] = networkType;
     data['type'] = transactionTypes.lookup(type)._raw;
@@ -541,12 +541,12 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     this.networkType = ExtractNetworkType(value._transaction.version);
     this.version = ExtractVersion(value._transaction.version);
     this.fee = value._transaction.fee.toBigInt();
-    this.signer = new PublicAccount.fromPublicKey(
+    this.signer =  PublicAccount.fromPublicKey(
         value._transaction.signer, this.networkType);
 
     mosaics = Mosaic.listFromDTO(value._transaction._mosaics);
-    recipient = new Address.fromEncoded(value._transaction._recipient);
-    message = new Message.fromDTO(value._transaction._message);
+    recipient =  Address.fromEncoded(value._transaction._recipient);
+    message =  Message.fromDTO(value._transaction._message);
   }
 
   List<Mosaic> mosaics;
@@ -556,8 +556,8 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
   static List<TransferTransaction> listFromDTO(
       List<_TransferTransactionInfoDTO> json) {
     return json == null
-        ? new List<TransferTransaction>()
-        : json.map((value) => new TransferTransaction.fromDTO(value)).toList();
+        ?  List<TransferTransaction>()
+        : json.map((value) =>  TransferTransaction.fromDTO(value)).toList();
   }
 
   @override
@@ -572,7 +572,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['abstractTransaction'] = _abstractTransactionToJson();
     if (this.mosaics != null) {
       data['mosaics'] = this.mosaics.map((v) => v.toJson()).toList();
@@ -600,25 +600,25 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
   @override
   Uint8List _generateBytes() {
-    final builder = new fb.Builder(initialSize: 0);
+    final builder =  fb.Builder(initialSize: 0);
 
     // Create message;
     var payload = utf8.encode(this.message.payload);
     final mp = this.message._type == 0 ? builder.writeListUint8(payload) : null;
-    final message = new MessageBufferBuilder(builder)
+    final message =  MessageBufferBuilder(builder)
       ..begin()
       ..addType(this.message.type)
       ..addPayloadOffset(mp);
     final int m = message.finish();
 
 // Create mosaics
-    List<int> mb = new List(this.mosaics.length);
+    List<int> mb =  List(this.mosaics.length);
     int i = 0;
     this.mosaics.forEach((Mosaic mosaic) {
       final id = builder.writeListUint32(fromBigInt(mosaic.id.id));
       final amount = builder.writeListUint32(fromBigInt(mosaic.amount));
 
-      final ms = new MosaicBufferBuilder(builder)
+      final ms =  MosaicBufferBuilder(builder)
         ..begin()
         ..addIdOffset(id)
         ..addAmountOffset(amount);
@@ -692,7 +692,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     this.deadline = deadline;
     this.type = transactionTypeFromRaw(16718);
     this.parentId = NewNamespaceIdFromName(rootNamespaceName);
-    this.namespaceId = new NamespaceId._(
+    this.namespaceId =  NamespaceId._(
         _generateId(subNamespaceName, this.parentId.toBigInt()));
     this.networkType = networkType;
     this.namspaceName = subNamespaceName;
@@ -715,10 +715,10 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     this.networkType = ExtractNetworkType(value._transaction.version);
     this.version = ExtractVersion(value._transaction.version);
     this.fee = value._transaction.fee.toBigInt();
-    this.signer = new PublicAccount.fromPublicKey(
+    this.signer =  PublicAccount.fromPublicKey(
         value._transaction.signer, this.networkType);
 
-    namespaceId = new NamespaceId._(value._transaction._namespaceId.toBigInt());
+    namespaceId =  NamespaceId._(value._transaction._namespaceId.toBigInt());
     namespaceType = value._transaction._namespaceType == 0
         ? NamespaceType.root
         : NamespaceType.sub;
@@ -726,7 +726,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     if (namespaceType == NamespaceType.root) {
       duration = value._transaction._duration.toBigInt();
     } else {
-      parentId = new NamespaceId._(value._transaction._parentId.toBigInt());
+      parentId =  NamespaceId._(value._transaction._parentId.toBigInt());
     }
   }
 
@@ -739,9 +739,9 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   static List<RegisterNamespaceTransaction> listFromDTO(
       List<_RegisterNamespaceTransactionInfoDTO> data) {
     return data == null
-        ? new List<RegisterNamespaceTransaction>()
+        ?  List<RegisterNamespaceTransaction>()
         : data
-            .map((value) => new RegisterNamespaceTransaction.fromDTO(value))
+            .map((value) =>  RegisterNamespaceTransaction.fromDTO(value))
             .toList();
   }
 
@@ -759,7 +759,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['abstractTransaction'] = _abstractTransactionToJson();
     data['namespaceId'] = this.namespaceId.toHex();
     data['namespaceType'] = this.namespaceType;
@@ -776,7 +776,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 
   @override
   Uint8List _generateBytes() {
-    final builder = new fb.Builder(initialSize: 0);
+    final builder =  fb.Builder(initialSize: 0);
 
     final nV = builder.writeListUint32(FromBigInt(this.namespaceId.toBigInt()));
     int dV;
@@ -859,10 +859,10 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     this.networkType = ExtractNetworkType(value._transaction.version);
     this.version = ExtractVersion(value._transaction.version);
     this.fee = value._transaction.fee.toBigInt();
-    this.signer = new PublicAccount.fromPublicKey(
+    this.signer =  PublicAccount.fromPublicKey(
         value._transaction.signer, this.networkType);
     this.mosaicProperties =
-        new MosaicProperties.fromDTO(value._transaction._properties);
+         MosaicProperties.fromDTO(value._transaction._properties);
     this.mosaicNonce = value._transaction._mosaicNonce;
     this.mosaicId = MosaicId.fromId(value._transaction._mosaicId.toBigInt());
   }
@@ -875,9 +875,9 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   static List<MosaicDefinitionTransaction> listFromDTO(
       List<_MosaicDefinitionTransactionInfoDTO> json) {
     return json == null
-        ? new List<MosaicDefinitionTransaction>()
+        ?  List<MosaicDefinitionTransaction>()
         : json
-            .map((value) => new MosaicDefinitionTransaction.fromDTO(value))
+            .map((value) =>  MosaicDefinitionTransaction.fromDTO(value))
             .toList();
   }
 
@@ -893,7 +893,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['abstractTransaction'] = _abstractTransactionToJson();
     data['mosaicProperties'] = this.mosaicProperties;
     data['mosaicNonce'] = this.mosaicNonce;
@@ -913,7 +913,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
   @override
   Uint8List _generateBytes() {
-    final builder = new fb.Builder(initialSize: 0);
+    final builder =  fb.Builder(initialSize: 0);
 
     int f = 0;
     if (this.mosaicProperties.supplyMutable) {
@@ -993,7 +993,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
     this.networkType = ExtractNetworkType(value._transaction.version);
     this.version = ExtractVersion(value._transaction.version);
     this.fee = value._transaction.fee.toBigInt();
-    this.signer = new PublicAccount.fromPublicKey(
+    this.signer =  PublicAccount.fromPublicKey(
         value._transaction.signer, this.networkType);
     this.mosaicSupplyType =
         value._transaction._direction == 0 ? decrease : increase;
@@ -1008,9 +1008,9 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   static List<MosaicSupplyChangeTransaction> listFromDTO(
       List<_MosaicSupplyChangeTransactionInfoDTO> json) {
     return json == null
-        ? new List<MosaicSupplyChangeTransaction>()
+        ?  List<MosaicSupplyChangeTransaction>()
         : json
-            .map((value) => new MosaicSupplyChangeTransaction.fromDTO(value))
+            .map((value) =>  MosaicSupplyChangeTransaction.fromDTO(value))
             .toList();
   }
 
@@ -1027,7 +1027,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['abstractTransaction'] = _abstractTransactionToJson();
     data['mosaicId'] = this.mosaicId;
     data['mosaicSupplyType'] = this.mosaicSupplyType.index;
@@ -1047,7 +1047,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 
   @override
   Uint8List _generateBytes() {
-    final builder = new fb.Builder(initialSize: 0);
+    final builder =  fb.Builder(initialSize: 0);
 
     final mV = builder.writeListUint32(FromBigInt(this.mosaicId.id));
 
@@ -1104,7 +1104,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
     this.networkType = ExtractNetworkType(value._transaction.version);
     this.version = ExtractVersion(value._transaction.version);
     this.fee = value._transaction.fee.toBigInt();
-    this.signer = new PublicAccount.fromPublicKey(
+    this.signer =  PublicAccount.fromPublicKey(
         value._transaction.signer, this.networkType);
     this.innerTransactions = value._transaction._transactions
         .map((dynamic t) => deserializeDTO(t))
@@ -1120,8 +1120,8 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   static List<AggregateTransaction> listFromDTO(
       List<_AggregateTransactionInfoDTO> json) {
     return json == null
-        ? new List<AggregateTransaction>()
-        : json.map((value) => new AggregateTransaction.fromDTO(value)).toList();
+        ?  List<AggregateTransaction>()
+        : json.map((value) =>  AggregateTransaction.fromDTO(value)).toList();
   }
 
   @override
@@ -1135,7 +1135,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['abstractTransaction'] = _abstractTransactionToJson();
     data['innerTransactions'] = this.innerTransactions;
     data['cosignatures'] = this.cosignatures;
@@ -1159,7 +1159,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
   @override
   Uint8List _generateBytes() {
-    final builder = new fb.Builder(initialSize: 0);
+    final builder =  fb.Builder(initialSize: 0);
 
     // InnerTransactions
     List<int> txsb = [];
@@ -1207,7 +1207,7 @@ SignedTransaction _signTransactionWith(Transaction tx, Account a) {
 
   final hash = _createTransactionHash(pHex);
 
-  return new SignedTransaction(
+  return  SignedTransaction(
       tx.getAbstractTransaction().type.raw, pHex.toUpperCase(), hash);
 }
 

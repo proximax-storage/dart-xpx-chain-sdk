@@ -1,6 +1,6 @@
 part of xpx_chain_sdk;
 
-final RegExp regValidNamespace = new RegExp(
+final RegExp regValidNamespace =  RegExp(
   r'^[a-zA-Z0-9]+$',
   caseSensitive: false,
   multiLine: false,
@@ -16,24 +16,24 @@ Uint8List HexDecodeStringOdd(String s) {
 
 // ExtractNetworkType return networkType from version
 int ExtractNetworkType(int version) {
-  var buffer = new Uint8List(8).buffer;
-  var bdata = new ByteData.view(buffer);
+  var buffer =  Uint8List(8).buffer;
+  var bdata =  ByteData.view(buffer);
   bdata.setUint64(0, version, Endian.little);
   return bdata.getUint8(1);
 }
 
 int ExtractVersion(int version) {
-  var buffer = new Uint8List(8).buffer;
-  var bdata = new ByteData.view(buffer);
+  var buffer =  Uint8List(8).buffer;
+  var bdata =  ByteData.view(buffer);
   bdata.setUint64(0, version, Endian.little);
   return bdata.getUint8(0);
 }
 
 int EndianLittleUint32(List<int> v) {
-  var z = new Uint8List(4);
+  var z =  Uint8List(4);
   for (int i = 0; i < 4; i++) z[i] = v[i];
 
-  var bdata = new ByteData.view(z.buffer);
+  var bdata =  ByteData.view(z.buffer);
   return bdata.getUint32(0, Endian.little);
 }
 
@@ -61,7 +61,7 @@ int bytesToInteger(List<int> bytes) {
 }
 
 Uint8List integerToBytes(int e, int length) {
-  var byteList = new Uint8List(length);
+  var byteList =  Uint8List(length);
   for (var i = 0; i < length; i++) {
     byteList[0 + i] = (e >> (i * 8));
   }
@@ -105,7 +105,7 @@ List<int> fromBigInt(BigInt v) {
 }
 
 List<int> FromBigInt(BigInt v) {
-  final u64 = new Int64.fromBytesBigEndian(crypto.encodeBigInt(v));
+  final u64 =  Int64.fromBytesBigEndian(crypto.encodeBigInt(v));
 
   final l = (u64 & 0xFFFFFFFF);
   final r = (u64 >> 32 & 0xFFFFFFFF);

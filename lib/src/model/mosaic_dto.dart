@@ -3,8 +3,8 @@ part of xpx_chain_sdk;
 class _MosaicDTO {
   _MosaicDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    id = new UInt64DTO.fromJson(json['id']);
-    amount = new UInt64DTO.fromJson(json['amount']);
+    id =  UInt64DTO.fromJson(json['id']);
+    amount =  UInt64DTO.fromJson(json['amount']);
   }
 
   UInt64DTO id;
@@ -12,7 +12,7 @@ class _MosaicDTO {
   UInt64DTO amount;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['id'] = id;
     data['amount'] = amount;
 
@@ -21,19 +21,19 @@ class _MosaicDTO {
 
   static List<_MosaicDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_MosaicDTO>()
+        ?  List<_MosaicDTO>()
         : json
             .map((dynamic value) =>
-                new _MosaicDTO.fromJson(value as Map<String, dynamic>))
+                 _MosaicDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _MosaicDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _MosaicDTO>();
+    var map =  Map<String, _MosaicDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _MosaicDTO.fromJson(value));
+          map[key] =  _MosaicDTO.fromJson(value));
     }
     return map;
   }
@@ -42,9 +42,9 @@ class _MosaicDTO {
 class _MosaicInfoDTO {
   _MosaicInfoDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    meta = new _MosaicMetaDTO.fromJson(json['meta'] as Map<String, dynamic>);
+    meta =  _MosaicMetaDTO.fromJson(json['meta'] as Map<String, dynamic>);
 
-    mosaic = new _MosaicDefinitionDTO.fromJson(
+    mosaic =  _MosaicDefinitionDTO.fromJson(
         json['mosaic'] as Map<String, dynamic>);
   }
 
@@ -53,7 +53,7 @@ class _MosaicInfoDTO {
   _MosaicDefinitionDTO mosaic;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['meta'] = meta;
     data['mosaic'] = mosaic;
 
@@ -62,19 +62,19 @@ class _MosaicInfoDTO {
 
   static List<_MosaicInfoDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_MosaicInfoDTO>()
+        ?  List<_MosaicInfoDTO>()
         : json
             .map((dynamic value) =>
-                new _MosaicInfoDTO.fromJson(value as Map<String, dynamic>))
+                 _MosaicInfoDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _MosaicInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _MosaicInfoDTO>();
+    var map =  Map<String, _MosaicInfoDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _MosaicInfoDTO.fromJson(value));
+          map[key] =  _MosaicInfoDTO.fromJson(value));
     }
     return map;
   }
@@ -90,25 +90,25 @@ class _MosaicMetaDTO {
 
   static List<_MosaicMetaDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_MosaicMetaDTO>()
+        ?  List<_MosaicMetaDTO>()
         : json
             .map((dynamic value) =>
-                new _MosaicMetaDTO.fromJson(value as Map<String, dynamic>))
+                 _MosaicMetaDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _MosaicMetaDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _MosaicMetaDTO>();
+    var map =  Map<String, _MosaicMetaDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _MosaicMetaDTO.fromJson(value));
+          map[key] =  _MosaicMetaDTO.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['id'] = id;
     return data;
   }
@@ -118,9 +118,9 @@ class _MosaicDefinitionDTO {
   _MosaicDefinitionDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
 
-    mosaicId = new UInt64DTO.fromJson(json['mosaicId']);
-    supply = new UInt64DTO.fromJson(json['supply']);
-    height = new UInt64DTO.fromJson(json['height']);
+    mosaicId =  UInt64DTO.fromJson(json['mosaicId']);
+    supply =  UInt64DTO.fromJson(json['supply']);
+    height =  UInt64DTO.fromJson(json['height']);
     owner = json['owner'] as String;
     revision = json['revision'] as int;
 
@@ -144,8 +144,8 @@ class _MosaicDefinitionDTO {
 class _MosaicNameDTO {
   _MosaicNameDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    parentId = new UInt64DTO.fromJson(json['parentId']);
-    mosaicId = new UInt64DTO.fromJson(json['mosaicId']);
+    parentId =  UInt64DTO.fromJson(json['parentId']);
+    mosaicId =  UInt64DTO.fromJson(json['mosaicId']);
     names = List.from(json['names'] as Iterable);
   }
 
@@ -157,25 +157,25 @@ class _MosaicNameDTO {
 
   static List<_MosaicNameDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_MosaicNameDTO>()
+        ?  List<_MosaicNameDTO>()
         : json
             .map((dynamic value) =>
-                new _MosaicNameDTO.fromJson(value as Map<String, dynamic>))
+                 _MosaicNameDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _MosaicNameDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _MosaicNameDTO>();
+    var map =  Map<String, _MosaicNameDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _MosaicNameDTO.fromJson(value));
+          map[key] =  _MosaicNameDTO.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['parentId'] = parentId;
     data['mosaicId'] = mosaicId;
     data['names'] = names;
@@ -195,15 +195,15 @@ class _MosaicPropertiesDTO {
 
   static List<_MosaicPropertiesDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_MosaicPropertiesDTO>()
+        ?  List<_MosaicPropertiesDTO>()
         : json
-            .map((dynamic value) => new _MosaicPropertiesDTO.fromJson(
+            .map((dynamic value) =>  _MosaicPropertiesDTO.fromJson(
                 value as Map<String, dynamic>))
             .toList();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['id'] = id;
     data['value'] = value;
 
@@ -214,11 +214,11 @@ class _MosaicPropertiesDTO {
 class _MosaicDefinitionTransactionInfoDTO {
   _MosaicDefinitionTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
     _meta = json['meta'] != null
-        ? new _MetaTransactionDTO.fromJson(json['meta'] as Map<String, dynamic>)
+        ?  _MetaTransactionDTO.fromJson(json['meta'] as Map<String, dynamic>)
         : null;
 
     _transaction = json['transaction'] != null
-        ? new _MosaicDefinitionTransactionDTO.fromJson(
+        ?  _MosaicDefinitionTransactionDTO.fromJson(
             json['transaction'] as Map<String, dynamic>)
         : null;
   }
@@ -233,7 +233,7 @@ class _MosaicDefinitionTransactionInfoDTO {
       _transaction = transaction;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     if (this._meta != null) {
       data['meta'] = this._meta.toJson();
     }
@@ -289,7 +289,7 @@ class _MosaicDefinitionTransactionDTO extends _AbstractTransactionDTO {
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['signature'] = this.signature;
     data['signer'] = this.signer;
     data['version'] = this.version;
@@ -305,11 +305,11 @@ class _MosaicDefinitionTransactionDTO extends _AbstractTransactionDTO {
 class _MosaicSupplyChangeTransactionInfoDTO {
   _MosaicSupplyChangeTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
     _meta = json['meta'] != null
-        ? new _MetaTransactionDTO.fromJson(json['meta'] as Map<String, dynamic>)
+        ?  _MetaTransactionDTO.fromJson(json['meta'] as Map<String, dynamic>)
         : null;
 
     _transaction = json['transaction'] != null
-        ? new _MosaicSupplyChangeTransactionDTO.fromJson(
+        ?  _MosaicSupplyChangeTransactionDTO.fromJson(
             json['transaction'] as Map<String, dynamic>)
         : null;
   }
@@ -324,7 +324,7 @@ class _MosaicSupplyChangeTransactionInfoDTO {
       _transaction = transaction;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     if (this._meta != null) {
       data['meta'] = this._meta.toJson();
     }
@@ -375,7 +375,7 @@ class _MosaicSupplyChangeTransactionDTO extends _AbstractTransactionDTO {
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['signature'] = this.signature;
     data['signer'] = this.signer;
     data['version'] = this.version;

@@ -8,7 +8,7 @@ class BlockInfo {
     totalFee = v.meta.totalFee.toBigInt();
     numTransactions = v.meta.numTransactions as int;
     signature = v.block.signature;
-    signer = new PublicAccount.fromPublicKey(v.block.signer, networkType);
+    signer =  PublicAccount.fromPublicKey(v.block.signer, networkType);
     version = v.block.version as int;
     type = v.block.type as int;
     height = v.block.height.toBigInt();
@@ -54,7 +54,7 @@ class BlockInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['networkType'] = networkType;
     data['hash'] = hash;
     data['generationHash'] = generationHash;
@@ -75,8 +75,8 @@ class BlockInfo {
 
   static List<BlockInfo> listFromDTO(List<_BlockInfoDTO> json) {
     return json == null
-        ? new List<BlockInfo>()
-        : json.map((value) => new BlockInfo.fromDTO(value)).toList();
+        ?  List<BlockInfo>()
+        : json.map((value) =>  BlockInfo.fromDTO(value)).toList();
   }
 }
 
@@ -93,8 +93,8 @@ class Height {
   }
 
   Map<String, dynamic> toDto() {
-    var dto = new UInt64DTO.fromBigInt(this.height);
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    var dto =  UInt64DTO.fromBigInt(this.height);
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['height'] = dto;
     return data;
   }
@@ -142,7 +142,7 @@ class BlockchainStorageInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['numBlocks'] = numBlocks;
     data['numTransactions'] = numTransactions;
     data['numAccounts'] = numAccounts;

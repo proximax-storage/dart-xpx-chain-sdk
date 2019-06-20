@@ -6,19 +6,19 @@ part of xpx_chain_sdk.buffer;
 class CosignatoryModificationBuffer {
   CosignatoryModificationBuffer._(this._bc, this._bcOffset);
   factory CosignatoryModificationBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
   static const fb.Reader<CosignatoryModificationBuffer> reader =
-      const _CosignatoryModificationBufferReader();
+      _CosignatoryModificationBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
   List<int> get cosignatoryPublicKey =>
-      const fb.ListReader<int>(const fb.Uint8Reader())
+      const fb.ListReader<int>(fb.Uint8Reader())
           .vTableGet(_bc, _bcOffset, 6, null);
 
   @override
@@ -33,7 +33,7 @@ class _CosignatoryModificationBufferReader
 
   @override
   CosignatoryModificationBuffer createObject(fb.BufferContext bc, int offset) =>
-      new CosignatoryModificationBuffer._(bc, offset);
+       CosignatoryModificationBuffer._(bc, offset);
 }
 
 class CosignatoryModificationBufferBuilder {
@@ -63,14 +63,15 @@ class CosignatoryModificationBufferBuilder {
 }
 
 class CosignatoryModificationBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _type;
-  final List<int> _cosignatoryPublicKey;
 
   CosignatoryModificationBufferObjectBuilder({
     int type,
     List<int> cosignatoryPublicKey,
   })  : _type = type,
         _cosignatoryPublicKey = cosignatoryPublicKey;
+
+  final int _type;
+  final List<int> _cosignatoryPublicKey;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -92,7 +93,7 @@ class CosignatoryModificationBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -101,31 +102,31 @@ class CosignatoryModificationBufferObjectBuilder extends fb.ObjectBuilder {
 class ModifyContractTransactionBuffer {
   ModifyContractTransactionBuffer._(this._bc, this._bcOffset);
   factory ModifyContractTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
   static const fb.Reader<ModifyContractTransactionBuffer> reader =
-      const _ModifyContractTransactionBufferReader();
+      _ModifyContractTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get fee => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
   List<int> get durationDelta =>
-      const fb.ListReader<int>(const fb.Uint32Reader())
+      const fb.ListReader<int>(fb.Uint32Reader())
           .vTableGet(_bc, _bcOffset, 18, null);
-  List<int> get hash => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get hash => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 20, null);
   int get numCustomers =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
@@ -159,7 +160,7 @@ class _ModifyContractTransactionBufferReader
   @override
   ModifyContractTransactionBuffer createObject(
           fb.BufferContext bc, int offset) =>
-      new ModifyContractTransactionBuffer._(bc, offset);
+       ModifyContractTransactionBuffer._(bc, offset);
 }
 
 class ModifyContractTransactionBufferBuilder {
@@ -254,21 +255,6 @@ class ModifyContractTransactionBufferBuilder {
 }
 
 class ModifyContractTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final List<int> _durationDelta;
-  final List<int> _hash;
-  final int _numCustomers;
-  final int _numExecutors;
-  final int _numVerifiers;
-  final List<CosignatoryModificationBufferObjectBuilder> _customers;
-  final List<CosignatoryModificationBufferObjectBuilder> _executors;
-  final List<CosignatoryModificationBufferObjectBuilder> _verifiers;
 
   ModifyContractTransactionBufferObjectBuilder({
     int size,
@@ -301,6 +287,22 @@ class ModifyContractTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _customers = customers,
         _executors = executors,
         _verifiers = verifiers;
+
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final List<int> _durationDelta;
+  final List<int> _hash;
+  final int _numCustomers;
+  final int _numExecutors;
+  final int _numVerifiers;
+  final List<CosignatoryModificationBufferObjectBuilder> _customers;
+  final List<CosignatoryModificationBufferObjectBuilder> _executors;
+  final List<CosignatoryModificationBufferObjectBuilder> _verifiers;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -374,7 +376,7 @@ class ModifyContractTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }

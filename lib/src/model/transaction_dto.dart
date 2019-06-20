@@ -9,7 +9,7 @@ class _AbstractTransactionDTO {
   String signer;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['signature'] = this.signature;
     data['signer'] = this.signer;
     data['version'] = this.version;
@@ -43,7 +43,7 @@ class _MessageDTO {
   set payload(String payload) => _payload = payload;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['type'] = this._type;
     data['tayload'] = this._payload;
     return data;
@@ -53,10 +53,10 @@ class _MessageDTO {
 class _TransferTransactionInfoDTO {
   _TransferTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
     _meta = json['meta'] != null
-        ? new _MetaTransactionDTO.fromJson(json['meta'] as Map<String, dynamic>)
+        ?  _MetaTransactionDTO.fromJson(json['meta'] as Map<String, dynamic>)
         : null;
     _transaction = json['transaction'] != null
-        ? new _TransferTransactionDTO.fromJson(
+        ?  _TransferTransactionDTO.fromJson(
             json['transaction'] as Map<String, dynamic>)
         : null;
   }
@@ -71,7 +71,7 @@ class _TransferTransactionInfoDTO {
       _transaction = transaction;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     if (this._meta != null) {
       data['meta'] = this._meta.toJson();
     }
@@ -85,11 +85,11 @@ class _TransferTransactionInfoDTO {
 class _AggregateTransactionInfoDTO {
   _AggregateTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
     _meta = json['meta'] != null
-        ? new _MetaTransactionDTO.fromJson(json['meta'] as Map<String, dynamic>)
+        ?  _MetaTransactionDTO.fromJson(json['meta'] as Map<String, dynamic>)
         : null;
 
     _transaction = json['transaction'] != null
-        ? new _AggregateTransactionDTO.fromJson(
+        ?  _AggregateTransactionDTO.fromJson(
             json['transaction'] as Map<String, dynamic>)
         : null;
   }
@@ -104,7 +104,7 @@ class _AggregateTransactionInfoDTO {
       _transaction = transaction;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     if (this._meta != null) {
       data['meta'] = this._meta.toJson();
     }
@@ -144,7 +144,7 @@ class _MetaTransactionDTO {
   String _id;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['height'] = this._height;
     data['hash'] = this._hash;
     data['merkleComponentHash'] = this._merkleComponentHash;
@@ -171,41 +171,18 @@ class _AggregateTransactionCosignatureDTO {
   static List<_AggregateTransactionCosignatureDTO> listFromJson(
       List<dynamic> json) {
     return json == null
-        ? new List<_AggregateTransactionCosignatureDTO>()
+        ?  List<_AggregateTransactionCosignatureDTO>()
         : json
             .map((dynamic value) =>
-                new _AggregateTransactionCosignatureDTO.fromJson(
+                 _AggregateTransactionCosignatureDTO.fromJson(
                     value as Map<String, dynamic>))
             .toList();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['signature'] = this._signature;
     data['signer'] = this._signer;
-    return data;
-  }
-}
-
-class _MultisigCosignatoryModificationDTO {
-  _MultisigCosignatoryModificationDTO(
-      {_AggregateTransactionCosignatureDTO type, String cosignatoryPublicKey}) {
-    this._type = type;
-    this._cosignatoryPublicKey = cosignatoryPublicKey;
-  }
-
-  _MultisigCosignatoryModificationDTO.fromJson(Map<String, dynamic> json) {
-    this._type = json['type'] as _AggregateTransactionCosignatureDTO;
-    this._cosignatoryPublicKey = json['cosignatoryPublicKey'] as String;
-  }
-
-  _AggregateTransactionCosignatureDTO _type;
-  String _cosignatoryPublicKey;
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this._type;
-    data['cosignatoryPublicKey'] = this._cosignatoryPublicKey;
     return data;
   }
 }
@@ -242,9 +219,9 @@ class _TransferTransactionDTO extends _AbstractTransactionDTO {
     _recipient = json['recipient'] as String;
 
     if (json['mosaics'] != null) {
-      _mosaics = new List<_MosaicDTO>();
+      _mosaics =  List<_MosaicDTO>();
       json['mosaics'].forEach((dynamic value) {
-        _mosaics.add(new _MosaicDTO.fromJson(value as Map<String, dynamic>));
+        _mosaics.add( _MosaicDTO.fromJson(value as Map<String, dynamic>));
       });
     }
     this._message =
@@ -257,7 +234,7 @@ class _TransferTransactionDTO extends _AbstractTransactionDTO {
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['signature'] = this.signature;
     data['signer'] = this.signer;
     data['version'] = this.version;
@@ -311,7 +288,7 @@ class _AggregateTransactionDTO extends _AbstractTransactionDTO {
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['signature'] = this.signature;
     data['signer'] = this.signer;
     data['version'] = this.version;

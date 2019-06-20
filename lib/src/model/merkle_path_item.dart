@@ -18,25 +18,25 @@ class MerklePathItem {
 
   static List<MerklePathItem> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<MerklePathItem>()
+        ?  List<MerklePathItem>()
         : json
             .map((dynamic value) =>
-                new MerklePathItem.fromJson(value as Map<String, dynamic>))
+                 MerklePathItem.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, MerklePathItem> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, MerklePathItem>();
+    var map =  Map<String, MerklePathItem>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new MerklePathItem.fromJson(value));
+          map[key] =  MerklePathItem.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['position'] = position;
     data['hash'] = hash;
 

@@ -4,7 +4,7 @@ class Address {
   Address._(this._address, this._networkType);
 
   Address.fromEncoded(String encoded) {
-    final pH = HEX.decode(encoded);
+    final pH = hex.decode(encoded);
     final parsed = base32.encode(pH);
     var a = Address.fromRawAddress(parsed);
     this._address = a.address;
@@ -14,7 +14,7 @@ class Address {
   /// Create an Address from a given public key.
   Address.fromPublicKey(String pKey, int networkType) {
     if (networkType == null || NetworkType.getType(networkType) == 0) {
-      throw new ArgumentError('Network type unsupported');
+      throw ArgumentError('Network type unsupported');
     }
 
     this._address = _generateEncodedAddress(pKey, networkType);
@@ -36,11 +36,11 @@ class Address {
     address = address.trim().replaceAll("-", "").toUpperCase();
 
     if (address.length != addressEncodeSize) {
-      throw new ArgumentError(
+      throw  ArgumentError(
           'Address $address has to be $addressEncodeSize characters long');
     }
 
-    return new Address._(address, addressNet[address[0]]);
+    return  Address._(address, addressNet[address[0]]);
   }
 
   @override
@@ -59,7 +59,7 @@ class Address {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['networkType'] = networkType;
     data['address'] = address;
 
@@ -75,7 +75,7 @@ class PublicAccount {
     if (pKey == null || (publicKeySize != pKey.length && 66 != pKey.length)) {
       throw errInvalidPublicKey;
     }
-    this._address = new Address.fromPublicKey(pKey, networkType);
+    this._address =  Address.fromPublicKey(pKey, networkType);
     this._publicKey = pKey;
   }
 
@@ -102,15 +102,15 @@ class PublicAccount {
       throw errInvalidHexadecimal;
     }
 
-    var kp = new crypto.KeyPair();
-    kp.publicKey.Raw = Uint8List.fromList(HEX.decode(this._publicKey));
+    var kp =  crypto.KeyPair();
+    kp.publicKey.Raw = Uint8List.fromList(hex.decode(this._publicKey));
 
-    return kp.verify(Uint8List.fromList(HEX.decode(data)),
-        Uint8List.fromList(HEX.decode(signature)));
+    return kp.verify(Uint8List.fromList(hex.decode(data)),
+        Uint8List.fromList(hex.decode(signature)));
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['address'] = address;
     data['publicKey'] = publicKey;
 
@@ -122,12 +122,12 @@ class Account {
   Account._(this._publicAccount, this._account);
 
   /// Create an Account from a given hex private key.
-  Account.fromPrivateKey(String sHex, int networkType) {
-    var k = crypto.NewPrivateKeyFromHexString(sHex);
+  Account.fromPrivateKey(String shex, int networkType) {
+    var k = crypto.NewPrivateKeyFromHexString(shex);
     var kp = crypto.NewKeyPair(k, null);
 
     var pa =
-        new PublicAccount.fromPublicKey(kp.publicKey.toString(), networkType);
+         PublicAccount.fromPublicKey(kp.publicKey.toString(), networkType);
     this._publicAccount = pa;
     this._account = kp;
   }
@@ -153,7 +153,7 @@ class Account {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['publicAccount'] = publicAccount;
     data['account'] = account;
 
@@ -167,12 +167,12 @@ class Account {
 
 class AccountInfo {
   AccountInfo.fromDTO(_AccountInfoDTO v) {
-    List<Mosaic> m = new List(v.account.mosaics.length);
+    List<Mosaic> m =  List(v.account.mosaics.length);
     for (var i = 0; i < v.account.mosaics.length; i++) {
-      m[i] = new Mosaic.fromDTO(v.account.mosaics[i]);
+      m[i] =  Mosaic.fromDTO(v.account.mosaics[i]);
     }
 
-    address = new Address.fromEncoded(v.account.address);
+    address =  Address.fromEncoded(v.account.address);
     addressHeight = v.account.addressHeight.toBigInt();
     publicKey = v.account.publicKey;
     publicKeyHeight = v.account.publicKeyHeight.toBigInt();
@@ -203,7 +203,7 @@ class AccountInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['address'] = address;
     data['addressHeight'] = addressHeight;
     data['publicKey'] = publicKey;
@@ -218,7 +218,7 @@ class AccountInfo {
 
 String _generateEncodedAddress(String pKey, int version) {
   // step 1: sha3 hash of the public key
-  var pKeyD = HEX.decode(pKey);
+  var pKeyD = hex.decode(pKey);
 
   var sha3PublicKeyHash = crypto.HashesSha3_256(Uint8List.fromList(pKeyD));
 
