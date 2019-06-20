@@ -3,7 +3,7 @@ part of xpx_chain_sdk;
 class NodeTime {
   NodeTime.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    communicationTimestamps = new CommunicationTimestamps.fromJson(
+    communicationTimestamps =  CommunicationTimestamps.fromJson(
         json['communicationTimestamps'] as Map<String, dynamic>);
   }
 
@@ -17,7 +17,7 @@ class NodeTime {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['communicationTimestamps'] = this.communicationTimestamps;
 
     return data;
@@ -25,19 +25,19 @@ class NodeTime {
 
   static List<NodeTime> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<NodeTime>()
+        ?  List<NodeTime>()
         : json
             .map((dynamic value) =>
-                new NodeTime.fromJson(value as Map<String, dynamic>))
+                 NodeTime.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, NodeTime> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, NodeTime>();
+    var map =  Map<String, NodeTime>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new NodeTime.fromJson(value));
+          map[key] =  NodeTime.fromJson(value));
     }
     return map;
   }

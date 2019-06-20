@@ -66,4 +66,4 @@ part 'src/model/transaction_payload.dart';
 part 'src/model/transaction_status_dto.dart';
 part 'src/model/u_int64_dto.dart';
 
-ApiClient defaultApiClient = new ApiClient(null, null);
+ApiClient defaultApiClient =  ApiClient(null, null);

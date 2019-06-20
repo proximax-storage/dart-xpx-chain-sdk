@@ -7,9 +7,9 @@ class _BlockDTO {
     signer = json['signer'] as String;
     version = json['version'] as num;
     type = json['type'] as num;
-    height = new UInt64DTO.fromJson(json['height']);
-    timestamp = new UInt64DTO.fromJson(json['timestamp']);
-    difficulty = new UInt64DTO.fromJson(json['difficulty']);
+    height =  UInt64DTO.fromJson(json['height']);
+    timestamp =  UInt64DTO.fromJson(json['timestamp']);
+    difficulty =  UInt64DTO.fromJson(json['difficulty']);
     feeMultiplier = json['feeMultiplier'] as int;
     previousBlockHash = json['previousBlockHash'] as String;
     blockTransactionsHash = json['blockTransactionsHash'] as String;
@@ -46,25 +46,25 @@ class _BlockDTO {
 
   static List<_BlockDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_BlockDTO>()
+        ?  List<_BlockDTO>()
         : json
             .map((dynamic value) =>
-                new _BlockDTO.fromJson(value as Map<String, dynamic>))
+                 _BlockDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _BlockDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _BlockDTO>();
+    var map =  Map<String, _BlockDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _BlockDTO.fromJson(value));
+          map[key] =  _BlockDTO.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['signature'] = signature;
     data['signer'] = signer;
     data['version'] = version;
@@ -86,8 +86,8 @@ class _BlockDTO {
 class _BlockInfoDTO {
   _BlockInfoDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    meta = new _BlockMetaDTO.fromJson(json['meta'] as Map<String, dynamic>);
-    block = new _BlockDTO.fromJson(json['block'] as Map<String, dynamic>);
+    meta =  _BlockMetaDTO.fromJson(json['meta'] as Map<String, dynamic>);
+    block =  _BlockDTO.fromJson(json['block'] as Map<String, dynamic>);
   }
 
   _BlockMetaDTO meta;
@@ -95,7 +95,7 @@ class _BlockInfoDTO {
   _BlockDTO block;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['meta'] = meta;
     data['block'] = block;
 
@@ -104,19 +104,19 @@ class _BlockInfoDTO {
 
   static List<_BlockInfoDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_BlockInfoDTO>()
+        ?  List<_BlockInfoDTO>()
         : json
             .map((dynamic value) =>
-                new _BlockInfoDTO.fromJson(value as Map<String, dynamic>))
+                 _BlockInfoDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _BlockInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _BlockInfoDTO>();
+    var map =  Map<String, _BlockInfoDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _BlockInfoDTO.fromJson(value));
+          map[key] =  _BlockInfoDTO.fromJson(value));
     }
     return map;
   }
@@ -127,7 +127,7 @@ class _BlockMetaDTO {
     if (json == null) return;
     hash = json['hash'] as String;
     generationHash = json['generationHash'] as String;
-    totalFee = new UInt64DTO.fromJson(json['totalFee']);
+    totalFee =  UInt64DTO.fromJson(json['totalFee']);
     numTransactions = json['numTransactions'] as num;
   }
 
@@ -141,19 +141,19 @@ class _BlockMetaDTO {
 
   static List<_BlockMetaDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_BlockMetaDTO>()
+        ?  List<_BlockMetaDTO>()
         : json
             .map((dynamic value) =>
-                new _BlockMetaDTO.fromJson(value as Map<String, dynamic>))
+                 _BlockMetaDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _BlockMetaDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _BlockMetaDTO>();
+    var map =  Map<String, _BlockMetaDTO>();
     if (json != null && json.isEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _BlockMetaDTO.fromJson(value));
+          map[key] =  _BlockMetaDTO.fromJson(value));
     }
     return map;
   }
@@ -162,8 +162,8 @@ class _BlockMetaDTO {
 class _BlockchainScoreDTO {
   _BlockchainScoreDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    scoreHigh = new UInt64DTO.fromJson(json['scoreHigh']);
-    scoreLow = new UInt64DTO.fromJson(json['scoreLow']);
+    scoreHigh =  UInt64DTO.fromJson(json['scoreHigh']);
+    scoreLow =  UInt64DTO.fromJson(json['scoreLow']);
   }
 
   UInt64DTO scoreHigh;
@@ -171,7 +171,7 @@ class _BlockchainScoreDTO {
   UInt64DTO scoreLow;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['scoreHigh'] = scoreHigh;
     data['scoreLow'] = scoreLow;
 
@@ -180,19 +180,19 @@ class _BlockchainScoreDTO {
 
   static List<_BlockchainScoreDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_BlockchainScoreDTO>()
+        ?  List<_BlockchainScoreDTO>()
         : json
             .map((dynamic value) =>
-                new _BlockchainScoreDTO.fromJson(value as Map<String, dynamic>))
+                 _BlockchainScoreDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _BlockchainScoreDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _BlockchainScoreDTO>();
+    var map =  Map<String, _BlockchainScoreDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _BlockchainScoreDTO.fromJson(value));
+          map[key] =  _BlockchainScoreDTO.fromJson(value));
     }
     return map;
   }

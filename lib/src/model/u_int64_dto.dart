@@ -21,16 +21,16 @@ class UInt64DTO {
 
   static List<UInt64DTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<UInt64DTO>()
-        : json.map((dynamic value) => new UInt64DTO.fromJson(value)).toList();
+        ?  List<UInt64DTO>()
+        : json.map((dynamic value) =>  UInt64DTO.fromJson(value)).toList();
   }
 
   static Map<String, UInt64DTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, UInt64DTO>();
+    var map =  Map<String, UInt64DTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new UInt64DTO.fromJson(value));
+          map[key] =  UInt64DTO.fromJson(value));
     }
     return map;
   }
@@ -40,7 +40,7 @@ class UInt64DTO {
       return null;
     }
 
-    var buffer = new Buffer.BigEndian(8);
+    var buffer =  Buffer.BigEndian(8);
 
     buffer.writeInt32(this.lower.toInt());
     buffer.writeInt32(this.higher.toInt());
@@ -49,7 +49,7 @@ class UInt64DTO {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['higher'] = this.higher;
     data['lower'] = this.lower;
     return data;

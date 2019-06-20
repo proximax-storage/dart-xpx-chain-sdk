@@ -14,7 +14,7 @@ class MosaicRoutesApi {
 
     // verify required params are set
     if (mosaicId == null) {
-      throw new ApiException(400, "Missing required param: mosaicId");
+      throw  ApiException(400, "Missing required param: mosaicId");
     }
     var nsId = mosaicId.toHex();
     // create path and map variables
@@ -34,7 +34,7 @@ class MosaicRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -43,11 +43,11 @@ class MosaicRoutesApi {
         headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       var resp = apiClient.deserialize(response.body, '_MosaicInfoDTO')
           as _MosaicInfoDTO;
-      return new MosaicInfo.fromDTO(resp);
+      return  MosaicInfo.fromDTO(resp);
     } else {
       return null;
     }
@@ -61,7 +61,7 @@ class MosaicRoutesApi {
 
     // verify required params are set
     if (mosaicIds == null) {
-      throw new ApiException(400, "Missing required param: mosaicIds");
+      throw  ApiException(400, "Missing required param: mosaicIds");
     }
 
     // create path and map variables
@@ -79,7 +79,7 @@ class MosaicRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -88,7 +88,7 @@ class MosaicRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
           (apiClient.deserialize(response.body, 'List<_MosaicInfoDTO>') as List)
@@ -108,7 +108,7 @@ class MosaicRoutesApi {
 
     // verify required params are set
     if (mosaicIds == null) {
-      throw new ApiException(400, "Missing required param: mosaicIds");
+      throw  ApiException(400, "Missing required param: mosaicIds");
     }
 
     // create path and map variables
@@ -126,7 +126,7 @@ class MosaicRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -135,7 +135,7 @@ class MosaicRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp =
           (apiClient.deserialize(response.body, 'List<_MosaicNameDTO>') as List)

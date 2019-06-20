@@ -6,33 +6,33 @@ part of xpx_chain_sdk.buffer;
 class AliasTransactionBuffer {
   AliasTransactionBuffer._(this._bc, this._bcOffset);
   factory AliasTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
   static const fb.Reader<AliasTransactionBuffer> reader =
-      const _AliasTransactionBufferReader();
+      _AliasTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
   int get actionType => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
-  List<int> get namespaceId => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get namespaceId => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 20, null);
 
   ///  In case of address it is 25 bytes array. In case of mosaic it is 8 byte array(or 2 uint32 array)
-  List<int> get aliasId => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get aliasId => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 22, null);
 
   @override
@@ -47,7 +47,7 @@ class _AliasTransactionBufferReader
 
   @override
   AliasTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-      new AliasTransactionBuffer._(bc, offset);
+       AliasTransactionBuffer._(bc, offset);
 }
 
 class AliasTransactionBufferBuilder {
@@ -200,7 +200,7 @@ class AliasTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }

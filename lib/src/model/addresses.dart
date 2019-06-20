@@ -18,26 +18,26 @@ class Addresses {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['addresses'] = addresses;
     return data;
   }
 
   static List<Addresses> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<Addresses>()
+        ?  List<Addresses>()
         : json
             .map((dynamic value) =>
-                new Addresses.fromJson(value as Map<String, dynamic>))
+                 Addresses.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, Addresses> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, Addresses>();
+    var map =  Map<String, Addresses>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new Addresses.fromJson(value));
+          map[key] =  Addresses.fromJson(value));
     }
     return map;
   }

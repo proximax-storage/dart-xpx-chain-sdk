@@ -6,12 +6,12 @@ part of xpx_chain_sdk.buffer;
 class MetadataModificationBuffer {
   MetadataModificationBuffer._(this._bc, this._bcOffset);
   factory MetadataModificationBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
   static const fb.Reader<MetadataModificationBuffer> reader =
-      const _MetadataModificationBufferReader();
+      _MetadataModificationBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
@@ -20,11 +20,11 @@ class MetadataModificationBuffer {
   int get modificationType =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 6, 0);
   int get keySize => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 8, 0);
-  List<int> get valueSize => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get valueSize => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 10, null);
-  List<int> get key => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get key => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 12, null);
-  List<int> get value => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get value => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
 
   @override
@@ -39,7 +39,7 @@ class _MetadataModificationBufferReader
 
   @override
   MetadataModificationBuffer createObject(fb.BufferContext bc, int offset) =>
-      new MetadataModificationBuffer._(bc, offset);
+       MetadataModificationBuffer._(bc, offset);
 }
 
 class MetadataModificationBufferBuilder {
@@ -141,7 +141,7 @@ class MetadataModificationBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -150,30 +150,30 @@ class MetadataModificationBufferObjectBuilder extends fb.ObjectBuilder {
 class ModifyMetadataTransactionBuffer {
   ModifyMetadataTransactionBuffer._(this._bc, this._bcOffset);
   factory ModifyMetadataTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
   static const fb.Reader<ModifyMetadataTransactionBuffer> reader =
-      const _ModifyMetadataTransactionBufferReader();
+      _ModifyMetadataTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get fee => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
   int get metadataType =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
-  List<int> get metadataId => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get metadataId => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 20, null);
   List<MetadataModificationBuffer> get modifications =>
       const fb.ListReader<MetadataModificationBuffer>(
@@ -193,7 +193,7 @@ class _ModifyMetadataTransactionBufferReader
   @override
   ModifyMetadataTransactionBuffer createObject(
           fb.BufferContext bc, int offset) =>
-      new ModifyMetadataTransactionBuffer._(bc, offset);
+       ModifyMetadataTransactionBuffer._(bc, offset);
 }
 
 class ModifyMetadataTransactionBufferBuilder {
@@ -347,7 +347,7 @@ class ModifyMetadataTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }

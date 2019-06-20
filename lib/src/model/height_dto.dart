@@ -6,7 +6,7 @@ class _HeightDTO {
   _HeightDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
 
-    height = new UInt64DTO.fromJson(json['height']);
+    height =  UInt64DTO.fromJson(json['height']);
   }
 
   UInt64DTO height;

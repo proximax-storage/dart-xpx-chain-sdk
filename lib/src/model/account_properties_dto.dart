@@ -14,25 +14,25 @@ class _AccountPropertiesDTO {
 
   static List<_AccountPropertiesDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_AccountPropertiesDTO>()
+        ?  List<_AccountPropertiesDTO>()
         : json
-            .map((dynamic value) => new _AccountPropertiesDTO.fromJson(
+            .map((dynamic value) =>  _AccountPropertiesDTO.fromJson(
                 value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _AccountPropertiesDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _AccountPropertiesDTO>();
+    var map =  Map<String, _AccountPropertiesDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _AccountPropertiesDTO.fromJson(value));
+          map[key] =  _AccountPropertiesDTO.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['address'] = address;
     data['properties'] = properties;
 

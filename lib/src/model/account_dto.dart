@@ -5,9 +5,9 @@ class _AccountDTO {
     if (json == null) return;
 
     address = json['address'] as String;
-    addressHeight = new UInt64DTO.fromJson(json['addressHeight']);
+    addressHeight =  UInt64DTO.fromJson(json['addressHeight']);
     publicKey = json['publicKey'] as String;
-    publicKeyHeight = new UInt64DTO.fromJson(json['publicKeyHeight']);
+    publicKeyHeight =  UInt64DTO.fromJson(json['publicKeyHeight']);
     mosaics = _MosaicDTO.listFromJson(json['mosaics'] as List<dynamic>);
     accountType = json['accountType'] as int;
     linkedAccountKey = json['linkedAccountKey'] as String;
@@ -28,7 +28,7 @@ class _AccountDTO {
   String linkedAccountKey;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['address'] = address;
     data['addressHeight'] = addressHeight;
     data['publicKey'] = publicKey;
@@ -41,19 +41,19 @@ class _AccountDTO {
 
   static List<_AccountDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_AccountDTO>()
+        ?  List<_AccountDTO>()
         : json
             .map((dynamic value) =>
-                new _AccountDTO.fromJson(value as Map<String, dynamic>))
+                 _AccountDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _AccountDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _AccountDTO>();
+    var map =  Map<String, _AccountDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _AccountDTO.fromJson(value));
+          map[key] =  _AccountDTO.fromJson(value));
     }
     return map;
   }
@@ -62,8 +62,8 @@ class _AccountDTO {
 class _AccountInfoDTO {
   _AccountInfoDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    meta = new _AccountMetaDTO.fromJson(json['meta'] as Map<String, dynamic>);
-    account = new _AccountDTO.fromJson(json['account'] as Map<String, dynamic>);
+    meta =  _AccountMetaDTO.fromJson(json['meta'] as Map<String, dynamic>);
+    account =  _AccountDTO.fromJson(json['account'] as Map<String, dynamic>);
   }
 
   _AccountMetaDTO meta;
@@ -71,7 +71,7 @@ class _AccountInfoDTO {
   _AccountDTO account;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['meta'] = this.meta;
     data['account'] = this.account;
 
@@ -80,19 +80,19 @@ class _AccountInfoDTO {
 
   static List<_AccountInfoDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_AccountInfoDTO>()
+        ?  List<_AccountInfoDTO>()
         : json
             .map((dynamic value) =>
-                new _AccountInfoDTO.fromJson(value as Map<String, dynamic>))
+                 _AccountInfoDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _AccountInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _AccountInfoDTO>();
+    var map =  Map<String, _AccountInfoDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _AccountInfoDTO.fromJson(value));
+          map[key] =  _AccountInfoDTO.fromJson(value));
     }
     return map;
   }
@@ -105,19 +105,19 @@ class _AccountMetaDTO {
 
   static List<_AccountMetaDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_AccountMetaDTO>()
+        ?  List<_AccountMetaDTO>()
         : json
             .map((dynamic value) =>
-                new _AccountMetaDTO.fromJson(value as Map<String, dynamic>))
+                 _AccountMetaDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _AccountMetaDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _AccountMetaDTO>();
+    var map =  Map<String, _AccountMetaDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _AccountMetaDTO.fromJson(value));
+          map[key] =  _AccountMetaDTO.fromJson(value));
     }
     return map;
   }

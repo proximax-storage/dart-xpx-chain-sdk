@@ -41,25 +41,25 @@ class NodeInfo {
 
   static List<NodeInfo> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<NodeInfo>()
+        ?  List<NodeInfo>()
         : json
             .map((dynamic value) =>
-                new NodeInfo.fromJson(value as Map<String, dynamic>))
+                 NodeInfo.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, NodeInfo> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, NodeInfo>();
+    var map =  Map<String, NodeInfo>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new NodeInfo.fromJson(value));
+          map[key] =  NodeInfo.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['publicKey'] = this.publicKey;
     data['port'] = this.port;
     data['networkIdentifier'] = this.networkIdentifier;
@@ -75,8 +75,8 @@ class NodeInfo {
 class CommunicationTimestamps {
   CommunicationTimestamps.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    final sRaw = new UInt64DTO.fromJson(json['sendTimestamp']);
-    final rRaw = new UInt64DTO.fromJson(json['receiveTimestamp']);
+    final sRaw =  UInt64DTO.fromJson(json['sendTimestamp']);
+    final rRaw =  UInt64DTO.fromJson(json['receiveTimestamp']);
     sendTimestamp = sRaw.toBigInt();
     receiveTimestamp = rRaw.toBigInt();
   }
@@ -95,25 +95,25 @@ class CommunicationTimestamps {
 
   static List<CommunicationTimestamps> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<CommunicationTimestamps>()
+        ?  List<CommunicationTimestamps>()
         : json
-            .map((dynamic value) => new CommunicationTimestamps.fromJson(
+            .map((dynamic value) =>  CommunicationTimestamps.fromJson(
                 value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, CommunicationTimestamps> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, CommunicationTimestamps>();
+    var map =  Map<String, CommunicationTimestamps>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new CommunicationTimestamps.fromJson(value));
+          map[key] =  CommunicationTimestamps.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['sendTimestamp'] = this.sendTimestamp;
     data['receiveTimestamp'] = this.receiveTimestamp;
 

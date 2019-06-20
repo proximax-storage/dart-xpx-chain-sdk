@@ -33,7 +33,7 @@ class Alias {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['type'] = type;
     data['mosaicId'] = mosaicId;
     data['address'] = address;
@@ -43,9 +43,9 @@ class Alias {
 
   static List<Alias> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<Alias>()
+        ?  List<Alias>()
         : json
-            .map((dynamic value) => new Alias.fromDTO(value as _AliasDTO))
+            .map((dynamic value) =>  Alias.fromDTO(value as _AliasDTO))
             .toList();
   }
 }

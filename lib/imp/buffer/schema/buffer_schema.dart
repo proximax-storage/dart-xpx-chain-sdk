@@ -23,7 +23,7 @@ class Schema {
       }
       ++i;
     }
-    return new Uint8List.fromList(resultBytes);
+    return  Uint8List.fromList(resultBytes);
   }
 }
 
@@ -44,7 +44,7 @@ abstract class AbstractSchemaAttribute {
             offset + innerObjectPosition, offset + innerObjectPosition + size)
         .toList();
 
-    return new Uint8List.fromList(v);
+    return  Uint8List.fromList(v);
   }
 
   Uint8List findVector(
@@ -61,7 +61,7 @@ abstract class AbstractSchemaAttribute {
 
     final v = buffer.getRange(vecStart, vecStart + vecLength).toList();
 
-    return new Uint8List.fromList(v);
+    return  Uint8List.fromList(v);
   }
 
   int offset(int innerObjectPosition, int position, Uint8List buffer) {
@@ -177,7 +177,7 @@ class TableArrayAttribute extends AbstractSchemaAttribute
       }
     }
 
-    return new Uint8List.fromList(resultBytes);
+    return  Uint8List.fromList(resultBytes);
   }
 }
 
@@ -205,23 +205,23 @@ class TableAttribute extends AbstractSchemaAttribute
       }
     }
 
-    return new Uint8List.fromList(resultBytes);
+    return  Uint8List.fromList(resultBytes);
   }
 }
 
 ArrayAttribute _newArrayAttribute(String name, int size) {
-  return new ArrayAttribute(name, size);
+  return  ArrayAttribute(name, size);
 }
 
 ScalarAttribute _newScalarAttribute(String name, int size) {
-  return new ScalarAttribute(name, size);
+  return  ScalarAttribute(name, size);
 }
 
 TableArrayAttribute _newTableArrayAttribute(
     String name, List<SchemaAttribute> schema) {
-  return new TableArrayAttribute(name, schema);
+  return  TableArrayAttribute(name, schema);
 }
 
 TableAttribute _newTableAttribute(String name, List<SchemaAttribute> schema) {
-  return new TableAttribute(name, schema);
+  return  TableAttribute(name, schema);
 }

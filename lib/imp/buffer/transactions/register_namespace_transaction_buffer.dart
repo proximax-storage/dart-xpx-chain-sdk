@@ -6,33 +6,33 @@ part of xpx_chain_sdk.buffer;
 class RegisterNamespaceTransactionBuffer {
   RegisterNamespaceTransactionBuffer._(this._bc, this._bcOffset);
   factory RegisterNamespaceTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
   static const fb.Reader<RegisterNamespaceTransactionBuffer> reader =
-      const _RegisterNamespaceTransactionBufferReader();
+      _RegisterNamespaceTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get fee => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
   int get namespaceType =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
   List<int> get durationParentId =>
-      const fb.ListReader<int>(const fb.Uint32Reader())
+      const fb.ListReader<int>(fb.Uint32Reader())
           .vTableGet(_bc, _bcOffset, 20, null);
-  List<int> get namespaceId => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get namespaceId => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 22, null);
   int get namespaceNameSize =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 24, 0);
@@ -52,7 +52,7 @@ class _RegisterNamespaceTransactionBufferReader
   @override
   RegisterNamespaceTransactionBuffer createObject(
           fb.BufferContext bc, int offset) =>
-      new RegisterNamespaceTransactionBuffer._(bc, offset);
+       RegisterNamespaceTransactionBuffer._(bc, offset);
 }
 
 class RegisterNamespaceTransactionBufferBuilder {
@@ -226,7 +226,7 @@ class RegisterNamespaceTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }

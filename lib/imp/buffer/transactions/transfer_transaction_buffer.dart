@@ -6,17 +6,17 @@ part of xpx_chain_sdk.buffer;
 class MessageBuffer {
   MessageBuffer._(this._bc, this._bcOffset);
   factory MessageBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<MessageBuffer> reader = const _MessageBufferReader();
+  static const fb.Reader<MessageBuffer> reader = _MessageBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get payload => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get payload => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
 
   @override
@@ -30,7 +30,7 @@ class _MessageBufferReader extends fb.TableReader<MessageBuffer> {
 
   @override
   MessageBuffer createObject(fb.BufferContext bc, int offset) =>
-      new MessageBuffer._(bc, offset);
+       MessageBuffer._(bc, offset);
 }
 
 class MessageBufferBuilder {
@@ -88,7 +88,7 @@ class MessageBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -97,18 +97,18 @@ class MessageBufferObjectBuilder extends fb.ObjectBuilder {
 class MosaicBuffer {
   MosaicBuffer._(this._bc, this._bcOffset);
   factory MosaicBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<MosaicBuffer> reader = const _MosaicBufferReader();
+  static const fb.Reader<MosaicBuffer> reader = _MosaicBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  List<int> get id => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get id => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 4, null);
-  List<int> get amount => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get amount => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
 
   @override
@@ -122,7 +122,7 @@ class _MosaicBufferReader extends fb.TableReader<MosaicBuffer> {
 
   @override
   MosaicBuffer createObject(fb.BufferContext bc, int offset) =>
-      new MosaicBuffer._(bc, offset);
+       MosaicBuffer._(bc, offset);
 }
 
 class MosaicBufferBuilder {
@@ -183,7 +183,7 @@ class MosaicBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -192,28 +192,28 @@ class MosaicBufferObjectBuilder extends fb.ObjectBuilder {
 class TransferTransactionBuffer {
   TransferTransactionBuffer._(this._bc, this._bcOffset);
   factory TransferTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
   static const fb.Reader<TransferTransactionBuffer> reader =
-      const _TransferTransactionBufferReader();
+      _TransferTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get fee => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
-  List<int> get recipient => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get recipient => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 18, null);
   int get messageSize =>
       const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 20, 0);
@@ -236,7 +236,7 @@ class _TransferTransactionBufferReader
 
   @override
   TransferTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-      new TransferTransactionBuffer._(bc, offset);
+       TransferTransactionBuffer._(bc, offset);
 }
 
 class TransferTransactionBufferBuilder {
@@ -411,7 +411,7 @@ class TransferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }

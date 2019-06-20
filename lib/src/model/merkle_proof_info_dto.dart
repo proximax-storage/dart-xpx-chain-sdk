@@ -3,7 +3,7 @@ part of xpx_chain_sdk;
 class _MerkleProofInfoDTO {
   _MerkleProofInfoDTO.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    payload = new MerkleProofInfoPayload.fromJson(
+    payload =  MerkleProofInfoPayload.fromJson(
         json['payload'] as Map<String, dynamic>);
     type = json['type'] as String;
   }
@@ -13,7 +13,7 @@ class _MerkleProofInfoDTO {
   String type;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['payload'] = payload;
     data['type'] = type;
 
@@ -22,19 +22,19 @@ class _MerkleProofInfoDTO {
 
   static List<_MerkleProofInfoDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_MerkleProofInfoDTO>()
+        ?  List<_MerkleProofInfoDTO>()
         : json
             .map((dynamic value) =>
-                new _MerkleProofInfoDTO.fromJson(value as Map<String, dynamic>))
+                 _MerkleProofInfoDTO.fromJson(value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _MerkleProofInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _MerkleProofInfoDTO>();
+    var map =  Map<String, _MerkleProofInfoDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _MerkleProofInfoDTO.fromJson(value));
+          map[key] =  _MerkleProofInfoDTO.fromJson(value));
     }
     return map;
   }

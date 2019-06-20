@@ -9,7 +9,7 @@ class _AccountPropertiesMetaDTO {
   String id;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['id'] = id;
 
     return data;
@@ -17,19 +17,19 @@ class _AccountPropertiesMetaDTO {
 
   static List<_AccountPropertiesMetaDTO> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_AccountPropertiesMetaDTO>()
+        ?  List<_AccountPropertiesMetaDTO>()
         : json
-            .map((dynamic value) => new _AccountPropertiesMetaDTO.fromJson(
+            .map((dynamic value) =>  _AccountPropertiesMetaDTO.fromJson(
                 value as Map<String, dynamic>))
             .toList();
   }
 
   static Map<String, _AccountPropertiesMetaDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _AccountPropertiesMetaDTO>();
+    var map =  Map<String, _AccountPropertiesMetaDTO>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _AccountPropertiesMetaDTO.fromJson(value));
+          map[key] =  _AccountPropertiesMetaDTO.fromJson(value));
     }
     return map;
   }

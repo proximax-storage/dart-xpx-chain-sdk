@@ -27,7 +27,7 @@ class NamespaceRoutesApi {
 
     // verify required params are set
     if (namespaceId == null) {
-      throw new ApiException(400, "Missing required param: namespaceId");
+      throw  ApiException(400, "Missing required param: namespaceId");
     }
 
     var nsId = namespaceId.toHex();
@@ -48,7 +48,7 @@ class NamespaceRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -57,11 +57,11 @@ class NamespaceRoutesApi {
         headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       var resp = apiClient.deserialize(response.body, '_NamespaceInfoDTO')
           as _NamespaceInfoDTO;
-      var ns = new NamespaceInfo.fromDTO(resp);
+      var ns =  NamespaceInfo.fromDTO(resp);
 
       if (ns.parent != null) {
         ns.parent = await buildNamespaceHierarchy(ns);
@@ -81,7 +81,7 @@ class NamespaceRoutesApi {
 
     // verify required params are set
     if (accountIds == null) {
-      throw new ApiException(400, "Missing required param: accountId");
+      throw  ApiException(400, "Missing required param: accountId");
     }
 
     // create path and map variables
@@ -108,7 +108,7 @@ class NamespaceRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -117,7 +117,7 @@ class NamespaceRoutesApi {
         headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       var resp = (apiClient.deserialize(
               response.body, 'List<_NamespaceInfoDTO>') as List)
@@ -140,7 +140,7 @@ class NamespaceRoutesApi {
 
     // verify required params are set
     if (addresses == null) {
-      throw new ApiException(400, "Missing required param: addresses");
+      throw  ApiException(400, "Missing required param: addresses");
     }
 
     // create path and map variables
@@ -165,7 +165,7 @@ class NamespaceRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -174,7 +174,7 @@ class NamespaceRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       var resp = (apiClient.deserialize(
               response.body, 'List<_NamespaceInfoDTO>') as List)
@@ -197,7 +197,7 @@ class NamespaceRoutesApi {
 
     // verify required params are set
     if (nsIds == null) {
-      throw new ApiException(400, "Missing required param: namespaceIds");
+      throw  ApiException(400, "Missing required param: namespaceIds");
     }
 
     if (nsIds.namespaceIds.isEmpty) {
@@ -218,7 +218,7 @@ class NamespaceRoutesApi {
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
-      http.MultipartRequest mp = new http.MultipartRequest(null, null);
+      http.MultipartRequest mp =  http.MultipartRequest(null, null);
 
       if (hasFields) postBody = mp;
     } else {}
@@ -227,7 +227,7 @@ class NamespaceRoutesApi {
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = (apiClient.deserialize(
               response.body, 'List<_NamespaceNameDTO>') as List)

@@ -2,7 +2,7 @@ part of xpx_chain_sdk;
 
 // Create xpx with using xpx as unit
 Mosaic Xpx(int amount) {
-  return new Mosaic(xpxMosaicId, new BigInt.from(amount));
+  return  Mosaic(xpxMosaicId,  BigInt.from(amount));
 }
 
 Mosaic XpxRelative(int amount) {
@@ -47,7 +47,7 @@ class Mosaic {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['id'] = this.id.toHex();
     data['amount'] = this.amount;
 
@@ -56,8 +56,8 @@ class Mosaic {
 
   static List<Mosaic> listFromDTO(List<_MosaicDTO> json) {
     return json == null
-        ? new List<Mosaic>()
-        : json.map((value) => new Mosaic.fromDTO(value)).toList();
+        ?  List<Mosaic>()
+        : json.map((value) =>  Mosaic.fromDTO(value)).toList();
   }
 }
 
@@ -69,18 +69,18 @@ class MosaicId extends Id {
       throw errNullId;
     }
 
-    return new MosaicId._(id);
+    return  MosaicId._(id);
   }
 
   static MosaicId fromId(final BigInt id) {
-    return new MosaicId(id: id);
+    return  MosaicId(id: id);
   }
 
   static MosaicId fromBigInt(final BigInt bigInt) {
     if (bigInt == null) {
       throw errNullBigInt;
     }
-    return new MosaicId(id: bigInt);
+    return  MosaicId(id: bigInt);
   }
 
   @override
@@ -111,7 +111,7 @@ class MosaicIds {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['mosaicIds'] = _list.map((id) => id.toHex()).toList();
     return data;
   }
@@ -120,13 +120,13 @@ class MosaicIds {
 class MosaicInfo {
   MosaicInfo.fromDTO(_MosaicInfoDTO value) {
     if (json == null) return;
-    mosaicId = new MosaicId(id: value.mosaic.mosaicId.toBigInt());
+    mosaicId =  MosaicId(id: value.mosaic.mosaicId.toBigInt());
     supply = value.mosaic.supply.toBigInt();
     height = value.mosaic.height.toBigInt();
     owner =
-        new PublicAccount.fromPublicKey(value.mosaic.owner, ConfigNetworkType);
+         PublicAccount.fromPublicKey(value.mosaic.owner, ConfigNetworkType);
     revision = value.mosaic.revision;
-    properties = new MosaicProperties.fromJson(value.mosaic.properties);
+    properties =  MosaicProperties.fromJson(value.mosaic.properties);
   }
 
   MosaicId mosaicId;
@@ -150,8 +150,8 @@ class MosaicInfo {
 
   static List<MosaicInfo> listFromDTO(List<_MosaicInfoDTO> json) {
     return json == null
-        ? new List<MosaicInfo>()
-        : json.map((value) => new MosaicInfo.fromDTO(value)).toList();
+        ?  List<MosaicInfo>()
+        : json.map((value) =>  MosaicInfo.fromDTO(value)).toList();
   }
 }
 
@@ -178,8 +178,8 @@ class MosaicName {
 
   static List<MosaicName> listFromDTO(List<_MosaicNameDTO> json) {
     return json == null
-        ? new List<MosaicName>()
-        : json.map((value) => new MosaicName.fromDTO(value)).toList();
+        ?  List<MosaicName>()
+        : json.map((value) =>  MosaicName.fromDTO(value)).toList();
   }
 }
 
@@ -249,7 +249,7 @@ MosaicId NewMosaicIdFromNonceAndOwner(int nonce, String ownerPublicKey) {
 }
 
 BigInt _generateMosaicId(int nonce, String ownerPublicKey) {
-  var nonceB = new Buffer.LittleEndian(4);
+  var nonceB =  Buffer.LittleEndian(4);
   nonceB.writeInt32(nonce);
 
   var result = sha3.New256();
@@ -267,7 +267,7 @@ BigInt _generateMosaicId(int nonce, String ownerPublicKey) {
     ];
   }
 
-  return new UInt64DTO.fromJson(raw()).toBigInt();
+  return  UInt64DTO.fromJson(raw()).toBigInt();
 }
 
 int MosaicNonce() {

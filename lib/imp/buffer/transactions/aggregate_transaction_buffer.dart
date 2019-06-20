@@ -6,30 +6,30 @@ part of xpx_chain_sdk.buffer;
 class AggregateTransactionBuffer {
   AggregateTransactionBuffer._(this._bc, this._bcOffset);
   factory AggregateTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
   static const fb.Reader<AggregateTransactionBuffer> reader =
-      const _AggregateTransactionBufferReader();
+      _AggregateTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get fee => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
   int get transactionsSize =>
       const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 18, 0);
-  List<int> get transactions => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get transactions => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 20, null);
 
   @override
@@ -44,7 +44,7 @@ class _AggregateTransactionBufferReader
 
   @override
   AggregateTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-      new AggregateTransactionBuffer._(bc, offset);
+       AggregateTransactionBuffer._(bc, offset);
 }
 
 class AggregateTransactionBufferBuilder {
@@ -183,7 +183,7 @@ class AggregateTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
+    fb.Builder fbBuilder =  fb.Builder();
     int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
