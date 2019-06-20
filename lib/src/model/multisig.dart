@@ -83,6 +83,14 @@ class MultisigAccountGraphInfo {
 
   List<MultisigAccountInfo> multisigEntries = [];
 
+  @override
+  String toString() {
+    return '{\n'
+        '\tlevel: $level,\n'
+        '\tmultisigEntries: $multisigEntries\n'
+        '}\n';
+  }
+
   static List<MultisigAccountGraphInfo> listFromJson(List<dynamic> json) {
     return json == null
         ? new List<MultisigAccountGraphInfo>()

@@ -151,19 +151,19 @@ class AccountRoutesApi {
   /// Get multisig account graph information
   ///
   /// Returns the [multisig account] graph.
-  Future<List<MultisigAccountGraphInfo>> _getAccountMultisigGraph(
-      String accountId) async {
+  Future<List<MultisigAccountGraphInfo>> GetAccountMultisigGraph(
+      Address address) async {
     Object postBody;
 
     // verify required params are set
-    if (accountId == null) {
+    if (address == null) {
       throw new ApiException(400, "Missing required param: accountId");
     }
 
     // create path and map variables
     String path = "/account/{accountId}/multisig/graph"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "accountId" + "}", accountId.toString());
+        .replaceAll("{" + "accountId" + "}", address.address);
 
     // query params
     List<QueryParam> queryParams = [];
