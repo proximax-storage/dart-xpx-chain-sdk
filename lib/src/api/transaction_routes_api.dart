@@ -145,7 +145,7 @@ class TransactionRoutesApi {
   /// Get transaction status
   ///
   /// Returns the transaction status for a given hash.
-  Future<_TransactionStatusDTO> _getTransactionStatus(String hash) async {
+  Future<TransactionStatus> GetTransactionStatus(String hash) async {
     Object postBody;
 
     // verify required params are set
@@ -181,8 +181,8 @@ class TransactionRoutesApi {
     if (response.statusCode >= 400) {
       throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, '_TransactionStatusDTO')
-          as _TransactionStatusDTO;
+      return apiClient.deserialize(response.body, 'TransactionStatus')
+          as TransactionStatus;
     } else {
       return null;
     }
@@ -227,8 +227,8 @@ class TransactionRoutesApi {
       throw  ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       return (apiClient.deserialize(
-              response.body, 'List<_TransactionStatusDTO>') as List)
-          .map((dynamic item) => item as _TransactionStatusDTO)
+              response.body, 'List<TransactionStatus>') as List)
+          .map((dynamic item) => item as TransactionStatus)
           .toList();
     } else {
       return null;

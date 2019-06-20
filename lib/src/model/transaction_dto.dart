@@ -187,29 +187,6 @@ class _AggregateTransactionCosignatureDTO {
   }
 }
 
-class _MultisigCosignatoryModificationDTO {
-  _MultisigCosignatoryModificationDTO(
-      {_AggregateTransactionCosignatureDTO type, String cosignatoryPublicKey}) {
-    this._type = type;
-    this._cosignatoryPublicKey = cosignatoryPublicKey;
-  }
-
-  _MultisigCosignatoryModificationDTO.fromJson(Map<String, dynamic> json) {
-    this._type = json['type'] as _AggregateTransactionCosignatureDTO;
-    this._cosignatoryPublicKey = json['cosignatoryPublicKey'] as String;
-  }
-
-  _AggregateTransactionCosignatureDTO _type;
-  String _cosignatoryPublicKey;
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['type'] = this._type;
-    data['cosignatoryPublicKey'] = this._cosignatoryPublicKey;
-    return data;
-  }
-}
-
 class _TransferTransactionDTO extends _AbstractTransactionDTO {
   _TransferTransactionDTO(
       {String signature,

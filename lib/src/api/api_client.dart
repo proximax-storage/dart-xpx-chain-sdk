@@ -155,8 +155,8 @@ class ApiClient {
           return  TransactionIds.fromJson(value as Map<String, dynamic>);
         case 'TransactionPayload':
           return  TransactionPayload.fromJson(value as Map<String, dynamic>);
-        case '_TransactionStatusDTO':
-          return  _TransactionStatusDTO.fromJson(
+        case 'TransactionStatus':
+          return  TransactionStatus.fromJson(
               value as Map<String, dynamic>);
         case 'UInt64DTO':
           return  UInt64DTO.fromJson(value);

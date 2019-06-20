@@ -7,6 +7,11 @@ class TransactionHashes {
         (json['hashes'] as List).map((dynamic item) => item as String).toList();
   }
 
+  TransactionHashes.fromList(List<String> list) {
+    if (json == null) return;
+    hashes = list.map((dynamic item) => item as String).toList();
+  }
+
   List<String> hashes = [];
 
   @override
