@@ -109,15 +109,6 @@ class AggregateTransactionBufferBuilder {
 }
 
 class AggregateTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final int _transactionsSize;
-  final List<int> _transactions;
 
   AggregateTransactionBufferObjectBuilder({
     int size,
@@ -139,6 +130,16 @@ class AggregateTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _transactionsSize = transactionsSize,
         _transactions = transactions;
 
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final int _transactionsSize;
+  final List<int> _transactions;
+  
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {

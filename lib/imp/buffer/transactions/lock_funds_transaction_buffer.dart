@@ -124,17 +124,6 @@ class LockFundsTransactionBufferBuilder {
 }
 
 class LockFundsTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final List<int> _mosaicId;
-  final List<int> _mosaicAmount;
-  final List<int> _duration;
-  final List<int> _hash;
 
   LockFundsTransactionBufferObjectBuilder({
     int size,
@@ -159,6 +148,18 @@ class LockFundsTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _mosaicAmount = mosaicAmount,
         _duration = duration,
         _hash = hash;
+
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final List<int> _mosaicId;
+  final List<int> _mosaicAmount;
+  final List<int> _duration;
+  final List<int> _hash;
 
   /// Finish building, and store into the [fbBuilder].
   @override

@@ -63,14 +63,15 @@ class CosignatoryModificationBufferBuilder {
 }
 
 class CosignatoryModificationBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _type;
-  final List<int> _cosignatoryPublicKey;
 
   CosignatoryModificationBufferObjectBuilder({
     int type,
     List<int> cosignatoryPublicKey,
   })  : _type = type,
         _cosignatoryPublicKey = cosignatoryPublicKey;
+
+  final int _type;
+  final List<int> _cosignatoryPublicKey;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -254,21 +255,6 @@ class ModifyContractTransactionBufferBuilder {
 }
 
 class ModifyContractTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final List<int> _durationDelta;
-  final List<int> _hash;
-  final int _numCustomers;
-  final int _numExecutors;
-  final int _numVerifiers;
-  final List<CosignatoryModificationBufferObjectBuilder> _customers;
-  final List<CosignatoryModificationBufferObjectBuilder> _executors;
-  final List<CosignatoryModificationBufferObjectBuilder> _verifiers;
 
   ModifyContractTransactionBufferObjectBuilder({
     int size,
@@ -301,6 +287,22 @@ class ModifyContractTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _customers = customers,
         _executors = executors,
         _verifiers = verifiers;
+
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final List<int> _durationDelta;
+  final List<int> _hash;
+  final int _numCustomers;
+  final int _numExecutors;
+  final int _numVerifiers;
+  final List<CosignatoryModificationBufferObjectBuilder> _customers;
+  final List<CosignatoryModificationBufferObjectBuilder> _executors;
+  final List<CosignatoryModificationBufferObjectBuilder> _verifiers;
 
   /// Finish building, and store into the [fbBuilder].
   @override

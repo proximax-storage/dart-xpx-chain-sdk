@@ -89,12 +89,6 @@ class MetadataModificationBufferBuilder {
 }
 
 class MetadataModificationBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final int _modificationType;
-  final int _keySize;
-  final List<int> _valueSize;
-  final List<int> _key;
-  final List<int> _value;
 
   MetadataModificationBufferObjectBuilder({
     int size,
@@ -109,6 +103,13 @@ class MetadataModificationBufferObjectBuilder extends fb.ObjectBuilder {
         _valueSize = valueSize,
         _key = key,
         _value = value;
+
+  final int _size;
+  final int _modificationType;
+  final int _keySize;
+  final List<int> _valueSize;
+  final List<int> _key;
+  final List<int> _value;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -263,16 +264,6 @@ class ModifyMetadataTransactionBufferBuilder {
 }
 
 class ModifyMetadataTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final int _metadataType;
-  final List<int> _metadataId;
-  final List<MetadataModificationBufferObjectBuilder> _modifications;
 
   ModifyMetadataTransactionBufferObjectBuilder({
     int size,
@@ -295,6 +286,17 @@ class ModifyMetadataTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _metadataType = metadataType,
         _metadataId = metadataId,
         _modifications = modifications;
+
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final int _metadataType;
+  final List<int> _metadataId;
+  final List<MetadataModificationBufferObjectBuilder> _modifications;
 
   /// Finish building, and store into the [fbBuilder].
   @override

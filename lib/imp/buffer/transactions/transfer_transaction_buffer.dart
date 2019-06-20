@@ -60,8 +60,6 @@ class MessageBufferBuilder {
 }
 
 class MessageBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _type;
-  final List<int> _payload;
 
   MessageBufferObjectBuilder({
     int type,
@@ -69,6 +67,9 @@ class MessageBufferObjectBuilder extends fb.ObjectBuilder {
   })  : _type = type,
         _payload = payload;
 
+  final int _type;
+  final List<int> _payload;
+  
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
@@ -152,8 +153,6 @@ class MosaicBufferBuilder {
 }
 
 class MosaicBufferObjectBuilder extends fb.ObjectBuilder {
-  final List<int> _id;
-  final List<int> _amount;
 
   MosaicBufferObjectBuilder({
     List<int> id,
@@ -161,6 +160,9 @@ class MosaicBufferObjectBuilder extends fb.ObjectBuilder {
   })  : _id = id,
         _amount = amount;
 
+  final List<int> _id;
+  final List<int> _amount;
+  
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
@@ -316,18 +318,6 @@ class TransferTransactionBufferBuilder {
 }
 
 class TransferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final List<int> _recipient;
-  final int _messageSize;
-  final int _numMosaics;
-  final MessageBufferObjectBuilder _message;
-  final List<MosaicBufferObjectBuilder> _mosaics;
 
   TransferTransactionBufferObjectBuilder({
     int size,
@@ -355,6 +345,19 @@ class TransferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _message = message,
         _mosaics = mosaics;
 
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final List<int> _recipient;
+  final int _messageSize;
+  final int _numMosaics;
+  final MessageBufferObjectBuilder _message;
+  final List<MosaicBufferObjectBuilder> _mosaics;
+  
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {

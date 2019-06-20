@@ -138,19 +138,6 @@ class SecretLockTransactionBufferBuilder {
 }
 
 class SecretLockTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final List<int> _mosaicId;
-  final List<int> _mosaicAmount;
-  final List<int> _duration;
-  final int _hashAlgorithm;
-  final List<int> _secret;
-  final List<int> _recipient;
 
   SecretLockTransactionBufferObjectBuilder({
     int size,
@@ -180,6 +167,20 @@ class SecretLockTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _secret = secret,
         _recipient = recipient;
 
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final List<int> _mosaicId;
+  final List<int> _mosaicAmount;
+  final List<int> _duration;
+  final int _hashAlgorithm;
+  final List<int> _secret;
+  final List<int> _recipient;
+  
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {

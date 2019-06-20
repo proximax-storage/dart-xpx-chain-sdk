@@ -118,16 +118,6 @@ class MosaicAliasDefinitionTransactionBufferBuilder {
 
 class MosaicAliasDefinitionTransactionBufferObjectBuilder
     extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final List<int> _namespaceId;
-  final List<int> _mosaicId;
-  final int _aliasAction;
 
   MosaicAliasDefinitionTransactionBufferObjectBuilder({
     int size,
@@ -150,6 +140,17 @@ class MosaicAliasDefinitionTransactionBufferObjectBuilder
         _namespaceId = namespaceId,
         _mosaicId = mosaicId,
         _aliasAction = aliasAction;
+
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final List<int> _namespaceId;
+  final List<int> _mosaicId;
+  final int _aliasAction;
 
   /// Finish building, and store into the [fbBuilder].
   @override

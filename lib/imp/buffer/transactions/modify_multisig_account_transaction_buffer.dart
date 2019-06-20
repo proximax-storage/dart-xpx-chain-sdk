@@ -218,17 +218,6 @@ class ModifyMultisigAccountTransactionBufferBuilder {
 
 class ModifyMultisigAccountTransactionBufferObjectBuilder
     extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final int _minRemovalDelta;
-  final int _minApprovalDelta;
-  final int _numModifications;
-  final List<CosignatoryModificationBufferObjectBuilder> _modifications;
 
   ModifyMultisigAccountTransactionBufferObjectBuilder({
     int size,
@@ -253,6 +242,18 @@ class ModifyMultisigAccountTransactionBufferObjectBuilder
         _minApprovalDelta = minApprovalDelta,
         _numModifications = numModifications,
         _modifications = modifications;
+
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final int _minRemovalDelta;
+  final int _minApprovalDelta;
+  final int _numModifications;
+  final List<CosignatoryModificationBufferObjectBuilder> _modifications;
 
   /// Finish building, and store into the [fbBuilder].
   @override

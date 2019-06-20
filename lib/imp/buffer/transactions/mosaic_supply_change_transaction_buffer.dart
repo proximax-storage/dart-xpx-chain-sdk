@@ -117,16 +117,6 @@ class MosaicSupplyChangeTransactionBufferBuilder {
 
 class MosaicSupplyChangeTransactionBufferObjectBuilder
     extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final List<int> _mosaicId;
-  final int _direction;
-  final List<int> _delta;
 
   MosaicSupplyChangeTransactionBufferObjectBuilder({
     int size,
@@ -150,6 +140,17 @@ class MosaicSupplyChangeTransactionBufferObjectBuilder
         _direction = direction,
         _delta = delta;
 
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final List<int> _mosaicId;
+  final int _direction;
+  final List<int> _delta;
+  
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {

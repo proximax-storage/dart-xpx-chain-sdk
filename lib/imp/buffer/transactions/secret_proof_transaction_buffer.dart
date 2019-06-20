@@ -122,17 +122,6 @@ class SecretProofTransactionBufferBuilder {
 }
 
 class SecretProofTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final int _hashAlgorithm;
-  final List<int> _secret;
-  final int _proofSize;
-  final List<int> _proof;
 
   SecretProofTransactionBufferObjectBuilder({
     int size,
@@ -158,6 +147,18 @@ class SecretProofTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _proofSize = proofSize,
         _proof = proof;
 
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final int _hashAlgorithm;
+  final List<int> _secret;
+  final int _proofSize;
+  final List<int> _proof;
+  
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {

@@ -117,16 +117,6 @@ class AliasTransactionBufferBuilder {
 }
 
 class AliasTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _maxFee;
-  final List<int> _deadline;
-  final int _actionType;
-  final List<int> _namespaceId;
-  final List<int> _aliasId;
 
   AliasTransactionBufferObjectBuilder({
     int size,
@@ -149,6 +139,17 @@ class AliasTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _actionType = actionType,
         _namespaceId = namespaceId,
         _aliasId = aliasId;
+
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _maxFee;
+  final List<int> _deadline;
+  final int _actionType;
+  final List<int> _namespaceId;
+  final List<int> _aliasId;
 
   /// Finish building, and store into the [fbBuilder].
   @override

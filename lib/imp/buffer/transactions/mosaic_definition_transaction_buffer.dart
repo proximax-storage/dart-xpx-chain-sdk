@@ -144,20 +144,6 @@ class MosaicDefinitionTransactionBufferBuilder {
 }
 
 class MosaicDefinitionTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final int _mosaicNonce;
-  final List<int> _mosaicId;
-  final int _numOptionalProperties;
-  final int _flags;
-  final int _divisibility;
-  final int _indicateDuration;
-  final List<int> _duration;
 
   MosaicDefinitionTransactionBufferObjectBuilder({
     int size,
@@ -188,6 +174,21 @@ class MosaicDefinitionTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _divisibility = divisibility,
         _indicateDuration = indicateDuration,
         _duration = duration;
+
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final int _mosaicNonce;
+  final List<int> _mosaicId;
+  final int _numOptionalProperties;
+  final int _flags;
+  final int _divisibility;
+  final int _indicateDuration;
+  final List<int> _duration;
 
   /// Finish building, and store into the [fbBuilder].
   @override

@@ -132,18 +132,6 @@ class RegisterNamespaceTransactionBufferBuilder {
 }
 
 class RegisterNamespaceTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _fee;
-  final List<int> _deadline;
-  final int _namespaceType;
-  final List<int> _durationParentId;
-  final List<int> _namespaceId;
-  final int _namespaceNameSize;
-  final String _namespaceName;
 
   RegisterNamespaceTransactionBufferObjectBuilder({
     int size,
@@ -171,6 +159,19 @@ class RegisterNamespaceTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _namespaceNameSize = namespaceNameSize,
         _namespaceName = namespaceName;
 
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _fee;
+  final List<int> _deadline;
+  final int _namespaceType;
+  final List<int> _durationParentId;
+  final List<int> _namespaceId;
+  final int _namespaceNameSize;
+  final String _namespaceName;
+  
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
