@@ -151,7 +151,7 @@ class AccountRoutesApi {
   /// Get multisig account graph information
   ///
   /// Returns the [multisig account] graph.
-  Future<List<_MultisigAccountGraphInfoDTO>> _getAccountMultisigGraph(
+  Future<List<MultisigAccountGraphInfo>> _getAccountMultisigGraph(
       String accountId) async {
     Object postBody;
 
@@ -189,8 +189,8 @@ class AccountRoutesApi {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       return (_apiClient.deserialize(
-              response.body, 'List<_MultisigAccountGraphInfoDTO>') as List)
-          .map((dynamic item) => item as _MultisigAccountGraphInfoDTO)
+              response.body, 'List<MultisigAccountGraphInfo>') as List)
+          .map((dynamic item) => item as MultisigAccountGraphInfo)
           .toList();
     } else {
       return null;

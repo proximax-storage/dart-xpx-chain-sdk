@@ -127,8 +127,8 @@ class ApiClient {
           return new _MosaicMetaDTO.fromJson(value as Map<String, dynamic>);
         case '_MosaicNameDTO':
           return new _MosaicNameDTO.fromJson(value as Map<String, dynamic>);
-        case '_MultisigAccountGraphInfoDTO':
-          return new _MultisigAccountGraphInfoDTO.fromJson(
+        case 'MultisigAccountGraphInfo':
+          return new MultisigAccountGraphInfo.fromJson(
               value as Map<String, dynamic>);
         case 'MultisigAccountInfo':
           return new MultisigAccountInfo.fromJson(

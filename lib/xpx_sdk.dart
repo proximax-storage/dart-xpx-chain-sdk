@@ -52,7 +52,7 @@ part 'src/model/merkle_proof_info_dto.dart';
 part 'src/model/merkle_proof_info_payload.dart';
 part 'src/model/mosaic_dto.dart';
 part 'src/model/mosaic_model.dart';
-part 'src/model/multisig_dto.dart';
+part 'src/model/multisig.dart';
 part 'src/model/namespace_dto.dart';
 part 'src/model/namespace_model.dart';
 part 'src/model/network_type.dart';

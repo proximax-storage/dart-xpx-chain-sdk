@@ -71,8 +71,8 @@ class Multisig {
   }
 }
 
-class _MultisigAccountGraphInfoDTO {
-  _MultisigAccountGraphInfoDTO.fromJson(Map<String, dynamic> json) {
+class MultisigAccountGraphInfo {
+  MultisigAccountGraphInfo.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     level = json['level'] as int;
     multisigEntries = MultisigAccountInfo.listFromJson(
@@ -83,21 +83,21 @@ class _MultisigAccountGraphInfoDTO {
 
   List<MultisigAccountInfo> multisigEntries = [];
 
-  static List<_MultisigAccountGraphInfoDTO> listFromJson(List<dynamic> json) {
+  static List<MultisigAccountGraphInfo> listFromJson(List<dynamic> json) {
     return json == null
-        ? new List<_MultisigAccountGraphInfoDTO>()
+        ? new List<MultisigAccountGraphInfo>()
         : json
-            .map((dynamic value) => new _MultisigAccountGraphInfoDTO.fromJson(
+            .map((dynamic value) => new MultisigAccountGraphInfo.fromJson(
                 value as Map<String, dynamic>))
             .toList();
   }
 
-  static Map<String, _MultisigAccountGraphInfoDTO> mapFromJson(
+  static Map<String, MultisigAccountGraphInfo> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map = new Map<String, _MultisigAccountGraphInfoDTO>();
+    var map = new Map<String, MultisigAccountGraphInfo>();
     if (json != null && json.isNotEmpty) {
       json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] = new _MultisigAccountGraphInfoDTO.fromJson(value));
+          map[key] = new MultisigAccountGraphInfo.fromJson(value));
     }
     return map;
   }
