@@ -6,7 +6,7 @@ const networkType = publicTest;
 
 /// Simple Account API request
 void main() async {
-  var config = new NewConfig(baseUrl, networkType);
+  var config =  NewConfig(baseUrl, networkType);
 
   /// Creating a client instance
   /// xpx_chain_sdk uses the Dart's native HttpClient.
@@ -14,22 +14,22 @@ void main() async {
   /// the one which comes from dart:io or the BrowserClient
   /// example:
   /// 1- import 'package:http/browser_client.dart';
-  /// 2- var client = NewClient(config, new BrowserClient());
+  /// 2- var client = NewClient(config,  BrowserClient());
   var client = NewClient(config, null);
 
   /// Create an Address from a given public key.
-  var addressOne = new Address.fromPublicKey(
-      "95DE2FFDCC397BB9688DA28A18A70FDD23F4CE2EF4240A4A7B6BAF5DFA07E5DC",
+  var addressOne =  Address.fromPublicKey(
+      "16DBE8DC29CF06338133DEE64FC49B461CE489BF9588BE3B9670B5CB19C89368",
       networkType);
 
-  var addressTwo = new Address.fromPublicKey(
+  var addressTwo =  Address.fromPublicKey(
       "C64FA80DB046F488CC1C480454834D4CAE8284DDC14D6E93332AD02E345FF2C5",
       networkType);
 
   try {
     /// Get AccountInfo for an account.
     /// Param address - A Address object.
-    var result = await client.Account.GetAccountInfo(addressOne);
+    var result = await client.Account.GetAccountMultisigGraph(addressOne);
     print(result);
   } catch (e) {
     print("Exception when calling Account->GetAccountInfo: $e\n");
