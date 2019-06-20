@@ -105,18 +105,18 @@ class AccountRoutesApi {
   /// Get multisig account information
   ///
   /// Returns the [multisig account] information.
-  Future<_MultisigAccountInfoDTO> _getAccountMultisig(String accountId) async {
+  Future<MultisigAccountInfo> GetAccountMultisig(Address address) async {
     Object postBody;
 
     // verify required params are set
-    if (accountId == null) {
-      throw new ApiException(400, "Missing required param: accountId");
+    if (address == null) {
+      throw new ApiException(400, "Missing required param: address");
     }
 
     // create path and map variables
     String path = "/account/{accountId}/multisig"
         .replaceAll("{format}", "json")
-        .replaceAll("{" + "accountId" + "}", accountId.toString());
+        .replaceAll("{" + "accountId" + "}", address.address);
 
     // query params
     List<QueryParam> queryParams = [];
@@ -141,8 +141,8 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw new ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return _apiClient.deserialize(response.body, '_MultisigAccountInfoDTO')
-          as _MultisigAccountInfoDTO;
+      return _apiClient.deserialize(response.body, 'MultisigAccountInfo')
+          as MultisigAccountInfo;
     } else {
       return null;
     }

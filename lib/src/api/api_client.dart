@@ -130,11 +130,11 @@ class ApiClient {
         case '_MultisigAccountGraphInfoDTO':
           return new _MultisigAccountGraphInfoDTO.fromJson(
               value as Map<String, dynamic>);
-        case '_MultisigAccountInfoDTO':
-          return new _MultisigAccountInfoDTO.fromJson(
+        case 'MultisigAccountInfo':
+          return new MultisigAccountInfo.fromJson(
               value as Map<String, dynamic>);
-        case '_MultisigDTO':
-          return new _MultisigDTO.fromJson(value as Map<String, dynamic>);
+        case 'Multisig':
+          return new Multisig.fromJson(value as Map<String, dynamic>);
         case '_NamespaceDTO':
           return new _NamespaceDTO.fromJson(value as Map<String, dynamic>);
         case '_NamespaceInfoDTO':
