@@ -63,7 +63,7 @@ part 'src/model/transaction_model.dart';
 part 'src/model/transaction_hashes.dart';
 part 'src/model/transaction_ids.dart';
 part 'src/model/transaction_payload.dart';
-part 'src/model/transaction_status_dto.dart';
+part 'src/model/transaction_status.dart';
 part 'src/model/u_int64_dto.dart';
 
 ApiClient defaultApiClient =  ApiClient(null, null);
