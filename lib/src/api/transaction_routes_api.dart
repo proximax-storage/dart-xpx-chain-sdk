@@ -191,9 +191,11 @@ class TransactionRoutesApi {
   /// Get transactions status.
   ///
   /// Returns an List of transaction statuses for a given List of transaction hashes.
-  Future<List<_TransactionStatusDTO>> _getTransactionsStatuses(
-      TransactionHashes transactionHashes) async {
-    Object postBody = transactionHashes;
+  Future<List<TransactionStatus>> GetTransactionsStatuses(
+      List<String> transactionHashes) async {
+
+
+    Object postBody = TransactionHashes.fromList(transactionHashes);
 
     // verify required params are set
     if (transactionHashes == null) {
