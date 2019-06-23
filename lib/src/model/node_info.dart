@@ -38,7 +38,7 @@ class NodeInfo {
       '}\n';
 
   static List<NodeInfo> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => NodeInfo.fromJson(value)).toList();
 
   static Map<String, NodeInfo> mapFromJson(

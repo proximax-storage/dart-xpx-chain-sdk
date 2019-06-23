@@ -15,7 +15,7 @@ class MerklePathItem {
   String toString() => 'MerklePathItem[position=$position, hash=$hash, ]';
 
   static List<MerklePathItem> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => MerklePathItem.fromJson(value)).toList();
 
   static Map<String, MerklePathItem> mapFromJson(

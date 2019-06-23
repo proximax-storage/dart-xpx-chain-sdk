@@ -37,7 +37,7 @@ class _AccountDTO {
       };
 
   static List<_AccountDTO> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => _AccountDTO.fromJson(value)).toList();
 
   static Map<String, _AccountDTO> mapFromJson(
@@ -64,7 +64,7 @@ class _AccountInfoDTO {
   Map<String, dynamic> toJson() => {'meta': meta, 'account': account};
 
   static List<_AccountInfoDTO> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => _AccountInfoDTO.fromJson(value)).toList();
 
   static Map<String, _AccountInfoDTO> mapFromJson(
@@ -82,7 +82,7 @@ class _AccountMetaDTO {
       : assert(json != null, 'json must not be null');
 
   static List<_AccountMetaDTO> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => _AccountMetaDTO.fromJson(value)).toList();
 
   static Map<String, _AccountMetaDTO> mapFromJson(

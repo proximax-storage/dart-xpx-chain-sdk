@@ -18,7 +18,7 @@ class TransactionIds {
   Map<String, dynamic> toJson() => {'transactionIds': transactionIds};
 
   static List<TransactionIds> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => TransactionIds.fromJson(value)).toList();
 
   static Map<String, TransactionIds> mapFromJson(

@@ -72,7 +72,7 @@ class BlockInfo {
   }
 
   static List<BlockInfo> listFromDTO(List<_BlockInfoDTO> json) => json == null
-          ? null
+      ? null
       : json.map((value) => BlockInfo.fromDTO(value)).toList();
 }
 
@@ -127,10 +127,9 @@ class BlockchainStorageInfo {
   int numAccounts;
 
   @override
-  String toString() =>
-      '{numBlocks:$numBlocks,'
-          ' numTransactions:$numTransactions,'
-          ' numAccounts:$numAccounts}';
+  String toString() => '{numBlocks:$numBlocks,'
+      ' numTransactions:$numTransactions,'
+      ' numAccounts:$numAccounts}';
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

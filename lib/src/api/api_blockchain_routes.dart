@@ -297,11 +297,11 @@ class BlockchainRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       // ignore: avoid_as
-      final resp = (apiClient
-          .deserialize(response.body, 'List<_BlockInfoDTO>') as List)
-          // ignore: avoid_as
-          .map((item) => item as _BlockInfoDTO)
-          .toList();
+      final resp =
+          (apiClient.deserialize(response.body, 'List<_BlockInfoDTO>') as List)
+              // ignore: avoid_as
+              .map((item) => item as _BlockInfoDTO)
+              .toList();
       return BlockInfo.listFromDTO(resp);
     } else {
       return null;

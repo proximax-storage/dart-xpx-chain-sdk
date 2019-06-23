@@ -46,7 +46,7 @@ class _NamespaceDTO {
   }
 
   static List<_NamespaceDTO> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => _NamespaceDTO.fromJson(value)).toList();
 
   static Map<String, _NamespaceDTO> mapFromJson(

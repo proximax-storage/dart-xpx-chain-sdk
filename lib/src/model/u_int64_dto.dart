@@ -3,9 +3,9 @@ part of xpx_chain_sdk;
 class UInt64DTO {
   UInt64DTO([this.higher, this.lower]);
 
-  UInt64DTO.fromJson(json){
-    if (json == null){
-     return;
+  UInt64DTO.fromJson(json) {
+    if (json == null) {
+      return;
     }
 
     higher = Int32(json[0]);

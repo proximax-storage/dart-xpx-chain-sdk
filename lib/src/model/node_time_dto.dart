@@ -18,7 +18,7 @@ class NodeTime {
       {'communicationTimestamps': communicationTimestamps};
 
   static List<NodeTime> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => NodeTime.fromJson(value)).toList();
 
   static Map<String, NodeTime> mapFromJson(
