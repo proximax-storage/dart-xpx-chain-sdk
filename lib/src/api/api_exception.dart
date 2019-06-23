@@ -13,13 +13,16 @@ class ApiException implements Exception {
 
   @override
   String toString() {
-    if (message == null) return "ApiException";
-
-    if (innerException == null) {
-      return "ApiException $code: $message";
+    if (message == null) {
+      return 'ApiException';
     }
 
-    return "ApiException $code: $message (Inner exception: $innerException)\n\n" +
+    if (innerException == null) {
+      return 'ApiException $code: $message';
+    }
+
+    return 'ApiException $code: $message '
+            '(Inner exception: $innerException)\n\n' +
         stackTrace.toString();
   }
 }

@@ -1,6 +1,6 @@
 part of xpx_chain_sdk.buffer;
 
-const byteSize = 1, shortSize = 2, intSize = 4;
+const _byteSize = 1, _shortSize = 2, _intSize = 4;
 
 // ignore: one_member_abstracts
 abstract class SchemaAttribute {
@@ -13,17 +13,17 @@ class Schema {
   List<SchemaAttribute> schemaDefinition;
 
   Uint8List serialize(Uint8List buffer) {
-    List<int> resultBytes = [];
+    final resultBytes = <int>[];
 
     var i = 0;
-    for (var schemaDefinition in this.schemaDefinition) {
-      var v = schemaDefinition.serialize(buffer, 4 + (i * 2), buffer[0]);
+    for (final schemaDefinition in schemaDefinition) {
+      final v = schemaDefinition.serialize(buffer, 4 + (i * 2), buffer[0]);
       if (v.isNotEmpty) {
         resultBytes.addAll(v);
       }
       ++i;
     }
-    return  Uint8List.fromList(resultBytes);
+    return Uint8List.fromList(resultBytes);
   }
 }
 
@@ -44,7 +44,7 @@ abstract class AbstractSchemaAttribute {
             offset + innerObjectPosition, offset + innerObjectPosition + size)
         .toList();
 
-    return  Uint8List.fromList(v);
+    return Uint8List.fromList(v);
   }
 
   Uint8List findVector(
@@ -52,8 +52,8 @@ abstract class AbstractSchemaAttribute {
     final offset = this.offset(innerObjectPosition, position, buffer);
 
     final offsetLong = offset + innerObjectPosition;
-    final vecStart = this.vector(offsetLong, buffer);
-    final vecLength = this.vectorLength(offsetLong, buffer) * size;
+    final vecStart = vector(offsetLong, buffer);
+    final vecLength = vectorLength(offsetLong, buffer) * size;
 
     if (offset == 0) {
       return Uint8List(0);
@@ -61,41 +61,40 @@ abstract class AbstractSchemaAttribute {
 
     final v = buffer.getRange(vecStart, vecStart + vecLength).toList();
 
-    return  Uint8List.fromList(v);
+    return Uint8List.fromList(v);
   }
 
   int offset(int innerObjectPosition, int position, Uint8List buffer) {
-    var f = this.readUint32(innerObjectPosition, buffer);
-    var vtable = fromBigInt(BigInt.from(innerObjectPosition - f)).elementAt(0);
-    if (position < this.readUint16(vtable, buffer)) {
-      return this.readUint16(vtable + position, buffer);
+    final f = readUint32(innerObjectPosition, buffer);
+    final vTable =
+        fromBigInt(BigInt.from(innerObjectPosition - f)).elementAt(0);
+    if (position < readUint16(vTable, buffer)) {
+      return readUint16(vTable + position, buffer);
     }
 
     return 0;
   }
 
   int readUint16(int offset, Uint8List buffer) {
-    var b = buffer.getRange(offset, 2 + offset).toList();
+    final b = buffer.getRange(offset, 2 + offset).toList();
     return (b[0]) | (b[1]) << 8;
   }
 
   int readUint32(int offset, Uint8List buffer) {
-    var b = buffer.getRange(offset, offset + 4).toList();
+    final b = buffer.getRange(offset, offset + 4).toList();
     return (b[0]) | (b[1]) << 8 | (b[2]) << 16 | (b[3]) << 24;
   }
 
-  int vector(int offset, Uint8List buffer) {
-    return offset + this.readUint32(offset, buffer) + 4;
-  }
+  int vector(int offset, Uint8List buffer) =>
+      offset + readUint32(offset, buffer) + 4;
 
-  int vectorLength(int offset, Uint8List buffer) {
-    return this.readUint32(offset + this.readUint32(offset, buffer), buffer);
-  }
+  int vectorLength(int offset, Uint8List buffer) =>
+      readUint32(offset + readUint32(offset, buffer), buffer);
 
   int findObjectStartPosition(
       int innerObjectPosition, int position, Uint8List buffer) {
     final offset = this.offset(innerObjectPosition, position, buffer);
-    return this.indirect(offset + innerObjectPosition, buffer);
+    return indirect(offset + innerObjectPosition, buffer);
   }
 
   int findArrayLength(int innerObjectPosition, int position, Uint8List buffer) {
@@ -103,7 +102,7 @@ abstract class AbstractSchemaAttribute {
     if (offset == 0) {
       return 0;
     }
-    return this.vectorLength(innerObjectPosition + offset, buffer);
+    return vectorLength(innerObjectPosition + offset, buffer);
   }
 
   int findObjectArrayElementStartPosition(int innerObjectPosition, int position,
@@ -111,47 +110,40 @@ abstract class AbstractSchemaAttribute {
     final offset = this.offset(innerObjectPosition, position, buffer);
     final vector = this.vector(innerObjectPosition + offset, buffer);
 
-    return this.indirect(vector + startPosition * 4, buffer);
+    return indirect(vector + startPosition * 4, buffer);
   }
 
-  int indirect(int offset, Uint8List buffer) {
-    return offset + this.readUint32(offset, buffer);
-  }
+  int indirect(int offset, Uint8List buffer) =>
+      offset + readUint32(offset, buffer);
 }
 
 class ArrayAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-  ArrayAttribute(String name, int size) : super(name) {
-    this.size = size;
-  }
+  ArrayAttribute(String name, this.size) : super(name);
 
   int size;
 
   @override
-  Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
-    return this.findVector(innerObjectPosition, position, buffer, this.size);
-  }
+  Uint8List serialize(
+          Uint8List buffer, int position, int innerObjectPosition) =>
+      findVector(innerObjectPosition, position, buffer, size);
 }
 
 class ScalarAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-  ScalarAttribute(String name, int size) : super(name) {
-    this.size = size;
-  }
+  ScalarAttribute(String name, this.size) : super(name);
 
   int size;
 
   @override
-  Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
-    return this.findParam(innerObjectPosition, position, buffer, this.size);
-  }
+  Uint8List serialize(
+          Uint8List buffer, int position, int innerObjectPosition) =>
+      findParam(innerObjectPosition, position, buffer, size);
 }
 
 class TableArrayAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-  TableArrayAttribute(String name, List<SchemaAttribute> schema) : super(name) {
-    this.schema = schema;
-  }
+  TableArrayAttribute(String name, this.schema) : super(name);
 
   List<SchemaAttribute> schema;
 
@@ -159,14 +151,14 @@ class TableArrayAttribute extends AbstractSchemaAttribute
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
     List<int> resultBytes = [];
 
-    var arrayLength =
-        this.findArrayLength(innerObjectPosition, position, buffer);
+    final arrayLength = findArrayLength(innerObjectPosition, position, buffer);
+
     for (int i = 0; i < arrayLength; i++) {
-      var startArrayPosition = this.findObjectArrayElementStartPosition(
+      final startArrayPosition = findObjectArrayElementStartPosition(
           innerObjectPosition, position, buffer, i);
       int j = 0;
-      for (var element in this.schema) {
-        var tmp = element.serialize(buffer, 4 + j * 2, startArrayPosition);
+      for (final element in schema) {
+        final tmp = element.serialize(buffer, 4 + j * 2, startArrayPosition);
 
         if (tmp.length == 1) {
           resultBytes = [tmp.elementAt(0)];
@@ -177,26 +169,25 @@ class TableArrayAttribute extends AbstractSchemaAttribute
       }
     }
 
-    return  Uint8List.fromList(resultBytes);
+    return Uint8List.fromList(resultBytes);
   }
 }
 
 class TableAttribute extends AbstractSchemaAttribute
     implements SchemaAttribute {
-  TableAttribute(String name, List<SchemaAttribute> schema) : super(name) {
-    this.schema = schema;
-  }
+  TableAttribute(String name, this.schema) : super(name);
 
   List<SchemaAttribute> schema;
 
   @override
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
-    List<int> resultBytes = [];
-    var tableStartPosition =
-        this.findObjectStartPosition(innerObjectPosition, position, buffer);
+    var resultBytes = <int>[];
+    final tableStartPosition =
+        findObjectStartPosition(innerObjectPosition, position, buffer);
+
     int j = 0;
-    for (var element in this.schema) {
-      var tmp = element.serialize(buffer, 4 + j * 2, tableStartPosition);
+    for (final element in schema) {
+      final tmp = element.serialize(buffer, 4 + j * 2, tableStartPosition);
       ++j;
       if (tmp.length == 1) {
         resultBytes = [tmp.elementAt(0)];
@@ -205,23 +196,19 @@ class TableAttribute extends AbstractSchemaAttribute
       }
     }
 
-    return  Uint8List.fromList(resultBytes);
+    return Uint8List.fromList(resultBytes);
   }
 }
 
-ArrayAttribute _newArrayAttribute(String name, int size) {
-  return  ArrayAttribute(name, size);
-}
+ArrayAttribute _newArrayAttribute(String name, int size) =>
+    ArrayAttribute(name, size);
 
-ScalarAttribute _newScalarAttribute(String name, int size) {
-  return  ScalarAttribute(name, size);
-}
+ScalarAttribute _newScalarAttribute(String name, int size) =>
+    ScalarAttribute(name, size);
 
 TableArrayAttribute _newTableArrayAttribute(
-    String name, List<SchemaAttribute> schema) {
-  return  TableArrayAttribute(name, schema);
-}
+        String name, List<SchemaAttribute> schema) =>
+    TableArrayAttribute(name, schema);
 
-TableAttribute _newTableAttribute(String name, List<SchemaAttribute> schema) {
-  return  TableAttribute(name, schema);
-}
+TableAttribute _newTableAttribute(String name, List<SchemaAttribute> schema) =>
+    TableAttribute(name, schema);

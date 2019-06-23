@@ -1,40 +1,31 @@
 part of xpx_chain_sdk;
 
 class MerkleProofInfoPayload {
-  MerkleProofInfoPayload.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    merklePath =
-        MerklePathItem.listFromJson(json['merklePath'] as List<dynamic>);
+  MerkleProofInfoPayload.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    merklePath = MerklePathItem.listFromJson(json['merklePath']);
   }
 
   List<MerklePathItem> merklePath = [];
 
   @override
-  String toString() {
-    return 'merklePath: $merklePath';
-  }
+  String toString() => 'merklePath: $merklePath';
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['merklePath'] = merklePath;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {'merklePath': merklePath};
 
-  static List<MerkleProofInfoPayload> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<MerkleProofInfoPayload>()
-        : json
-            .map((dynamic value) =>  MerkleProofInfoPayload.fromJson(
-                value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<MerkleProofInfoPayload> listFromJson(List<dynamic> json) =>
+      json == null
+          ? null
+          : json
+              .map((value) => MerkleProofInfoPayload.fromJson(value))
+              .toList();
 
   static Map<String, MerkleProofInfoPayload> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, MerkleProofInfoPayload>();
+    final map = <String, MerkleProofInfoPayload>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  MerkleProofInfoPayload.fromJson(value));
+      json.forEach(
+          (key, value) => map[key] = MerkleProofInfoPayload.fromJson(value));
     }
     return map;
   }

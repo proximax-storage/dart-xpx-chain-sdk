@@ -4,11 +4,12 @@
 part of xpx_chain_sdk.buffer;
 
 class LockFundsTransactionBuffer {
-  LockFundsTransactionBuffer._(this._bc, this._bcOffset);
   factory LockFundsTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  LockFundsTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<LockFundsTransactionBuffer> reader =
       _LockFundsTransactionBufferReader();
@@ -29,18 +30,26 @@ class LockFundsTransactionBuffer {
       .vTableGet(_bc, _bcOffset, 16, null);
   List<int> get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 18, null);
-  List<int> get mosaicAmount =>
-      const fb.ListReader<int>(fb.Uint32Reader())
-          .vTableGet(_bc, _bcOffset, 20, null);
+  List<int> get mosaicAmount => const fb.ListReader<int>(fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 20, null);
   List<int> get duration => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 22, null);
   List<int> get hash => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 24, null);
 
   @override
-  String toString() {
-    return 'LockFundsTransactionBuffer{size: $size, signature: $signature, signer: $signer, version: $version, type: $type, fee: $fee, deadline: $deadline, mosaicId: $mosaicId, mosaicAmount: $mosaicAmount, duration: $duration, hash: $hash}';
-  }
+  String toString() => 'LockFundsTransactionBuffer{'
+      'size: $size,'
+      ' signature: $signature,'
+      ' signer: $signer,'
+      ' version: $version,'
+      ' type: $type,'
+      ' fee: $fee,'
+      ' deadline: $deadline,'
+      ' mosaicId: $mosaicId,'
+      ' mosaicAmount: $mosaicAmount,'
+      ' duration: $duration,'
+      ' hash: $hash}';
 }
 
 class _LockFundsTransactionBufferReader
@@ -49,13 +58,12 @@ class _LockFundsTransactionBufferReader
 
   @override
   LockFundsTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-       LockFundsTransactionBuffer._(bc, offset);
+      LockFundsTransactionBuffer._(bc, offset);
 }
 
 class LockFundsTransactionBufferBuilder {
-  LockFundsTransactionBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  LockFundsTransactionBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -118,13 +126,10 @@ class LockFundsTransactionBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class LockFundsTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-
   LockFundsTransactionBufferObjectBuilder({
     int size,
     List<int> signature,
@@ -164,7 +169,7 @@ class LockFundsTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
@@ -221,8 +226,8 @@ class LockFundsTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }

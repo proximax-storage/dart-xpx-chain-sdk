@@ -1,46 +1,34 @@
 part of xpx_chain_sdk;
 
 class TransactionHashes {
-  TransactionHashes.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    hashes =
-        (json['hashes'] as List).map((dynamic item) => item as String).toList();
+  TransactionHashes.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    hashes = (json['hashes']).map((item) => item).toList();
   }
 
-  TransactionHashes.fromList(List<String> list) {
-    if (json == null) return;
-    hashes = list.map((dynamic item) => item as String).toList();
+  TransactionHashes.fromList(List<String> list)
+      : assert(json != null, 'json must not be null') {
+    hashes = list.map((item) => item).toList();
   }
 
   List<String> hashes = [];
 
   @override
-  String toString() {
-    return '{hashes=$hashes}';
-  }
+  String toString() => '{hashes=$hashes}';
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['hashes'] = this.hashes;
+  Map<String, dynamic> toJson() => {'hashes': hashes};
 
-    return data;
-  }
-
-  static List<TransactionHashes> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<TransactionHashes>()
-        : json
-            .map((dynamic value) =>
-                 TransactionHashes.fromJson(value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<TransactionHashes> listFromJson(List<dynamic> json) =>
+      json == null
+          ? null
+          : json.map((value) => TransactionHashes.fromJson(value)).toList();
 
   static Map<String, TransactionHashes> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, TransactionHashes>();
+    final map = <String, TransactionHashes>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  TransactionHashes.fromJson(value));
+      json.forEach(
+          (key, value) => map[key] = TransactionHashes.fromJson(value));
     }
     return map;
   }

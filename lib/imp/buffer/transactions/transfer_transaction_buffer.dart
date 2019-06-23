@@ -4,11 +4,12 @@
 part of xpx_chain_sdk.buffer;
 
 class MessageBuffer {
-  MessageBuffer._(this._bc, this._bcOffset);
   factory MessageBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  MessageBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<MessageBuffer> reader = _MessageBufferReader();
 
@@ -20,9 +21,7 @@ class MessageBuffer {
       .vTableGet(_bc, _bcOffset, 6, null);
 
   @override
-  String toString() {
-    return 'MessageBuffer{type: $type, payload: $payload}';
-  }
+  String toString() => 'MessageBuffer{type: $type, payload: $payload}';
 }
 
 class _MessageBufferReader extends fb.TableReader<MessageBuffer> {
@@ -30,13 +29,12 @@ class _MessageBufferReader extends fb.TableReader<MessageBuffer> {
 
   @override
   MessageBuffer createObject(fb.BufferContext bc, int offset) =>
-       MessageBuffer._(bc, offset);
+      MessageBuffer._(bc, offset);
 }
 
 class MessageBufferBuilder {
-  MessageBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  MessageBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -54,13 +52,10 @@ class MessageBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class MessageBufferObjectBuilder extends fb.ObjectBuilder {
-
   MessageBufferObjectBuilder({
     int type,
     List<int> payload,
@@ -69,11 +64,11 @@ class MessageBufferObjectBuilder extends fb.ObjectBuilder {
 
   final int _type;
   final List<int> _payload;
-  
+
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int payloadOffset = _payload?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_payload)
         : null;
@@ -89,18 +84,19 @@ class MessageBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }
 
 class MosaicBuffer {
-  MosaicBuffer._(this._bc, this._bcOffset);
   factory MosaicBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  MosaicBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<MosaicBuffer> reader = _MosaicBufferReader();
 
@@ -113,9 +109,7 @@ class MosaicBuffer {
       .vTableGet(_bc, _bcOffset, 6, null);
 
   @override
-  String toString() {
-    return 'MosaicBuffer{id: $id, amount: $amount}';
-  }
+  String toString() => 'MosaicBuffer{id: $id, amount: $amount}';
 }
 
 class _MosaicBufferReader extends fb.TableReader<MosaicBuffer> {
@@ -123,13 +117,12 @@ class _MosaicBufferReader extends fb.TableReader<MosaicBuffer> {
 
   @override
   MosaicBuffer createObject(fb.BufferContext bc, int offset) =>
-       MosaicBuffer._(bc, offset);
+      MosaicBuffer._(bc, offset);
 }
 
 class MosaicBufferBuilder {
-  MosaicBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  MosaicBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -147,13 +140,10 @@ class MosaicBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class MosaicBufferObjectBuilder extends fb.ObjectBuilder {
-
   MosaicBufferObjectBuilder({
     List<int> id,
     List<int> amount,
@@ -162,11 +152,11 @@ class MosaicBufferObjectBuilder extends fb.ObjectBuilder {
 
   final List<int> _id;
   final List<int> _amount;
-  
+
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int idOffset =
         _id?.isNotEmpty == true ? fbBuilder.writeListUint32(_id) : null;
     final int amountOffset =
@@ -185,18 +175,19 @@ class MosaicBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }
 
 class TransferTransactionBuffer {
-  TransferTransactionBuffer._(this._bc, this._bcOffset);
   factory TransferTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  TransferTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<TransferTransactionBuffer> reader =
       _TransferTransactionBufferReader();
@@ -227,9 +218,19 @@ class TransferTransactionBuffer {
           .vTableGet(_bc, _bcOffset, 26, null);
 
   @override
-  String toString() {
-    return 'TransferTransactionBuffer{size: $size, signature: $signature, signer: $signer, version: $version, type: $type, fee: $fee, deadline: $deadline, recipient: $recipient, messageSize: $messageSize, numMosaics: $numMosaics, message: $message, mosaics: $mosaics}';
-  }
+  String toString() => 'TransferTransactionBuffer{'
+      'size: $size,'
+      ' signature: $signature,'
+      ' signer: $signer,'
+      ' version: $version,'
+      ' type: $type,'
+      ' fee: $fee,'
+      ' deadline: $deadline,'
+      ' recipient: $recipient,'
+      ' messageSize: $messageSize,'
+      ' numMosaics: $numMosaics,'
+      ' message: $message,'
+      ' mosaics: $mosaics}';
 }
 
 class _TransferTransactionBufferReader
@@ -238,13 +239,12 @@ class _TransferTransactionBufferReader
 
   @override
   TransferTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-       TransferTransactionBuffer._(bc, offset);
+      TransferTransactionBuffer._(bc, offset);
 }
 
 class TransferTransactionBufferBuilder {
-  TransferTransactionBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  TransferTransactionBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -312,13 +312,10 @@ class TransferTransactionBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class TransferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-
   TransferTransactionBufferObjectBuilder({
     int size,
     List<int> signature,
@@ -357,11 +354,11 @@ class TransferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   final int _numMosaics;
   final MessageBufferObjectBuilder _message;
   final List<MosaicBufferObjectBuilder> _mosaics;
-  
+
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
@@ -414,8 +411,8 @@ class TransferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }

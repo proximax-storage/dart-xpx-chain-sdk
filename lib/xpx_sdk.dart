@@ -2,16 +2,16 @@ library xpx_chain_sdk;
 
 import 'dart:async';
 import 'dart:convert' show json, utf8;
-import 'dart:typed_data';
 import 'dart:math';
-
-import 'package:http/http.dart' as http;
-import 'package:fixnum/fixnum.dart';
-import 'package:convert/convert.dart' show hex;
+import 'dart:typed_data';
 
 import 'package:base32/base32.dart';
-import "package:xpx_crypto/xpx_crypto.dart" as crypto;
-import "package:xpx_crypto/imp/sha3.dart" as sha3;
+import 'package:convert/convert.dart' show hex;
+import 'package:fixnum/fixnum.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:xpx_crypto/xpx_crypto.dart' as crypto;
+import 'package:xpx_crypto/imp/sha3.dart' as sha3;
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 
 import 'imp/buffer/buffer.dart';
@@ -66,4 +66,4 @@ part 'src/model/transaction_payload.dart';
 part 'src/model/transaction_status.dart';
 part 'src/model/u_int64_dto.dart';
 
-ApiClient defaultApiClient =  ApiClient(null, null);
+ApiClient defaultApiClient = ApiClient(null, null);

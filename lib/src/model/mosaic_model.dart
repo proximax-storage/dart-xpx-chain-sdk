@@ -1,33 +1,26 @@
 part of xpx_chain_sdk;
 
 // Create xpx with using xpx as unit
-Mosaic Xpx(int amount) {
-  return  Mosaic(xpxMosaicId,  BigInt.from(amount));
-}
+Mosaic xpx(int amount) => Mosaic(xpxMosaicId, BigInt.from(amount));
 
-Mosaic XpxRelative(int amount) {
-  return Xpx((BigInt.from(1000000) * BigInt.from(amount)).toInt());
-}
+Mosaic xpxRelative(int amount) =>
+    xpx((BigInt.from(1000000) * BigInt.from(amount)).toInt());
 
 class Mosaic {
-  Mosaic._(this.id, this.amount);
-
   Mosaic(MosaicId mosaicId, BigInt amount) {
     if (mosaicId == null) {
-      throw errNullMosaicId;
+      throw _errNullMosaicId;
+    } else if (amount == null) {
+      throw _errNullMosaicAmount;
+    } else if (equalsBigInts(amount, BigInt.zero)) {
+      throw _errNullMosaicAmount;
+    } else {
+      id = mosaicId;
+      this.amount = amount;
     }
-
-    if (amount == null) {
-      throw errNullMosaicAmount;
-    }
-
-    if (EqualsBigInts(amount, BigInt.zero)) {
-      throw errNullMosaicAmount;
-    }
-
-    this.id = mosaicId;
-    this.amount = amount;
   }
+
+  Mosaic._(this.id, this.amount);
 
   Mosaic.fromDTO(_MosaicDTO v) {
     id = MosaicId.fromId(v.id.toBigInt());
@@ -39,54 +32,48 @@ class Mosaic {
   BigInt amount;
 
   @override
-  String toString() {
-    return '\n\t{\n'
-        '\t"mosaicId": ${id.toHex()},\n'
-        '\t"mmount": $amount\n'
-        '\t}';
-  }
+  String toString() => '\n\t{\n'
+      '\t"mosaicId": ${id.toHex()},\n'
+      '\t"mmount": $amount\n'
+      '\t}';
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['id'] = this.id.toHex();
-    data['amount'] = this.amount;
+    final data = <String, dynamic>{};
+    data['id'] = id.toHex();
+    data['amount'] = amount;
 
     return data;
   }
 
-  static List<Mosaic> listFromDTO(List<_MosaicDTO> json) {
-    return json == null
-        ?  List<Mosaic>()
-        : json.map((value) =>  Mosaic.fromDTO(value)).toList();
-  }
+  static List<Mosaic> listFromDTO(List<_MosaicDTO> json) =>
+      json == null ? <Mosaic>[] : json.map((value) => Mosaic.fromDTO(value)).toList();
 }
 
 class MosaicId extends Id {
-  const MosaicId._(final BigInt id) : super(id);
-
   factory MosaicId({final BigInt id}) {
     if (id == null) {
-      throw errNullId;
+      throw _errNullId;
     }
 
-    return  MosaicId._(id);
+    return MosaicId._(id);
   }
 
-  static MosaicId fromId(final BigInt id) {
-    return  MosaicId(id: id);
-  }
+  const MosaicId._(final BigInt id) : super(id);
 
-  static MosaicId fromBigInt(final BigInt bigInt) {
-    if (bigInt == null) {
-      throw errNullBigInt;
+  MosaicId.fromId(final BigInt id) : super(id);
+
+  MosaicId.fromBigInt(final BigInt bigInt) : super(bigInt);
+
+  static MosaicId fromNonceAndOwner(int nonce, String ownerPublicKey) {
+    if (ownerPublicKey.length != 64) {
+      throw _errInvalidOwnerPublicKey;
     }
-    return  MosaicId(id: bigInt);
+
+    return MosaicId._(_generateMosaicId(nonce, ownerPublicKey));
   }
 
   @override
-  String toString() {
-    return '${this.toHex()}';
-  }
+  String toString() => '${toHex()}';
 
   @override
   int get hashCode => 'MosaicId'.hashCode ^ id.hashCode;
@@ -98,35 +85,31 @@ class MosaicId extends Id {
 }
 
 class MosaicIds {
-  List<MosaicId> _list = [];
+  final List<MosaicId> _list = [];
 
-  MosaicIds add(MosaicId id) {
+  void add(MosaicId id) {
     _list.add(id);
-    return this;
   }
 
   @override
-  String toString() {
-    return '{mosaicIds:$_list}';
-  }
+  String toString() => '{mosaicIds:$_list}';
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['mosaicIds'] = _list.map((id) => id.toHex()).toList();
     return data;
   }
 }
 
 class MosaicInfo {
-  MosaicInfo.fromDTO(_MosaicInfoDTO value) {
-    if (json == null) return;
-    mosaicId =  MosaicId(id: value.mosaic.mosaicId.toBigInt());
+  MosaicInfo.fromDTO(_MosaicInfoDTO value)
+      : assert(json != null, 'json must not be null') {
+    mosaicId = MosaicId(id: value.mosaic.mosaicId.toBigInt());
     supply = value.mosaic.supply.toBigInt();
     height = value.mosaic.height.toBigInt();
-    owner =
-         PublicAccount.fromPublicKey(value.mosaic.owner, ConfigNetworkType);
+    owner = PublicAccount.fromPublicKey(value.mosaic.owner, configNetworkType);
     revision = value.mosaic.revision;
-    properties =  MosaicProperties.fromJson(value.mosaic.properties);
+    properties = MosaicProperties.fromJson(value.mosaic.properties);
   }
 
   MosaicId mosaicId;
@@ -137,27 +120,23 @@ class MosaicInfo {
   MosaicProperties properties;
 
   @override
-  String toString() {
-    return '\n\t{\n'
-        '\t"mosaicId": ${mosaicId.toHex()},\n'
-        '\t"supply": $supply\n'
-        '\t"height": $height\n'
-        '\t"owner": $owner\n'
-        '\t"revision": $revision\n'
-        '\t"properties": $properties\n'
-        '\t}';
-  }
+  String toString() => '\n\t{\n'
+      '\t"mosaicId": ${mosaicId.toHex()},\n'
+      '\t"supply": $supply\n'
+      '\t"height": $height\n'
+      '\t"owner": $owner\n'
+      '\t"revision": $revision\n'
+      '\t"properties": $properties\n'
+      '\t}';
 
-  static List<MosaicInfo> listFromDTO(List<_MosaicInfoDTO> json) {
-    return json == null
-        ?  List<MosaicInfo>()
-        : json.map((value) =>  MosaicInfo.fromDTO(value)).toList();
-  }
+  static List<MosaicInfo> listFromDTO(List<_MosaicInfoDTO> json) => json == null
+      ? null
+      : json.map((value) => MosaicInfo.fromDTO(value)).toList();
 }
 
 class MosaicName {
-  MosaicName.fromDTO(_MosaicNameDTO value) {
-    if (json == null) return;
+  MosaicName.fromDTO(_MosaicNameDTO value)
+      : assert(json != null, 'json must not be null') {
     parentId = value.parentId == null
         ? MosaicId.fromId(value.parentId.toBigInt())
         : null;
@@ -172,30 +151,29 @@ class MosaicName {
   List<String> names;
 
   @override
-  String toString() {
-    return '{parentId:${parentId?.toHex()}, mosaicId:${mosaicId.toHex()}, names:$names}';
-  }
+  String toString() => '{parentId:${parentId?.toHex()},'
+      ' mosaicId:${mosaicId.toHex()},'
+      ' names:$names}';
 
-  static List<MosaicName> listFromDTO(List<_MosaicNameDTO> json) {
-    return json == null
-        ?  List<MosaicName>()
-        : json.map((value) =>  MosaicName.fromDTO(value)).toList();
-  }
+  static List<MosaicName> listFromDTO(List<_MosaicNameDTO> json) => json == null
+      ? null
+      : json.map((value) => MosaicName.fromDTO(value)).toList();
 }
 
 /// MosaicProperties  structure describes mosaic properties.
 class MosaicProperties {
+  // ignore: avoid_positional_boolean_parameters
   MosaicProperties(this.supplyMutable, this.transferable, this.levyMutable,
       this.divisibility, this.duration);
 
-  MosaicProperties.fromJson(List<UInt64DTO> value) {
-    if (json == null) throw errInvalidMosaicProperties;
+  MosaicProperties.fromJson(List<UInt64DTO> value)
+      : assert(json != null, 'mosaic Properties is not valid') {
 
     if (value.length < 3) {
-      throw errInvalidMosaicProperties;
+      throw _errInvalidMosaicProperties;
     }
 
-    final flags = "00" + value[0].toBigInt().toRadixString(2);
+    final flags = '00' + value[0].toBigInt().toRadixString(2);
     final bitMapFlags = flags.substring(flags.length - 3, flags.length);
 
     supplyMutable = bitMapFlags[2] == '1';
@@ -205,14 +183,14 @@ class MosaicProperties {
     duration = value[2].toBigInt();
   }
 
-  MosaicProperties.fromDTO(List<_MosaicPropertiesDTO> value) {
-    if (json == null) throw errInvalidMosaicProperties;
+  MosaicProperties.fromDTO(List<_MosaicPropertiesDTO> value)
+    : assert(json != null, 'mosaic Properties is not valid') {
 
     if (value.length < 3) {
-      throw errInvalidMosaicProperties;
+      throw _errInvalidMosaicProperties;
     }
 
-    final flags = "00" + value[0].value.toBigInt().toRadixString(2);
+    final flags = '00' + value[0].value.toBigInt().toRadixString(2);
     final bitMapFlags = flags.substring(flags.length - 3, flags.length);
 
     supplyMutable = bitMapFlags[2] == '1';
@@ -229,48 +207,33 @@ class MosaicProperties {
   BigInt duration;
 
   @override
-  String toString() {
-    return '{\n'
-        '\t"supplyMutable": $supplyMutable,\n'
-        '\t"transferable": $transferable,\n'
-        '\t"levyMutable": $levyMutable,\n'
-        '\t"divisibility": $divisibility,\n'
-        '\t"duratione": $duration\n'
-        '\t}';
-  }
-}
-
-MosaicId NewMosaicIdFromNonceAndOwner(int nonce, String ownerPublicKey) {
-  if (ownerPublicKey.length != 64) {
-    throw errInvalidOwnerPublicKey;
-  }
-
-  return MosaicId.fromId(_generateMosaicId(nonce, ownerPublicKey));
+  String toString() => '{\n'
+      '\t"supplyMutable": $supplyMutable,\n'
+      '\t"transferable": $transferable,\n'
+      '\t"levyMutable": $levyMutable,\n'
+      '\t"divisibility": $divisibility,\n'
+      '\t"duratione": $duration\n'
+      '\t}';
 }
 
 BigInt _generateMosaicId(int nonce, String ownerPublicKey) {
-  var nonceB =  Buffer.LittleEndian(4);
-  nonceB.writeInt32(nonce);
+  final nonceB = Buffer.littleEndian(4)..writeInt32(nonce);
 
-  var result = sha3.New256();
+  final result = sha3.New256()..update(nonceB.out, 0, nonceB.out.length);
 
-  result.update(nonceB.out, 0, nonceB.out.length);
+  final ownerBytes = hex.decode(ownerPublicKey);
 
-  var ownerBytes = hex.decode(ownerPublicKey);
+  final t = result.process(Uint8List.fromList(ownerBytes));
 
-  var t = result.process(Uint8List.fromList(ownerBytes));
+  List<dynamic> raw() => <dynamic>[
+        endianLittleUint32(t.getRange(0, 4).toList()),
+        endianLittleUint32(t.getRange(4, 8).toList()) & 0x7FFFFFFF
+      ];
 
-  List<dynamic> raw() {
-    return <dynamic>[
-      EndianLittleUint32(t.getRange(0, 4).toList()),
-      EndianLittleUint32(t.getRange(4, 8).toList()) & 0x7FFFFFFF
-    ];
-  }
-
-  return  UInt64DTO.fromJson(raw()).toBigInt();
+  return UInt64DTO.fromJson(raw()).toBigInt();
 }
 
-int MosaicNonce() {
-  var random = Random.secure();
+int mosaicNonce() {
+  final random = Random.secure();
   return random.nextInt(1000000000);
 }

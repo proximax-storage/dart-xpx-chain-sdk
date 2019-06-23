@@ -1,11 +1,11 @@
 part of xpx_chain_sdk;
 
 class _AliasDTO {
-  _AliasDTO.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    type = json['type'] as int;
-    mosaicId =  UInt64DTO.fromJson(json['mosaicId']);
-    address = json['address'] as String;
+  _AliasDTO.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    type = json['type'];
+    mosaicId = UInt64DTO.fromJson(json['mosaicId']);
+    address = json['address'];
   }
 
   int type;
@@ -15,7 +15,7 @@ class _AliasDTO {
   String address;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['type'] = type;
     data['mosaicId'] = mosaicId;
     data['address'] = address;
@@ -23,21 +23,15 @@ class _AliasDTO {
     return data;
   }
 
-  static List<_AliasDTO> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<_AliasDTO>()
-        : json
-            .map((dynamic value) =>
-                 _AliasDTO.fromJson(value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<_AliasDTO> listFromJson(List<dynamic> json) => json == null
+      ? null
+      : json.map((value) => _AliasDTO.fromJson(value)).toList();
 
   static Map<String, _AliasDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, _AliasDTO>();
+    final map = <String, _AliasDTO>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  _AliasDTO.fromJson(value));
+      json.forEach((key, value) => map[key] = _AliasDTO.fromJson(value));
     }
     return map;
   }

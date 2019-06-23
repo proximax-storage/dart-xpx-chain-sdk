@@ -1,13 +1,13 @@
 part of xpx_chain_sdk;
 
 class TransactionStatus {
-  TransactionStatus.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    group = json['group'] as String;
-    status = json['status'] as String;
-    hash = json['hash'] as String;
-    deadline =  Deadline.fromUInt64DTO(UInt64DTO.fromJson(json['deadline']));
-    height =  UInt64DTO.fromJson(json['height']).toBigInt();
+  TransactionStatus.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    group = json['group'];
+    status = json['status'];
+    hash = json['hash'];
+    deadline = Deadline.fromUInt64DTO(UInt64DTO.fromJson(json['deadline']));
+    height = UInt64DTO.fromJson(json['height']).toBigInt();
   }
 
   String group;
@@ -21,42 +21,36 @@ class TransactionStatus {
   BigInt height;
 
   @override
-  String toString() {
-    return '{\n'
-        '\tgroup: $group,\n'
-        '\tstatus: $status,\n'
-        '\thash: $hash,\n'
-        '\tdeadline: $deadline,\n'
-        '\theight: $height\n'
-        '}\n';
-  }
+  String toString() => '{\n'
+      '\tgroup: $group,\n'
+      '\tstatus: $status,\n'
+      '\thash: $hash,\n'
+      '\tdeadline: $deadline,\n'
+      '\theight: $height\n'
+      '}\n';
 
-  static List<TransactionStatus> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<TransactionStatus>()
-        : json
-            .map((dynamic value) =>  TransactionStatus.fromJson(
-                value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<TransactionStatus> listFromJson(List<dynamic> json) =>
+      json == null
+          ? null
+          : json.map((value) => TransactionStatus.fromJson(value)).toList();
 
   static Map<String, TransactionStatus> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, TransactionStatus>();
+    final map = <String, TransactionStatus>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  TransactionStatus.fromJson(value));
+      json.forEach(
+          (key, value) => map[key] = TransactionStatus.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['group'] = this.group;
-    data['status'] = this.status;
-    data['hash'] = this.hash;
-    data['deadline'] = this.deadline;
-    data['height'] = this.height;
+    final data = <String, dynamic>{};
+    data['group'] = group;
+    data['status'] = status;
+    data['hash'] = hash;
+    data['deadline'] = deadline;
+    data['height'] = height;
 
     return data;
   }

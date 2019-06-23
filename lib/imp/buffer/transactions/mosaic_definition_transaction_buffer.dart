@@ -4,11 +4,12 @@
 part of xpx_chain_sdk.buffer;
 
 class MosaicDefinitionTransactionBuffer {
-  MosaicDefinitionTransactionBuffer._(this._bc, this._bcOffset);
   factory MosaicDefinitionTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  MosaicDefinitionTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<MosaicDefinitionTransactionBuffer> reader =
       _MosaicDefinitionTransactionBufferReader();
@@ -42,9 +43,21 @@ class MosaicDefinitionTransactionBuffer {
       .vTableGet(_bc, _bcOffset, 30, null);
 
   @override
-  String toString() {
-    return 'MosaicDefinitionTransactionBuffer{size: $size, signature: $signature, signer: $signer, version: $version, type: $type, fee: $fee, deadline: $deadline, mosaicNonce: $mosaicNonce, mosaicId: $mosaicId, numOptionalProperties: $numOptionalProperties, flags: $flags, divisibility: $divisibility, indicateDuration: $indicateDuration, duration: $duration}';
-  }
+  String toString() => 'MosaicDefinitionTransactionBuffer{'
+      'size: $size,'
+      ' signature: $signature,'
+      ' signer: $signer,'
+      ' version: $version,'
+      ' type: $type,'
+      ' fee: $fee,'
+      ' deadline: $deadline,'
+      ' mosaicNonce: $mosaicNonce,'
+      ' mosaicId: $mosaicId,'
+      ' numOptionalProperties: $numOptionalProperties,'
+      ' flags: $flags,'
+      ' divisibility: $divisibility,'
+      ' indicateDuration: $indicateDuration,'
+      ' duration: $duration}';
 }
 
 class _MosaicDefinitionTransactionBufferReader
@@ -54,13 +67,12 @@ class _MosaicDefinitionTransactionBufferReader
   @override
   MosaicDefinitionTransactionBuffer createObject(
           fb.BufferContext bc, int offset) =>
-       MosaicDefinitionTransactionBuffer._(bc, offset);
+      MosaicDefinitionTransactionBuffer._(bc, offset);
 }
 
 class MosaicDefinitionTransactionBufferBuilder {
-  MosaicDefinitionTransactionBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  MosaicDefinitionTransactionBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -138,13 +150,10 @@ class MosaicDefinitionTransactionBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class MosaicDefinitionTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-
   MosaicDefinitionTransactionBufferObjectBuilder({
     int size,
     List<int> signature,
@@ -193,7 +202,7 @@ class MosaicDefinitionTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
@@ -244,8 +253,8 @@ class MosaicDefinitionTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }

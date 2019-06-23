@@ -2,15 +2,15 @@ part of xpx_chain_sdk;
 
 class BlockInfo {
   BlockInfo.fromDTO(_BlockInfoDTO v) {
-    networkType = ExtractNetworkType(v.block.version as int);
+    networkType = extractNetworkType(v.block.version);
     hash = v.meta.hash;
     generationHash = v.meta.generationHash;
     totalFee = v.meta.totalFee.toBigInt();
-    numTransactions = v.meta.numTransactions as int;
+    numTransactions = v.meta.numTransactions;
     signature = v.block.signature;
-    signer =  PublicAccount.fromPublicKey(v.block.signer, networkType);
-    version = v.block.version as int;
-    type = v.block.type as int;
+    signer = PublicAccount.fromPublicKey(v.block.signer, networkType);
+    version = v.block.version;
+    type = v.block.type;
     height = v.block.height.toBigInt();
     timestamp = v.block.timestamp.toBigInt();
     difficulty = v.block.difficulty.toBigInt();
@@ -34,27 +34,25 @@ class BlockInfo {
   String blockTransactionsHash;
 
   @override
-  String toString() {
-    return '{\n'
-        '\tnetworkType: $networkType,\n'
-        '\thash: $hash,\n'
-        '\tgenerationHash: $generationHash,\n'
-        '\ttotalFee: $totalFee,\n'
-        '\tnumTransactions: $numTransactions,\n'
-        '\tsignature: $signature,\n'
-        '\tsigner: $signer\n'
-        '\tversion: $version,\n'
-        '\ttype: $type,\n'
-        '\theight: $height,\n'
-        '\ttimestamp: $timestamp,\n'
-        '\tdifficulty: $difficulty,\n'
-        '\tpreviousBlockHash: $previousBlockHash,\n'
-        '\tblockTransactionsHash: $blockTransactionsHash,\n'
-        '}\n';
-  }
+  String toString() => '{\n'
+      '\tnetworkType: $networkType,\n'
+      '\thash: $hash,\n'
+      '\tgenerationHash: $generationHash,\n'
+      '\ttotalFee: $totalFee,\n'
+      '\tnumTransactions: $numTransactions,\n'
+      '\tsignature: $signature,\n'
+      '\tsigner: $signer\n'
+      '\tversion: $version,\n'
+      '\ttype: $type,\n'
+      '\theight: $height,\n'
+      '\ttimestamp: $timestamp,\n'
+      '\tdifficulty: $difficulty,\n'
+      '\tpreviousBlockHash: $previousBlockHash,\n'
+      '\tblockTransactionsHash: $blockTransactionsHash,\n'
+      '}\n';
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['networkType'] = networkType;
     data['hash'] = hash;
     data['generationHash'] = generationHash;
@@ -73,11 +71,9 @@ class BlockInfo {
     return data;
   }
 
-  static List<BlockInfo> listFromDTO(List<_BlockInfoDTO> json) {
-    return json == null
-        ?  List<BlockInfo>()
-        : json.map((value) =>  BlockInfo.fromDTO(value)).toList();
-  }
+  static List<BlockInfo> listFromDTO(List<_BlockInfoDTO> json) => json == null
+          ? null
+      : json.map((value) => BlockInfo.fromDTO(value)).toList();
 }
 
 class Height {
@@ -88,46 +84,40 @@ class Height {
   BigInt height;
 
   @override
-  String toString() {
-    return '{height: $height}';
-  }
+  String toString() => '{height: $height}';
 
   Map<String, dynamic> toDto() {
-    var dto =  UInt64DTO.fromBigInt(this.height);
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final dto = UInt64DTO.fromBigInt(height);
+    final data = <String, dynamic>{};
     data['height'] = dto;
     return data;
   }
 }
 
 class BlockchainScore {
-  BlockchainScore.fromDTO(_BlockchainScoreDTO value) {
-    if (json == null) return;
-    List<dynamic> raw() {
-      return <dynamic>[
-        value.scoreLow.toBigInt().toInt(),
-        value.scoreHigh.toBigInt().toInt()
-      ];
-    }
+  BlockchainScore.fromDTO(_BlockchainScoreDTO value)
+      : assert(json != null, 'json must not be null') {
+    List<dynamic> raw() => <dynamic>[
+          value.scoreLow.toBigInt().toInt(),
+          value.scoreHigh.toBigInt().toInt()
+        ];
 
-    var t = UInt64DTO.fromJson(raw()).toBigInt();
+    final t = UInt64DTO.fromJson(raw()).toBigInt();
     score = t;
   }
 
   BigInt score;
 
   @override
-  String toString() {
-    return '$score';
-  }
+  String toString() => '$score';
 }
 
 class BlockchainStorageInfo {
-  BlockchainStorageInfo.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    numBlocks = json['numBlocks'] as int;
-    numTransactions = json['numTransactions'] as int;
-    numAccounts = json['numAccounts'] as int;
+  BlockchainStorageInfo.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    numBlocks = json['numBlocks'];
+    numTransactions = json['numTransactions'];
+    numAccounts = json['numAccounts'];
   }
 
   int numBlocks;
@@ -137,12 +127,13 @@ class BlockchainStorageInfo {
   int numAccounts;
 
   @override
-  String toString() {
-    return '{numBlocks:$numBlocks, numTransactions:$numTransactions, numAccounts:$numAccounts}';
-  }
+  String toString() =>
+      '{numBlocks:$numBlocks,'
+          ' numTransactions:$numTransactions,'
+          ' numAccounts:$numAccounts}';
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['numBlocks'] = numBlocks;
     data['numTransactions'] = numTransactions;
     data['numAccounts'] = numAccounts;

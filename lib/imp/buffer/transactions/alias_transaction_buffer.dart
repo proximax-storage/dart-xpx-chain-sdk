@@ -4,11 +4,12 @@
 part of xpx_chain_sdk.buffer;
 
 class AliasTransactionBuffer {
-  AliasTransactionBuffer._(this._bc, this._bcOffset);
   factory AliasTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  AliasTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<AliasTransactionBuffer> reader =
       _AliasTransactionBufferReader();
@@ -31,14 +32,23 @@ class AliasTransactionBuffer {
   List<int> get namespaceId => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 20, null);
 
-  ///  In case of address it is 25 bytes array. In case of mosaic it is 8 byte array(or 2 uint32 array)
+  ///  In case of address it is 25 bytes array. In case of mosaic
+  ///  it is 8 byte array(or 2 uint32 array)
   List<int> get aliasId => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 22, null);
 
   @override
-  String toString() {
-    return 'AliasTransactionBuffer{size: $size, signature: $signature, signer: $signer, version: $version, type: $type, maxFee: $maxFee, deadline: $deadline, actionType: $actionType, namespaceId: $namespaceId, aliasId: $aliasId}';
-  }
+  String toString() => 'AliasTransactionBuffer{'
+      'size: $size,'
+      ' signature: $signature,'
+      ' signer: $signer,'
+      ' version: $version,'
+      ' type: $type,'
+      ' maxFee: $maxFee,'
+      ' deadline: $deadline,'
+      ' actionType: $actionType,'
+      ' namespaceId: $namespaceId,'
+      ' aliasId: $aliasId}';
 }
 
 class _AliasTransactionBufferReader
@@ -47,13 +57,12 @@ class _AliasTransactionBufferReader
 
   @override
   AliasTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-       AliasTransactionBuffer._(bc, offset);
+      AliasTransactionBuffer._(bc, offset);
 }
 
 class AliasTransactionBufferBuilder {
-  AliasTransactionBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  AliasTransactionBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -111,13 +120,10 @@ class AliasTransactionBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class AliasTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-
   AliasTransactionBufferObjectBuilder({
     int size,
     List<int> signature,
@@ -154,7 +160,7 @@ class AliasTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
@@ -201,8 +207,8 @@ class AliasTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }

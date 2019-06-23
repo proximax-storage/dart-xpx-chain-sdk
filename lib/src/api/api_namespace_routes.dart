@@ -8,60 +8,61 @@ class NamespaceRoutesApi {
 
   Future<List<NamespaceInfo>> buildNamespacesHierarchy(
       List<NamespaceInfo> namespaceIds) async {
-    for (int i = 0; i < namespaceIds.length; i++)
+    for (int i = 0; i < namespaceIds.length; i++) {
       if (namespaceIds[i].parent != null) {
         namespaceIds[i].parent = await buildNamespaceHierarchy(namespaceIds[i]);
       }
-
+    }
     return namespaceIds;
   }
 
   Future<NamespaceInfo> buildNamespaceHierarchy(NamespaceInfo namespaceId) =>
-      GetNamespace(namespaceId.parent.namespaceId);
+      getNamespace(namespaceId.parent.namespaceId);
 
   /// Get namespace information
   ///
   /// Gets a [NamespaceInfo] for a given namespaceId.
-  Future<NamespaceInfo> GetNamespace(NamespaceId namespaceId) async {
+  Future<NamespaceInfo> getNamespace(NamespaceId namespaceId) async {
     Object postBody;
 
     // verify required params are set
     if (namespaceId == null) {
-      throw  ApiException(400, "Missing required param: namespaceId");
+      throw ApiException(400, 'Missing required param: namespaceId');
     }
 
-    var nsId = namespaceId.toHex();
+    final nsId = namespaceId.toHex();
 
     // create path and map variables
-    String path = "/namespace/{namespaceId}"
-        .replaceAll("{format}", "json")
-        .replaceAll("{" + "namespaceId" + "}", nsId);
+    final String path = '/namespace/{namespaceId}'
+        .replaceAll('{format}', 'json')
+        .replaceAll('{namespaceId}', nsId);
     // query params
-    List<QueryParam> queryParams = [];
-    Map<String, String> headerParams = {};
-    Map<String, String> formParams = {};
+    final List<QueryParam> queryParams = [];
+    final Map<String, String> headerParams = {};
+    final Map<String, String> formParams = {};
 
-    List<String> contentTypes = [];
+    final List<String> contentTypes = [];
 
-    String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
+    final String contentType =
+        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
 
-    if (contentType.startsWith("multipart/form-data")) {
-      bool hasFields = false;
-      http.MultipartRequest mp =  http.MultipartRequest(null, null);
+    if (contentType.startsWith('multipart/form-data')) {
+      const bool hasFields = false;
+      final http.MultipartRequest mp = http.MultipartRequest(null, null);
 
-      if (hasFields) postBody = mp;
+      if (hasFields) {
+        postBody = mp;
+      }
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType);
+    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw  ApiException(response.statusCode, response.body);
+      throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      var resp = apiClient.deserialize(response.body, '_NamespaceInfoDTO')
-          as _NamespaceInfoDTO;
-      var ns =  NamespaceInfo.fromDTO(resp);
+      final resp = apiClient.deserialize(response.body, '_NamespaceInfoDTO');
+      final ns = NamespaceInfo.fromDTO(resp);
 
       if (ns.parent != null) {
         ns.parent = await buildNamespaceHierarchy(ns);
@@ -75,53 +76,55 @@ class NamespaceRoutesApi {
   /// Get namespaces owned by an account
   ///
   /// Gets an List of [NamespaceInfo] for a given account address.
-  Future<List<NamespaceInfo>> GetNamespacesFromAccount(Address accountIds,
+  Future<List<NamespaceInfo>> getNamespacesFromAccount(Address accountIds,
       {int pageSize, String id}) async {
     Object postBody;
 
     // verify required params are set
     if (accountIds == null) {
-      throw  ApiException(400, "Missing required param: accountId");
+      throw ApiException(400, 'Missing required param: accountId');
     }
 
     // create path and map variables
-    String path = "/account/{accountId}/namespaces"
-        .replaceAll("{format}", "json")
-        .replaceAll("{" + "accountId" + "}", accountIds.address);
+    final String path = '/account/{accountId}/namespaces'
+        .replaceAll('{format}', 'json')
+        .replaceAll('{accountId}', accountIds.address);
 
     // query params
-    List<QueryParam> queryParams = [];
-    Map<String, String> headerParams = {};
-    Map<String, String> formParams = {};
+    final List<QueryParam> queryParams = [];
+    final Map<String, String> headerParams = {};
+    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
-          _convertParametersForCollectionFormat("", "pageSize", pageSize));
+          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
     }
     if (id != null) {
-      queryParams.addAll(_convertParametersForCollectionFormat("", "id", id));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
 
-    List<String> contentTypes = [];
+    final List<String> contentTypes = [];
 
-    String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
+    final String contentType =
+        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
 
-    if (contentType.startsWith("multipart/form-data")) {
-      bool hasFields = false;
-      http.MultipartRequest mp =  http.MultipartRequest(null, null);
+    if (contentType.startsWith('multipart/form-data')) {
+      const bool hasFields = false;
+      final http.MultipartRequest mp = http.MultipartRequest(null, null);
 
-      if (hasFields) postBody = mp;
+      if (hasFields) {
+        postBody = mp;
+      }
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
-        headerParams, formParams, contentType);
+    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
+        postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw  ApiException(response.statusCode, response.body);
+      throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      var resp = (apiClient.deserialize(
-              response.body, 'List<_NamespaceInfoDTO>') as List)
-          .map((dynamic item) => item as _NamespaceInfoDTO)
+      final List resp = apiClient
+          .deserialize(response.body, 'List<_NamespaceInfoDTO>')
+          .map((item) => item)
           .toList();
       final nss = NamespaceInfo.listFromDTO(resp);
 
@@ -134,51 +137,53 @@ class NamespaceRoutesApi {
   /// Get namespaces for given List of addresses
   ///
   /// Gets namespaces for a given List of addresses.
-  Future<List<NamespaceInfo>> GetNamespacesFromAccounts(Addresses addresses,
+  Future<List<NamespaceInfo>> getNamespacesFromAccounts(Addresses addresses,
       {int pageSize, String id}) async {
     Object postBody = addresses;
 
     // verify required params are set
     if (addresses == null) {
-      throw  ApiException(400, "Missing required param: addresses");
+      throw ApiException(400, 'Missing required param: addresses');
     }
 
     // create path and map variables
-    String path = "/account/namespaces".replaceAll("{format}", "json");
+    final String path = '/account/namespaces'.replaceAll('{format}', 'json');
 
     // query params
-    List<QueryParam> queryParams = [];
-    Map<String, String> headerParams = {};
-    Map<String, String> formParams = {};
+    final List<QueryParam> queryParams = [];
+    final Map<String, String> headerParams = {};
+    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
-          _convertParametersForCollectionFormat("", "pageSize", pageSize));
+          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
     }
     if (id != null) {
-      queryParams.addAll(_convertParametersForCollectionFormat("", "id", id));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
 
-    List<String> contentTypes = [];
+    final List<String> contentTypes = [];
 
-    String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
+    final String contentType =
+        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
 
-    if (contentType.startsWith("multipart/form-data")) {
-      bool hasFields = false;
-      http.MultipartRequest mp =  http.MultipartRequest(null, null);
+    if (contentType.startsWith('multipart/form-data')) {
+      const bool hasFields = false;
+      final http.MultipartRequest mp = http.MultipartRequest(null, null);
 
-      if (hasFields) postBody = mp;
+      if (hasFields) {
+        postBody = mp;
+      }
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'POST', queryParams,
+    final response = await apiClient.invokeAPI(path, 'POST', queryParams,
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw  ApiException(response.statusCode, response.body);
+      throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      var resp = (apiClient.deserialize(
-              response.body, 'List<_NamespaceInfoDTO>') as List)
-          .map((dynamic item) => item as _NamespaceInfoDTO)
+      final List resp = apiClient
+          .deserialize(response.body, 'List<_NamespaceInfoDTO>')
+          .map((item) => item)
           .toList();
 
       final nss = NamespaceInfo.listFromDTO(resp);
@@ -192,46 +197,48 @@ class NamespaceRoutesApi {
   /// Get readable names for a set of namespaces
   ///
   /// Returns a [NamespaceName] friendly names for mosaics.
-  Future<List<NamespaceName>> GetNamespacesNames(NamespaceIds nsIds) async {
+  Future<List<NamespaceName>> getNamespacesNames(NamespaceIds nsIds) async {
     Object postBody = nsIds;
 
     // verify required params are set
     if (nsIds == null) {
-      throw  ApiException(400, "Missing required param: namespaceIds");
+      throw ApiException(400, 'Missing required param: namespaceIds');
     }
 
     if (nsIds.namespaceIds.isEmpty) {
-      throw errEmptyNamespaceIds;
+      throw _errEmptyNamespaceIds;
     }
     // create path and map variables
-    String path = "/namespace/names".replaceAll("{format}", "json");
+    final String path = '/namespace/names'.replaceAll('{format}', 'json');
 
     // query params
-    List<QueryParam> queryParams = [];
-    Map<String, String> headerParams = {};
-    Map<String, String> formParams = {};
+    final List<QueryParam> queryParams = [];
+    final Map<String, String> headerParams = {};
+    final Map<String, String> formParams = {};
 
-    List<String> contentTypes = [];
+    final List<String> contentTypes = [];
 
-    String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
+    final String contentType =
+        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
 
-    if (contentType.startsWith("multipart/form-data")) {
-      bool hasFields = false;
-      http.MultipartRequest mp =  http.MultipartRequest(null, null);
+    if (contentType.startsWith('multipart/form-data')) {
+      const bool hasFields = false;
+      final http.MultipartRequest mp = http.MultipartRequest(null, null);
 
-      if (hasFields) postBody = mp;
+      if (hasFields) {
+        postBody = mp;
+      }
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'POST', queryParams,
+    final response = await apiClient.invokeAPI(path, 'POST', queryParams,
         postBody, headerParams, formParams, contentType);
 
     if (response.statusCode >= 400) {
-      throw  ApiException(response.statusCode, response.body);
+      throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = (apiClient.deserialize(
-              response.body, 'List<_NamespaceNameDTO>') as List)
-          .map((dynamic item) => item as _NamespaceNameDTO)
+      final List resp = apiClient
+          .deserialize(response.body, 'List<_NamespaceNameDTO>')
+          .map((item) => item)
           .toList();
       return NamespaceName.listFromDTO(resp);
     } else {

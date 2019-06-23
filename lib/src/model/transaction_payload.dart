@@ -1,35 +1,26 @@
 part of xpx_chain_sdk;
 
 class TransactionPayload {
-  TransactionPayload.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    payload = json['payload'] as String;
+  TransactionPayload.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    payload = json['payload'];
   }
 
   String payload;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['payload'] = this.payload;
+  Map<String, dynamic> toJson() => {'payload': payload};
 
-    return data;
-  }
-
-  static List<TransactionPayload> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<TransactionPayload>()
-        : json
-            .map((dynamic value) =>
-                 TransactionPayload.fromJson(value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<TransactionPayload> listFromJson(List<dynamic> json) =>
+      json == null
+          ? null
+          : json.map((value) => TransactionPayload.fromJson(value)).toList();
 
   static Map<String, TransactionPayload> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, TransactionPayload>();
+    final map = <String, TransactionPayload>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  TransactionPayload.fromJson(value));
+      json.forEach(
+          (key, value) => map[key] = TransactionPayload.fromJson(value));
     }
     return map;
   }

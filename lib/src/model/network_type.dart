@@ -21,10 +21,10 @@ const Map<String, int> addressNet = {
 class NetworkType {
   NetworkType._(this.name, this.description);
 
-  NetworkType.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    this.name = json['name'] as String;
-    this.description = json['description'] as String;
+  NetworkType.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    name = json['name'];
+    description = json['description'];
   }
 
   String name;
@@ -32,33 +32,31 @@ class NetworkType {
   String description;
 
   @override
-  String toString() {
-    return '{name:$name, description=$description}';
-  }
+  String toString() => '{name:$name, description=$description}';
 
   static int getType(int networkType) {
     switch (networkType) {
       case mijin:
-        return addressNet["M"];
+        return addressNet['M'];
       case mijinTest:
-        return addressNet["S"];
+        return addressNet['S'];
       case public:
-        return addressNet["X"];
+        return addressNet['X'];
       case publicTest:
-        return addressNet["V"];
+        return addressNet['V'];
       case private:
-        return addressNet["Z"];
+        return addressNet['Z'];
       case privateTest:
-        return addressNet["W"];
+        return addressNet['W'];
       default:
         return notSupportedNet;
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['name'] = this.name;
-    data['description'] = this.description;
+    final data = <String, dynamic>{};
+    data['name'] = name;
+    data['description'] = description;
 
     return data;
   }
