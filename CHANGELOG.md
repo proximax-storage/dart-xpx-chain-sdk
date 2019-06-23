@@ -1,3 +1,15 @@
+## 0.0.3+2
+
+### Updates
+[UPDATE] Reformat style.
+
+[UPDATE] rename Config Class.
+
+[UPDATE] refactor Client Class to ApiClient.
+
+[UPDATE] examples.
+
+
 ## 0.0.3+1
 
 - Initial version, created by Eleazar Garrido.
@@ -24,4 +36,3 @@
 [FIXED] Undefined name 'HEX'.
 
 [DELETED] removed unused functions.
-

@@ -1,5 +1,5 @@
 name: xpx_chain_sdk
-version: 0.0.3+1
+version: 0.0.3+2
 description: Official ProximaX Sirius Blockchain SDK Library in Dart.
 author: 'Eleazar Garrido <eleazar.garrido@proximax.io>'
 homepage: https://www.proximax.io
