@@ -45,8 +45,9 @@ class Mosaic {
     return data;
   }
 
-  static List<Mosaic> listFromDTO(List<_MosaicDTO> json) =>
-      json == null ? <Mosaic>[] : json.map((value) => Mosaic.fromDTO(value)).toList();
+  static List<Mosaic> listFromDTO(List<_MosaicDTO> json) => json == null
+      ? <Mosaic>[]
+      : json.map((value) => Mosaic.fromDTO(value)).toList();
 }
 
 class MosaicId extends Id {
@@ -137,7 +138,7 @@ class MosaicInfo {
 class MosaicName {
   MosaicName.fromDTO(_MosaicNameDTO value)
       : assert(json != null, 'json must not be null') {
-    parentId = value.parentId == null
+    parentId = value.parentId != null
         ? MosaicId.fromId(value.parentId.toBigInt())
         : null;
     mosaicId = MosaicId.fromId(value.mosaicId.toBigInt());
@@ -168,7 +169,6 @@ class MosaicProperties {
 
   MosaicProperties.fromJson(List<UInt64DTO> value)
       : assert(json != null, 'mosaic Properties is not valid') {
-
     if (value.length < 3) {
       throw _errInvalidMosaicProperties;
     }
@@ -184,8 +184,7 @@ class MosaicProperties {
   }
 
   MosaicProperties.fromDTO(List<_MosaicPropertiesDTO> value)
-    : assert(json != null, 'mosaic Properties is not valid') {
-
+      : assert(json != null, 'mosaic Properties is not valid') {
     if (value.length < 3) {
       throw _errInvalidMosaicProperties;
     }

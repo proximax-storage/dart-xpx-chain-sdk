@@ -198,7 +198,9 @@ class Deadline {
   Deadline.fromUInt64DTO(UInt64DTO data)
       : assert(data.lower != null || data.higher == null,
             'lower or higher must not be null') {
-    value = DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt());
+    value = data.toBigInt() != null
+        ? DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt())
+        : null;
   }
 
   DateTime value;
@@ -465,7 +467,6 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
             value._meta._merkleComponentHash) {
     type = transactionTypeFromRaw(value._transaction.type);
     deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
-
     signature = value._transaction.signature;
     networkType = extractNetworkType(value._transaction.version);
     version = extractVersion(value._transaction.version);
@@ -592,7 +593,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       this.networkType = networkType;
       namspaceName = rootNamespaceName;
       namespaceType = NamespaceType.root;
-      duration = duration;
+      this.duration = duration;
     }
   }
 
@@ -747,7 +748,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       mosaicProperties = mosaicProps;
       // Signer of transaction must be the same with ownerPublicKey
       mosaicId = MosaicId.fromNonceAndOwner(nonce, ownerPublicKey);
-      duration = duration;
+      this.duration = duration;
     }
   }
 
@@ -866,10 +867,10 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
       version = _mosaicSupplyChangeVersion;
       this.deadline = deadline;
       type = transactionTypeFromRaw(16973);
-      networkType = networkType;
-      mosaicId = mosaicId;
+      this.networkType = networkType;
+      this.mosaicId = mosaicId;
       mosaicSupplyType = supplyType;
-      delta = delta;
+      this.delta = delta;
     }
   }
 

@@ -1,3 +1,32 @@
+## 0.0.3+3
+
+### Updates
+[UPDATE] Reformat style.
+
+[UPDATE] Update example.
+
+
+### Fixed bugs
+[FIXED] fixed bug in Deadline null
+
+[FIXED] fixed bug in MosaicSupplyChangeTransaction
+
+[FIXED] fixed bug in duration MosaicDefinition
+
+[FIXED] fixed bug in duration namespace
+
+[FIXED] fixed bug in _MessageDTO null
+
+[FIXED] fixed bug in parentId null
+
+[FIXED] fixed bug in List _MosaicNameDTO
+
+[FIXED] fixed bug in List _MosaicInfoDTO
+
+[FIXED] fixed bug in List _BlockInfoDTO
+
+[FIXED] fixed bug in BlockInfoDTO
+
 ## 0.0.3+2
 
 ### Updates

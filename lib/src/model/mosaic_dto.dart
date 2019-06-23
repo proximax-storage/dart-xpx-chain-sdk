@@ -20,7 +20,7 @@ class _MosaicDTO {
   }
 
   static List<_MosaicDTO> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => _MosaicDTO.fromJson(value)).toList();
 
   static Map<String, _MosaicDTO> mapFromJson(
@@ -54,7 +54,7 @@ class _MosaicInfoDTO {
   }
 
   static List<_MosaicInfoDTO> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => _MosaicInfoDTO.fromJson(value)).toList();
 
   static Map<String, _MosaicInfoDTO> mapFromJson(
@@ -76,7 +76,7 @@ class _MosaicMetaDTO {
   String id;
 
   static List<_MosaicMetaDTO> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => _MosaicMetaDTO.fromJson(value)).toList();
 
   static Map<String, _MosaicMetaDTO> mapFromJson(
@@ -121,7 +121,9 @@ class _MosaicDefinitionDTO {
 class _MosaicNameDTO {
   _MosaicNameDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    parentId = UInt64DTO.fromJson(json['parentId']);
+    parentId =
+        json['parentId'] != null ? UInt64DTO.fromJson(json['parentId']) : null;
+
     mosaicId = UInt64DTO.fromJson(json['mosaicId']);
     names = List.from(json['names']);
   }
@@ -133,7 +135,7 @@ class _MosaicNameDTO {
   List<String> names;
 
   static List<_MosaicNameDTO> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => _MosaicNameDTO.fromJson(value)).toList();
 
   static Map<String, _MosaicNameDTO> mapFromJson(

@@ -93,10 +93,12 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp = apiClient
-          .deserialize(response.body, 'List<_MosaicInfoDTO>')
-          .map((item) => item)
-          .toList();
+      final resp =
+          // ignore: avoid_as
+          (apiClient.deserialize(response.body, 'List<_MosaicInfoDTO>') as List)
+              // ignore: avoid_as
+              .map((item) => item as _MosaicInfoDTO)
+              .toList();
       return MosaicInfo.listFromDTO(resp);
     } else {
       return null;
@@ -142,10 +144,13 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp = apiClient
-          .deserialize(response.body, 'List<_MosaicNameDTO>')
-          .map((item) => item)
-          .toList();
+      // ignore: avoid_as
+      final resp =
+          // ignore: avoid_as
+          (apiClient.deserialize(response.body, 'List<_MosaicNameDTO>') as List)
+              // ignore: avoid_as
+              .map((item) => item as _MosaicNameDTO)
+              .toList();
       return MosaicName.listFromDTO(resp);
     } else {
       return null;

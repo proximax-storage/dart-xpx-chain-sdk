@@ -128,7 +128,7 @@ class _BlockMetaDTO {
   num numTransactions;
 
   static List<_BlockMetaDTO> listFromJson(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => _BlockMetaDTO.fromJson(value)).toList();
 
   static Map<String, _BlockMetaDTO> mapFromJson(

@@ -143,7 +143,7 @@ class NamespaceInfo {
       '}\n';
 
   static List<NamespaceInfo> listFromDTO(List<dynamic> json) => json == null
-          ? null
+      ? null
       : json.map((value) => NamespaceInfo.fromDTO(value)).toList();
 
   Map<String, dynamic> toJson() {

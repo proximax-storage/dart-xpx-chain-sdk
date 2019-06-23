@@ -40,6 +40,7 @@ class Alias {
     return data;
   }
 
-  static List<Alias> listFromJson(List<dynamic> json) =>
-      json == null ? <Alias>[] : json.map((value) => Alias.fromDTO(value)).toList();
+  static List<Alias> listFromJson(List<dynamic> json) => json == null
+      ? <Alias>[]
+      : json.map((value) => Alias.fromDTO(value)).toList();
 }

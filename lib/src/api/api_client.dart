@@ -88,7 +88,7 @@ class _ApiClient {
           return AnnounceTransactionInfoDTO.fromJson(value);
         case 'BlockDTO':
           return _BlockDTO.fromJson(value);
-        case 'BlockInfoDTO':
+        case '_BlockInfoDTO':
           return _BlockInfoDTO.fromJson(value);
         case 'BlockMetaDTO':
           return _BlockMetaDTO.fromJson(value);
