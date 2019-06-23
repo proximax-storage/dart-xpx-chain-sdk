@@ -137,7 +137,7 @@ class MosaicInfo {
 class MosaicName {
   MosaicName.fromDTO(_MosaicNameDTO value)
       : assert(json != null, 'json must not be null') {
-    parentId = value.parentId == null
+    parentId = value.parentId != null
         ? MosaicId.fromId(value.parentId.toBigInt())
         : null;
     mosaicId = MosaicId.fromId(value.mosaicId.toBigInt());
