@@ -90,7 +90,7 @@ class BlockchainRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, 'BlockInfoDTO');
+      final resp = apiClient.deserialize(response.body, '_BlockInfoDTO');
       return BlockInfo.fromDTO(resp);
     } else {
       return null;
@@ -296,9 +296,11 @@ class BlockchainRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp = apiClient
-          .deserialize(response.body, 'List<BlockInfoDTO>')
-          .map((item) => item)
+      // ignore: avoid_as
+      final resp = (apiClient
+          .deserialize(response.body, 'List<_BlockInfoDTO>') as List)
+          // ignore: avoid_as
+          .map((item) => item as _BlockInfoDTO)
           .toList();
       return BlockInfo.listFromDTO(resp);
     } else {
