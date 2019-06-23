@@ -10,9 +10,9 @@ class QueryParam {
   String value;
 }
 
-Client newClient(NewConfig conf, http.Client client) {
+Client newClient(Config conf, http.Client client) {
   // ignore: parameter_assignments
-  conf ??= NewConfig('http://127.0.0.1:3000', mijinTest);
+  conf ??= Config('http://127.0.0.1:3000', mijinTest);
 
   // ignore: parameter_assignments
   client ??= http.Client();
@@ -45,7 +45,7 @@ class Client {
 class ApiClient {
   ApiClient(this.conf, this._client);
 
-  NewConfig conf;
+  Config conf;
 
   final http.Client _client;
 
