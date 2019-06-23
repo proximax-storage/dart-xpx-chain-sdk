@@ -1,28 +1,28 @@
 part of xpx_chain_sdk.buffer;
 
 Schema transferTransactionSchema() {
-  List<SchemaAttribute> schemaDefinition = [
-    _newScalarAttribute("size", intSize),
-    _newArrayAttribute("signature", byteSize),
-    _newArrayAttribute("signer", byteSize),
-    _newScalarAttribute("version", shortSize),
-    _newScalarAttribute("type", shortSize),
-    _newArrayAttribute("fee", intSize),
-    _newArrayAttribute("deadline", intSize),
-    _newArrayAttribute("recipient", byteSize),
-    _newScalarAttribute("messageSize", shortSize),
-    _newScalarAttribute("numMosaics", byteSize),
+  final List<SchemaAttribute> schemaDefinition = [
+    _newScalarAttribute('size', _intSize),
+    _newArrayAttribute('signature', _byteSize),
+    _newArrayAttribute('signer', _byteSize),
+    _newScalarAttribute('version', _shortSize),
+    _newScalarAttribute('type', _shortSize),
+    _newArrayAttribute('fee', _intSize),
+    _newArrayAttribute('deadline', _intSize),
+    _newArrayAttribute('recipient', _byteSize),
+    _newScalarAttribute('messageSize', _shortSize),
+    _newScalarAttribute('numMosaics', _byteSize),
     _newTableAttribute(
-        "message",
+        'message',
         Schema([
-          _newScalarAttribute("type", byteSize),
-          _newArrayAttribute("payload", byteSize)
+          _newScalarAttribute('type', _byteSize),
+          _newArrayAttribute('payload', _byteSize)
         ]).schemaDefinition),
     _newTableArrayAttribute(
-        "mosaics",
+        'mosaics',
         Schema([
-          _newArrayAttribute("id", intSize),
-          _newArrayAttribute("amount", intSize),
+          _newArrayAttribute('id', _intSize),
+          _newArrayAttribute('amount', _intSize),
         ]).schemaDefinition)
   ];
   return Schema(schemaDefinition);

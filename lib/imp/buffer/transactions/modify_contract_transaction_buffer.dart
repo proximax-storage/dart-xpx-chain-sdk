@@ -4,11 +4,12 @@
 part of xpx_chain_sdk.buffer;
 
 class CosignatoryModificationBuffer {
-  CosignatoryModificationBuffer._(this._bc, this._bcOffset);
   factory CosignatoryModificationBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  CosignatoryModificationBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<CosignatoryModificationBuffer> reader =
       _CosignatoryModificationBufferReader();
@@ -22,9 +23,9 @@ class CosignatoryModificationBuffer {
           .vTableGet(_bc, _bcOffset, 6, null);
 
   @override
-  String toString() {
-    return 'CosignatoryModificationBuffer{type: $type, cosignatoryPublicKey: $cosignatoryPublicKey}';
-  }
+  String toString() => 'CosignatoryModificationBuffer{'
+      'type: $type,'
+      ' cosignatoryPublicKey: $cosignatoryPublicKey}';
 }
 
 class _CosignatoryModificationBufferReader
@@ -33,13 +34,12 @@ class _CosignatoryModificationBufferReader
 
   @override
   CosignatoryModificationBuffer createObject(fb.BufferContext bc, int offset) =>
-       CosignatoryModificationBuffer._(bc, offset);
+      CosignatoryModificationBuffer._(bc, offset);
 }
 
 class CosignatoryModificationBufferBuilder {
-  CosignatoryModificationBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  CosignatoryModificationBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -57,13 +57,10 @@ class CosignatoryModificationBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class CosignatoryModificationBufferObjectBuilder extends fb.ObjectBuilder {
-
   CosignatoryModificationBufferObjectBuilder({
     int type,
     List<int> cosignatoryPublicKey,
@@ -76,7 +73,7 @@ class CosignatoryModificationBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int cosignatoryPublicKeyOffset =
         _cosignatoryPublicKey?.isNotEmpty == true
             ? fbBuilder.writeListUint8(_cosignatoryPublicKey)
@@ -93,18 +90,19 @@ class CosignatoryModificationBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }
 
 class ModifyContractTransactionBuffer {
-  ModifyContractTransactionBuffer._(this._bc, this._bcOffset);
   factory ModifyContractTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  ModifyContractTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<ModifyContractTransactionBuffer> reader =
       _ModifyContractTransactionBufferReader();
@@ -123,9 +121,8 @@ class ModifyContractTransactionBuffer {
       .vTableGet(_bc, _bcOffset, 14, null);
   List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
-  List<int> get durationDelta =>
-      const fb.ListReader<int>(fb.Uint32Reader())
-          .vTableGet(_bc, _bcOffset, 18, null);
+  List<int> get durationDelta => const fb.ListReader<int>(fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 18, null);
   List<int> get hash => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 20, null);
   int get numCustomers =>
@@ -148,9 +145,22 @@ class ModifyContractTransactionBuffer {
           .vTableGet(_bc, _bcOffset, 32, null);
 
   @override
-  String toString() {
-    return 'ModifyContractTransactionBuffer{size: $size, signature: $signature, signer: $signer, version: $version, type: $type, fee: $fee, deadline: $deadline, durationDelta: $durationDelta, hash: $hash, numCustomers: $numCustomers, numExecutors: $numExecutors, numVerifiers: $numVerifiers, customers: $customers, executors: $executors, verifiers: $verifiers}';
-  }
+  String toString() => 'ModifyContractTransactionBuffer{'
+      'size: $size,'
+      ' signature: $signature,'
+      ' signer: $signer,'
+      ' version: $version,'
+      ' type: $type,'
+      ' fee: $fee,'
+      ' deadline: $deadline,'
+      ' durationDelta: $durationDelta,'
+      ' hash: $hash,'
+      ' numCustomers: $numCustomers,'
+      ' numExecutors: $numExecutors,'
+      ' numVerifiers: $numVerifiers,'
+      ' customers: $customers,'
+      ' executors: $executors,'
+      ' verifiers: $verifiers}';
 }
 
 class _ModifyContractTransactionBufferReader
@@ -160,13 +170,12 @@ class _ModifyContractTransactionBufferReader
   @override
   ModifyContractTransactionBuffer createObject(
           fb.BufferContext bc, int offset) =>
-       ModifyContractTransactionBuffer._(bc, offset);
+      ModifyContractTransactionBuffer._(bc, offset);
 }
 
 class ModifyContractTransactionBufferBuilder {
-  ModifyContractTransactionBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  ModifyContractTransactionBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -249,13 +258,10 @@ class ModifyContractTransactionBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class ModifyContractTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-
   ModifyContractTransactionBufferObjectBuilder({
     int size,
     List<int> signature,
@@ -307,7 +313,7 @@ class ModifyContractTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
@@ -376,8 +382,8 @@ class ModifyContractTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }

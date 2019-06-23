@@ -1,35 +1,28 @@
 part of xpx_chain_sdk;
 
 class AnnounceTransactionInfoDTO {
-  AnnounceTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    message = json['message'] as String;
+  AnnounceTransactionInfoDTO.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    message = json['message'];
   }
 
   String message;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['message'] = message;
+  Map<String, dynamic> toJson() => {'message': message};
 
-    return data;
-  }
-
-  static List<AnnounceTransactionInfoDTO> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<AnnounceTransactionInfoDTO>()
-        : json
-            .map((dynamic value) =>  AnnounceTransactionInfoDTO.fromJson(
-                value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<AnnounceTransactionInfoDTO> listFromJson(List<dynamic> json) =>
+      json == null
+          ? null
+          : json
+              .map((value) => AnnounceTransactionInfoDTO.fromJson(value))
+              .toList();
 
   static Map<String, AnnounceTransactionInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, AnnounceTransactionInfoDTO>();
+    final map = <String, AnnounceTransactionInfoDTO>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  AnnounceTransactionInfoDTO.fromJson(value));
+      json.forEach((key, value) =>
+          map[key] = AnnounceTransactionInfoDTO.fromJson(value));
     }
     return map;
   }

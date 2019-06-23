@@ -4,11 +4,12 @@
 part of xpx_chain_sdk.buffer;
 
 class SecretLockTransactionBuffer {
-  SecretLockTransactionBuffer._(this._bc, this._bcOffset);
   factory SecretLockTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  SecretLockTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<SecretLockTransactionBuffer> reader =
       _SecretLockTransactionBufferReader();
@@ -29,9 +30,8 @@ class SecretLockTransactionBuffer {
       .vTableGet(_bc, _bcOffset, 16, null);
   List<int> get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 18, null);
-  List<int> get mosaicAmount =>
-      const fb.ListReader<int>(fb.Uint32Reader())
-          .vTableGet(_bc, _bcOffset, 20, null);
+  List<int> get mosaicAmount => const fb.ListReader<int>(fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 20, null);
   List<int> get duration => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 22, null);
   int get hashAlgorithm =>
@@ -42,9 +42,20 @@ class SecretLockTransactionBuffer {
       .vTableGet(_bc, _bcOffset, 28, null);
 
   @override
-  String toString() {
-    return 'SecretLockTransactionBuffer{size: $size, signature: $signature, signer: $signer, version: $version, type: $type, fee: $fee, deadline: $deadline, mosaicId: $mosaicId, mosaicAmount: $mosaicAmount, duration: $duration, hashAlgorithm: $hashAlgorithm, secret: $secret, recipient: $recipient}';
-  }
+  String toString() => 'SecretLockTransactionBuffer{'
+      'size: $size,'
+      ' signature: $signature,'
+      ' signer: $signer,'
+      ' version: $version,'
+      ' type: $type,'
+      ' fee: $fee,'
+      ' deadline: $deadline,'
+      ' mosaicId: $mosaicId,'
+      ' mosaicAmount: $mosaicAmount,'
+      ' duration: $duration,'
+      ' hashAlgorithm: $hashAlgorithm,'
+      ' secret: $secret,'
+      ' recipient: $recipient}';
 }
 
 class _SecretLockTransactionBufferReader
@@ -53,13 +64,12 @@ class _SecretLockTransactionBufferReader
 
   @override
   SecretLockTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-       SecretLockTransactionBuffer._(bc, offset);
+      SecretLockTransactionBuffer._(bc, offset);
 }
 
 class SecretLockTransactionBufferBuilder {
-  SecretLockTransactionBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  SecretLockTransactionBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -132,13 +142,10 @@ class SecretLockTransactionBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class SecretLockTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-
   SecretLockTransactionBufferObjectBuilder({
     int size,
     List<int> signature,
@@ -180,11 +187,11 @@ class SecretLockTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   final int _hashAlgorithm;
   final List<int> _secret;
   final List<int> _recipient;
-  
+
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
@@ -248,8 +255,8 @@ class SecretLockTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }

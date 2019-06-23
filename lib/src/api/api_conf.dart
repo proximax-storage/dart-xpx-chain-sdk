@@ -1,11 +1,11 @@
 part of xpx_chain_sdk;
 
-int ConfigNetworkType = 0;
+int configNetworkType = 0;
 
-// NewConfig is Config constructor according to 'baseURL' & 'networkType'
-class NewConfig {
-  NewConfig(this.baseUrl, this.networkType) {
-    ConfigNetworkType = this.networkType;
+// Config is Config constructor according to 'baseURL' & 'networkType'
+class Config {
+  Config(this.baseUrl, this.networkType) {
+    configNetworkType = networkType;
   }
 
   int networkType;

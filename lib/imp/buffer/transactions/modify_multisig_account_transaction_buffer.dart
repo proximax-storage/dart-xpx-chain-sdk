@@ -3,103 +3,13 @@
 
 part of xpx_chain_sdk.buffer;
 
-//class CosignatoryModificationBuffer {
-//  CosignatoryModificationBuffer._(this._bc, this._bcOffset);
-//  factory CosignatoryModificationBuffer(List<int> bytes) {
-//    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
-//    return reader.read(rootRef, 0);
-//  }
-//
-//  static const fb.Reader<CosignatoryModificationBuffer> reader = const _CosignatoryModificationBufferReader();
-//
-//  final fb.BufferContext _bc;
-//  final int _bcOffset;
-//
-//  int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
-//  List<int> get cosignatoryPublicKey => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
-//
-//  @override
-//  String toString() {
-//    return 'CosignatoryModificationBuffer{type: $type, cosignatoryPublicKey: $cosignatoryPublicKey}';
-//  }
-//}
-
-//class _CosignatoryModificationBufferReader extends fb.TableReader<CosignatoryModificationBuffer> {
-//  const _CosignatoryModificationBufferReader();
-//
-//  @override
-//  CosignatoryModificationBuffer createObject(fb.BufferContext bc, int offset) =>
-//     CosignatoryModificationBuffer._(bc, offset);
-//}
-//
-//class CosignatoryModificationBufferBuilder {
-//  CosignatoryModificationBufferBuilder(this.fbBuilder) {
-//    assert(fbBuilder != null);
-//  }
-//
-//  final fb.Builder fbBuilder;
-//
-//  void begin() {
-//    fbBuilder.startTable();
-//  }
-//
-//  int addType(int type) {
-//    fbBuilder.addUint8(0, type);
-//    return fbBuilder.offset;
-//  }
-//  int addCosignatoryPublicKeyOffset(int offset) {
-//    fbBuilder.addOffset(1, offset);
-//    return fbBuilder.offset;
-//  }
-//
-//  int finish() {
-//    return fbBuilder.endTable();
-//  }
-//}
-//
-//class CosignatoryModificationBufferObjectBuilder extends fb.ObjectBuilder {
-//  final int _type;
-//  final List<int> _cosignatoryPublicKey;
-//
-//  CosignatoryModificationBufferObjectBuilder({
-//    int type,
-//    List<int> cosignatoryPublicKey,
-//  })
-//      : _type = type,
-//        _cosignatoryPublicKey = cosignatoryPublicKey;
-//
-//  /// Finish building, and store into the [fbBuilder].
-//  @override
-//  int finish(
-//    fb.Builder fbBuilder) {
-//    assert(fbBuilder != null);
-//    final int cosignatoryPublicKeyOffset = _cosignatoryPublicKey?.isNotEmpty == true
-//        ? fbBuilder.writeListUint8(_cosignatoryPublicKey)
-//        : null;
-//
-//    fbBuilder.startTable();
-//    fbBuilder.addUint8(0, _type);
-//    if (cosignatoryPublicKeyOffset != null) {
-//      fbBuilder.addOffset(1, cosignatoryPublicKeyOffset);
-//    }
-//    return fbBuilder.endTable();
-//  }
-//
-//  /// Convenience method to serialize to byte list.
-//  @override
-//  Uint8List toBytes([String fileIdentifier]) {
-//    fb.Builder fbBuilder =  fb.Builder();
-//    int offset = finish(fbBuilder);
-//    return fbBuilder.finish(offset, fileIdentifier);
-//  }
-//}
-
 class ModifyMultisigAccountTransactionBuffer {
-  ModifyMultisigAccountTransactionBuffer._(this._bc, this._bcOffset);
   factory ModifyMultisigAccountTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  ModifyMultisigAccountTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<ModifyMultisigAccountTransactionBuffer> reader =
       _ModifyMultisigAccountTransactionBufferReader();
@@ -130,9 +40,18 @@ class ModifyMultisigAccountTransactionBuffer {
           .vTableGet(_bc, _bcOffset, 24, null);
 
   @override
-  String toString() {
-    return 'ModifyMultisigAccountTransactionBuffer{size: $size, signature: $signature, signer: $signer, version: $version, type: $type, fee: $fee, deadline: $deadline, minRemovalDelta: $minRemovalDelta, minApprovalDelta: $minApprovalDelta, numModifications: $numModifications, modifications: $modifications}';
-  }
+  String toString() => 'ModifyMultisigAccountTransactionBuffer{'
+      'size: $size,'
+      ' signature: $signature,'
+      ' signer: $signer,'
+      ' version: $version,'
+      ' type: $type,'
+      ' fee: $fee,'
+      ' deadline: $deadline,'
+      ' minRemovalDelta: $minRemovalDelta,'
+      ' minApprovalDelta: $minApprovalDelta,'
+      ' numModifications: $numModifications,'
+      ' modifications: $modifications}';
 }
 
 class _ModifyMultisigAccountTransactionBufferReader
@@ -142,13 +61,12 @@ class _ModifyMultisigAccountTransactionBufferReader
   @override
   ModifyMultisigAccountTransactionBuffer createObject(
           fb.BufferContext bc, int offset) =>
-       ModifyMultisigAccountTransactionBuffer._(bc, offset);
+      ModifyMultisigAccountTransactionBuffer._(bc, offset);
 }
 
 class ModifyMultisigAccountTransactionBufferBuilder {
-  ModifyMultisigAccountTransactionBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  ModifyMultisigAccountTransactionBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -211,14 +129,11 @@ class ModifyMultisigAccountTransactionBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class ModifyMultisigAccountTransactionBufferObjectBuilder
     extends fb.ObjectBuilder {
-
   ModifyMultisigAccountTransactionBufferObjectBuilder({
     int size,
     List<int> signature,
@@ -258,7 +173,7 @@ class ModifyMultisigAccountTransactionBufferObjectBuilder
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
@@ -302,8 +217,8 @@ class ModifyMultisigAccountTransactionBufferObjectBuilder
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }

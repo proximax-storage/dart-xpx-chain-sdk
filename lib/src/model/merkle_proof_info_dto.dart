@@ -1,11 +1,10 @@
 part of xpx_chain_sdk;
 
 class _MerkleProofInfoDTO {
-  _MerkleProofInfoDTO.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    payload =  MerkleProofInfoPayload.fromJson(
-        json['payload'] as Map<String, dynamic>);
-    type = json['type'] as String;
+  _MerkleProofInfoDTO.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    payload = MerkleProofInfoPayload.fromJson(json['payload']);
+    type = json['type'];
   }
 
   MerkleProofInfoPayload payload;
@@ -13,28 +12,24 @@ class _MerkleProofInfoDTO {
   String type;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['payload'] = payload;
     data['type'] = type;
 
     return data;
   }
 
-  static List<_MerkleProofInfoDTO> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<_MerkleProofInfoDTO>()
-        : json
-            .map((dynamic value) =>
-                 _MerkleProofInfoDTO.fromJson(value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<_MerkleProofInfoDTO> listFromJson(List<dynamic> json) =>
+      json == null
+          ? null
+          : json.map((value) => _MerkleProofInfoDTO.fromJson(value)).toList();
 
   static Map<String, _MerkleProofInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, _MerkleProofInfoDTO>();
+    final map = <String, _MerkleProofInfoDTO>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  _MerkleProofInfoDTO.fromJson(value));
+      json.forEach(
+          (key, value) => map[key] = _MerkleProofInfoDTO.fromJson(value));
     }
     return map;
   }

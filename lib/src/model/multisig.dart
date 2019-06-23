@@ -1,19 +1,15 @@
 part of xpx_chain_sdk;
 
 class Multisig {
-  Multisig.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    accountAddress =  Address.fromEncoded(json['accountAddress'] as String);
-    account =  PublicAccount.fromPublicKey(
-        json['account'] as String, accountAddress._networkType);
-    minApproval = json['minApproval'] as int;
-    minRemoval = json['minRemoval'] as int;
-    cosignatories = (json['cosignatories'] as List)
-        .map((dynamic item) => item as String)
-        .toList();
-    multisigAccounts = (json['multisigAccounts'] as List)
-        .map((dynamic item) => item as String)
-        .toList();
+  Multisig.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    accountAddress = Address.fromEncoded(json['accountAddress']);
+    account = PublicAccount.fromPublicKey(
+        json['account'], accountAddress._networkType);
+    minApproval = json['minApproval'];
+    minRemoval = json['minRemoval'];
+    cosignatories = (json['cosignatories']).map((item) => item).toList();
+    multisigAccounts = (json['multisigAccounts']).map((item) => item).toList();
   }
 
   PublicAccount account;
@@ -29,37 +25,29 @@ class Multisig {
   List<String> multisigAccounts = [];
 
   @override
-  String toString() {
-    return '{\n'
-        '\taccount: $account,\n'
-        '\tminApproval: $minApproval,\n'
-        '\tminRemoval: $minRemoval,\n'
-        '\tcosignatories: $cosignatories,\n'
-        '\tmultisigAccounts: $multisigAccounts\n'
-        '}\n';
-  }
+  String toString() => '{\n'
+      '\taccount: $account,\n'
+      '\tminApproval: $minApproval,\n'
+      '\tminRemoval: $minRemoval,\n'
+      '\tcosignatories: $cosignatories,\n'
+      '\tmultisigAccounts: $multisigAccounts\n'
+      '}\n';
 
-  static List<Multisig> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<Multisig>()
-        : json
-            .map((dynamic value) =>
-                 Multisig.fromJson(value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<Multisig> listFromJson(List<dynamic> json) => json == null
+      ? null
+      : json.map((value) => Multisig.fromJson(value)).toList();
 
   static Map<String, Multisig> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, Multisig>();
+    final map = <String, Multisig>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  Multisig.fromJson(value));
+      json.forEach((key, value) => map[key] = Multisig.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['account'] = account;
     data['accountAddress'] = accountAddress;
     data['minApproval'] = minApproval;
@@ -72,11 +60,10 @@ class Multisig {
 }
 
 class MultisigAccountGraphInfo {
-  MultisigAccountGraphInfo.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    level = json['level'] as int;
-    multisigEntries = MultisigAccountInfo.listFromJson(
-        json['multisigEntries'] as List<dynamic>);
+  MultisigAccountGraphInfo.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    level = json['level'];
+    multisigEntries = MultisigAccountInfo.listFromJson(json['multisigEntries']);
   }
 
   int level;
@@ -84,34 +71,30 @@ class MultisigAccountGraphInfo {
   List<MultisigAccountInfo> multisigEntries = [];
 
   @override
-  String toString() {
-    return '{\n'
-        '\tlevel: $level,\n'
-        '\tmultisigEntries: $multisigEntries\n'
-        '}\n';
-  }
+  String toString() => '{\n'
+      '\tlevel: $level,\n'
+      '\tmultisigEntries: $multisigEntries\n'
+      '}\n';
 
-  static List<MultisigAccountGraphInfo> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<MultisigAccountGraphInfo>()
-        : json
-            .map((dynamic value) =>  MultisigAccountGraphInfo.fromJson(
-                value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<MultisigAccountGraphInfo> listFromJson(List<dynamic> json) =>
+      json == null
+          ? null
+          : json
+              .map((value) => MultisigAccountGraphInfo.fromJson(value))
+              .toList();
 
   static Map<String, MultisigAccountGraphInfo> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, MultisigAccountGraphInfo>();
+    final map = <String, MultisigAccountGraphInfo>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  MultisigAccountGraphInfo.fromJson(value));
+      json.forEach(
+          (key, value) => map[key] = MultisigAccountGraphInfo.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['level'] = level;
     data['multisigEntries'] = multisigEntries;
 
@@ -120,39 +103,33 @@ class MultisigAccountGraphInfo {
 }
 
 class MultisigAccountInfo {
-  MultisigAccountInfo.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    multisig =  Multisig.fromJson(json['multisig'] as Map<String, dynamic>);
+  MultisigAccountInfo.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    multisig = Multisig.fromJson(json['multisig']);
   }
 
   Multisig multisig;
 
   @override
-  String toString() {
-    return '${toJson()}';
-  }
+  String toString() => '${toJson()}';
 
-  static List<MultisigAccountInfo> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<MultisigAccountInfo>()
-        : json
-            .map((dynamic value) =>
-                 MultisigAccountInfo.fromJson(value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<MultisigAccountInfo> listFromJson(List<dynamic> json) =>
+      json == null
+          ? null
+          : json.map((value) => MultisigAccountInfo.fromJson(value)).toList();
 
   static Map<String, MultisigAccountInfo> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, MultisigAccountInfo>();
+    final map = <String, MultisigAccountInfo>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  MultisigAccountInfo.fromJson(value));
+      json.forEach(
+          (key, value) => map[key] = MultisigAccountInfo.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['multisig'] = multisig;
     return data;
   }

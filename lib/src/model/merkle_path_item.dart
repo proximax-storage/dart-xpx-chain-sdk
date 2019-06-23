@@ -1,10 +1,10 @@
 part of xpx_chain_sdk;
 
 class MerklePathItem {
-  MerklePathItem.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    position = json['position'] as int;
-    hash = json['hash'] as String;
+  MerklePathItem.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    position = json['position'];
+    hash = json['hash'];
   }
 
   int position;
@@ -12,31 +12,23 @@ class MerklePathItem {
   String hash;
 
   @override
-  String toString() {
-    return 'MerklePathItem[position=$position, hash=$hash, ]';
-  }
+  String toString() => 'MerklePathItem[position=$position, hash=$hash, ]';
 
-  static List<MerklePathItem> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<MerklePathItem>()
-        : json
-            .map((dynamic value) =>
-                 MerklePathItem.fromJson(value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<MerklePathItem> listFromJson(List<dynamic> json) => json == null
+          ? null
+      : json.map((value) => MerklePathItem.fromJson(value)).toList();
 
   static Map<String, MerklePathItem> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, MerklePathItem>();
+    final map = <String, MerklePathItem>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  MerklePathItem.fromJson(value));
+      json.forEach((key, value) => map[key] = MerklePathItem.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['position'] = position;
     data['hash'] = hash;
 

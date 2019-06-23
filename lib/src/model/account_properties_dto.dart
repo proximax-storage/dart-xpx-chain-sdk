@@ -1,41 +1,31 @@
 part of xpx_chain_sdk;
 
 class _AccountPropertiesDTO {
-  _AccountPropertiesDTO.fromJson(Map<String, dynamic> json) {
-    if (json == null) return;
-    address = json['address'] as String;
-    properties =
-        AccountPropertyDTO.listFromJson(json['properties'] as List<dynamic>);
+  _AccountPropertiesDTO.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    address = json['address'];
+    properties = AccountPropertyDTO.listFromJson(json['properties']);
   }
 
   String address;
 
   List<AccountPropertyDTO> properties = [];
 
-  static List<_AccountPropertiesDTO> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<_AccountPropertiesDTO>()
-        : json
-            .map((dynamic value) =>  _AccountPropertiesDTO.fromJson(
-                value as Map<String, dynamic>))
-            .toList();
-  }
+  static List<_AccountPropertiesDTO> listFromJson(List<dynamic> json) =>
+      json == null
+          ? null
+          : json.map((value) => _AccountPropertiesDTO.fromJson(value)).toList();
 
   static Map<String, _AccountPropertiesDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    var map =  Map<String, _AccountPropertiesDTO>();
+    final Map<String, _AccountPropertiesDTO> map = {};
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, Map<String, dynamic> value) =>
-          map[key] =  _AccountPropertiesDTO.fromJson(value));
+      json.forEach(
+          (key, value) => map[key] = _AccountPropertiesDTO.fromJson(value));
     }
     return map;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['address'] = address;
-    data['properties'] = properties;
-
-    return data;
-  }
+  Map<String, dynamic> toJson() =>
+      {'address': address, 'properties': properties};
 }

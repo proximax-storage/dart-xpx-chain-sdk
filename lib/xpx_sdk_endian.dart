@@ -5,14 +5,14 @@ part of xpx_chain_sdk;
 abstract class Buffer {
   Buffer._create(this.out);
 
-  factory Buffer.BigEndian(int size) {
-    final out =  Uint8List(size);
-    return  _WriterForBEHost._create(out);
+  factory Buffer.bigEndian(int size) {
+    final out = Uint8List(size);
+    return _WriterForBEHost._create(out);
   }
 
-  factory Buffer.LittleEndian(int size) {
-    final out =  Uint8List(size);
-    return  _WriterForLEHost._create(out);
+  factory Buffer.littleEndian(int size) {
+    final out = Uint8List(size);
+    return _WriterForLEHost._create(out);
   }
 
   /// Output buffer.
@@ -40,18 +40,18 @@ abstract class Buffer {
 
   /// Decode a BigInt from bytes in big-endian encoding.
   BigInt toBigInt() {
-    BigInt result =  BigInt.from(0);
-    for (int i = 0; i < this.out.length; i++) {
-      result +=  BigInt.from(this.out[this.out.length - i - 1]) << (8 * i);
+    BigInt result = BigInt.from(0);
+    for (int i = 0; i < out.length; i++) {
+      result += BigInt.from(out[out.length - i - 1]) << (8 * i);
     }
     return result;
   }
 }
 
 /// Lists used for data convertion (alias each other).
-final Uint8List _convU8 =  Uint8List(8);
-final Float32List _convF32 =  Float32List.view(_convU8.buffer);
-final Float64List _convF64 =  Float64List.view(_convU8.buffer);
+final Uint8List _convU8 = Uint8List(8);
+final Float32List _convF32 = Float32List.view(_convU8.buffer);
+final Float64List _convF64 = Float64List.view(_convU8.buffer);
 
 /// Writer used on little-endian host.
 class _WriterForLEHost extends Buffer {
@@ -60,16 +60,16 @@ class _WriterForLEHost extends Buffer {
   @override
   void writeInt16(int v) {
     out[position + 0] = v;
-    out[position + 1] = (v >> 8);
+    out[position + 1] = v >> 8;
     position += 2;
   }
 
   @override
   void writeInt32(int v) {
     out[position + 0] = v;
-    out[position + 1] = (v >> 8);
-    out[position + 2] = (v >> 16);
-    out[position + 3] = (v >> 24);
+    out[position + 1] = v >> 8;
+    out[position + 2] = v >> 16;
+    out[position + 3] = v >> 24;
     position += 4;
   }
 
@@ -105,16 +105,16 @@ class _WriterForBEHost extends Buffer {
   @override
   void writeInt32(int v) {
     out[position + 3] = v;
-    out[position + 2] = (v >> 8);
-    out[position + 1] = (v >> 16);
-    out[position + 0] = (v >> 24);
+    out[position + 2] = v >> 8;
+    out[position + 1] = v >> 16;
+    out[position + 0] = v >> 24;
     position += 4;
   }
 
   @override
   void writeInt16(int v) {
     out[position + 1] = v;
-    out[position + 0] = (v >> 8);
+    out[position + 0] = v >> 8;
     position += 2;
   }
 

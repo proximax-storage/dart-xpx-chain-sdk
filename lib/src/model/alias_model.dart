@@ -12,9 +12,8 @@ AliasType getAliasType(int value) {
 }
 
 class Alias {
-  Alias.fromDTO(_AliasDTO value) {
-    if (value.type != 0) return;
-
+  Alias.fromDTO(_AliasDTO value)
+      : assert(value.type != 0, 'a must not be null') {
     mosaicId = value.mosaicId.toBigInt();
     type = getAliasType(value.type);
     address = value.address;
@@ -33,7 +32,7 @@ class Alias {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['type'] = type;
     data['mosaicId'] = mosaicId;
     data['address'] = address;
@@ -41,11 +40,6 @@ class Alias {
     return data;
   }
 
-  static List<Alias> listFromJson(List<dynamic> json) {
-    return json == null
-        ?  List<Alias>()
-        : json
-            .map((dynamic value) =>  Alias.fromDTO(value as _AliasDTO))
-            .toList();
-  }
+  static List<Alias> listFromJson(List<dynamic> json) =>
+      json == null ? <Alias>[] : json.map((value) => Alias.fromDTO(value)).toList();
 }

@@ -1,10 +1,10 @@
 part of xpx_chain_sdk;
 
 final prxNamespaceId =
-     UInt64DTO(Int32(2339353534), Int32(2976741373)).toBigInt();
+    UInt64DTO(Int32(2339353534), Int32(2976741373)).toBigInt();
 
 final xpxMosaicId = MosaicId.fromBigInt(
-     UInt64DTO(Int32(481110499), Int32(231112638)).toBigInt());
+    UInt64DTO(Int32(481110499), Int32(231112638)).toBigInt());
 
 enum NamespaceType { root, sub }
 

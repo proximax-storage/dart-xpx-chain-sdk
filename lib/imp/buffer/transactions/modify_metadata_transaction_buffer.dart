@@ -4,11 +4,12 @@
 part of xpx_chain_sdk.buffer;
 
 class MetadataModificationBuffer {
-  MetadataModificationBuffer._(this._bc, this._bcOffset);
   factory MetadataModificationBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  MetadataModificationBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<MetadataModificationBuffer> reader =
       _MetadataModificationBufferReader();
@@ -28,9 +29,13 @@ class MetadataModificationBuffer {
       .vTableGet(_bc, _bcOffset, 14, null);
 
   @override
-  String toString() {
-    return 'MetadataModificationBuffer{size: $size, modificationType: $modificationType, keySize: $keySize, valueSize: $valueSize, key: $key, value: $value}';
-  }
+  String toString() => 'MetadataModificationBuffer{'
+      'size: $size,'
+      ' modificationType: $modificationType,'
+      ' keySize: $keySize,'
+      ' valueSize: $valueSize,'
+      ' key: $key,'
+      ' value: $value}';
 }
 
 class _MetadataModificationBufferReader
@@ -39,13 +44,12 @@ class _MetadataModificationBufferReader
 
   @override
   MetadataModificationBuffer createObject(fb.BufferContext bc, int offset) =>
-       MetadataModificationBuffer._(bc, offset);
+      MetadataModificationBuffer._(bc, offset);
 }
 
 class MetadataModificationBufferBuilder {
-  MetadataModificationBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  MetadataModificationBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -83,13 +87,10 @@ class MetadataModificationBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class MetadataModificationBufferObjectBuilder extends fb.ObjectBuilder {
-
   MetadataModificationBufferObjectBuilder({
     int size,
     int modificationType,
@@ -114,7 +115,7 @@ class MetadataModificationBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int valueSizeOffset = _valueSize?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_valueSize)
         : null;
@@ -142,18 +143,19 @@ class MetadataModificationBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }
 
 class ModifyMetadataTransactionBuffer {
-  ModifyMetadataTransactionBuffer._(this._bc, this._bcOffset);
   factory ModifyMetadataTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef =  fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  ModifyMetadataTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<ModifyMetadataTransactionBuffer> reader =
       _ModifyMetadataTransactionBufferReader();
@@ -182,9 +184,16 @@ class ModifyMetadataTransactionBuffer {
           .vTableGet(_bc, _bcOffset, 22, null);
 
   @override
-  String toString() {
-    return 'ModifyMetadataTransactionBuffer{size: $size, signature: $signature, signer: $signer, version: $version, type: $type, fee: $fee, deadline: $deadline, metadataType: $metadataType, metadataId: $metadataId, modifications: $modifications}';
-  }
+  String toString() => 'ModifyMetadataTransactionBuffer{size: $size,'
+      ' signature: $signature,'
+      ' signer: $signer,'
+      ' version: $version,'
+      ' type: $type,'
+      ' fee: $fee,'
+      ' deadline: $deadline,'
+      ' metadataType: $metadataType,'
+      ' metadataId: $metadataId,'
+      ' modifications: $modifications}';
 }
 
 class _ModifyMetadataTransactionBufferReader
@@ -194,13 +203,12 @@ class _ModifyMetadataTransactionBufferReader
   @override
   ModifyMetadataTransactionBuffer createObject(
           fb.BufferContext bc, int offset) =>
-       ModifyMetadataTransactionBuffer._(bc, offset);
+      ModifyMetadataTransactionBuffer._(bc, offset);
 }
 
 class ModifyMetadataTransactionBufferBuilder {
-  ModifyMetadataTransactionBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  ModifyMetadataTransactionBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -258,13 +266,10 @@ class ModifyMetadataTransactionBufferBuilder {
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class ModifyMetadataTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-
   ModifyMetadataTransactionBufferObjectBuilder({
     int size,
     List<int> signature,
@@ -301,7 +306,7 @@ class ModifyMetadataTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    assert(fbBuilder != null);
+    assert(fbBuilder != null, 'fbBuilder must not be null');
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
@@ -349,8 +354,8 @@ class ModifyMetadataTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder =  fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }
