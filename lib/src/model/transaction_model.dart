@@ -592,7 +592,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       this.networkType = networkType;
       namspaceName = rootNamespaceName;
       namespaceType = NamespaceType.root;
-      duration = duration;
+      this.duration = duration;
     }
   }
 
