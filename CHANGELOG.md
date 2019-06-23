@@ -5,10 +5,6 @@
 
 [UPDATE] Update example.
 
-[UPDATE] rename Config Class.
-
-[UPDATE] refactor Client to ApiClient.
-
 
 ### Fixed bugs
 [FIXED] fixed bug in Deadline null
