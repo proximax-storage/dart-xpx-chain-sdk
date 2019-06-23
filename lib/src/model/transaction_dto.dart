@@ -196,7 +196,8 @@ class _TransferTransactionDTO extends _AbstractTransactionDTO {
       });
       _mosaics = mosaics;
     }
-    _message = _MessageDTO.fromJson(json['message']);
+    _message =
+        json['message'] != null ? _MessageDTO.fromJson(json['message']) : null;
   }
 
   String _recipient;
