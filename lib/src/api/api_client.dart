@@ -10,20 +10,8 @@ class QueryParam {
   String value;
 }
 
-Client newClient(Config conf, http.Client client) {
-  // ignore: parameter_assignments
-  conf ??= Config('http://127.0.0.1:3000', mijinTest);
-
-  // ignore: parameter_assignments
-  client ??= http.Client();
-
-  final ApiClient apiClient = ApiClient(conf, client);
-
-  return Client(apiClient);
-}
-
-class Client {
-  Client(this._apiClient)
+class ApiClient {
+  ApiClient._(this._apiClient)
       : blockChain = BlockchainRoutesApi(_apiClient),
         account = AccountRoutesApi(_apiClient),
         mosaic = MosaicRoutesApi(_apiClient),
@@ -32,7 +20,7 @@ class Client {
         node = NodeRoutesApi(_apiClient),
         transaction = TransactionRoutesApi(_apiClient);
 
-  final ApiClient _apiClient;
+  final _ApiClient _apiClient;
   final BlockchainRoutesApi blockChain;
   final AccountRoutesApi account;
   final MosaicRoutesApi mosaic;
@@ -40,10 +28,22 @@ class Client {
   final NetworkRoutesApi network;
   final NodeRoutesApi node;
   final TransactionRoutesApi transaction;
+
+  static ApiClient fromConf(Config conf, http.Client client) {
+    // ignore: parameter_assignments
+    conf ??= Config('http://127.0.0.1:3000', publicTest);
+
+    // ignore: parameter_assignments
+    client ??= http.Client();
+
+    final _ApiClient apiClient = _ApiClient(conf, client);
+
+    return ApiClient._(apiClient);
+  }
 }
 
-class ApiClient {
-  ApiClient(this.conf, this._client);
+class _ApiClient {
+  _ApiClient(this.conf, this._client);
 
   Config conf;
 

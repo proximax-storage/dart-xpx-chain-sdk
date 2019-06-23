@@ -6,7 +6,7 @@ void main() async {
 
   const networkType = publicTest;
 
-  final config = NewConfig(baseUrl, networkType);
+  final config = Config(baseUrl, networkType);
 
   /// Creating a client instance
   /// xpx_chain_sdk uses the Dart's native HttpClient.
@@ -15,7 +15,7 @@ void main() async {
   /// example:
   /// 1- import 'package:http/browser_client.dart';
   /// 2- var client = newClient(config,  BrowserClient());
-  final client = newClient(config, null);
+  final client = ApiClient.fromConf(config, null);
 
   /// Create an Address from a given public key.
   final addressOne = Address.fromPublicKey(

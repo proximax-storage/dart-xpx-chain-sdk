@@ -1,10 +1,10 @@
 part of xpx_chain_sdk;
 
 class NodeRoutesApi {
-  NodeRoutesApi([ApiClient apiClient])
+  NodeRoutesApi([_ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
 
-  final ApiClient apiClient;
+  final _ApiClient apiClient;
 
   /// Get the node information
   ///

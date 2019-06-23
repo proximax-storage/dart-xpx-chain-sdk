@@ -1,10 +1,10 @@
 part of xpx_chain_sdk;
 
 class TransactionRoutesApi {
-  TransactionRoutesApi([ApiClient apiClient])
+  TransactionRoutesApi([_ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
 
-  final ApiClient apiClient;
+  final _ApiClient apiClient;
 
   /// Announce a  transaction
   ///

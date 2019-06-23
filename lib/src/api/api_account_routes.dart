@@ -1,10 +1,10 @@
 part of xpx_chain_sdk;
 
 class AccountRoutesApi {
-  AccountRoutesApi([ApiClient _apiClient])
+  AccountRoutesApi([_ApiClient _apiClient])
       : _apiClient = _apiClient ?? defaultApiClient;
 
-  final ApiClient _apiClient;
+  final _ApiClient _apiClient;
 
   /// Get account information
   ///

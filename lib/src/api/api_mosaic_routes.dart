@@ -1,10 +1,10 @@
 part of xpx_chain_sdk;
 
 class MosaicRoutesApi {
-  MosaicRoutesApi([ApiClient apiClient])
+  MosaicRoutesApi([_ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
 
-  final ApiClient apiClient;
+  final _ApiClient apiClient;
 
   /// Get mosaic information
   ///

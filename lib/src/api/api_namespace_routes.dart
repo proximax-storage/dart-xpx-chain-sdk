@@ -1,10 +1,10 @@
 part of xpx_chain_sdk;
 
 class NamespaceRoutesApi {
-  NamespaceRoutesApi([ApiClient apiClient])
+  NamespaceRoutesApi([_ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
 
-  final ApiClient apiClient;
+  final _ApiClient apiClient;
 
   Future<List<NamespaceInfo>> buildNamespacesHierarchy(
       List<NamespaceInfo> namespaceIds) async {

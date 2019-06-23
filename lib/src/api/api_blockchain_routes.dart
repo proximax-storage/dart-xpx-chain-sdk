@@ -1,10 +1,10 @@
 part of xpx_chain_sdk;
 
 class BlockchainRoutesApi {
-  BlockchainRoutesApi([ApiClient apiClient])
+  BlockchainRoutesApi([_ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
 
-  ApiClient apiClient;
+  _ApiClient apiClient;
 
   /// Get the current height of the chain
   ///

@@ -6,9 +6,9 @@ void main() async {
 
   const networkType = publicTest;
 
-  final config = NewConfig(baseUrl, networkType);
+  final config = Config(baseUrl, networkType);
 
-  final client = newClient(config, null);
+  final client = ApiClient.fromConf(config, null);
 
   /// Create an Account from a given Private key.
   final account = Account.fromPrivateKey(
