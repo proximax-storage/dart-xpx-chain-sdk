@@ -747,7 +747,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       mosaicProperties = mosaicProps;
       // Signer of transaction must be the same with ownerPublicKey
       mosaicId = MosaicId.fromNonceAndOwner(nonce, ownerPublicKey);
-      duration = duration;
+      this.duration = duration;
     }
   }
 
