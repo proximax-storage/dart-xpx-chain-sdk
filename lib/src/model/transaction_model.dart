@@ -198,7 +198,9 @@ class Deadline {
   Deadline.fromUInt64DTO(UInt64DTO data)
       : assert(data.lower != null || data.higher == null,
             'lower or higher must not be null') {
-    value = DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt());
+    value = data.toBigInt() != null
+        ? DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt())
+        : null;
   }
 
   DateTime value;
@@ -465,7 +467,6 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
             value._meta._merkleComponentHash) {
     type = transactionTypeFromRaw(value._transaction.type);
     deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
-
     signature = value._transaction.signature;
     networkType = extractNetworkType(value._transaction.version);
     version = extractVersion(value._transaction.version);
