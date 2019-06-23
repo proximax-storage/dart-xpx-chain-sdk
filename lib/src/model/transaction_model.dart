@@ -866,10 +866,10 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
       version = _mosaicSupplyChangeVersion;
       this.deadline = deadline;
       type = transactionTypeFromRaw(16973);
-      networkType = networkType;
-      mosaicId = mosaicId;
+      this.networkType = networkType;
+      this.mosaicId = mosaicId;
       mosaicSupplyType = supplyType;
-      delta = delta;
+      this.delta = delta;
     }
   }
 
