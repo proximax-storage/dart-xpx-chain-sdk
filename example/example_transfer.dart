@@ -12,12 +12,12 @@ void main() async {
 
   /// Create an Account from a given Private key.
   final account = Account.fromPrivateKey(
-      '68f50e10e5b8be2b7e9ddb687a667d6e94dd55fe02b4aed8195f51f9a242558b',
+      'B4F12E7C9F6946091E2CB8B6D3A12B50D17CCBBF646386EA27CE2946A7423DCF',
       networkType);
 
   /// Create an Address from a given Public key.
   final recipient = Address.fromPublicKey(
-      '68f50e10e5b8be2b7e9ddb687a667d6e94dd55fe02b4aed8195f51f9a242558b',
+      '52BFDA0BDC6456ECAF78B8D2046A8ECB1D951B5BB95EE37165627959DD7C029E',
       networkType);
 
   /// Create a  transaction type transfer
