@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   flat_buffers: '^1.11.0'
-  http: '^0.11.3+17'
+  http: '^0.12.0+2'
   base32: '^1.0.1'
   fixnum: '^0.10.9'
   xpx_crypto: '^0.0.1'
