@@ -3,7 +3,7 @@
 
 Official ProximaX Sirius Blockchain SDK Library in Dart.
 
-The ProximaX Sirius Catapult Chain Dart SDK works as a lightweight Dart library for interacting with the Sirius Blockchain. It provides a complete library set coverage, and supports synchronous and asynchronous requests.
+The ProximaX Sirius Chain Dart SDK works as a lightweight Dart library for interacting with the Sirius Blockchain. It provides a complete library set coverage, and supports synchronous and asynchronous requests.
 
 **1. Depend on it**
 
@@ -11,7 +11,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  xpx_chain_sdk: 0.0.3+3
+  xpx_chain_sdk: 0.0.3+4
 ```
 
 **2. Install it**

@@ -1,3 +1,8 @@
+## 0.0.3+4
+
+### Updates
+[UPDATE] latest published versions for http dependency.
+
 ## 0.0.3+3
 
 ### Updates
