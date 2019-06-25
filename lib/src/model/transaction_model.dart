@@ -25,8 +25,8 @@ const _aggregateCompletedVersion = 2,
     _registerNamespaceVersion = 2,
     _transferVersion = 3,
     _mosaicDefinitionVersion = 3,
-    _mosaicSupplyChangeVersion = 2;
-//    modifyMultisigVersion = 3,
+    _mosaicSupplyChangeVersion = 2,
+    _modifyMultisigVersion = 3;
 //    modifyContractVersion = 3,
 //    aggregateBondedVersion = 2,
 //    metadataAddressVersion = 1,
@@ -302,6 +302,37 @@ class AggregateTransactionCosignature {
   }
 }
 
+class MultisigCosignatoryModification {
+  MultisigCosignatoryModification(this.type, this.publicAccount);
+
+//  MultisigCosignatoryModification.fromDTO(
+//      int networkType, _AggregateTransactionCosignatureDTO value) {
+//    if (value?._signer == null) {
+//      return;
+//    }
+//
+//    _signature = value._signature;
+//    _signer = PublicAccount.fromPublicKey(value._signer, networkType);
+//  }
+
+  MultisigCosignatoryModificationType type;
+
+  PublicAccount publicAccount;
+
+  @override
+  String toString() => '{\n'
+      '\t"type": ${type.index}\n'
+      '\t"publicAccount": $publicAccount\n'
+      '}\n';
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['type'] = type.index;
+    data['publicAccount'] = publicAccount;
+    return data;
+  }
+}
+
 abstract class Transaction {
   AbstractTransaction getAbstractTransaction();
   Uint8List _generateBytes();
@@ -377,6 +408,17 @@ class AbstractTransaction with TransactionInfo {
     data['deadlineV'] = builder.writeListUint32(
         fromBigInt(BigInt.from(deadline.getInstant().toInt())));
     return data;
+  }
+
+  void _buildVector(fb.Builder builder, int versionV, int signatureV,
+      int signerV, int deadlineV, int feeV) {
+    Transactions(builder)
+      ..addSignatureOffset(signatureV)
+      ..addSignerOffset(signerV)
+      ..addVersion(versionV)
+      ..addType(type._hex)
+      ..addFeeOffset(feeV)
+      ..addDeadlineOffset(deadlineV);
   }
 
   AbstractTransaction _getAbstractTransaction() {
@@ -1075,6 +1117,92 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   }
 }
 
+class ModifyMultisigAccountTransaction extends AbstractTransaction
+    implements Transaction {
+  ModifyMultisigAccountTransaction(
+      Deadline deadline,
+      int minApproval,
+      int minRemoval,
+      List<MultisigCosignatoryModification> modifications,
+      int networkType)
+      : assert(modifications != null, 'modifications must not be null'),
+        super() {
+    if (modifications.isEmpty && minApproval == 0 && minRemoval == 0) {
+      throw _errEmptyModifications;
+    } else {
+      version = _modifyMultisigVersion;
+      this.deadline = deadline;
+      type = transactionTypeFromRaw(16725);
+      this.networkType = networkType;
+      minApprovalDelta = minApproval;
+      minRemovalDelta = minRemoval;
+      this.modifications = modifications;
+    }
+  }
+
+  int minApprovalDelta;
+
+  int minRemovalDelta;
+
+  List<MultisigCosignatoryModification> modifications;
+
+  static List<AggregateTransaction> listFromDTO(
+          List<_AggregateTransactionInfoDTO> json) =>
+      json == null
+          ? null
+          : json.map((value) => AggregateTransaction.fromDTO(value)).toList();
+
+  @override
+  String toString() => '{\n'
+      '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
+      '\t"minApproval": $minApprovalDelta,\n'
+      '\t"cosignatures": $minRemovalDelta,\n'
+      '\t"modifications": $modifications,\n'
+      '}\n';
+
+  @override
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['abstractTransaction'] = _abstractTransactionToJson();
+    data['minApproval'] = minApprovalDelta;
+    data['minRemoval'] = minRemovalDelta;
+    data['modifications'] = modifications;
+
+    return data;
+  }
+
+  @override
+  int _size() =>
+      modifyMultisigHeaderSize +
+      ((keySize + 1 /* MultisigModificationType size */) *
+          modifications.length);
+
+  @override
+  AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
+
+  @override
+  Uint8List _generateBytes() {
+    final builder = fb.Builder(initialSize: 0);
+
+    final mV = cosignatoryModificationArrayToBuffer(builder, modifications);
+
+    final vectors = _generateVector(builder);
+
+    final txnBuilder = ModifyMultisigAccountTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(_size());
+    _buildVector(builder, vectors['versionV'], vectors['signatureV'],
+        vectors['signerV'], vectors['deadlineV'], vectors['feeV']);
+    txnBuilder.addMinRemovalDelta(minRemovalDelta);
+    txnBuilder.addMinApprovalDelta(minApprovalDelta);
+    txnBuilder.addNumModifications(modifications.length);
+    txnBuilder.addModificationsOffset(mV);
+    final codedTransfer = txnBuilder.finish();
+    return modifyMultisigAccountTransactionSchema()
+        .serialize(builder.finish(codedTransfer));
+  }
+}
+
 SignedTransaction _signTransactionWith(Transaction tx, Account a) {
   final s = a.account;
   final b = tx._generateBytes();
@@ -1148,4 +1276,19 @@ Transaction _deserializeDTO(value) {
       }
       return null;
   }
+}
+
+int cosignatoryModificationArrayToBuffer(
+    fb.Builder builder, List<MultisigCosignatoryModification> modifications) {
+  final msb = <int>[];
+  for (final m in modifications) {
+    final b = hexDecodeStringOdd(m.publicAccount.publicKey);
+    final pV = builder.writeListUint8(b);
+    final txnBuilder = CosignatoryModificationBufferBuilder(builder)
+      ..begin()
+      ..addType(m.type.index)
+      ..addCosignatoryPublicKeyOffset(pV);
+    msb.add(txnBuilder.finish());
+  }
+  return builder.writeList(msb);
 }

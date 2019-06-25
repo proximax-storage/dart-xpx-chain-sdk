@@ -12,6 +12,7 @@ part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_register_namespace.d
 part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_mosaic_definition.dart';
 part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_mosaic_supply_change.dart';
 part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_aggregate.dart';
+part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_multisig.dart';
 
 part 'transactions/aggregate_transaction_buffer.dart';
 part 'transactions/alias_transaction_buffer.dart';
@@ -26,3 +27,4 @@ part 'transactions/register_namespace_transaction_buffer.dart';
 part 'transactions/secret_lock_transaction_buffer.dart';
 part 'transactions/secret_proof_transaction_buffer.dart';
 part 'transactions/transfer_transaction_buffer.dart';
+part 'transactions/transactions_buffer.dart';

@@ -298,6 +298,7 @@ class BlockchainRoutesApi {
     } else if (response.body != null) {
       // ignore: avoid_as
       final resp =
+          // ignore: avoid_as
           (apiClient.deserialize(response.body, 'List<_BlockInfoDTO>') as List)
               // ignore: avoid_as
               .map((item) => item as _BlockInfoDTO)
