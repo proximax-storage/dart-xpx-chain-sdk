@@ -3,18 +3,18 @@ part of xpx_chain_sdk;
 class _MosaicDTO {
   _MosaicDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    id = UInt64DTO.fromJson(json['id']);
-    amount = UInt64DTO.fromJson(json['amount']);
+    _id = UInt64DTO.fromJson(json['id']);
+    _amount = UInt64DTO.fromJson(json['amount']);
   }
 
-  UInt64DTO id;
+  UInt64DTO _id;
 
-  UInt64DTO amount;
+  UInt64DTO _amount;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['id'] = id;
-    data['amount'] = amount;
+    data['id'] = _id;
+    data['amount'] = _amount;
 
     return data;
   }
@@ -218,12 +218,12 @@ class _MosaicDefinitionTransactionDTO extends _AbstractTransactionDTO {
       int mosaicNonce,
       List<_MosaicPropertiesDTO> properties,
       UInt64DTO duration}) {
-    this.signature = signature;
-    this.signer = signer;
-    this.version = version;
-    this.type = type;
-    this.deadline = UInt64DTO.fromJson(deadline);
-    fee = UInt64DTO.fromJson(maxFee);
+    _signature = signature;
+    _signer = signer;
+    _version = version;
+    _type = type;
+    _deadline = UInt64DTO.fromJson(deadline);
+    _fee = UInt64DTO.fromJson(maxFee);
     _mosaicId = mosaicId;
     _mosaicNonce = mosaicNonce;
     _properties = properties;
@@ -231,12 +231,12 @@ class _MosaicDefinitionTransactionDTO extends _AbstractTransactionDTO {
   }
 
   _MosaicDefinitionTransactionDTO.fromJson(Map<String, dynamic> json) {
-    signature = json['signature'];
-    signer = json['signer'];
-    version = json['version'];
-    type = json['type'];
-    fee = UInt64DTO.fromJson(json['maxFee']);
-    deadline = UInt64DTO.fromJson(json['deadline']);
+    _signature = json['signature'];
+    _signer = json['signer'];
+    _version = json['version'];
+    _type = json['type'];
+    _fee = UInt64DTO.fromJson(json['maxFee']);
+    _deadline = UInt64DTO.fromJson(json['deadline']);
     _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
     _mosaicNonce = json['mosaicNonce'];
     _properties = _MosaicPropertiesDTO.listFromJson(json['properties']);
@@ -251,12 +251,12 @@ class _MosaicDefinitionTransactionDTO extends _AbstractTransactionDTO {
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['signature'] = signature;
-    data['signer'] = signer;
-    data['version'] = version;
-    data['type'] = type;
-    data['maxFee'] = fee;
-    data['deadline'] = deadline;
+    data['signature'] = _signature;
+    data['signer'] = _signer;
+    data['version'] = _version;
+    data['type'] = _type;
+    data['maxFee'] = _fee;
+    data['deadline'] = _deadline;
 
     data['duration'] = _duration;
     return data;
@@ -301,24 +301,24 @@ class _MosaicSupplyChangeTransactionDTO extends _AbstractTransactionDTO {
       UInt64DTO mosaicId,
       int direction,
       UInt64DTO delta}) {
-    this.signature = signature;
-    this.signer = signer;
-    this.version = version;
-    this.type = type;
-    this.deadline = UInt64DTO.fromJson(deadline);
-    fee = UInt64DTO.fromJson(maxFee);
+    _signature = signature;
+    _signer = signer;
+    _version = version;
+    _type = type;
+    _deadline = UInt64DTO.fromJson(deadline);
+    _fee = UInt64DTO.fromJson(maxFee);
     _mosaicId = mosaicId;
     _direction = direction;
     _delta = delta;
   }
 
   _MosaicSupplyChangeTransactionDTO.fromJson(Map<String, dynamic> json) {
-    signature = json['signature'];
-    signer = json['signer'];
-    version = json['version'];
-    type = json['type'];
-    fee = UInt64DTO.fromJson(json['maxFee']);
-    deadline = UInt64DTO.fromJson(json['deadline']);
+    _signature = json['signature'];
+    _signer = json['signer'];
+    _version = json['version'];
+    _type = json['type'];
+    _fee = UInt64DTO.fromJson(json['maxFee']);
+    _deadline = UInt64DTO.fromJson(json['deadline']);
     _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
     _direction = json['direction'];
     _delta = UInt64DTO.fromJson(json['delta']);
@@ -331,12 +331,12 @@ class _MosaicSupplyChangeTransactionDTO extends _AbstractTransactionDTO {
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['signature'] = signature;
-    data['signer'] = signer;
-    data['version'] = version;
-    data['type'] = type;
-    data['maxFee'] = fee;
-    data['deadline'] = deadline;
+    data['signature'] = _signature;
+    data['signer'] = _signer;
+    data['version'] = _version;
+    data['type'] = _type;
+    data['maxFee'] = _fee;
+    data['deadline'] = _deadline;
     data['mosaicId'] = _mosaicId;
     data['direction'] = _direction;
     data['delta'] = _delta;

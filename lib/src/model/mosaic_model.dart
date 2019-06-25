@@ -23,8 +23,8 @@ class Mosaic {
   Mosaic._(this.id, this.amount);
 
   Mosaic.fromDTO(_MosaicDTO v) {
-    id = MosaicId.fromId(v.id.toBigInt());
-    amount = v.amount.toBigInt();
+    id = MosaicId.fromId(v._id.toBigInt());
+    amount = v._amount.toBigInt();
   }
 
   MosaicId id;

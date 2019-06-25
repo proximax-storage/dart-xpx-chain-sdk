@@ -210,12 +210,12 @@ class _RegisterNamespaceTransactionDTO extends _AbstractTransactionDTO {
       String name,
       UInt64DTO parenId,
       UInt64DTO duration}) {
-    this.signature = signature;
-    this.signer = signer;
-    this.version = version;
-    this.type = type;
-    this.deadline = UInt64DTO.fromJson(deadline);
-    fee = UInt64DTO.fromJson(maxFee);
+    _signature = signature;
+    _signer = signer;
+    _version = version;
+    _type = type;
+    _deadline = UInt64DTO.fromJson(deadline);
+    _fee = UInt64DTO.fromJson(maxFee);
     _namespaceId = namespaceId;
     _namespaceType = namespaceType;
     _name = name;
@@ -224,12 +224,12 @@ class _RegisterNamespaceTransactionDTO extends _AbstractTransactionDTO {
   }
 
   _RegisterNamespaceTransactionDTO.fromJson(Map<String, dynamic> json) {
-    signature = json['signature'];
-    signer = json['signer'];
-    version = json['version'];
-    type = json['type'];
-    fee = UInt64DTO.fromJson(json['maxFee']);
-    deadline = UInt64DTO.fromJson(json['deadline']);
+    _signature = json['signature'];
+    _signer = json['signer'];
+    _version = json['version'];
+    _type = json['type'];
+    _fee = UInt64DTO.fromJson(json['maxFee']);
+    _deadline = UInt64DTO.fromJson(json['deadline']);
     _namespaceId = UInt64DTO.fromJson(json['namespaceId']);
     _namespaceType = json['namespaceType'];
     _name = json['name'];
@@ -249,12 +249,12 @@ class _RegisterNamespaceTransactionDTO extends _AbstractTransactionDTO {
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['signature'] = signature;
-    data['signer'] = signer;
-    data['version'] = version;
-    data['type'] = type;
-    data['maxFee'] = fee;
-    data['deadline'] = deadline;
+    data['signature'] = _signature;
+    data['signer'] = _signer;
+    data['version'] = _version;
+    data['type'] = _type;
+    data['maxFee'] = _fee;
+    data['deadline'] = _deadline;
     data['namespaceId'] = _namespaceId;
     data['namespaceType'] = _namespaceType;
     data['name'] = _name;

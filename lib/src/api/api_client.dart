@@ -274,6 +274,8 @@ dynamic _txnDeserialize(value, String targetType) {
         return _MosaicSupplyChangeTransactionInfoDTO.fromJson(value);
       case 'AggregateCompleted':
         return _AggregateTransactionInfoDTO.fromJson(value);
+      case 'ModifyMultisig':
+        return _ModifyMultisigAccountTransactionInfoDTO.fromJson(value);
       default:
         return null;
     }
