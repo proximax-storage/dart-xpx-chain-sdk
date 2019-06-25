@@ -14,7 +14,6 @@ class Schema {
 
   Uint8List serialize(Uint8List buffer) {
     final resultBytes = <int>[];
-
     var i = 0;
     for (final schemaDefinition in schemaDefinition) {
       final v = schemaDefinition.serialize(buffer, 4 + (i * 2), buffer[0]);
@@ -149,7 +148,7 @@ class TableArrayAttribute extends AbstractSchemaAttribute
 
   @override
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
-    List<int> resultBytes = [];
+    final List<int> resultBytes = [];
 
     final arrayLength = findArrayLength(innerObjectPosition, position, buffer);
 
@@ -161,7 +160,7 @@ class TableArrayAttribute extends AbstractSchemaAttribute
         final tmp = element.serialize(buffer, 4 + j * 2, startArrayPosition);
 
         if (tmp.length == 1) {
-          resultBytes = [tmp.elementAt(0)];
+          resultBytes.addAll([tmp.elementAt(0)]);
         } else {
           resultBytes.addAll(tmp);
         }
