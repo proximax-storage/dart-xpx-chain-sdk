@@ -3,46 +3,46 @@ part of xpx_chain_sdk;
 class _BlockDTO {
   _BlockDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    signature = json['signature'];
-    signer = json['signer'];
-    version = json['version'];
-    type = json['type'];
-    height = UInt64DTO.fromJson(json['height']);
-    timestamp = UInt64DTO.fromJson(json['timestamp']);
-    difficulty = UInt64DTO.fromJson(json['difficulty']);
-    feeMultiplier = json['feeMultiplier'];
-    previousBlockHash = json['previousBlockHash'];
-    blockTransactionsHash = json['blockTransactionsHash'];
-    blockReceiptsHash = json['blockReceiptsHash'];
-    stateHash = json['stateHash'];
-    beneficiaryPublicKey = json['beneficiaryPublicKey'];
+    _signature = json['signature'];
+    _signer = json['signer'];
+    _version = json['version'];
+    _type = json['type'];
+    _height = UInt64DTO.fromJson(json['height']);
+    _timestamp = UInt64DTO.fromJson(json['timestamp']);
+    _difficulty = UInt64DTO.fromJson(json['difficulty']);
+    _feeMultiplier = json['feeMultiplier'];
+    _previousBlockHash = json['previousBlockHash'];
+    _blockTransactionsHash = json['blockTransactionsHash'];
+    _blockReceiptsHash = json['blockReceiptsHash'];
+    _stateHash = json['stateHash'];
+    _beneficiaryPublicKey = json['beneficiaryPublicKey'];
   }
 
-  String signature;
+  String _signature;
 
-  String signer;
+  String _signer;
 
-  num version;
+  num _version;
 
-  num type;
+  num _type;
 
-  UInt64DTO height;
+  UInt64DTO _height;
 
-  UInt64DTO timestamp;
+  UInt64DTO _timestamp;
 
-  UInt64DTO difficulty;
+  UInt64DTO _difficulty;
 
-  int feeMultiplier;
+  int _feeMultiplier;
 
-  String previousBlockHash;
+  String _previousBlockHash;
 
-  String blockTransactionsHash;
+  String _blockTransactionsHash;
 
-  String blockReceiptsHash;
+  String _blockReceiptsHash;
 
-  String stateHash;
+  String _stateHash;
 
-  String beneficiaryPublicKey;
+  String _beneficiaryPublicKey;
 
   static List<_BlockDTO> listFromJson(List<dynamic> json) => json == null
       ? null
@@ -59,19 +59,19 @@ class _BlockDTO {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['signature'] = signature;
-    data['signer'] = signer;
-    data['version'] = version;
-    data['type'] = type;
-    data['height'] = height;
-    data['timestamp'] = timestamp;
-    data['difficulty'] = difficulty;
-    data['feeMultiplier'] = feeMultiplier;
-    data['feeMultiplier'] = feeMultiplier;
-    data['blockTransactionsHash'] = blockTransactionsHash;
-    data['blockReceiptsHash'] = blockReceiptsHash;
-    data['stateHash'] = stateHash;
-    data['beneficiaryPublicKey'] = beneficiaryPublicKey;
+    data['signature'] = _signature;
+    data['signer'] = _signer;
+    data['version'] = _version;
+    data['type'] = _type;
+    data['height'] = _height;
+    data['timestamp'] = _timestamp;
+    data['difficulty'] = _difficulty;
+    data['feeMultiplier'] = _feeMultiplier;
+    data['feeMultiplier'] = _feeMultiplier;
+    data['blockTransactionsHash'] = _blockTransactionsHash;
+    data['blockReceiptsHash'] = _blockReceiptsHash;
+    data['stateHash'] = _stateHash;
+    data['beneficiaryPublicKey'] = _beneficiaryPublicKey;
 
     return data;
   }
@@ -80,18 +80,18 @@ class _BlockDTO {
 class _BlockInfoDTO {
   _BlockInfoDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    meta = _BlockMetaDTO.fromJson(json['meta']);
-    block = _BlockDTO.fromJson(json['block']);
+    _meta = _BlockMetaDTO.fromJson(json['meta']);
+    _block = _BlockDTO.fromJson(json['block']);
   }
 
-  _BlockMetaDTO meta;
+  _BlockMetaDTO _meta;
 
-  _BlockDTO block;
+  _BlockDTO _block;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['meta'] = meta;
-    data['block'] = block;
+    data['meta'] = _meta;
+    data['block'] = _block;
 
     return data;
   }
@@ -113,19 +113,19 @@ class _BlockInfoDTO {
 class _BlockMetaDTO {
   _BlockMetaDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    hash = json['hash'];
-    generationHash = json['generationHash'];
-    totalFee = UInt64DTO.fromJson(json['totalFee']);
-    numTransactions = json['numTransactions'];
+    _hash = json['hash'];
+    _generationHash = json['generationHash'];
+    _totalFee = UInt64DTO.fromJson(json['totalFee']);
+    _numTransactions = json['numTransactions'];
   }
 
-  String hash;
+  String _hash;
 
-  String generationHash;
+  String _generationHash;
 
-  UInt64DTO totalFee;
+  UInt64DTO _totalFee;
 
-  num numTransactions;
+  num _numTransactions;
 
   static List<_BlockMetaDTO> listFromJson(List<dynamic> json) => json == null
       ? null
@@ -139,23 +139,33 @@ class _BlockMetaDTO {
     }
     return map;
   }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['hash'] = _hash;
+    data['generationHash'] = _generationHash;
+    data['totalFee'] = _totalFee;
+    data['numTransactions'] = _numTransactions;
+
+    return data;
+  }
 }
 
 class _BlockchainScoreDTO {
   _BlockchainScoreDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    scoreHigh = UInt64DTO.fromJson(json['scoreHigh']);
-    scoreLow = UInt64DTO.fromJson(json['scoreLow']);
+    _scoreHigh = UInt64DTO.fromJson(json['scoreHigh']);
+    _scoreLow = UInt64DTO.fromJson(json['scoreLow']);
   }
 
-  UInt64DTO scoreHigh;
+  UInt64DTO _scoreHigh;
 
-  UInt64DTO scoreLow;
+  UInt64DTO _scoreLow;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['scoreHigh'] = scoreHigh;
-    data['scoreLow'] = scoreLow;
+    data['scoreHigh'] = _scoreHigh;
+    data['scoreLow'] = _scoreLow;
 
     return data;
   }

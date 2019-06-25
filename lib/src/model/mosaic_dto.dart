@@ -36,19 +36,19 @@ class _MosaicDTO {
 class _MosaicInfoDTO {
   _MosaicInfoDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    meta = _MosaicMetaDTO.fromJson(json['meta']);
+    _meta = _MosaicMetaDTO.fromJson(json['meta']);
 
-    mosaic = _MosaicDefinitionDTO.fromJson(json['mosaic']);
+    _mosaic = _MosaicDefinitionDTO.fromJson(json['mosaic']);
   }
 
-  _MosaicMetaDTO meta;
+  _MosaicMetaDTO _meta;
 
-  _MosaicDefinitionDTO mosaic;
+  _MosaicDefinitionDTO _mosaic;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['meta'] = meta;
-    data['mosaic'] = mosaic;
+    data['meta'] = _meta;
+    data['mosaic'] = _mosaic;
 
     return data;
   }
@@ -70,10 +70,10 @@ class _MosaicInfoDTO {
 class _MosaicMetaDTO {
   _MosaicMetaDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    id = json['id'];
+    _id = json['id'];
   }
 
-  String id;
+  String _id;
 
   static List<_MosaicMetaDTO> listFromJson(List<dynamic> json) => json == null
       ? null
@@ -88,51 +88,51 @@ class _MosaicMetaDTO {
     return map;
   }
 
-  Map<String, dynamic> toJson() => {'id': id};
+  Map<String, dynamic> toJson() => {'id': _id};
 }
 
 class _MosaicDefinitionDTO {
   _MosaicDefinitionDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    mosaicId = UInt64DTO.fromJson(json['mosaicId']);
-    supply = UInt64DTO.fromJson(json['supply']);
-    height = UInt64DTO.fromJson(json['height']);
-    owner = json['owner'];
-    revision = json['revision'];
+    _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
+    _supply = UInt64DTO.fromJson(json['supply']);
+    _height = UInt64DTO.fromJson(json['height']);
+    _owner = json['owner'];
+    _revision = json['revision'];
 
     if (json['properties'] != null) {
-      properties = [];
+      _properties = [];
       for (int i = 0; i < 3; i++) {
-        properties.add(UInt64DTO.fromJson(json['properties'][i]));
+        _properties.add(UInt64DTO.fromJson(json['properties'][i]));
       }
     }
   }
 
-  UInt64DTO mosaicId;
-  UInt64DTO supply;
-  UInt64DTO height;
-  String owner;
-  int revision;
-  List<UInt64DTO> properties;
+  UInt64DTO _mosaicId;
+  UInt64DTO _supply;
+  UInt64DTO _height;
+  String _owner;
+  int _revision;
+  List<UInt64DTO> _properties;
 
-  Object levy;
+  Object _levy;
 }
 
 class _MosaicNameDTO {
   _MosaicNameDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    parentId =
+    _parentId =
         json['parentId'] != null ? UInt64DTO.fromJson(json['parentId']) : null;
 
-    mosaicId = UInt64DTO.fromJson(json['mosaicId']);
-    names = List.from(json['names']);
+    _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
+    _names = List.from(json['names']);
   }
 
-  UInt64DTO parentId;
+  UInt64DTO _parentId;
 
-  UInt64DTO mosaicId;
+  UInt64DTO _mosaicId;
 
-  List<String> names;
+  List<String> _names;
 
   static List<_MosaicNameDTO> listFromJson(List<dynamic> json) => json == null
       ? null
@@ -149,9 +149,9 @@ class _MosaicNameDTO {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['parentId'] = parentId;
-    data['mosaicId'] = mosaicId;
-    data['names'] = names;
+    data['parentId'] = _parentId;
+    data['mosaicId'] = _mosaicId;
+    data['names'] = _names;
 
     return data;
   }
@@ -159,12 +159,12 @@ class _MosaicNameDTO {
 
 class _MosaicPropertiesDTO {
   _MosaicPropertiesDTO.fromJson(Map<String, dynamic> value) {
-    id = value['id'];
-    this.value = UInt64DTO.fromJson(value['value']);
+    _id = value['id'];
+    _value = UInt64DTO.fromJson(value['value']);
   }
 
-  int id;
-  UInt64DTO value;
+  int _id;
+  UInt64DTO _value;
 
   static List<_MosaicPropertiesDTO> listFromJson(List<dynamic> json) =>
       json == null
@@ -173,8 +173,8 @@ class _MosaicPropertiesDTO {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['id'] = id;
-    data['value'] = value;
+    data['id'] = _id;
+    data['value'] = _value;
 
     return data;
   }

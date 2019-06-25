@@ -196,7 +196,7 @@ class Deadline {
   }
 
   Deadline.fromUInt64DTO(UInt64DTO data)
-      : assert(data.lower != null || data.higher == null,
+      : assert(data._lower != null || data._higher == null,
             'lower or higher must not be null') {
     value = data.toBigInt() != null
         ? DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt())

@@ -13,10 +13,10 @@ AliasType getAliasType(int value) {
 
 class Alias {
   Alias.fromDTO(_AliasDTO value)
-      : assert(value.type != 0, 'a must not be null') {
-    mosaicId = value.mosaicId.toBigInt();
-    type = getAliasType(value.type);
-    address = value.address;
+      : assert(value._type != 0, 'a must not be null') {
+    mosaicId = value._mosaicId.toBigInt();
+    type = getAliasType(value._type);
+    address = value._address;
   }
 
   AliasType type;

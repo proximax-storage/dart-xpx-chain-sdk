@@ -1,25 +1,25 @@
 part of xpx_chain_sdk;
 
 class UInt64DTO {
-  UInt64DTO([this.higher, this.lower]);
+  UInt64DTO([this._higher, this._lower]);
 
   UInt64DTO.fromJson(json) {
     if (json == null) {
       return;
     }
 
-    higher = Int32(json[0]);
-    lower = Int32(json[1]);
+    _higher = Int32(json[0]);
+    _lower = Int32(json[1]);
   }
 
   UInt64DTO.fromBigInt(BigInt v)
       : assert(json != null, 'json must not be null') {
     final u64 = v.toInt();
-    higher = Int32(u64 & 0xFFFFFFFF);
-    lower = Int32(u64 >> 32);
+    _higher = Int32(u64 & 0xFFFFFFFF);
+    _lower = Int32(u64 >> 32);
   }
 
-  Int32 lower, higher;
+  Int32 _lower, _higher;
 
   static List<UInt64DTO> listFromJson(List<dynamic> json) => json == null
       ? null
@@ -35,20 +35,20 @@ class UInt64DTO {
   }
 
   BigInt toBigInt() {
-    if (lower == null || higher == null) {
+    if (_lower == null || _higher == null) {
       return null;
     }
     final buffer = Buffer.bigEndian(8)
-      ..writeInt32(lower.toInt())
-      ..writeInt32(higher.toInt());
+      ..writeInt32(_lower.toInt())
+      ..writeInt32(_higher.toInt());
 
     return buffer.toBigInt();
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['higher'] = higher;
-    data['lower'] = lower;
+    data['higher'] = _higher;
+    data['lower'] = _lower;
     return data;
   }
 }

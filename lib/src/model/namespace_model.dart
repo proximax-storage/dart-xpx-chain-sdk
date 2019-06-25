@@ -76,25 +76,25 @@ class NamespaceInfo {
 
   NamespaceInfo.fromDTO(_NamespaceInfoDTO value)
       : assert(json != null, 'json must not be null') {
-    metaId = value.meta.id;
-    active = value.meta.active;
-    index = value.meta.index;
+    metaId = value._meta.id;
+    active = value._meta.active;
+    index = value._meta.index;
 
-    final _ownerAddress = Address.fromEncoded(value.namespace.ownerAddress);
+    final _ownerAddress = Address.fromEncoded(value._namespace._ownerAddress);
 
     owner = PublicAccount.fromPublicKey(
-        value.namespace.owner, _ownerAddress.networkType);
+        value._namespace._owner, _ownerAddress.networkType);
 
-    startHeight = value.namespace.startHeight.toBigInt();
-    endHeight = value.namespace.endHeight.toBigInt();
-    depth = value.namespace.depth;
+    startHeight = value._namespace._startHeight.toBigInt();
+    endHeight = value._namespace._endHeight.toBigInt();
+    depth = value._namespace._depth;
     levels = extractLevels(value);
-    typeSpace = value.namespace.type;
-    alias = Alias.fromDTO(value.namespace.alias);
-    if (value.namespace.parentId.toBigInt().toInt() != 0) {
+    typeSpace = value._namespace._type;
+    alias = Alias.fromDTO(value._namespace._alias);
+    if (value._namespace._parentId.toBigInt().toInt() != 0) {
       namespaceId = NamespaceId._(levels[0]);
       parent = NamespaceInfo()
-        ..namespaceId = NamespaceId._(value.namespace.parentId.toBigInt());
+        ..namespaceId = NamespaceId._(value._namespace._parentId.toBigInt());
     } else {
       namespaceId = NamespaceId._(levels[0]);
     }
@@ -213,18 +213,18 @@ List<BigInt> generateNamespacePath(String name) {
 List<BigInt> extractLevels(_NamespaceInfoDTO ref) {
   final List<BigInt> levels = [];
 
-  if (ref.namespace.level0.higher != null) {
-    final nsName = ref.namespace.level0.toBigInt();
+  if (ref._namespace._level0._higher != null) {
+    final nsName = ref._namespace._level0.toBigInt();
     levels.add(nsName);
   }
 
-  if (ref.namespace.level1.higher != null) {
-    final nsName = ref.namespace.level1.toBigInt();
+  if (ref._namespace._level1._higher != null) {
+    final nsName = ref._namespace._level1.toBigInt();
     levels.add(nsName);
   }
 
-  if (ref.namespace.level2.higher != null) {
-    final nsName = ref.namespace.level2.toBigInt();
+  if (ref._namespace._level2._higher != null) {
+    final nsName = ref._namespace._level2.toBigInt();
     levels.add(nsName);
   }
 

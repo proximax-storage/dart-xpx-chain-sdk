@@ -3,14 +3,14 @@ part of xpx_chain_sdk;
 class _AccountPropertiesInfoDTO {
   _AccountPropertiesInfoDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    meta = _AccountPropertiesMetaDTO.fromJson(json['meta']);
-    accountProperties =
+    _meta = _AccountPropertiesMetaDTO.fromJson(json['meta']);
+    _accountProperties =
         _AccountPropertiesDTO.fromJson(json['accountProperties']);
   }
 
-  _AccountPropertiesMetaDTO meta;
+  _AccountPropertiesMetaDTO _meta;
 
-  _AccountPropertiesDTO accountProperties;
+  _AccountPropertiesDTO _accountProperties;
 
   static List<_AccountPropertiesInfoDTO> listFromJson(List<dynamic> json) =>
       json == null
@@ -30,5 +30,5 @@ class _AccountPropertiesInfoDTO {
   }
 
   Map<String, dynamic> toJson() =>
-      {'meta': meta, 'accountProperties': accountProperties};
+      {'meta': _meta, 'accountProperties': _accountProperties};
 }

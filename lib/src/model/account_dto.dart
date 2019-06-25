@@ -3,37 +3,37 @@ part of xpx_chain_sdk;
 class _AccountDTO {
   _AccountDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    address = json['address'];
-    addressHeight = UInt64DTO.fromJson(json['addressHeight']);
-    publicKey = json['publicKey'];
-    publicKeyHeight = UInt64DTO.fromJson(json['publicKeyHeight']);
-    mosaics = _MosaicDTO.listFromJson(json['mosaics']);
-    accountType = json['accountType'];
-    linkedAccountKey = json['linkedAccountKey'];
+    _address = json['address'];
+    _addressHeight = UInt64DTO.fromJson(json['addressHeight']);
+    _publicKey = json['publicKey'];
+    _publicKeyHeight = UInt64DTO.fromJson(json['publicKeyHeight']);
+    _mosaics = _MosaicDTO.listFromJson(json['mosaics']);
+    _accountType = json['accountType'];
+    _linkedAccountKey = json['linkedAccountKey'];
   }
 
-  String address;
+  String _address;
 
-  UInt64DTO addressHeight;
+  UInt64DTO _addressHeight;
 
-  String publicKey;
+  String _publicKey;
 
-  UInt64DTO publicKeyHeight;
+  UInt64DTO _publicKeyHeight;
 
-  List<_MosaicDTO> mosaics = [];
+  List<_MosaicDTO> _mosaics = [];
 
-  int accountType;
+  int _accountType;
 
-  String linkedAccountKey;
+  String _linkedAccountKey;
 
   Map<String, dynamic> toJson() => {
-        'address': address,
-        'addressHeight': addressHeight,
-        'publicKey': publicKey,
-        'publicKeyHeight': publicKeyHeight,
-        'mosaics': mosaics,
-        'accountType': accountType,
-        'linkedAccountKey': linkedAccountKey
+        'address': _address,
+        'addressHeight': _addressHeight,
+        'publicKey': _publicKey,
+        'publicKeyHeight': _publicKeyHeight,
+        'mosaics': _mosaics,
+        'accountType': _accountType,
+        'linkedAccountKey': _linkedAccountKey
       };
 
   static List<_AccountDTO> listFromJson(List<dynamic> json) => json == null
@@ -53,15 +53,15 @@ class _AccountDTO {
 class _AccountInfoDTO {
   _AccountInfoDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    meta = _AccountMetaDTO.fromJson(json['meta']);
-    account = _AccountDTO.fromJson(json['account']);
+    _meta = _AccountMetaDTO.fromJson(json['meta']);
+    _account = _AccountDTO.fromJson(json['account']);
   }
 
-  _AccountMetaDTO meta;
+  _AccountMetaDTO _meta;
 
-  _AccountDTO account;
+  _AccountDTO _account;
 
-  Map<String, dynamic> toJson() => {'meta': meta, 'account': account};
+  Map<String, dynamic> toJson() => {'meta': _meta, 'account': _account};
 
   static List<_AccountInfoDTO> listFromJson(List<dynamic> json) => json == null
       ? null

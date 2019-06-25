@@ -3,18 +3,18 @@ part of xpx_chain_sdk;
 class AccountPropertyDTO {
   AccountPropertyDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    propertyType = json['propertyType'];
-    values = json['values'];
+    _propertyType = json['propertyType'];
+    _values = json['values'];
   }
 
-  int propertyType;
+  int _propertyType;
 
-  List<Object> values = [];
+  List<Object> _values = [];
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['propertyType'] = propertyType;
-    data['values'] = values;
+    data['propertyType'] = _propertyType;
+    data['values'] = _values;
 
     return data;
   }

@@ -143,17 +143,17 @@ class Account {
 // ignore: public_member_api_docs
 class AccountInfo {
   AccountInfo.fromDTO(_AccountInfoDTO v) {
-    final List<Mosaic> mList = List(v.account.mosaics.length);
-    for (var i = 0; i < v.account.mosaics.length; i++) {
-      mList[i] = Mosaic.fromDTO(v.account.mosaics[i]);
+    final List<Mosaic> mList = List(v._account._mosaics.length);
+    for (var i = 0; i < v._account._mosaics.length; i++) {
+      mList[i] = Mosaic.fromDTO(v._account._mosaics[i]);
     }
 
-    address = Address.fromEncoded(v.account.address);
-    addressHeight = v.account.addressHeight.toBigInt();
-    publicKey = v.account.publicKey;
-    publicKeyHeight = v.account.publicKeyHeight.toBigInt();
-    accountType = v.account.accountType;
-    linkedAccountKey = v.account.linkedAccountKey;
+    address = Address.fromEncoded(v._account._address);
+    addressHeight = v._account._addressHeight.toBigInt();
+    publicKey = v._account._publicKey;
+    publicKeyHeight = v._account._publicKeyHeight.toBigInt();
+    accountType = v._account._accountType;
+    linkedAccountKey = v._account._linkedAccountKey;
     mosaics = mList;
   }
 

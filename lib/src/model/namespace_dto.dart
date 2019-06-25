@@ -3,44 +3,44 @@ part of xpx_chain_sdk;
 class _NamespaceDTO {
   _NamespaceDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    owner = json['owner'];
-    ownerAddress = json['ownerAddress'];
-    startHeight = UInt64DTO.fromJson(json['startHeight']);
-    endHeight = UInt64DTO.fromJson(json['endHeight']);
-    depth = json['depth'];
-    level0 = UInt64DTO.fromJson(json['level0']);
-    level1 = UInt64DTO.fromJson(json['level1']);
-    level2 = UInt64DTO.fromJson(json['level2']);
-    type = json['type'];
-    alias = _AliasDTO.fromJson(json['alias']);
-    parentId = UInt64DTO.fromJson(json['parentId']);
+    _owner = json['owner'];
+    _ownerAddress = json['ownerAddress'];
+    _startHeight = UInt64DTO.fromJson(json['startHeight']);
+    _endHeight = UInt64DTO.fromJson(json['endHeight']);
+    _depth = json['depth'];
+    _level0 = UInt64DTO.fromJson(json['level0']);
+    _level1 = UInt64DTO.fromJson(json['level1']);
+    _level2 = UInt64DTO.fromJson(json['level2']);
+    _type = json['type'];
+    _alias = _AliasDTO.fromJson(json['alias']);
+    _parentId = UInt64DTO.fromJson(json['parentId']);
   }
 
-  String owner;
-  String ownerAddress;
-  UInt64DTO startHeight;
-  UInt64DTO endHeight;
-  int depth;
-  UInt64DTO level0;
-  UInt64DTO level1;
-  UInt64DTO level2;
-  int type;
-  _AliasDTO alias;
-  UInt64DTO parentId;
+  String _owner;
+  String _ownerAddress;
+  UInt64DTO _startHeight;
+  UInt64DTO _endHeight;
+  int _depth;
+  UInt64DTO _level0;
+  UInt64DTO _level1;
+  UInt64DTO _level2;
+  int _type;
+  _AliasDTO _alias;
+  UInt64DTO _parentId;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['owner'] = owner;
-    data['ownerAddress'] = ownerAddress;
-    data['startHeight'] = startHeight;
-    data['endHeight'] = endHeight;
-    data['depth'] = depth;
-    data['level0'] = level0;
-    data['level1'] = level1;
-    data['level2'] = level2;
-    data['type'] = type;
-    data['alias'] = alias;
-    data['parentId'] = parentId;
+    data['owner'] = _owner;
+    data['ownerAddress'] = _ownerAddress;
+    data['startHeight'] = _startHeight;
+    data['endHeight'] = _endHeight;
+    data['depth'] = _depth;
+    data['level0'] = _level0;
+    data['level1'] = _level1;
+    data['level2'] = _level2;
+    data['type'] = _type;
+    data['alias'] = _alias;
+    data['parentId'] = _parentId;
 
     return data;
   }
@@ -62,13 +62,13 @@ class _NamespaceDTO {
 class _NamespaceInfoDTO {
   _NamespaceInfoDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    meta = _NamespaceMetaDTO.fromJson(json['meta']);
-    namespace = _NamespaceDTO.fromJson(json['namespace']);
+    _meta = _NamespaceMetaDTO.fromJson(json['meta']);
+    _namespace = _NamespaceDTO.fromJson(json['namespace']);
   }
 
-  _NamespaceMetaDTO meta;
+  _NamespaceMetaDTO _meta;
 
-  _NamespaceDTO namespace;
+  _NamespaceDTO _namespace;
 
   static List<_NamespaceInfoDTO> listFromJson(List<dynamic> json) =>
       json == null
@@ -87,8 +87,8 @@ class _NamespaceInfoDTO {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['meta'] = meta;
-    data['namespace'] = namespace;
+    data['meta'] = _meta;
+    data['namespace'] = _namespace;
 
     return data;
   }

@@ -3,22 +3,22 @@ part of xpx_chain_sdk;
 class _AliasDTO {
   _AliasDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    type = json['type'];
-    mosaicId = UInt64DTO.fromJson(json['mosaicId']);
-    address = json['address'];
+    _type = json['type'];
+    _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
+    _address = json['address'];
   }
 
-  int type;
+  int _type;
 
-  UInt64DTO mosaicId;
+  UInt64DTO _mosaicId;
 
-  String address;
+  String _address;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['type'] = type;
-    data['mosaicId'] = mosaicId;
-    data['address'] = address;
+    data['type'] = _type;
+    data['mosaicId'] = _mosaicId;
+    data['address'] = _address;
 
     return data;
   }
