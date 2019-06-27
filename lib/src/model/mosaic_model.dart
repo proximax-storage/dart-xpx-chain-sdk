@@ -108,7 +108,8 @@ class MosaicInfo {
     mosaicId = MosaicId(id: value._mosaic._mosaicId.toBigInt());
     supply = value._mosaic._supply.toBigInt();
     height = value._mosaic._height.toBigInt();
-    owner = PublicAccount.fromPublicKey(value._mosaic._owner, configNetworkType);
+    owner =
+        PublicAccount.fromPublicKey(value._mosaic._owner, configNetworkType);
     revision = value._mosaic._revision;
     properties = MosaicProperties.fromJson(value._mosaic._properties);
   }

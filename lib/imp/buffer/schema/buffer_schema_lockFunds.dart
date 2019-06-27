@@ -1,6 +1,6 @@
 part of xpx_chain_sdk.buffer;
 
-Schema modifyMultisigAccountTransactionSchema() {
+Schema lockFundsTransactionSchema() {
   final List<SchemaAttribute> schemaDefinition = [
     _newScalarAttribute('size', _intSize),
     _newArrayAttribute('signature', _byteSize),
@@ -9,15 +9,10 @@ Schema modifyMultisigAccountTransactionSchema() {
     _newScalarAttribute('type', _shortSize),
     _newArrayAttribute('fee', _intSize),
     _newArrayAttribute('deadline', _intSize),
-    _newScalarAttribute('minRemovalDelta', _byteSize),
-    _newScalarAttribute('minApprovalDelta', _byteSize),
-    _newScalarAttribute('numModifications', _byteSize),
-    _newTableArrayAttribute(
-        'modification',
-        Schema([
-          _newScalarAttribute('type', _byteSize),
-          _newArrayAttribute('cosignatoryPublicKey', _byteSize),
-        ]).schemaDefinition)
+    _newArrayAttribute('mosaicId', _intSize),
+    _newArrayAttribute('mosaicAmount', _intSize),
+    _newArrayAttribute('duration', _intSize),
+    _newArrayAttribute('hash', _byteSize),
   ];
   return Schema(schemaDefinition);
 }

@@ -180,7 +180,7 @@ class TableAttribute extends AbstractSchemaAttribute
 
   @override
   Uint8List serialize(Uint8List buffer, int position, int innerObjectPosition) {
-    var resultBytes = <int>[];
+    final resultBytes = <int>[];
     final tableStartPosition =
         findObjectStartPosition(innerObjectPosition, position, buffer);
 
@@ -189,7 +189,7 @@ class TableAttribute extends AbstractSchemaAttribute
       final tmp = element.serialize(buffer, 4 + j * 2, tableStartPosition);
       ++j;
       if (tmp.length == 1) {
-        resultBytes = [tmp.elementAt(0)];
+        resultBytes.addAll([tmp.elementAt(0)]);
       } else {
         resultBytes.addAll(tmp);
       }

@@ -26,15 +26,16 @@ const _aggregateCompletedVersion = 2,
     _transferVersion = 3,
     _mosaicDefinitionVersion = 3,
     _mosaicSupplyChangeVersion = 2,
-    _modifyMultisigVersion = 3;
-//    modifyContractVersion = 3,
-//    aggregateBondedVersion = 2,
-//    metadataAddressVersion = 1,
-//    metadataMosaicVersion = 1,
-//    metadataNamespaceVersion = 1,
-//    lockVersion = 1,
-//    secretLockVersion = 1,
-//    secretProofVersion = 1;
+    _modifyMultisigVersion = 3,
+    _lockVersion = 1;
+
+//    _modifyContractVersion = 3,
+//    _aggregateBondedVersion = 2,
+//    _metadataAddressVersion = 1,
+//    _metadataMosaicVersion = 1,
+//    _metadataNamespaceVersion = 1,
+//    _secretLockVersion = 1,
+//    _secretProofVersion = 1;
 
 // TransactionType enums
 enum TransactionType {
@@ -1234,6 +1235,89 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
     txnBuilder.addModificationsOffset(mV);
     final codedTransfer = txnBuilder.finish();
     return modifyMultisigAccountTransactionSchema()
+        .serialize(builder.finish(codedTransfer));
+  }
+}
+
+class LockFundsTransaction extends AbstractTransaction implements Transaction {
+  LockFundsTransaction(Deadline deadline, Mosaic mosaic, BigInt duration,
+      SignedTransaction signedTx, int networkType)
+      : assert(mosaic != null, 'mosaic must not be null'),
+        assert(duration != null, 'duration must not be null'),
+        assert(signedTx != null, 'signedTx must not be null'),
+        super() {
+    if (signedTx.transactionType != transactionTypeFromRaw(16961)._hex) {
+      throw _errEmptyModifications;
+    } else {
+      version = _lockVersion;
+      this.deadline = deadline;
+      type = transactionTypeFromRaw(16712);
+      this.networkType = networkType;
+      this.mosaic = mosaic;
+      this.duration = duration;
+      signedTransaction = signedTx;
+    }
+  }
+
+  Mosaic mosaic;
+
+  BigInt duration;
+
+  SignedTransaction signedTransaction;
+
+  @override
+  String toString() => '{\n'
+      '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
+      '\t"mosaic": $mosaic,\n'
+      '\t"duration": $duration,\n'
+      '\t"signedTransaction": $signedTransaction,\n'
+      '}\n';
+
+  @override
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['abstractTransaction'] = _abstractTransactionToJson();
+    data['mosaic'] = mosaic;
+    data['duration'] = duration;
+    data['signedTxHash'] = signedTransaction;
+
+    return data;
+  }
+
+  @override
+  int _size() => lockSize;
+
+  @override
+  AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
+
+  @override
+  Uint8List _generateBytes() {
+    final builder = fb.Builder(initialSize: 0);
+
+    final mV = builder.writeListUint32(bigIntToList(mosaic.id.toBigInt()));
+
+    final maV = builder.writeListUint32(fromBigInt(mosaic.amount));
+
+    final dV = builder.writeListUint32(fromBigInt(duration));
+
+    final h = hex.decode(signedTransaction.hash);
+
+    final hV = builder.writeListUint8(h);
+
+    final vectors = _generateVector(builder);
+
+    final txnBuilder = LockFundsTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(_size());
+    _buildVector(builder, vectors['versionV'], vectors['signatureV'],
+        vectors['signerV'], vectors['deadlineV'], vectors['feeV']);
+    txnBuilder.addMosaicIdOffset(mV);
+    txnBuilder.addMosaicAmountOffset(maV);
+    txnBuilder.addDurationOffset(dV);
+    txnBuilder.addHashOffset(hV);
+    final codedTransfer = txnBuilder.finish();
+
+    return lockFundsTransactionSchema()
         .serialize(builder.finish(codedTransfer));
   }
 }
