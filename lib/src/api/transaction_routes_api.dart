@@ -6,10 +6,16 @@ class TransactionRoutesApi {
 
   final _ApiClient apiClient;
 
+  Future<Object> announce(SignedTransaction tx) async => _announceTransaction(tx, '/transaction');
+
+  Future<Object> announceAggregateBonded(SignedTransaction tx) async => _announceTransaction(tx, '/transaction/partial');
+
+  Future<Object> announceAggregateBondedCosignature(SignedTransaction tx) async => _announceTransaction(tx, '/transaction/cosignature');
+
   /// Announce a  transaction
   ///
   /// Announces a transaction to the network.
-  Future<Object> announceTransaction(SignedTransaction tx) async {
+  Future<Object> _announceTransaction(SignedTransaction tx, String uri) async {
     Object postBody = tx;
 
     // verify required params are set
@@ -18,7 +24,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/transaction'.replaceAll('{format}', 'json');
+    final String path = uri.replaceAll('{format}', 'json');
 
     // query params
     final List<QueryParam> queryParams = [];
@@ -46,6 +52,48 @@ class TransactionRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       return apiClient.deserialize(response.body, 'String');
+    } else {
+      return null;
+    }
+  }
+
+  /// Announce a cosignature transaction
+  Future<Object> announceCosignatureTransaction(
+      TransactionPayload payload) async {
+    Object postBody = payload;
+
+    // verify required params are set
+    if (payload == null) {
+      throw  ApiException(400, 'Missing required param: payload');
+    }
+
+    // create path and map variables
+    final String path = '/transaction/cosignature'.replaceAll('{format}', 'json');
+
+    // query params
+    final List<QueryParam> queryParams = [];
+    final Map<String, String> headerParams = {};
+    final Map<String, String> formParams = {};
+
+    final List<String> contentTypes = [];
+
+    final String contentType =
+    contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
+
+    if (contentType.startsWith('multipart/form-data')) {
+      const bool hasFields = false;
+      final http.MultipartRequest mp =  http.MultipartRequest(null, null);
+
+      if (hasFields) {postBody = mp;}
+    } else {}
+
+    final response = await apiClient.invokeAPI(path, 'PUT', queryParams, postBody,
+        headerParams, formParams, contentType);
+
+    if (response.statusCode >= 400) {
+      throw  ApiException(response.statusCode, response.body);
+    } else if (response.body != null) {
+      return apiClient.deserialize(response.body, 'Object') as Object;
     } else {
       return null;
     }
