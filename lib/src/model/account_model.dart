@@ -131,6 +131,10 @@ class Account {
 
   crypto.KeyPair get account => _account;
 
+  String get publicKey => _publicAccount._publicKey;
+
+  Address get address => _publicAccount.address;
+
   @override
   String toString() => publicAccount.toString();
 
