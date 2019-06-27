@@ -347,7 +347,7 @@ class AccountRoutesApi {
   ///
   /// Gets an List of [aggregate bonded transactions] where the account is
   /// the sender or requires to cosign the transaction.
-  Future<List<Transaction>> partialTransactions(PublicAccount account,
+  Future<List<Transaction>> aggregateBondedTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
     Object postBody;
 
