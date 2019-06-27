@@ -402,16 +402,15 @@ class _LockFundsTransactionDTO extends _AbstractTransactionDTO {
 
   @override
   Map<String, dynamic> toJson() => {
-    'signature': _signature,
-    'signer': _signer,
-    'version': _version,
-    'type': _type,
-    'maxFee': _fee,
-    'deadline': _deadline,
-    'mosaic': _mosaic,
-    'amount': _amount,
-    'duration': _duration,
-    'hash': _hash,
-  };
+        'signature': _signature,
+        'signer': _signer,
+        'version': _version,
+        'type': _type,
+        'maxFee': _fee,
+        'deadline': _deadline,
+        'mosaic': _mosaic,
+        'amount': _amount,
+        'duration': _duration,
+        'hash': _hash,
+      };
 }
-

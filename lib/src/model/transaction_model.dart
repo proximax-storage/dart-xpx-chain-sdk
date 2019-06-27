@@ -22,6 +22,7 @@ var _transactionTypes = <_TransactionTypeClass>{
 
 // TransactionVersion enums
 const _aggregateCompletedVersion = 2,
+    _aggregateBondedVersion = 2,
     _registerNamespaceVersion = 2,
     _transferVersion = 3,
     _mosaicDefinitionVersion = 3,
@@ -30,7 +31,6 @@ const _aggregateCompletedVersion = 2,
     _lockVersion = 1;
 
 //    _modifyContractVersion = 3,
-//    _aggregateBondedVersion = 2,
 //    _metadataAddressVersion = 1,
 //    _metadataMosaicVersion = 1,
 //    _metadataNamespaceVersion = 1,
@@ -236,7 +236,6 @@ class SignedTransaction {
       '\t"payload": $payload\n'
       '\t"hash": $hash\n'
       '}\n';
-
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -1026,15 +1025,25 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 }
 
 class AggregateTransaction extends AbstractTransaction implements Transaction {
-  AggregateTransaction(
-      Deadline deadline, List<Transaction> innerTxs, int networkType)
+  factory AggregateTransaction.bonded(
+          Deadline deadline, List<Transaction> innerTxs, int networkType) =>
+      AggregateTransaction._(deadline, innerTxs, networkType,
+          _aggregateBondedVersion, transactionTypeFromRaw(16961));
+
+  factory AggregateTransaction.complete(
+          Deadline deadline, List<Transaction> innerTxs, int networkType) =>
+      AggregateTransaction._(deadline, innerTxs, networkType,
+          _aggregateCompletedVersion, transactionTypeFromRaw(16705));
+
+  AggregateTransaction._(Deadline deadline, List<Transaction> innerTxs,
+      int networkType, int version, _TransactionTypeClass type)
       : super() {
     if (innerTxs.isEmpty == null) {
       throw _errNullInnerTransactions;
     } else {
-      version = _aggregateCompletedVersion;
+      this.version = version;
       this.deadline = deadline;
-      type = transactionTypeFromRaw(16705);
+      this.type = type;
       this.networkType = networkType;
       innerTransactions = innerTxs;
     }
