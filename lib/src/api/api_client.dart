@@ -276,6 +276,8 @@ dynamic _txnDeserialize(value, String targetType) {
         return _AggregateTransactionInfoDTO.fromJson(value);
       case 'ModifyMultisig':
         return _ModifyMultisigAccountTransactionInfoDTO.fromJson(value);
+      case 'Lock':
+        return _LockFundsTransactionInfoDTO.fromJson(value);
       default:
         return null;
     }

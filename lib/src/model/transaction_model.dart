@@ -230,6 +230,14 @@ class SignedTransaction {
   String payload;
   String hash;
 
+  @override
+  String toString() => '{\n'
+      '\t"transactionType": $transactionType\n'
+      '\t"payload": $payload\n'
+      '\t"hash": $hash\n'
+      '}\n';
+
+
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['transactionType'] = transactionType;
@@ -1259,6 +1267,29 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
     }
   }
 
+  LockFundsTransaction.fromDTO(_LockFundsTransactionInfoDTO value)
+      : assert(value != null, 'value must not be null'),
+        super(
+            value._meta._height.toBigInt(),
+            value._meta._index,
+            value._meta._id,
+            value._meta._hash,
+            value._meta._merkleComponentHash) {
+    type = transactionTypeFromRaw(value._transaction._type);
+    deadline = Deadline.fromUInt64DTO(value._transaction._deadline);
+    signature = value._transaction._signature;
+    networkType = extractNetworkType(value._transaction._version);
+    version = extractVersion(value._transaction._version);
+    fee = value._transaction._fee.toBigInt();
+    signer =
+        PublicAccount.fromPublicKey(value._transaction._signer, networkType);
+
+    mosaic = Mosaic(MosaicId.fromBigInt(value._transaction._mosaic.toBigInt()),
+        value._transaction._amount.toBigInt());
+    duration = value._transaction._duration.toBigInt();
+    signedTransaction = SignedTransaction(0x4148, '', value._transaction._hash);
+  }
+
   Mosaic mosaic;
 
   BigInt duration;
@@ -1270,7 +1301,7 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
       '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
       '\t"mosaic": $mosaic,\n'
       '\t"duration": $duration,\n'
-      '\t"signedTransaction": $signedTransaction,\n'
+      '\t"signedTxHash": $signedTransaction,\n'
       '}\n';
 
   @override
@@ -1279,7 +1310,7 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
     data['abstractTransaction'] = _abstractTransactionToJson();
     data['mosaic'] = mosaic;
     data['duration'] = duration;
-    data['signedTxHash'] = signedTransaction;
+    data['signedTransaction'] = signedTransaction;
 
     return data;
   }
@@ -1391,6 +1422,8 @@ Transaction _deserializeDTO(value) {
       return AggregateTransaction.fromDTO(value);
     case _ModifyMultisigAccountTransactionInfoDTO:
       return ModifyMultisigAccountTransaction.fromDTO(value);
+    case _LockFundsTransactionInfoDTO:
+      return LockFundsTransaction.fromDTO(value);
     default:
       if (value is List) {
         value.map(_deserializeDTO).toList();

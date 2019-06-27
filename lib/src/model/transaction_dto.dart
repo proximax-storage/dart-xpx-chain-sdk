@@ -181,6 +181,58 @@ class _MultisigCosignatoryModificationDTO {
   }
 }
 
+class _ModifyMultisigAccountTransactionInfoDTO {
+  _ModifyMultisigAccountTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
+    _meta = json['meta'] != null
+        ? _MetaTransactionDTO.fromJson(json['meta'])
+        : null;
+
+    _transaction = json['transaction'] != null
+        ? _ModifyMultisigAccountTransactionDTO.fromJson(json['transaction'])
+        : null;
+  }
+
+  _MetaTransactionDTO _meta;
+  _ModifyMultisigAccountTransactionDTO _transaction;
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    if (_meta != null) {
+      data['meta'] = _meta.toJson();
+    }
+    if (_transaction != null) {
+      data['transaction'] = _transaction.toJson();
+    }
+    return data;
+  }
+}
+
+class _LockFundsTransactionInfoDTO {
+  _LockFundsTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
+    _meta = json['meta'] != null
+        ? _MetaTransactionDTO.fromJson(json['meta'])
+        : null;
+
+    _transaction = json['transaction'] != null
+        ? _LockFundsTransactionDTO.fromJson(json['transaction'])
+        : null;
+  }
+
+  _MetaTransactionDTO _meta;
+  _LockFundsTransactionDTO _transaction;
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    if (_meta != null) {
+      data['meta'] = _meta.toJson();
+    }
+    if (_transaction != null) {
+      data['transaction'] = _transaction.toJson();
+    }
+    return data;
+  }
+}
+
 class _TransferTransactionDTO extends _AbstractTransactionDTO {
   _TransferTransactionDTO(
       {String signature,
@@ -327,28 +379,39 @@ class _ModifyMultisigAccountTransactionDTO extends _AbstractTransactionDTO {
       };
 }
 
-class _ModifyMultisigAccountTransactionInfoDTO {
-  _ModifyMultisigAccountTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    _meta = json['meta'] != null
-        ? _MetaTransactionDTO.fromJson(json['meta'])
-        : null;
-
-    _transaction = json['transaction'] != null
-        ? _ModifyMultisigAccountTransactionDTO.fromJson(json['transaction'])
-        : null;
+class _LockFundsTransactionDTO extends _AbstractTransactionDTO {
+  _LockFundsTransactionDTO.fromJson(Map<String, dynamic> json) {
+    _signature = json['signature'];
+    _signer = json['signer'];
+    _version = json['version'];
+    _type = json['type'];
+    _fee = UInt64DTO.fromJson(json['maxFee']);
+    _deadline = UInt64DTO.fromJson(json['deadline']);
+    _mosaic = UInt64DTO.fromJson(json['mosaicId']);
+    _amount = UInt64DTO.fromJson(json['amount']);
+    _duration = UInt64DTO.fromJson(json['duration']);
+    _hash = json['hash'];
   }
 
-  _MetaTransactionDTO _meta;
-  _ModifyMultisigAccountTransactionDTO _transaction;
+  UInt64DTO _mosaic;
+  UInt64DTO _amount;
+  UInt64DTO _duration;
+  String _hash;
 
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    if (_meta != null) {
-      data['meta'] = _meta.toJson();
-    }
-    if (_transaction != null) {
-      data['transaction'] = _transaction.toJson();
-    }
-    return data;
-  }
+  List<dynamic> _transactions;
+
+  @override
+  Map<String, dynamic> toJson() => {
+    'signature': _signature,
+    'signer': _signer,
+    'version': _version,
+    'type': _type,
+    'maxFee': _fee,
+    'deadline': _deadline,
+    'mosaic': _mosaic,
+    'amount': _amount,
+    'duration': _duration,
+    'hash': _hash,
+  };
 }
+
