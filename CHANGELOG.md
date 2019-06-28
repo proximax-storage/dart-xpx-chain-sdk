@@ -1,3 +1,37 @@
+## 0.0.3+5
+
+### New Features
+[ADD] ModifyMultisigAccountTransaction support.
+
+[ADD] Get ModifyMultisigInfo.
+
+[ADD] LockFunds support.
+
+[ADD] Get LockFundsTransactionInfo.
+
+[ADD] Getter publicKey and address from Account class.
+
+[ADD] Get aggregateBondedTransactions.
+
+[ADD] AnnounceAggregateBonded and AnnounceAggregateBondedCosignature.
+
+[ADD] CosignatureTransaction class.
+
+### Updates
+[UPDATE] Reformat style.
+
+[UPDATE] Update example.
+
+[UPDATE] refactor AggregateTransaction class.
+
+[UPDATE] rename AccountPropertyDTO to _AccountPropertyDTO.
+
+[UPDATE] xpx_crypto to 0.0.2+2.
+
+### Fixed bugs
+
+[UPDATE] fixed bug in TableArrayAttribute.
+
 ## 0.0.3+4
 
 ### Updates
