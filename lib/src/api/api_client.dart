@@ -78,8 +78,8 @@ class _ApiClient {
           return _AccountPropertiesInfoDTO.fromJson(value);
         case '_AccountPropertiesMetaDTO':
           return _AccountPropertiesMetaDTO.fromJson(value);
-        case 'AccountPropertyDTO':
-          return AccountPropertyDTO.fromJson(value);
+        case '_AccountPropertyDTO':
+          return _AccountPropertyDTO.fromJson(value);
         case 'Addresses':
           return Addresses.fromJson(value);
         case '_AliasDTO':
@@ -140,8 +140,6 @@ class _ApiClient {
           return TransactionHashes.fromJson(value);
         case 'TransactionIds':
           return TransactionIds.fromJson(value);
-        case 'TransactionPayload':
-          return TransactionPayload.fromJson(value);
         case 'TransactionStatus':
           return TransactionStatus.fromJson(value);
         case 'UInt64DTO':

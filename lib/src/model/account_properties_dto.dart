@@ -4,12 +4,12 @@ class _AccountPropertiesDTO {
   _AccountPropertiesDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
     _address = json['address'];
-    _properties = AccountPropertyDTO.listFromJson(json['properties']);
+    _properties = _AccountPropertyDTO.listFromJson(json['properties']);
   }
 
   String _address;
 
-  List<AccountPropertyDTO> _properties = [];
+  List<_AccountPropertyDTO> _properties = [];
 
   static List<_AccountPropertiesDTO> listFromJson(List<dynamic> json) =>
       json == null
