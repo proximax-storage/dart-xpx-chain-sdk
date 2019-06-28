@@ -1,21 +1,36 @@
 part of xpx_chain_sdk;
 
+// routes for TransactionApi
+const _transactionsRoute = '/transaction',
+    _transactionRoute = '/transaction/{transactionId}',
+    _transactionStatusRoute = '/transaction/{hash}/status',
+    _transactionsStatusRoute = '/transaction/statuses',
+    _announceAggregateRoute = '/transaction/partial',
+    _announceAggregateCosignatureRoute = '/transaction/cosignature';
+
 class TransactionRoutesApi {
   TransactionRoutesApi([_ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
 
   final _ApiClient apiClient;
 
-  Future<Object> announce(SignedTransaction tx) async => _announceTransaction(tx, '/transaction');
+  /// returns transaction hash after announcing passed SignedTransaction
+  Future<Object> announce(SignedTransaction tx) async =>
+      _announceTransaction(tx, _transactionsRoute);
 
-  Future<Object> announceAggregateBonded(SignedTransaction tx) async => _announceTransaction(tx, '/transaction/partial');
+  /// returns transaction hash after announcing passed aggregate bounded SignedTransaction
+  Future<Object> announceAggregateBonded(SignedTransaction tx) async =>
+      _announceTransaction(tx, _announceAggregateRoute);
 
-  Future<Object> announceAggregateBondedCosignature(SignedTransaction tx) async => _announceTransaction(tx, '/transaction/cosignature');
+  /// returns transaction hash after announcing passed CosignatureSignedTransaction
+  Future<Object> announceAggregateBondedCosignature(
+          CosignatureSignedTransaction tx) async =>
+      _announceTransaction(tx, _announceAggregateCosignatureRoute);
 
   /// Announce a  transaction
   ///
   /// Announces a transaction to the network.
-  Future<Object> _announceTransaction(SignedTransaction tx, String uri) async {
+  Future<Object> _announceTransaction(tx, String uri) async {
     Object postBody = tx;
 
     // verify required params are set
@@ -57,48 +72,6 @@ class TransactionRoutesApi {
     }
   }
 
-  /// Announce a cosignature transaction
-  Future<Object> announceCosignatureTransaction(
-      TransactionPayload payload) async {
-    Object postBody = payload;
-
-    // verify required params are set
-    if (payload == null) {
-      throw  ApiException(400, 'Missing required param: payload');
-    }
-
-    // create path and map variables
-    final String path = '/transaction/cosignature'.replaceAll('{format}', 'json');
-
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-    contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp =  http.MultipartRequest(null, null);
-
-      if (hasFields) {postBody = mp;}
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'PUT', queryParams, postBody,
-        headerParams, formParams, contentType);
-
-    if (response.statusCode >= 400) {
-      throw  ApiException(response.statusCode, response.body);
-    } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'Object') as Object;
-    } else {
-      return null;
-    }
-  }
-
   /// Get transaction information
   ///
   /// Returns a [Transaction] information given a transactionId or hash.
@@ -111,7 +84,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/transaction/{transactionId}'
+    final String path = _transactionRoute
         .replaceAll('{format}', 'json')
         .replaceAll('{transactionId}', transactionId.toString());
 
@@ -160,7 +133,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/transaction'.replaceAll('{format}', 'json');
+    final String path = _transactionsRoute.replaceAll('{format}', 'json');
 
     // query params
     final List<QueryParam> queryParams = [];
@@ -209,7 +182,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/transaction/{hash}/status'
+    final String path = _transactionStatusRoute
         .replaceAll('{format}', 'json')
         .replaceAll('{hash}', hash.toString());
 
@@ -258,7 +231,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/transaction/statuses'.replaceAll('{format}', 'json');
+    final String path = _transactionsStatusRoute.replaceAll('{format}', 'json');
 
     // query params
     final List<QueryParam> queryParams = [];
