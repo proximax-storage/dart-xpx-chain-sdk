@@ -1385,7 +1385,7 @@ SignedTransaction _signTransactionWith(Transaction tx, Account a) {
   final p = <int>[]
     ..insertAll(0, b.skip(0).take(4))
     ..insertAll(4, signature)
-    ..insertAll(4 + 64, a.account.publicKey.Raw)
+    ..insertAll(4 + 64, a.account.publicKey.raw)
     ..insertAll(100, b.skip(100).take(b.length));
 
   final pHex = hex.encode(p);
@@ -1403,15 +1403,16 @@ CosignatureSignedTransaction _signCosignatureTransaction(
     throw _errCosignatureTxHash;
   }
 
-  final s = a.account;
+  final signer = a.account;
 
-  final sb = hex.decode(tx._transactionToCosign.getTransactionInfo.hash);
+  final hashByte = hex.decode(tx._transactionToCosign.getTransactionInfo.hash);
 
-  final signature = s.sign(sb);
+  final signatureByte = signer.sign(hashByte);
+
   return CosignatureSignedTransaction(
       tx._transactionToCosign.getTransactionInfo.hash,
-      hex.encode(signature),
-      s.publicKey.toString());
+      hex.encode(signatureByte),
+      signer.publicKey.toString());
 }
 
 String _createTransactionHash(String pHex) {

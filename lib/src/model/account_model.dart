@@ -96,7 +96,7 @@ class PublicAccount {
     }
 
     final kp = crypto.KeyPair();
-    kp.publicKey.Raw = Uint8List.fromList(hex.decode(_publicKey));
+    kp.publicKey.raw = Uint8List.fromList(hex.decode(_publicKey));
 
     return kp.verify(Uint8List.fromList(hex.decode(data)),
         Uint8List.fromList(hex.decode(signature)));
@@ -110,15 +110,14 @@ class Account {
 
   /// Create an Account from a given hex private key.
   Account.fromPrivateKey(String shex, int networkType) {
-    final k = crypto.NewPrivateKeyFromHexString(shex);
-    _account = crypto.NewKeyPair(k, null);
+    _account = crypto.KeyPair.fromHexString(shex);
     _publicAccount =
         PublicAccount.fromPublicKey(_account.publicKey.toString(), networkType);
   }
 
   /// Create an Account from a given networkType.
   Account.random(int networkType) {
-    final kp = crypto.NewRandomKeyPair();
+    final kp = crypto.KeyPair.fromRandomKeyPair();
     final acc = Account.fromPrivateKey(kp.privateKey.toString(), networkType);
     _publicAccount = acc._publicAccount;
     _account = acc._account;
