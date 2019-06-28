@@ -1,15 +1,36 @@
 part of xpx_chain_sdk;
 
+// routes for TransactionApi
+const _transactionsRoute = '/transaction',
+    _transactionRoute = '/transaction/{transactionId}',
+    _transactionStatusRoute = '/transaction/{hash}/status',
+    _transactionsStatusRoute = '/transaction/statuses',
+    _announceAggregateRoute = '/transaction/partial',
+    _announceAggregateCosignatureRoute = '/transaction/cosignature';
+
 class TransactionRoutesApi {
   TransactionRoutesApi([_ApiClient apiClient])
       : apiClient = apiClient ?? defaultApiClient;
 
   final _ApiClient apiClient;
 
+  /// returns transaction hash after announcing passed SignedTransaction
+  Future<Object> announce(SignedTransaction tx) async =>
+      _announceTransaction(tx, _transactionsRoute);
+
+  /// returns transaction hash after announcing passed aggregate bounded SignedTransaction
+  Future<Object> announceAggregateBonded(SignedTransaction tx) async =>
+      _announceTransaction(tx, _announceAggregateRoute);
+
+  /// returns transaction hash after announcing passed CosignatureSignedTransaction
+  Future<Object> announceAggregateBondedCosignature(
+          CosignatureSignedTransaction tx) async =>
+      _announceTransaction(tx, _announceAggregateCosignatureRoute);
+
   /// Announce a  transaction
   ///
   /// Announces a transaction to the network.
-  Future<Object> announceTransaction(SignedTransaction tx) async {
+  Future<Object> _announceTransaction(tx, String uri) async {
     Object postBody = tx;
 
     // verify required params are set
@@ -18,7 +39,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/transaction'.replaceAll('{format}', 'json');
+    final String path = uri.replaceAll('{format}', 'json');
 
     // query params
     final List<QueryParam> queryParams = [];
@@ -63,7 +84,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/transaction/{transactionId}'
+    final String path = _transactionRoute
         .replaceAll('{format}', 'json')
         .replaceAll('{transactionId}', transactionId.toString());
 
@@ -112,7 +133,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/transaction'.replaceAll('{format}', 'json');
+    final String path = _transactionsRoute.replaceAll('{format}', 'json');
 
     // query params
     final List<QueryParam> queryParams = [];
@@ -161,7 +182,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/transaction/{hash}/status'
+    final String path = _transactionStatusRoute
         .replaceAll('{format}', 'json')
         .replaceAll('{hash}', hash.toString());
 
@@ -210,7 +231,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/transaction/statuses'.replaceAll('{format}', 'json');
+    final String path = _transactionsStatusRoute.replaceAll('{format}', 'json');
 
     // query params
     final List<QueryParam> queryParams = [];

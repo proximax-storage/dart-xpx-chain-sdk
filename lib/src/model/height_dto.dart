@@ -1,15 +1,18 @@
 part of xpx_chain_sdk;
 
 class _HeightDTO {
-  _HeightDTO(this.height);
+  _HeightDTO(this._height);
 
   _HeightDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    height = UInt64DTO.fromJson(json['height']);
+    _height = UInt64DTO.fromJson(json['height']);
   }
 
-  UInt64DTO height;
+  UInt64DTO _height;
 
-  @override
-  String toString() => 'Height[${height.higher}, ${height.lower}]';
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['height'] = _height;
+    return data;
+  }
 }

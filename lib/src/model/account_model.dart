@@ -96,7 +96,7 @@ class PublicAccount {
     }
 
     final kp = crypto.KeyPair();
-    kp.publicKey.Raw = Uint8List.fromList(hex.decode(_publicKey));
+    kp.publicKey.raw = Uint8List.fromList(hex.decode(_publicKey));
 
     return kp.verify(Uint8List.fromList(hex.decode(data)),
         Uint8List.fromList(hex.decode(signature)));
@@ -110,15 +110,14 @@ class Account {
 
   /// Create an Account from a given hex private key.
   Account.fromPrivateKey(String shex, int networkType) {
-    final k = crypto.NewPrivateKeyFromHexString(shex);
-    _account = crypto.NewKeyPair(k, null);
+    _account = crypto.KeyPair.fromHexString(shex);
     _publicAccount =
         PublicAccount.fromPublicKey(_account.publicKey.toString(), networkType);
   }
 
   /// Create an Account from a given networkType.
   Account.random(int networkType) {
-    final kp = crypto.NewRandomKeyPair();
+    final kp = crypto.KeyPair.fromRandomKeyPair();
     final acc = Account.fromPrivateKey(kp.privateKey.toString(), networkType);
     _publicAccount = acc._publicAccount;
     _account = acc._account;
@@ -131,6 +130,10 @@ class Account {
 
   crypto.KeyPair get account => _account;
 
+  String get publicKey => _publicAccount._publicKey;
+
+  Address get address => _publicAccount.address;
+
   @override
   String toString() => publicAccount.toString();
 
@@ -138,22 +141,26 @@ class Account {
       {'publicAccount': publicAccount, 'account': account};
 
   SignedTransaction sign(Transaction tx) => _signTransactionWith(tx, this);
+
+  CosignatureSignedTransaction signCosignatureTransaction(
+          CosignatureTransaction tx) =>
+      _signCosignatureTransaction(tx, this);
 }
 
 // ignore: public_member_api_docs
 class AccountInfo {
   AccountInfo.fromDTO(_AccountInfoDTO v) {
-    final List<Mosaic> mList = List(v.account.mosaics.length);
-    for (var i = 0; i < v.account.mosaics.length; i++) {
-      mList[i] = Mosaic.fromDTO(v.account.mosaics[i]);
+    final List<Mosaic> mList = List(v._account._mosaics.length);
+    for (var i = 0; i < v._account._mosaics.length; i++) {
+      mList[i] = Mosaic.fromDTO(v._account._mosaics[i]);
     }
 
-    address = Address.fromEncoded(v.account.address);
-    addressHeight = v.account.addressHeight.toBigInt();
-    publicKey = v.account.publicKey;
-    publicKeyHeight = v.account.publicKeyHeight.toBigInt();
-    accountType = v.account.accountType;
-    linkedAccountKey = v.account.linkedAccountKey;
+    address = Address.fromEncoded(v._account._address);
+    addressHeight = v._account._addressHeight.toBigInt();
+    publicKey = v._account._publicKey;
+    publicKeyHeight = v._account._publicKeyHeight.toBigInt();
+    accountType = v._account._accountType;
+    linkedAccountKey = v._account._linkedAccountKey;
     mosaics = mList;
   }
 

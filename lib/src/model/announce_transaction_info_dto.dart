@@ -3,12 +3,12 @@ part of xpx_chain_sdk;
 class AnnounceTransactionInfoDTO {
   AnnounceTransactionInfoDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    message = json['message'];
+    _message = json['message'];
   }
 
-  String message;
+  String _message;
 
-  Map<String, dynamic> toJson() => {'message': message};
+  Map<String, dynamic> toJson() => {'message': _message};
 
   static List<AnnounceTransactionInfoDTO> listFromJson(List<dynamic> json) =>
       json == null

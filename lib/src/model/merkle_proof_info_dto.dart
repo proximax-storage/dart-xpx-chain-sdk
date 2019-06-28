@@ -3,18 +3,18 @@ part of xpx_chain_sdk;
 class _MerkleProofInfoDTO {
   _MerkleProofInfoDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    payload = MerkleProofInfoPayload.fromJson(json['payload']);
-    type = json['type'];
+    _payload = MerkleProofInfoPayload.fromJson(json['payload']);
+    _type = json['type'];
   }
 
-  MerkleProofInfoPayload payload;
+  MerkleProofInfoPayload _payload;
 
-  String type;
+  String _type;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['payload'] = payload;
-    data['type'] = type;
+    data['payload'] = _payload;
+    data['type'] = _type;
 
     return data;
   }

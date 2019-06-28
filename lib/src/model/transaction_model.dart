@@ -22,19 +22,20 @@ var _transactionTypes = <_TransactionTypeClass>{
 
 // TransactionVersion enums
 const _aggregateCompletedVersion = 2,
+    _aggregateBondedVersion = 2,
     _registerNamespaceVersion = 2,
     _transferVersion = 3,
     _mosaicDefinitionVersion = 3,
-    _mosaicSupplyChangeVersion = 2;
-//    modifyMultisigVersion = 3,
-//    modifyContractVersion = 3,
-//    aggregateBondedVersion = 2,
-//    metadataAddressVersion = 1,
-//    metadataMosaicVersion = 1,
-//    metadataNamespaceVersion = 1,
-//    lockVersion = 1,
-//    secretLockVersion = 1,
-//    secretProofVersion = 1;
+    _mosaicSupplyChangeVersion = 2,
+    _modifyMultisigVersion = 3,
+    _lockVersion = 1;
+
+//    _modifyContractVersion = 3,
+//    _metadataAddressVersion = 1,
+//    _metadataMosaicVersion = 1,
+//    _metadataNamespaceVersion = 1,
+//    _secretLockVersion = 1,
+//    _secretProofVersion = 1;
 
 // TransactionType enums
 enum TransactionType {
@@ -196,7 +197,7 @@ class Deadline {
   }
 
   Deadline.fromUInt64DTO(UInt64DTO data)
-      : assert(data.lower != null || data.higher == null,
+      : assert(data._lower != null || data._higher == null,
             'lower or higher must not be null') {
     value = data.toBigInt() != null
         ? DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt())
@@ -229,6 +230,13 @@ class SignedTransaction {
   String payload;
   String hash;
 
+  @override
+  String toString() => '{\n'
+      '\t"transactionType": $transactionType\n'
+      '\t"payload": $payload\n'
+      '\t"hash": $hash\n'
+      '}\n';
+
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['transactionType'] = transactionType;
@@ -245,6 +253,8 @@ class CosignatureSignedTransaction {
   String _parentHash;
   String _signature;
   String _signer;
+
+  String get hash => _parentHash;
 
   @override
   String toString() => '{\n'
@@ -298,6 +308,46 @@ class AggregateTransactionCosignature {
     final data = <String, dynamic>{};
     data['signature'] = _signature;
     data['signer'] = _signer;
+    return data;
+  }
+}
+
+class MultisigCosignatoryModification {
+  MultisigCosignatoryModification(this.type, this.publicAccount);
+
+  MultisigCosignatoryModification.fromDTO(
+      int networkType, _MultisigCosignatoryModificationDTO value) {
+    if (value?._cosignatoryPublicKey == null) {
+      return;
+    }
+
+    type = value._type == 0 ? add : remove;
+    publicAccount =
+        PublicAccount.fromPublicKey(value._cosignatoryPublicKey, networkType);
+  }
+
+  MultisigCosignatoryModificationType type;
+  PublicAccount publicAccount;
+
+  @override
+  String toString() => '{\n'
+      '\t"type": ${type.index}\n'
+      '\t"publicAccount": $publicAccount\n'
+      '}\n';
+
+  static List<MultisigCosignatoryModification> listFromDTO(
+          int networkType, List<_MultisigCosignatoryModificationDTO> json) =>
+      json == null
+          ? null
+          : json
+              .map((value) =>
+                  MultisigCosignatoryModification.fromDTO(networkType, value))
+              .toList();
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['type'] = type.index;
+    data['publicAccount'] = publicAccount;
     return data;
   }
 }
@@ -377,6 +427,17 @@ class AbstractTransaction with TransactionInfo {
     data['deadlineV'] = builder.writeListUint32(
         fromBigInt(BigInt.from(deadline.getInstant().toInt())));
     return data;
+  }
+
+  void _buildVector(fb.Builder builder, int versionV, int signatureV,
+      int signerV, int deadlineV, int feeV) {
+    Transactions(builder)
+      ..addSignatureOffset(signatureV)
+      ..addSignerOffset(signerV)
+      ..addVersion(versionV)
+      ..addType(type._hex)
+      ..addFeeOffset(feeV)
+      ..addDeadlineOffset(deadlineV);
   }
 
   AbstractTransaction _getAbstractTransaction() {
@@ -465,14 +526,14 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
             value._meta._id,
             value._meta._hash,
             value._meta._merkleComponentHash) {
-    type = transactionTypeFromRaw(value._transaction.type);
-    deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
-    signature = value._transaction.signature;
-    networkType = extractNetworkType(value._transaction.version);
-    version = extractVersion(value._transaction.version);
-    fee = value._transaction.fee.toBigInt();
+    type = transactionTypeFromRaw(value._transaction._type);
+    deadline = Deadline.fromUInt64DTO(value._transaction._deadline);
+    signature = value._transaction._signature;
+    networkType = extractNetworkType(value._transaction._version);
+    version = extractVersion(value._transaction._version);
+    fee = value._transaction._fee.toBigInt();
     signer =
-        PublicAccount.fromPublicKey(value._transaction.signer, networkType);
+        PublicAccount.fromPublicKey(value._transaction._signer, networkType);
     mosaics = Mosaic.listFromDTO(value._transaction._mosaics);
     recipient = Address.fromEncoded(value._transaction._recipient);
     message = Message.fromDTO(value._transaction._message);
@@ -626,14 +687,14 @@ class RegisterNamespaceTransaction extends AbstractTransaction
             value._meta._id,
             value._meta._hash,
             value._meta._merkleComponentHash) {
-    type = transactionTypeFromRaw(value._transaction.type);
-    deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
-    signature = value._transaction.signature;
-    networkType = extractNetworkType(value._transaction.version);
-    version = extractVersion(value._transaction.version);
-    fee = value._transaction.fee.toBigInt();
+    type = transactionTypeFromRaw(value._transaction._type);
+    deadline = Deadline.fromUInt64DTO(value._transaction._deadline);
+    signature = value._transaction._signature;
+    networkType = extractNetworkType(value._transaction._version);
+    version = extractVersion(value._transaction._version);
+    fee = value._transaction._fee.toBigInt();
     signer =
-        PublicAccount.fromPublicKey(value._transaction.signer, networkType);
+        PublicAccount.fromPublicKey(value._transaction._signer, networkType);
 
     namespaceId = NamespaceId._(value._transaction._namespaceId.toBigInt());
     namespaceType = value._transaction._namespaceType == 0
@@ -760,14 +821,14 @@ class MosaicDefinitionTransaction extends AbstractTransaction
             value._meta._id,
             value._meta._hash,
             value._meta._merkleComponentHash) {
-    type = transactionTypeFromRaw(value._transaction.type);
-    deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
-    signature = value._transaction.signature;
-    networkType = extractNetworkType(value._transaction.version);
-    version = extractVersion(value._transaction.version);
-    fee = value._transaction.fee.toBigInt();
+    type = transactionTypeFromRaw(value._transaction._type);
+    deadline = Deadline.fromUInt64DTO(value._transaction._deadline);
+    signature = value._transaction._signature;
+    networkType = extractNetworkType(value._transaction._version);
+    version = extractVersion(value._transaction._version);
+    fee = value._transaction._fee.toBigInt();
     signer =
-        PublicAccount.fromPublicKey(value._transaction.signer, networkType);
+        PublicAccount.fromPublicKey(value._transaction._signer, networkType);
     mosaicProperties = MosaicProperties.fromDTO(value._transaction._properties);
     mosaicNonce = value._transaction._mosaicNonce;
     mosaicId = MosaicId.fromId(value._transaction._mosaicId.toBigInt());
@@ -883,14 +944,14 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
             value._meta._id,
             value._meta._hash,
             value._meta._merkleComponentHash) {
-    type = transactionTypeFromRaw(value._transaction.type);
-    deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
-    signature = value._transaction.signature;
-    networkType = extractNetworkType(value._transaction.version);
-    version = extractVersion(value._transaction.version);
-    fee = value._transaction.fee.toBigInt();
+    type = transactionTypeFromRaw(value._transaction._type);
+    deadline = Deadline.fromUInt64DTO(value._transaction._deadline);
+    signature = value._transaction._signature;
+    networkType = extractNetworkType(value._transaction._version);
+    version = extractVersion(value._transaction._version);
+    fee = value._transaction._fee.toBigInt();
     signer =
-        PublicAccount.fromPublicKey(value._transaction.signer, networkType);
+        PublicAccount.fromPublicKey(value._transaction._signer, networkType);
     mosaicSupplyType = value._transaction._direction == 0 ? decrease : increase;
     mosaicId = MosaicId.fromId(value._transaction._mosaicId.toBigInt());
     delta = value._transaction._delta.toBigInt();
@@ -966,15 +1027,25 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 }
 
 class AggregateTransaction extends AbstractTransaction implements Transaction {
-  AggregateTransaction(
-      Deadline deadline, List<Transaction> innerTxs, int networkType)
+  factory AggregateTransaction.bonded(
+          Deadline deadline, List<Transaction> innerTxs, int networkType) =>
+      AggregateTransaction._(deadline, innerTxs, networkType,
+          _aggregateBondedVersion, transactionTypeFromRaw(16961));
+
+  factory AggregateTransaction.complete(
+          Deadline deadline, List<Transaction> innerTxs, int networkType) =>
+      AggregateTransaction._(deadline, innerTxs, networkType,
+          _aggregateCompletedVersion, transactionTypeFromRaw(16705));
+
+  AggregateTransaction._(Deadline deadline, List<Transaction> innerTxs,
+      int networkType, int version, _TransactionTypeClass type)
       : super() {
     if (innerTxs.isEmpty == null) {
       throw _errNullInnerTransactions;
     } else {
-      version = _aggregateCompletedVersion;
+      this.version = version;
       this.deadline = deadline;
-      type = transactionTypeFromRaw(16705);
+      this.type = type;
       this.networkType = networkType;
       innerTransactions = innerTxs;
     }
@@ -988,14 +1059,14 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
             value._meta._id,
             value._meta._hash,
             value._meta._merkleComponentHash) {
-    type = transactionTypeFromRaw(value._transaction.type);
-    deadline = Deadline.fromUInt64DTO(value._transaction.deadline);
-    signature = value._transaction.signature;
-    networkType = extractNetworkType(value._transaction.version);
-    version = extractVersion(value._transaction.version);
-    fee = value._transaction.fee.toBigInt();
+    type = transactionTypeFromRaw(value._transaction._type);
+    deadline = Deadline.fromUInt64DTO(value._transaction._deadline);
+    signature = value._transaction._signature;
+    networkType = extractNetworkType(value._transaction._version);
+    version = extractVersion(value._transaction._version);
+    fee = value._transaction._fee.toBigInt();
     signer =
-        PublicAccount.fromPublicKey(value._transaction.signer, networkType);
+        PublicAccount.fromPublicKey(value._transaction._signer, networkType);
     innerTransactions =
         value._transaction._transactions.map(_deserializeDTO).toList();
 
@@ -1075,6 +1146,236 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   }
 }
 
+class CosignatureTransaction {
+  CosignatureTransaction(this._transactionToCosign);
+
+  AggregateTransaction _transactionToCosign;
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['transactionToCosign'] = _transactionToCosign;
+    return data;
+  }
+}
+
+class ModifyMultisigAccountTransaction extends AbstractTransaction
+    implements Transaction {
+  ModifyMultisigAccountTransaction(
+      Deadline deadline,
+      int minApproval,
+      int minRemoval,
+      List<MultisigCosignatoryModification> modifications,
+      int networkType)
+      : assert(modifications != null, 'modifications must not be null'),
+        super() {
+    if (modifications.isEmpty && minApproval == 0 && minRemoval == 0) {
+      throw _errEmptyModifications;
+    } else {
+      version = _modifyMultisigVersion;
+      this.deadline = deadline;
+      type = transactionTypeFromRaw(16725);
+      this.networkType = networkType;
+      minApprovalDelta = minApproval;
+      minRemovalDelta = minRemoval;
+      this.modifications = modifications;
+    }
+  }
+
+  ModifyMultisigAccountTransaction.fromDTO(
+      _ModifyMultisigAccountTransactionInfoDTO value)
+      : assert(value != null, 'value must not be null'),
+        super(
+            value._meta._height.toBigInt(),
+            value._meta._index,
+            value._meta._id,
+            value._meta._hash,
+            value._meta._merkleComponentHash) {
+    type = transactionTypeFromRaw(value._transaction._type);
+    deadline = Deadline.fromUInt64DTO(value._transaction._deadline);
+    signature = value._transaction._signature;
+    networkType = extractNetworkType(value._transaction._version);
+    version = extractVersion(value._transaction._version);
+    fee = value._transaction._fee.toBigInt();
+    signer =
+        PublicAccount.fromPublicKey(value._transaction._signer, networkType);
+
+    minApprovalDelta = value._transaction._minApprovalDelta;
+    minRemovalDelta = value._transaction._minRemovalDelta;
+    modifications = MultisigCosignatoryModification.listFromDTO(
+        networkType, value._transaction._modifications);
+  }
+
+  int minApprovalDelta;
+
+  int minRemovalDelta;
+
+  List<MultisigCosignatoryModification> modifications;
+
+  static List<ModifyMultisigAccountTransaction> listFromDTO(
+          List<_ModifyMultisigAccountTransactionInfoDTO> json) =>
+      json == null
+          ? null
+          : json
+              .map((value) => ModifyMultisigAccountTransaction.fromDTO(value))
+              .toList();
+
+  @override
+  String toString() => '{\n'
+      '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
+      '\t"minApproval": $minApprovalDelta,\n'
+      '\t"cosignatures": $minRemovalDelta,\n'
+      '\t"modifications": $modifications,\n'
+      '}\n';
+
+  @override
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['abstractTransaction'] = _abstractTransactionToJson();
+    data['minApproval'] = minApprovalDelta;
+    data['minRemoval'] = minRemovalDelta;
+    data['modifications'] = modifications;
+
+    return data;
+  }
+
+  @override
+  int _size() =>
+      modifyMultisigHeaderSize +
+      ((keySize + 1 /* MultisigModificationType size */) *
+          modifications.length);
+
+  @override
+  AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
+
+  @override
+  Uint8List _generateBytes() {
+    final builder = fb.Builder(initialSize: 0);
+
+    final mV = cosignatoryModificationArrayToBuffer(builder, modifications);
+
+    final vectors = _generateVector(builder);
+
+    final txnBuilder = ModifyMultisigAccountTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(_size());
+    _buildVector(builder, vectors['versionV'], vectors['signatureV'],
+        vectors['signerV'], vectors['deadlineV'], vectors['feeV']);
+    txnBuilder.addMinRemovalDelta(minRemovalDelta);
+    txnBuilder.addMinApprovalDelta(minApprovalDelta);
+    txnBuilder.addNumModifications(modifications.length);
+    txnBuilder.addModificationsOffset(mV);
+    final codedTransfer = txnBuilder.finish();
+    return modifyMultisigAccountTransactionSchema()
+        .serialize(builder.finish(codedTransfer));
+  }
+}
+
+class LockFundsTransaction extends AbstractTransaction implements Transaction {
+  LockFundsTransaction(Deadline deadline, Mosaic mosaic, BigInt duration,
+      SignedTransaction signedTx, int networkType)
+      : assert(mosaic != null, 'mosaic must not be null'),
+        assert(duration != null, 'duration must not be null'),
+        assert(signedTx != null, 'signedTx must not be null'),
+        super() {
+    if (signedTx.transactionType != transactionTypeFromRaw(16961)._hex) {
+      throw _errEmptyModifications;
+    } else {
+      version = _lockVersion;
+      this.deadline = deadline;
+      type = transactionTypeFromRaw(16712);
+      this.networkType = networkType;
+      this.mosaic = mosaic;
+      this.duration = duration;
+      signedTransaction = signedTx;
+    }
+  }
+
+  LockFundsTransaction.fromDTO(_LockFundsTransactionInfoDTO value)
+      : assert(value != null, 'value must not be null'),
+        super(
+            value._meta._height.toBigInt(),
+            value._meta._index,
+            value._meta._id,
+            value._meta._hash,
+            value._meta._merkleComponentHash) {
+    type = transactionTypeFromRaw(value._transaction._type);
+    deadline = Deadline.fromUInt64DTO(value._transaction._deadline);
+    signature = value._transaction._signature;
+    networkType = extractNetworkType(value._transaction._version);
+    version = extractVersion(value._transaction._version);
+    fee = value._transaction._fee.toBigInt();
+    signer =
+        PublicAccount.fromPublicKey(value._transaction._signer, networkType);
+
+    mosaic = Mosaic(MosaicId.fromBigInt(value._transaction._mosaic.toBigInt()),
+        value._transaction._amount.toBigInt());
+    duration = value._transaction._duration.toBigInt();
+    signedTransaction = SignedTransaction(0x4148, '', value._transaction._hash);
+  }
+
+  Mosaic mosaic;
+
+  BigInt duration;
+
+  SignedTransaction signedTransaction;
+
+  @override
+  String toString() => '{\n'
+      '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
+      '\t"mosaic": $mosaic,\n'
+      '\t"duration": $duration,\n'
+      '\t"signedTxHash": $signedTransaction,\n'
+      '}\n';
+
+  @override
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['abstractTransaction'] = _abstractTransactionToJson();
+    data['mosaic'] = mosaic;
+    data['duration'] = duration;
+    data['signedTransaction'] = signedTransaction;
+
+    return data;
+  }
+
+  @override
+  int _size() => lockSize;
+
+  @override
+  AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
+
+  @override
+  Uint8List _generateBytes() {
+    final builder = fb.Builder(initialSize: 0);
+
+    final mV = builder.writeListUint32(bigIntToList(mosaic.id.toBigInt()));
+
+    final maV = builder.writeListUint32(fromBigInt(mosaic.amount));
+
+    final dV = builder.writeListUint32(fromBigInt(duration));
+
+    final h = hex.decode(signedTransaction.hash);
+
+    final hV = builder.writeListUint8(h);
+
+    final vectors = _generateVector(builder);
+
+    final txnBuilder = LockFundsTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(_size());
+    _buildVector(builder, vectors['versionV'], vectors['signatureV'],
+        vectors['signerV'], vectors['deadlineV'], vectors['feeV']);
+    txnBuilder.addMosaicIdOffset(mV);
+    txnBuilder.addMosaicAmountOffset(maV);
+    txnBuilder.addDurationOffset(dV);
+    txnBuilder.addHashOffset(hV);
+    final codedTransfer = txnBuilder.finish();
+
+    return lockFundsTransactionSchema()
+        .serialize(builder.finish(codedTransfer));
+  }
+}
+
 SignedTransaction _signTransactionWith(Transaction tx, Account a) {
   final s = a.account;
   final b = tx._generateBytes();
@@ -1084,7 +1385,7 @@ SignedTransaction _signTransactionWith(Transaction tx, Account a) {
   final p = <int>[]
     ..insertAll(0, b.skip(0).take(4))
     ..insertAll(4, signature)
-    ..insertAll(4 + 64, a.account.publicKey.Raw)
+    ..insertAll(4 + 64, a.account.publicKey.raw)
     ..insertAll(100, b.skip(100).take(b.length));
 
   final pHex = hex.encode(p);
@@ -1093,6 +1394,25 @@ SignedTransaction _signTransactionWith(Transaction tx, Account a) {
 
   return SignedTransaction(
       tx.getAbstractTransaction().type.raw, pHex.toUpperCase(), hash);
+}
+
+CosignatureSignedTransaction _signCosignatureTransaction(
+    CosignatureTransaction tx, Account a) {
+  if (tx._transactionToCosign.getTransactionInfo == null ||
+      tx._transactionToCosign.getTransactionInfo.hash == '') {
+    throw _errCosignatureTxHash;
+  }
+
+  final signer = a.account;
+
+  final hashByte = hex.decode(tx._transactionToCosign.getTransactionInfo.hash);
+
+  final signatureByte = signer.sign(hashByte);
+
+  return CosignatureSignedTransaction(
+      tx._transactionToCosign.getTransactionInfo.hash,
+      hex.encode(signatureByte),
+      signer.publicKey.toString());
 }
 
 String _createTransactionHash(String pHex) {
@@ -1142,10 +1462,29 @@ Transaction _deserializeDTO(value) {
       return MosaicSupplyChangeTransaction.fromDTO(value);
     case _AggregateTransactionInfoDTO:
       return AggregateTransaction.fromDTO(value);
+    case _ModifyMultisigAccountTransactionInfoDTO:
+      return ModifyMultisigAccountTransaction.fromDTO(value);
+    case _LockFundsTransactionInfoDTO:
+      return LockFundsTransaction.fromDTO(value);
     default:
       if (value is List) {
         value.map(_deserializeDTO).toList();
       }
       return null;
   }
+}
+
+int cosignatoryModificationArrayToBuffer(
+    fb.Builder builder, List<MultisigCosignatoryModification> modifications) {
+  final msb = <int>[];
+  for (final m in modifications) {
+    final b = hexDecodeStringOdd(m.publicAccount.publicKey);
+    final pV = builder.writeListUint8(b);
+    final txnBuilder = CosignatoryModificationBufferBuilder(builder)
+      ..begin()
+      ..addType(m.type.index)
+      ..addCosignatoryPublicKeyOffset(pV);
+    msb.add(txnBuilder.finish());
+  }
+  return builder.writeList(msb);
 }

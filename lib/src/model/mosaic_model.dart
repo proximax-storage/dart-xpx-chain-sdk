@@ -23,8 +23,8 @@ class Mosaic {
   Mosaic._(this.id, this.amount);
 
   Mosaic.fromDTO(_MosaicDTO v) {
-    id = MosaicId.fromId(v.id.toBigInt());
-    amount = v.amount.toBigInt();
+    id = MosaicId.fromId(v._id.toBigInt());
+    amount = v._amount.toBigInt();
   }
 
   MosaicId id;
@@ -105,12 +105,13 @@ class MosaicIds {
 class MosaicInfo {
   MosaicInfo.fromDTO(_MosaicInfoDTO value)
       : assert(json != null, 'json must not be null') {
-    mosaicId = MosaicId(id: value.mosaic.mosaicId.toBigInt());
-    supply = value.mosaic.supply.toBigInt();
-    height = value.mosaic.height.toBigInt();
-    owner = PublicAccount.fromPublicKey(value.mosaic.owner, configNetworkType);
-    revision = value.mosaic.revision;
-    properties = MosaicProperties.fromJson(value.mosaic.properties);
+    mosaicId = MosaicId(id: value._mosaic._mosaicId.toBigInt());
+    supply = value._mosaic._supply.toBigInt();
+    height = value._mosaic._height.toBigInt();
+    owner =
+        PublicAccount.fromPublicKey(value._mosaic._owner, configNetworkType);
+    revision = value._mosaic._revision;
+    properties = MosaicProperties.fromJson(value._mosaic._properties);
   }
 
   MosaicId mosaicId;
@@ -138,11 +139,11 @@ class MosaicInfo {
 class MosaicName {
   MosaicName.fromDTO(_MosaicNameDTO value)
       : assert(json != null, 'json must not be null') {
-    parentId = value.parentId != null
-        ? MosaicId.fromId(value.parentId.toBigInt())
+    parentId = value._parentId != null
+        ? MosaicId.fromId(value._parentId.toBigInt())
         : null;
-    mosaicId = MosaicId.fromId(value.mosaicId.toBigInt());
-    names = value.names != null ? List.from(value.names) : null;
+    mosaicId = MosaicId.fromId(value._mosaicId.toBigInt());
+    names = value._names != null ? List.from(value._names) : null;
   }
 
   MosaicId parentId;
@@ -189,14 +190,14 @@ class MosaicProperties {
       throw _errInvalidMosaicProperties;
     }
 
-    final flags = '00' + value[0].value.toBigInt().toRadixString(2);
+    final flags = '00' + value[0]._value.toBigInt().toRadixString(2);
     final bitMapFlags = flags.substring(flags.length - 3, flags.length);
 
     supplyMutable = bitMapFlags[2] == '1';
     transferable = bitMapFlags[1] == '1';
     levyMutable = bitMapFlags[0] == '1';
-    divisibility = value[1].value.toBigInt().toInt();
-    duration = value[2].value.toBigInt();
+    divisibility = value[1]._value.toBigInt().toInt();
+    duration = value[2]._value.toBigInt();
   }
 
   bool supplyMutable;

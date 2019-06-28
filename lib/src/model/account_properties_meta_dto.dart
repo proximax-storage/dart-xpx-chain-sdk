@@ -3,12 +3,12 @@ part of xpx_chain_sdk;
 class _AccountPropertiesMetaDTO {
   _AccountPropertiesMetaDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    id = json['id'];
+    _id = json['id'];
   }
 
-  String id;
+  String _id;
 
-  Map<String, dynamic> toJson() => {'id': id};
+  Map<String, dynamic> toJson() => {'id': _id};
 
   static List<_AccountPropertiesMetaDTO> listFromJson(List<dynamic> json) =>
       json == null

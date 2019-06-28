@@ -3,13 +3,13 @@ part of xpx_chain_sdk;
 class _AccountPropertiesDTO {
   _AccountPropertiesDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    address = json['address'];
-    properties = AccountPropertyDTO.listFromJson(json['properties']);
+    _address = json['address'];
+    _properties = _AccountPropertyDTO.listFromJson(json['properties']);
   }
 
-  String address;
+  String _address;
 
-  List<AccountPropertyDTO> properties = [];
+  List<_AccountPropertyDTO> _properties = [];
 
   static List<_AccountPropertiesDTO> listFromJson(List<dynamic> json) =>
       json == null
@@ -27,5 +27,5 @@ class _AccountPropertiesDTO {
   }
 
   Map<String, dynamic> toJson() =>
-      {'address': address, 'properties': properties};
+      {'address': _address, 'properties': _properties};
 }

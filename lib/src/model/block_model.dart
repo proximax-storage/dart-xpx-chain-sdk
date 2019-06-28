@@ -2,20 +2,20 @@ part of xpx_chain_sdk;
 
 class BlockInfo {
   BlockInfo.fromDTO(_BlockInfoDTO v) {
-    networkType = extractNetworkType(v.block.version);
-    hash = v.meta.hash;
-    generationHash = v.meta.generationHash;
-    totalFee = v.meta.totalFee.toBigInt();
-    numTransactions = v.meta.numTransactions;
-    signature = v.block.signature;
-    signer = PublicAccount.fromPublicKey(v.block.signer, networkType);
-    version = v.block.version;
-    type = v.block.type;
-    height = v.block.height.toBigInt();
-    timestamp = v.block.timestamp.toBigInt();
-    difficulty = v.block.difficulty.toBigInt();
-    previousBlockHash = v.block.previousBlockHash;
-    blockTransactionsHash = v.block.blockTransactionsHash;
+    networkType = extractNetworkType(v._block._version);
+    hash = v._meta._hash;
+    generationHash = v._meta._generationHash;
+    totalFee = v._meta._totalFee.toBigInt();
+    numTransactions = v._meta._numTransactions;
+    signature = v._block._signature;
+    signer = PublicAccount.fromPublicKey(v._block._signer, networkType);
+    version = v._block._version;
+    type = v._block._type;
+    height = v._block._height.toBigInt();
+    timestamp = v._block._timestamp.toBigInt();
+    difficulty = v._block._difficulty.toBigInt();
+    previousBlockHash = v._block._previousBlockHash;
+    blockTransactionsHash = v._block._blockTransactionsHash;
   }
 
   int networkType;
@@ -78,7 +78,7 @@ class BlockInfo {
 
 class Height {
   Height.fromDTO(_HeightDTO v) {
-    height = v.height.toBigInt();
+    height = v._height.toBigInt();
   }
 
   BigInt height;
@@ -98,8 +98,8 @@ class BlockchainScore {
   BlockchainScore.fromDTO(_BlockchainScoreDTO value)
       : assert(json != null, 'json must not be null') {
     List<dynamic> raw() => <dynamic>[
-          value.scoreLow.toBigInt().toInt(),
-          value.scoreHigh.toBigInt().toInt()
+          value._scoreLow.toBigInt().toInt(),
+          value._scoreHigh.toBigInt().toInt()
         ];
 
     final t = UInt64DTO.fromJson(raw()).toBigInt();

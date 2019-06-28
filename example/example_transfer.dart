@@ -1,3 +1,4 @@
+
 import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 /// Simple Account API AnnounceTransaction
@@ -22,7 +23,7 @@ void main() async {
 
   /// Create a  transaction type transfer
   final tx = TransferTransaction(
-      // The maximum amount of time to include the transaction in the blockchain.
+    // The maximum amount of time to include the transaction in the blockchain.
       Deadline(hours: 1),
       // The Address of the recipient account.
       recipient,
@@ -34,7 +35,7 @@ void main() async {
 
   final stx = account.sign(tx);
 
-  final restTx = await client.transaction.announceTransaction(stx);
+  final restTx = await client.transaction.announce(stx);
   print(restTx);
   print('Hash: ${stx.hash}');
 }

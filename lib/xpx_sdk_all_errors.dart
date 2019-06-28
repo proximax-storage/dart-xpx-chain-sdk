@@ -30,6 +30,8 @@ final _errNullInnerTransactions =
     Exception('innerTransactions must not be null');
 final _errTransactionSigner =
     Exception('some of the transaction does not have a signer');
+final _errEmptyModifications = Exception('modifications must not empty');
+final _errCosignatureTxHash = Exception('cosignature transaction hash is null');
 
 /// Accounts errors
 final _errInvalidPublicKey = Exception('not a valid public key');
