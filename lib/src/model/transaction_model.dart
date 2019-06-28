@@ -254,6 +254,8 @@ class CosignatureSignedTransaction {
   String _signature;
   String _signer;
 
+  String get hash => _parentHash;
+
   @override
   String toString() => '{\n'
       '\t"parentHash": $_parentHash\n'
@@ -1144,6 +1146,18 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   }
 }
 
+class CosignatureTransaction {
+  CosignatureTransaction(this._transactionToCosign);
+
+  AggregateTransaction _transactionToCosign;
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['transactionToCosign'] = _transactionToCosign;
+    return data;
+  }
+}
+
 class ModifyMultisigAccountTransaction extends AbstractTransaction
     implements Transaction {
   ModifyMultisigAccountTransaction(
@@ -1380,6 +1394,24 @@ SignedTransaction _signTransactionWith(Transaction tx, Account a) {
 
   return SignedTransaction(
       tx.getAbstractTransaction().type.raw, pHex.toUpperCase(), hash);
+}
+
+CosignatureSignedTransaction _signCosignatureTransaction(
+    CosignatureTransaction tx, Account a) {
+  if (tx._transactionToCosign.getTransactionInfo == null ||
+      tx._transactionToCosign.getTransactionInfo.hash == '') {
+    throw _errCosignatureTxHash;
+  }
+
+  final s = a.account;
+
+  final sb = hex.decode(tx._transactionToCosign.getTransactionInfo.hash);
+
+  final signature = s.sign(sb);
+  return CosignatureSignedTransaction(
+      tx._transactionToCosign.getTransactionInfo.hash,
+      hex.encode(signature),
+      s.publicKey.toString());
 }
 
 String _createTransactionHash(String pHex) {

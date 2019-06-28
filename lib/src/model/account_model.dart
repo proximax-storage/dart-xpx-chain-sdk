@@ -142,6 +142,10 @@ class Account {
       {'publicAccount': publicAccount, 'account': account};
 
   SignedTransaction sign(Transaction tx) => _signTransactionWith(tx, this);
+
+  CosignatureSignedTransaction signCosignatureTransaction(
+          CosignatureTransaction tx) =>
+      _signCosignatureTransaction(tx, this);
 }
 
 // ignore: public_member_api_docs
