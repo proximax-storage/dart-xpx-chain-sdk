@@ -1,4 +1,4 @@
-<p align='center'><a href='https://vuejs.org' target='_blank' rel='noopener noreferrer'><img width='150' src='https://user-images.githubusercontent.com/29048783/57000439-a41fa000-6b81-11e9-94f3-6df17de7e41a.png' alt='Vue logo'></a></p>
+<p align='center'><a href='https://github.com/proximax-storage/dart-xpx-chain-sdk' target='_blank' rel='noopener noreferrer'><img width='150' src='https://user-images.githubusercontent.com/29048783/57000439-a41fa000-6b81-11e9-94f3-6df17de7e41a.png' alt='Vue logo'></a></p>
 <h1 align='center'>ProximaX Sirius Blockchain Dart SDK</h1>
 
 Official ProximaX Sirius Blockchain SDK Library in Dart.
@@ -11,7 +11,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  xpx_chain_sdk: 0.0.3+4
+  xpx_chain_sdk: 0.0.3+5
 ```
 
 **2. Install it**

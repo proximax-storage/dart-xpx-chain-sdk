@@ -160,7 +160,12 @@ class Message {
     type = value._type;
   }
 
-  Message.plainMessage(this.payload) {
+  Message.plain(this.payload) {
+    type = 0;
+  }
+
+  Message.empty() {
+    payload = '';
     type = 0;
   }
 
@@ -496,7 +501,9 @@ class AbstractTransaction with TransactionInfo {
   }
 }
 
-// TransferTransaction
+/// Send mosaics and messages between two accounts.
+/// Announce a [TransferTransaction] to send [Mosaic] or [Message] between two [Account].
+///
 class TransferTransaction extends AbstractTransaction implements Transaction {
   TransferTransaction(Deadline deadline, Address recipient,
       List<Mosaic> mosaics, Message message, int networkType)
@@ -637,6 +644,9 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
   }
 }
 
+/// Register a namespace to organize your assets.
+/// Announce a [RegisterNamespaceTransaction] to register and re-rent a namespace.
+///
 class RegisterNamespaceTransaction extends AbstractTransaction
     implements Transaction {
   RegisterNamespaceTransaction.createRoot(Deadline deadline,
@@ -786,6 +796,9 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   int _size() => registerNamespaceHeaderSize + namspaceName.length;
 }
 
+/// Register a new mosaic.
+/// Announce a [MosaicDefinitionTransaction] to create a new [Mosaic].
+///
 class MosaicDefinitionTransaction extends AbstractTransaction
     implements Transaction {
   MosaicDefinitionTransaction(
@@ -915,6 +928,9 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   }
 }
 
+/// Change an existent mosaic supply.
+/// Announce a [MosaicSupplyChangeTransaction] to increase or decrease a mosaic’s supply.
+///
 class MosaicSupplyChangeTransaction extends AbstractTransaction
     implements Transaction {
   MosaicSupplyChangeTransaction(Deadline deadline, MosaicSupplyType supplyType,
@@ -1026,6 +1042,9 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   }
 }
 
+/// Aggregate Complete send transactions in batches to different [Account].
+/// Aggregate Bonded propose many transactions between different [Account].
+///
 class AggregateTransaction extends AbstractTransaction implements Transaction {
   factory AggregateTransaction.bonded(
           Deadline deadline, List<Transaction> innerTxs, int networkType) =>
@@ -1146,6 +1165,9 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   }
 }
 
+/// Cosign an aggregate bonded transaction.
+/// [CosignatureTransaction] are used to sign announced aggregate bonded transactions with missing cosignatures.
+///
 class CosignatureTransaction {
   CosignatureTransaction(this._transactionToCosign);
 
@@ -1158,6 +1180,12 @@ class CosignatureTransaction {
   }
 }
 
+/// Create or modify a multisig contract.
+/// Announce a modify multisig account transaction to:
+/// a) Transform an account to multisig account.
+/// b) Change the configurable properties of a multisig account.
+/// c) Add or delete cosignatories from a multisig account.
+///
 class ModifyMultisigAccountTransaction extends AbstractTransaction
     implements Transaction {
   ModifyMultisigAccountTransaction(
@@ -1270,6 +1298,9 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
   }
 }
 
+/// A deposit before announcing aggregate bonded transactions.
+/// Alias: LockFundsTransaction
+///
 class LockFundsTransaction extends AbstractTransaction implements Transaction {
   LockFundsTransaction(Deadline deadline, Mosaic mosaic, BigInt duration,
       SignedTransaction signedTx, int networkType)
