@@ -151,23 +151,17 @@ class MosaicInfo {
 class MosaicName {
   MosaicName.fromDTO(_MosaicNameDTO value)
       : assert(json != null, 'json must not be null') {
-    parentId = value._parentId != null
-        ? MosaicId.fromId(value._parentId.toBigInt())
-        : null;
     mosaicId = MosaicId.fromId(value._mosaicId.toBigInt());
     names = value._names != null ? List.from(value._names) : null;
   }
-
-  MosaicId parentId;
 
   MosaicId mosaicId;
 
   List<String> names;
 
   @override
-  String toString() => '{parentId:${parentId?.toHex()},'
-      ' mosaicId:${mosaicId.toHex()},'
-      ' names:$names}';
+  String toString() => '"mosaicId":${mosaicId.toHex()},'
+      ' "names":$names}';
 
   static List<MosaicName> listFromDTO(List<_MosaicNameDTO> json) => json == null
       ? null
