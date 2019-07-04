@@ -65,6 +65,18 @@ class MosaicId extends Id {
 
   MosaicId.fromBigInt(final BigInt bigInt) : super(bigInt);
 
+  static MosaicId fromHex(final String hex) {
+    if (hex.isEmpty) {
+      throw new ArgumentError('The hexString must not be null or empty');
+    }
+
+    if (0 != (hex.length % 2)) {
+      throw new ArgumentError('invalid hex');
+    }
+    final BigInt bigInt = BigInt.parse(hex, radix: 16);
+    return MosaicId._(bigInt);
+  }
+
   static MosaicId fromNonceAndOwner(int nonce, String ownerPublicKey) {
     if (ownerPublicKey.length != 64) {
       throw _errInvalidOwnerPublicKey;
