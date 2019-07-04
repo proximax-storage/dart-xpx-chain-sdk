@@ -7,7 +7,7 @@ Mosaic xpxRelative(int amount) =>
     xpx((BigInt.from(1000000) * BigInt.from(amount)).toInt());
 
 class Mosaic {
-  Mosaic(MosaicId mosaicId, BigInt amount) {
+  Mosaic(Id mosaicId, BigInt amount) {
     if (mosaicId == null) {
       throw _errNullMosaicId;
     } else if (amount == null) {
@@ -27,7 +27,7 @@ class Mosaic {
     amount = v._amount.toBigInt();
   }
 
-  MosaicId id;
+  Id id;
 
   BigInt amount;
 
