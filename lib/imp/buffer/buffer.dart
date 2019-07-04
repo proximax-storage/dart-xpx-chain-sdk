@@ -14,6 +14,8 @@ part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_mosaic_supply_change
 part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_aggregate.dart';
 part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_multisig.dart';
 part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_lockFunds.dart';
+part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_alias.dart';
+
 
 part 'transactions/aggregate_transaction_buffer.dart';
 part 'transactions/alias_transaction_buffer.dart';
