@@ -215,7 +215,8 @@ List<BigInt> generateNamespacePath(String name) {
     if (!regValidNamespace.hasMatch('$i')) {
       throw _errInvalidNamespaceName;
     }
-    namespaceId = _generateId('$i', BigInt.zero);
+    namespaceId = _generateId('$i', namespaceId);
+
     path.add(namespaceId);
   }
 
