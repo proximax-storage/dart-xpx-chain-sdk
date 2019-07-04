@@ -806,7 +806,6 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       int nonce,
       String ownerPublicKey,
       MosaicProperties mosaicProps,
-      BigInt duration,
       int networkType)
       : super() {
     if (ownerPublicKey.length != 64) {
@@ -822,7 +821,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       mosaicProperties = mosaicProps;
       // Signer of transaction must be the same with ownerPublicKey
       mosaicId = MosaicId.fromNonceAndOwner(nonce, ownerPublicKey);
-      this.duration = duration;
+      duration = mosaicProps.duration;
     }
   }
 
@@ -1404,6 +1403,121 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
 
     return lockFundsTransactionSchema()
         .serialize(builder.finish(codedTransfer));
+  }
+}
+
+// AliasTransaction
+class AliasTransaction extends AbstractTransaction implements Transaction {
+  AliasTransaction._(
+      Deadline deadline, this.actionType, this.namespaceId, int networkType)
+      : super() {
+    version = _lockVersion;
+    this.deadline = deadline;
+    type = transactionTypeFromRaw(17230);
+    this.networkType = networkType;
+  }
+
+  AliasActionType actionType;
+  NamespaceId namespaceId;
+
+  String _aliasTransactionToString() {
+    final String _actionType =
+        actionType.index == 0 ? 'aliasLink' : 'aliasUnlink';
+    return '{\n'
+        '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
+        '\t"aliasActionType": $_actionType,\n'
+        '\t"namespaceId": ${namespaceId.toHex()}\n'
+        '}\n';
+  }
+
+  @override
+  String toString() => _aliasTransactionToString();
+
+  @override
+  Map<String, dynamic> toJson() => _aliasTransactionToJson();
+
+  Map<String, dynamic> _aliasTransactionToJson() {
+    final data = <String, dynamic>{};
+    data['abstractTransaction'] = _abstractTransactionToJson();
+    if (actionType != null) {
+      data['aliasActionType'] = actionType.index;
+    }
+    data['namespaceId'] = namespaceId.toHex();
+    return data;
+  }
+
+  @override
+  int _size() => aliasTransactionHeader;
+
+  @override
+  AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
+
+  @override
+  Uint8List _generateBytes() => null;
+
+  Uint8List _generateAstractBytes(
+      fb.Builder builder, int aliasV) {
+    final nV = builder.writeListUint32(bigIntToList(namespaceId.toBigInt()));
+
+    final vectors = _generateVector(builder);
+
+    final txnBuilder = AliasTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(_size());
+    _buildVector(builder, vectors['versionV'], vectors['signatureV'],
+        vectors['signerV'], vectors['deadlineV'], vectors['feeV']);
+    txnBuilder.addActionType(actionType.index);
+    txnBuilder.addNamespaceIdOffset(nV);
+    txnBuilder.addAliasIdOffset(aliasV);
+
+    final codedAlias = txnBuilder.finish();
+    return aliasTransactionSchema().serialize(builder.finish(codedAlias));
+  }
+}
+
+class MosaicAliasTransaction extends AliasTransaction {
+  MosaicAliasTransaction(Deadline deadline, this.mosaicId,
+      NamespaceId namespaceId, AliasActionType actionType, int networkType)
+      : super._(deadline, actionType, namespaceId, networkType);
+
+  MosaicId mosaicId;
+
+  String _mosaicAliasTransactionToString() => '{\n'
+      '${super.toString()}'
+      '\t"mosaicId": ${mosaicId.toHex()}\n'
+      '}\n';
+
+  @override
+  String toString() => _mosaicAliasTransactionToString();
+
+  @override
+  Map<String, dynamic> toJson() => _mosaicAliasTransactionToJson();
+
+  Map<String, dynamic> _mosaicAliasTransactionToJson() {
+    final data = <String, dynamic>{};
+    data.addAll(super.toJson());
+    if (actionType != null) {
+      data['mosaicId'] = mosaicId.toHex();
+    }
+    return data;
+  }
+
+  @override
+  int _size() => super._size() + mosaicSize;
+
+  @override
+  AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
+
+  @override
+  Uint8List _generateBytes() {
+    final builder = fb.Builder(initialSize: 0);
+    final buffer = Uint8List(mosaicSize).buffer;
+    final bufferData = ByteData.view(buffer)
+      ..setUint64(0, mosaicId.toIn(), Endian.little);
+
+    final mV = builder.writeListUint8(bufferData.buffer.asUint8List());
+
+    return _generateAstractBytes(builder, mV);
   }
 }
 
