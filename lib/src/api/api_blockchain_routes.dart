@@ -208,6 +208,7 @@ class BlockchainRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{height}', height.toString());
 
+    print(path);
     // query params
     final List<QueryParam> queryParams = [];
     final Map<String, String> headerParams = {};
@@ -244,7 +245,8 @@ class BlockchainRoutesApi {
           .deserialize(response.body, 'List<Transaction>')
           .map((item) => item)
           .toList();
-      return resp.map(_deserializeDTO).toList();
+      final d = resp.map(_deserializeDTO).toList();
+      return d;
     } else {
       return null;
     }

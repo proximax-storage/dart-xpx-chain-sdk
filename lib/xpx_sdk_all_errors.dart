@@ -11,6 +11,7 @@ final _errNullMosaicProperties =
     Exception('mosaic properties must not be null');
 final _errInvalidMosaicProperties = Exception('mosaic Properties is not valid');
 final _errInvalidOwnerPublicKey = Exception('public owner key is invalid');
+final _errPropertyId = Exception('unknown Property Id');
 
 /// Namespace errors
 final _errInvalidNamespaceName = Exception('namespace name is invalid');

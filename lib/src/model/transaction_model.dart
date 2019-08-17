@@ -56,8 +56,7 @@ enum TransactionType {
   mosaicAlias
 }
 
-var _timestampNemesisBlock =
-    DateTime.fromMicrosecondsSinceEpoch(1459468800 * 1000);
+var _timestampNemesisBlock = DateTime.fromMillisecondsSinceEpoch(1459468800000);
 
 _TransactionTypeClass transactionTypeFromRaw(int value) {
   for (final t in _transactionTypes) {
@@ -205,14 +204,15 @@ class Deadline {
       : assert(data._lower != null || data._higher == null,
             'lower or higher must not be null') {
     value = data.toBigInt() != null
-        ? DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt())
+        ? DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt() *
+            _timestampNemesisBlock.toUtc().millisecondsSinceEpoch)
         : null;
   }
 
   DateTime value;
 
   @override
-  String toString() => '$value';
+  String toString() => '$value ${value.timeZoneName}';
 
   Int64 getInstant() {
     final x = Int64((value.microsecondsSinceEpoch * 1000) ~/ 1e6);
@@ -733,14 +733,21 @@ class RegisterNamespaceTransaction extends AbstractTransaction
               .toList();
 
   @override
-  String toString() => '{\n'
-      '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
-      '\t"namespaceId": $namespaceId,\n'
-      '\t"namespaceType": ${namespaceType.toString().split('.')[1]},\n'
-      '\t"namspaceName": $namspaceName,\n'
-      '\t"parentId": $parentId,\n'
-      '\t"duration": $duration,\n'
-      '}\n';
+  String toString() {
+    final sb = StringBuffer()
+      ..writeln('\n{')
+      ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()},')
+      ..writeln('\t"namespaceType": ${namespaceType.toString().split('.')[1]},')
+      ..writeln('\t"namspaceName": $namspaceName,');
+    if (parentId != null) {
+      sb.writeln('\t"parentId": ${parentId.toHex()},');
+    }
+    if (duration != null) {
+      sb.writeln('\t"duration": $duration');
+    }
+    sb.write('}\n');
+    return sb.toString();
+  }
 
   @override
   Map<String, dynamic> toJson() {
@@ -749,8 +756,12 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     data['namespaceId'] = namespaceId.toHex();
     data['namespaceType'] = namespaceType;
     data['namspaceName'] = namspaceName;
-    data['parentId'] = parentId.toHex();
-    data['duration'] = duration;
+    if (parentId != null) {
+      data['parentId'] = parentId.toHex();
+    }
+    if (parentId != null) {
+      data['duration'] = duration;
+    }
     return data;
   }
 
@@ -801,12 +812,8 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 ///
 class MosaicDefinitionTransaction extends AbstractTransaction
     implements Transaction {
-  MosaicDefinitionTransaction(
-      Deadline deadline,
-      int nonce,
-      String ownerPublicKey,
-      MosaicProperties mosaicProps,
-      int networkType)
+  MosaicDefinitionTransaction(Deadline deadline, int nonce,
+      String ownerPublicKey, MosaicProperties mosaicProps, int networkType)
       : super() {
     if (ownerPublicKey.length != 64) {
       throw _errInvalidOwnerPublicKey;
@@ -841,7 +848,9 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     fee = value._transaction._fee.toBigInt();
     signer =
         PublicAccount.fromPublicKey(value._transaction._signer, networkType);
+
     mosaicProperties = MosaicProperties.fromDTO(value._transaction._properties);
+
     mosaicNonce = value._transaction._mosaicNonce;
     mosaicId = MosaicId.fromId(value._transaction._mosaicId.toBigInt());
   }
@@ -894,7 +903,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     if (mosaicProperties.transferable) {
       f += 2;
     }
-    if (mosaicProperties.levyMutable) {
+    if (mosaicProperties.optionalProperties == null) {
       f += 4;
     }
 
@@ -1455,8 +1464,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
   @override
   Uint8List _generateBytes() => null;
 
-  Uint8List _generateAstractBytes(
-      fb.Builder builder, int aliasV) {
+  Uint8List _generateAstractBytes(fb.Builder builder, int aliasV) {
     final nV = builder.writeListUint32(bigIntToList(namespaceId.toBigInt()));
 
     final vectors = _generateVector(builder);
@@ -1518,6 +1526,50 @@ class MosaicAliasTransaction extends AliasTransaction {
     final mV = builder.writeListUint8(bufferData.buffer.asUint8List());
 
     return _generateAstractBytes(builder, mV);
+  }
+}
+
+class AddressAliasTransaction extends AliasTransaction {
+  AddressAliasTransaction(Deadline deadline, this.address,
+      NamespaceId namespaceId, AliasActionType actionType, int networkType)
+      : super._(deadline, actionType, namespaceId, networkType);
+
+  Address address;
+
+  String _addressAliasTransactionToString() => '{\n'
+      '${super.toString()}'
+      '\t"address": $address\n'
+      '}\n';
+
+  @override
+  String toString() => _addressAliasTransactionToString();
+
+  @override
+  Map<String, dynamic> toJson() => _addressAliasTransactionToJson();
+
+  Map<String, dynamic> _addressAliasTransactionToJson() {
+    final data = <String, dynamic>{};
+    data.addAll(super.toJson());
+    if (actionType != null) {
+      data['address'] = address;
+    }
+    return data;
+  }
+
+  @override
+  int _size() => super._size() + mosaicSize;
+
+  @override
+  AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
+
+  @override
+  Uint8List _generateBytes() {
+    final builder = fb.Builder(initialSize: 0);
+    final a = base32.decode(address.address);
+
+    final aV = builder.writeListUint8(a);
+
+    return _generateAstractBytes(builder, aV);
   }
 }
 

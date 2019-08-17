@@ -62,11 +62,16 @@ class NamespaceName {
   String name;
 
   @override
-  String toString() => '{\n'
-      '\tparentId:${parentId?.toHex()},\n'
-      '\tnamespaceId:${namespaceId?.toHex()},\n'
-      '\tname:$name\n'
-      '}\n';
+  String toString() {
+    final sb = StringBuffer()..writeln('\n{');
+    if (parentId != null) {
+      sb.writeln('\tparentId: ${parentId.toHex()},');
+    }
+    sb.writeln('\tnamespaceId: ${namespaceId.toHex()},');
+    sb.writeln('\tname: $name,');
+    sb.writeln('\n{');
+    return sb.toString();
+  }
 
   static List<NamespaceName> listFromDTO(List<_NamespaceNameDTO> json) =>
       json == null
@@ -75,7 +80,9 @@ class NamespaceName {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['parentId'] = parentId.toHex();
+    if (parentId != null) {
+      data['parentId'] = parentId.toHex();
+    }
     data['namespaceId'] = namespaceId.toHex();
     data['name'] = name;
 

@@ -14,8 +14,15 @@ class BlockInfo {
     height = v._block._height.toBigInt();
     timestamp = v._block._timestamp.toBigInt();
     difficulty = v._block._difficulty.toBigInt();
+    feeMultiplier = v._block._feeMultiplier;
     previousBlockHash = v._block._previousBlockHash;
     blockTransactionsHash = v._block._blockTransactionsHash;
+    blockReceiptsHash = v._block._blockReceiptsHash;
+    stateHash = v._block._stateHash;
+    beneficiary = v._block._beneficiaryPublicKey != null
+        ? PublicAccount.fromPublicKey(
+            v._block._beneficiaryPublicKey, networkType)
+        : null;
   }
 
   int networkType;
@@ -30,26 +37,38 @@ class BlockInfo {
   BigInt height;
   BigInt timestamp;
   BigInt difficulty;
+  int feeMultiplier;
   String previousBlockHash;
   String blockTransactionsHash;
+  String blockReceiptsHash;
+  String stateHash;
+  PublicAccount beneficiary;
 
   @override
-  String toString() => '{\n'
-      '\tnetworkType: $networkType,\n'
-      '\thash: $hash,\n'
-      '\tgenerationHash: $generationHash,\n'
-      '\ttotalFee: $totalFee,\n'
-      '\tnumTransactions: $numTransactions,\n'
-      '\tsignature: $signature,\n'
-      '\tsigner: $signer\n'
-      '\tversion: $version,\n'
-      '\ttype: $type,\n'
-      '\theight: $height,\n'
-      '\ttimestamp: $timestamp,\n'
-      '\tdifficulty: $difficulty,\n'
-      '\tpreviousBlockHash: $previousBlockHash,\n'
-      '\tblockTransactionsHash: $blockTransactionsHash,\n'
-      '}\n';
+  String toString() {
+    final sb = StringBuffer()
+      ..writeln('\n{')
+      ..writeln('\tnetworkType: $networkType,')
+      ..writeln('\tcontent: $hash,')
+      ..writeln('\tgenerationHash: $generationHash,')
+      ..writeln('\ttotalFee: $totalFee,')
+      ..writeln('\tnumTransactions: $numTransactions,')
+      ..writeln('\tsignature: $signature,')
+      ..writeln('\tsigner: $signer,')
+      ..writeln('\tversion: $version,')
+      ..writeln('\ttype: $type,')
+      ..writeln('\theight: $height,')
+      ..writeln('\ttimestamp: $timestamp,')
+      ..writeln('\tdifficulty: $difficulty,')
+      ..writeln('\tfeeMultiplier: $feeMultiplier,')
+      ..writeln('\tpreviousBlockHash: $previousBlockHash,')
+      ..writeln('\tblockTransactionsHash: $blockTransactionsHash,')
+      ..writeln('\tblockReceiptsHash: $blockReceiptsHash,')
+      ..writeln('\tstateHash: $stateHash,')
+      ..writeln('\tbeneficiary: $beneficiary')
+      ..write('}');
+    return sb.toString();
+  }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -65,9 +84,12 @@ class BlockInfo {
     data['height'] = height;
     data['timestamp'] = timestamp;
     data['difficulty'] = difficulty;
+    data['feeMultiplier'] = feeMultiplier;
     data['previousBlockHash'] = previousBlockHash;
     data['blockTransactionsHash'] = blockTransactionsHash;
-
+    data['blockReceiptsHash'] = blockReceiptsHash;
+    data['stateHash'] = stateHash;
+    data['beneficiary'] = beneficiary.publicKey;
     return data;
   }
 
@@ -84,12 +106,12 @@ class Height {
   BigInt height;
 
   @override
-  String toString() => '{height: $height}';
+  String toString() => '$height';
 
-  Map<String, dynamic> toDto() {
+  Map<String, dynamic> toJson() {
     final dto = UInt64DTO.fromBigInt(height);
     final data = <String, dynamic>{};
-    data['height'] = dto;
+    data['height'] = dto.toBigInt();
     return data;
   }
 }
@@ -110,6 +132,12 @@ class BlockchainScore {
 
   @override
   String toString() => '$score';
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['score'] = score;
+    return data;
+  }
 }
 
 class BlockchainStorageInfo {

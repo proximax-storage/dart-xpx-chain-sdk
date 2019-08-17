@@ -230,6 +230,7 @@ class _RegisterNamespaceTransactionDTO extends _AbstractTransactionDTO {
     _type = json['type'];
     _fee = UInt64DTO.fromJson(json['maxFee']);
     _deadline = UInt64DTO.fromJson(json['deadline']);
+
     _namespaceId = UInt64DTO.fromJson(json['namespaceId']);
     _namespaceType = json['namespaceType'];
     _name = json['name'];

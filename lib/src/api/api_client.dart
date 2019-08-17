@@ -56,6 +56,7 @@ class _ApiClient {
   }
 
   dynamic _deserialize(value, String targetType) {
+
     try {
       switch (targetType) {
         case 'String':

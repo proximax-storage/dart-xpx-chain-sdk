@@ -121,3 +121,5 @@ List<int> bigIntToList(BigInt v) {
   final r = u64 >> 32 & 0xFFFFFFFF;
   return [l.toInt(), r.toInt()];
 }
+
+bool hasBits(BigInt number, int bits) => number.toInt() & bits == bits;

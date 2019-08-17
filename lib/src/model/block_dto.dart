@@ -15,7 +15,10 @@ class _BlockDTO {
     _blockTransactionsHash = json['blockTransactionsHash'];
     _blockReceiptsHash = json['blockReceiptsHash'];
     _stateHash = json['stateHash'];
-    _beneficiaryPublicKey = json['beneficiaryPublicKey'];
+    _beneficiaryPublicKey = json['beneficiary'] !=
+            '0000000000000000000000000000000000000000000000000000000000000000'
+        ? json['beneficiary']
+        : null;
   }
 
   String _signature;
@@ -71,7 +74,7 @@ class _BlockDTO {
     data['blockTransactionsHash'] = _blockTransactionsHash;
     data['blockReceiptsHash'] = _blockReceiptsHash;
     data['stateHash'] = _stateHash;
-    data['beneficiaryPublicKey'] = _beneficiaryPublicKey;
+    data['beneficiary'] = _beneficiaryPublicKey;
 
     return data;
   }

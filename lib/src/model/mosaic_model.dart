@@ -6,6 +6,17 @@ Mosaic xpx(int amount) => Mosaic(xpxMosaicId, BigInt.from(amount));
 Mosaic xpxRelative(int amount) =>
     xpx((BigInt.from(1000000) * BigInt.from(amount)).toInt());
 
+enum MosaicPropertyId {
+  mosaicPropertyFlagsId,
+  mosaicPropertyDivisibilityId,
+  mosaicPropertyDurationId
+}
+
+// ignore: constant_identifier_names
+const _supplyMutable = 0x01;
+
+const _transferable = 0x02;
+
 class Mosaic {
   Mosaic(Id mosaicId, BigInt amount) {
     if (mosaicId == null) {
@@ -123,7 +134,7 @@ class MosaicInfo {
     owner =
         PublicAccount.fromPublicKey(value._mosaic._owner, configNetworkType);
     revision = value._mosaic._revision;
-    properties = MosaicProperties.fromJson(value._mosaic._properties);
+    properties = MosaicProperties.fromDTO(value._mosaic._properties);
   }
 
   MosaicId mosaicId;
@@ -168,58 +179,109 @@ class MosaicName {
       : json.map((value) => MosaicName.fromDTO(value)).toList();
 }
 
+class MosaicProperty {
+  MosaicProperty(this.id, this.value);
+
+  MosaicProperty.fromDTO(_MosaicPropertyDTO value) {
+    if (value == null) return;
+    id = value._id;
+    this.value = value._value.toBigInt();
+  }
+
+  int id;
+
+  BigInt value;
+
+  static List<MosaicProperty> listFromDTO(List<_MosaicPropertyDTO> json) =>
+      json == null
+          ? <MosaicProperty>[]
+          : json.map((value) => new MosaicProperty.fromDTO(value)).toList();
+
+  @override
+  String toString() => 'id: $id, value: $value';
+
+  Map<String, dynamic> toJson() => {'id': id, 'value': value};
+}
+
 /// MosaicProperties  structure describes mosaic properties.
 class MosaicProperties {
   // ignore: avoid_positional_boolean_parameters
-  MosaicProperties(this.supplyMutable, this.transferable, this.levyMutable,
-      this.divisibility, this.duration);
+  MosaicProperties(this.supplyMutable, this.transferable,
+      this.optionalProperties, this.divisibility, this.duration);
 
-  MosaicProperties.fromJson(List<UInt64DTO> value)
+//  MosaicProperties.fromJsonOLD(List<UInt64DTO> value)
+//      : assert(json != null, 'mosaic Properties is not valid') {
+//    if (value.length < 3) {
+//      throw _errInvalidMosaicProperties;
+//    }
+//
+//    final flags = '00' + value[0].toBigInt().toRadixString(2);
+//    final bitMapFlags = flags.substring(flags.length - 3, flags.length);
+//
+//    supplyMutable = bitMapFlags[2] == '1';
+//    transferable = bitMapFlags[1] == '1';
+//    optionalProperties = bitMapFlags[0] == '1';
+//    divisibility = value[1].toBigInt().toInt();
+//    duration = value[2].toBigInt();
+//  }
+
+  MosaicProperties.fromDTO(List<_MosaicPropertyDTO> value)
       : assert(json != null, 'mosaic Properties is not valid') {
-    if (value.length < 3) {
-      throw _errInvalidMosaicProperties;
+//    if (value.length < 3) {
+//      print(value.length);
+//
+//      throw _errInvalidMosaicProperties;
+//    }
+
+    var flags = BigInt.zero;
+
+    duration = BigInt.zero;
+
+    divisibility = 0;
+
+    for (_MosaicPropertyDTO property in value) {
+      switch (property._id) {
+        case 0:
+          flags = property._value.toBigInt();
+          break;
+        case 1:
+          divisibility = property._value.toBigInt().toInt();
+          break;
+        case 2:
+          duration = property._value.toBigInt();
+          optionalProperties = <MosaicProperty>[
+            MosaicProperty(
+                MosaicPropertyId.mosaicPropertyDurationId.index, duration)
+          ];
+          break;
+        default:
+          throw _errPropertyId;
+      }
     }
+    print(duration);
 
-    final flags = '00' + value[0].toBigInt().toRadixString(2);
-    final bitMapFlags = flags.substring(flags.length - 3, flags.length);
-
-    supplyMutable = bitMapFlags[2] == '1';
-    transferable = bitMapFlags[1] == '1';
-    levyMutable = bitMapFlags[0] == '1';
-    divisibility = value[1].toBigInt().toInt();
-    duration = value[2].toBigInt();
-  }
-
-  MosaicProperties.fromDTO(List<_MosaicPropertiesDTO> value)
-      : assert(json != null, 'mosaic Properties is not valid') {
-    if (value.length < 3) {
-      throw _errInvalidMosaicProperties;
-    }
-
-    final flags = '00' + value[0]._value.toBigInt().toRadixString(2);
-    final bitMapFlags = flags.substring(flags.length - 3, flags.length);
-
-    supplyMutable = bitMapFlags[2] == '1';
-    transferable = bitMapFlags[1] == '1';
-    levyMutable = bitMapFlags[0] == '1';
-    divisibility = value[1]._value.toBigInt().toInt();
-    duration = value[2]._value.toBigInt();
+    supplyMutable = hasBits(flags, _supplyMutable);
+    transferable = hasBits(flags, _transferable);
   }
 
   bool supplyMutable;
   bool transferable;
-  bool levyMutable;
+  List<MosaicProperty> optionalProperties;
   int divisibility;
   BigInt duration;
 
   @override
-  String toString() => '{\n'
-      '\t"supplyMutable": $supplyMutable,\n'
-      '\t"transferable": $transferable,\n'
-      '\t"levyMutable": $levyMutable,\n'
-      '\t"divisibility": $divisibility,\n'
-      '\t"duratione": $duration\n'
-      '\t}';
+  String toString() {
+    final sb = StringBuffer()
+      ..writeln('{')
+      ..writeln('\t"supplyMutable": $supplyMutable,')
+      ..writeln('\t"transferable": $transferable,')
+      ..writeln('\t"optionalProperties": $optionalProperties,')
+      ..writeln('\t"divisibility": $divisibility,')
+      ..writeln('\t"duration": $duration')
+      ..write('}');
+    return sb.toString();
+  }
 }
 
 BigInt _generateMosaicId(int nonce, String ownerPublicKey) {
