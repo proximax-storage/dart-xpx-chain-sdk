@@ -30,7 +30,7 @@ void main() async {
       // The List of mosaic to be sent.
       [xpx(1)],
       // The transaction message of 1024 characters.
-      Message.plainMessage('From ProximaX Dart SDK'),
+      PlainMessage(payload: 'From ProximaX Dart SDK'),
       networkType);
 
   final stx = account.sign(tx);
