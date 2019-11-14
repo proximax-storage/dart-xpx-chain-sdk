@@ -89,12 +89,16 @@ class _MetaTransactionDTO {
       String hash,
       String merkleComponentHash,
       int index,
-      String id}) {
+      String id,
+      String aggregateHash,
+      String aggregateId}) {
     _height = UInt64DTO.fromJson(height);
     _hash = hash;
     _merkleComponentHash = merkleComponentHash;
     _index = index;
     _id = id;
+    _aggregateHash = aggregateHash;
+    _aggregateId = aggregateId;
   }
 
   _MetaTransactionDTO.fromJson(Map<String, dynamic> json) {
@@ -103,6 +107,8 @@ class _MetaTransactionDTO {
     _merkleComponentHash = json['merkleComponentHash'];
     _index = json['index'];
     _id = json['id'];
+    _aggregateHash = json['aggregateHash'];
+    _aggregateId = json['aggregateId'];
   }
 
   UInt64DTO _height;
@@ -110,6 +116,8 @@ class _MetaTransactionDTO {
   String _merkleComponentHash;
   int _index;
   String _id;
+  String _aggregateHash;
+  String _aggregateId;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

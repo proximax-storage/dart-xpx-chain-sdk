@@ -16,12 +16,7 @@ Uint8List hexDecodeStringOdd(final String s) {
 }
 
 // extractNetworkType return networkType from version
-int extractNetworkType(int version) {
-  final buffer = Uint8List(8).buffer;
-  final bufferData = ByteData.view(buffer)
-    ..setUint64(0, version, Endian.little);
-  return bufferData.getUint8(1);
-}
+int extractNetworkType(int version) => version.toUnsigned(32) >> 24;
 
 int extractVersion(int version) {
   final buffer = Uint8List(8).buffer;

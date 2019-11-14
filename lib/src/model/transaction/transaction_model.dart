@@ -5,6 +5,7 @@ RegExp _hexadecimal = RegExp(r'^[0-9a-fA-F]+$');
 var _transactionTypes = <_TransactionTypeClass>{
   _TransactionTypeClass(TransactionType.aggregateCompleted, 16705, 0x4141),
   _TransactionTypeClass(TransactionType.aggregateBonded, 16961, 0x4241),
+  _TransactionTypeClass(TransactionType.addressAlias, 16974, 0x424E),
   _TransactionTypeClass(TransactionType.metadataAddress, 16701, 0x413d),
   _TransactionTypeClass(TransactionType.metadataMosaic, 16957, 0x423d),
   _TransactionTypeClass(TransactionType.metadataNamespace, 17213, 0x433d),
@@ -41,6 +42,7 @@ const _aggregateCompletedVersion = 2,
 enum TransactionType {
   aggregateCompleted,
   aggregateBonded,
+  addressAlias,
   metadataAddress,
   metadataMosaic,
   metadataNamespace,
@@ -111,9 +113,9 @@ String _mapTransaction(decodedJson) {
 class _TransactionTypeClass {
   _TransactionTypeClass([this._transactionType, this._raw, this._hex]);
 
-  TransactionType _transactionType;
-  int _raw;
-  int _hex;
+  final TransactionType _transactionType;
+  final int _raw;
+  final int _hex;
 
   TransactionType get transactionType => _transactionType;
   int get raw => _raw;
@@ -143,45 +145,6 @@ abstract class Id {
   BigInt toBigInt() => id;
 }
 
-class Message {
-  Message._({this.type, this.payload});
-
-  Message.fromDTO(_MessageDTO value) {
-    if (value?._payload == null) {
-      return;
-    }
-
-    if (_hexadecimal.hasMatch(value._payload)) {
-      payload = value._payload;
-    } else {
-      payload = utf8.decode(hex.decode(value._payload));
-    }
-    type = value._type;
-  }
-
-  Message.plain(this.payload) {
-    type = 0;
-  }
-
-  Message.empty() {
-    payload = '';
-    type = 0;
-  }
-
-  int type;
-  String payload;
-
-  @override
-  String toString() => '${toJson()}';
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['type'] = type;
-    data['payload'] = payload;
-    return data;
-  }
-}
-
 class Deadline {
   Deadline(
       {int days = 0,
@@ -204,7 +167,7 @@ class Deadline {
       : assert(data._lower != null || data._higher == null,
             'lower or higher must not be null') {
     value = data.toBigInt() != null
-        ? DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt() *
+        ? DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt() +
             _timestampNemesisBlock.toUtc().millisecondsSinceEpoch)
         : null;
   }
@@ -212,7 +175,13 @@ class Deadline {
   DateTime value;
 
   @override
-  String toString() => '$value ${value.timeZoneName}';
+  String toString() {
+    if (value != null) {
+      return '$value ${value.timeZoneName}';
+    } else {
+      return 'null';
+    }
+  }
 
   Int64 getInstant() {
     final x = Int64((value.microsecondsSinceEpoch * 1000) ~/ 1e6);
@@ -255,9 +224,9 @@ class SignedTransaction {
 class CosignatureSignedTransaction {
   CosignatureSignedTransaction(this._parentHash, this._signature, this._signer);
 
-  String _parentHash;
-  String _signature;
-  String _signer;
+  final String _parentHash;
+  final String _signature;
+  final String _signer;
 
   String get hash => _parentHash;
 
@@ -368,8 +337,10 @@ mixin TransactionInfo {
   BigInt height;
   int index;
   String id;
-  String hash;
+  String transactionHash;
   String merkleComponentHash;
+  String aggregateHash;
+  String aggregateId;
 
   TransactionInfo get getTransactionInfo => this;
 
@@ -377,8 +348,10 @@ mixin TransactionInfo {
       '\t"height": $height,\n'
       '\t"index": $index,\n'
       '\t"id": $id,\n'
-      '\t"hash": $hash,\n'
+      '\t"transactionHash": $transactionHash,\n'
       '\t"merkleComponentHash": $merkleComponentHash\n'
+      '\t"aggregateHash": $aggregateHash,\n'
+      '\t"aggregateId": $aggregateId,\n'
       '\t}';
 
   @override
@@ -391,8 +364,10 @@ mixin TransactionInfo {
     data['height'] = height;
     data['index'] = index;
     data['id'] = id;
-    data['hash'] = hash;
+    data['transactionHash'] = transactionHash;
     data['merkleComponentHash'] = merkleComponentHash;
+    data['aggregateHash'] = aggregateHash;
+    data['aggregateId'] = aggregateId;
 
     return data;
   }
@@ -404,19 +379,23 @@ class AbstractTransaction with TransactionInfo {
       int index,
       String id,
       String hash,
-      String merkleComponentHash]) {
+      String merkleComponentHash,
+      String aggregateHash,
+      String aggregateId]) {
     this.height = height;
     this.index = index;
     this.id = id;
-    this.hash = hash;
+    transactionHash = hash;
     this.merkleComponentHash = merkleComponentHash;
+    this.aggregateHash = aggregateHash;
+    this.aggregateId = aggregateId;
   }
 
   int networkType;
   Deadline deadline;
   _TransactionTypeClass type;
   int version;
-  BigInt fee;
+  BigInt maxFee;
   String signature;
   PublicAccount signer;
 
@@ -428,7 +407,7 @@ class AbstractTransaction with TransactionInfo {
     data['versionV'] = (networkType << 8) + version;
     data['signatureV'] = builder.writeListUint8(Uint8List(signatureSize));
     data['signerV'] = builder.writeListUint8(Uint8List(signerSize));
-    data['feeV'] = builder.writeListUint32(fromBigInt(fee));
+    data['feeV'] = builder.writeListUint32(fromBigInt(maxFee));
     data['deadlineV'] = builder.writeListUint32(
         fromBigInt(BigInt.from(deadline.getInstant().toInt())));
     return data;
@@ -450,24 +429,25 @@ class AbstractTransaction with TransactionInfo {
       ..height = height
       ..index = index
       ..id = id
-      ..hash = hash
+      ..transactionHash = transactionHash
       ..merkleComponentHash = merkleComponentHash
       ..networkType = networkType
       ..deadline = deadline
       ..type = type
       ..version = version
-      ..fee = fee
+      ..maxFee = maxFee
       ..signature = signature
       ..signer = signer;
     return abs;
   }
 
-  bool isUnconfirmed() => height.toInt() == 0 && hash == merkleComponentHash;
+  bool isUnconfirmed() =>
+      height.toInt() == 0 && transactionHash == merkleComponentHash;
 
   bool isConfirmed() => height.toInt() > 0;
 
   bool hasMissingSignatures() =>
-      height.toInt() == 0 && hash != merkleComponentHash;
+      height.toInt() == 0 && transactionHash != merkleComponentHash;
 
   bool isUnannounced() => this == null;
 
@@ -479,7 +459,7 @@ class AbstractTransaction with TransactionInfo {
       '\t"networkType": $networkType,\n'
       '\t"type": ${_transactionTypes.lookup(type)?._raw},\n'
       '\t"version": $version,\n'
-      '\t"fee": $fee,\n'
+      '\t"maxFee": $maxFee,\n'
       '\t"deadline": $deadline,\n'
       '\t"signature": $signature,\n'
       '\t"signer": $signer\n'
@@ -493,7 +473,7 @@ class AbstractTransaction with TransactionInfo {
     data['networkType'] = networkType;
     data['type'] = _transactionTypes.lookup(type)._raw;
     data['version'] = version;
-    data['fee'] = fee;
+    data['MaxFee'] = maxFee;
     data['deadline'] = deadline;
     data['signature'] = signature;
     data['signer'] = signer;
@@ -532,13 +512,15 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
             value._meta._index,
             value._meta._id,
             value._meta._hash,
-            value._meta._merkleComponentHash) {
+            value._meta._merkleComponentHash,
+            value._meta._aggregateHash,
+            value._meta._aggregateId) {
     type = transactionTypeFromRaw(value._transaction._type);
     deadline = Deadline.fromUInt64DTO(value._transaction._deadline);
     signature = value._transaction._signature;
     networkType = extractNetworkType(value._transaction._version);
     version = extractVersion(value._transaction._version);
-    fee = value._transaction._fee.toBigInt();
+    maxFee = value._transaction._fee.toBigInt();
     signer =
         PublicAccount.fromPublicKey(value._transaction._signer, networkType);
     mosaics = Mosaic.listFromDTO(value._transaction._mosaics);
@@ -593,11 +575,12 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     final builder = fb.Builder(initialSize: 0);
 
     // Create message;
-    final payload = utf8.encode(this.message.payload);
-    final mp = this.message.type == 0 ? builder.writeListUint8(payload) : null;
+    final payload = this.message.payload;
+    final mp =
+        this.message.type.value == 0 ? builder.writeListUint8(payload) : null;
     final message = MessageBufferBuilder(builder)
       ..begin()
-      ..addType(this.message.type)
+      ..addType(this.message.type.value)
       ..addPayloadOffset(mp);
     final int m = message.finish();
 
@@ -702,7 +685,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     signature = value._transaction._signature;
     networkType = extractNetworkType(value._transaction._version);
     version = extractVersion(value._transaction._version);
-    fee = value._transaction._fee.toBigInt();
+    maxFee = value._transaction._fee.toBigInt();
     signer =
         PublicAccount.fromPublicKey(value._transaction._signer, networkType);
 
@@ -845,7 +828,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     signature = value._transaction._signature;
     networkType = extractNetworkType(value._transaction._version);
     version = extractVersion(value._transaction._version);
-    fee = value._transaction._fee.toBigInt();
+    maxFee = value._transaction._fee.toBigInt();
     signer =
         PublicAccount.fromPublicKey(value._transaction._signer, networkType);
 
@@ -973,7 +956,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
     signature = value._transaction._signature;
     networkType = extractNetworkType(value._transaction._version);
     version = extractVersion(value._transaction._version);
-    fee = value._transaction._fee.toBigInt();
+    maxFee = value._transaction._fee.toBigInt();
     signer =
         PublicAccount.fromPublicKey(value._transaction._signer, networkType);
     mosaicSupplyType = value._transaction._direction == 0 ? decrease : increase;
@@ -1091,7 +1074,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
     signature = value._transaction._signature;
     networkType = extractNetworkType(value._transaction._version);
     version = extractVersion(value._transaction._version);
-    fee = value._transaction._fee.toBigInt();
+    maxFee = value._transaction._fee.toBigInt();
     signer =
         PublicAccount.fromPublicKey(value._transaction._signer, networkType);
     innerTransactions =
@@ -1179,7 +1162,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 class CosignatureTransaction {
   CosignatureTransaction(this._transactionToCosign);
 
-  AggregateTransaction _transactionToCosign;
+  final AggregateTransaction _transactionToCosign;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -1231,7 +1214,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
     signature = value._transaction._signature;
     networkType = extractNetworkType(value._transaction._version);
     version = extractVersion(value._transaction._version);
-    fee = value._transaction._fee.toBigInt();
+    maxFee = value._transaction._fee.toBigInt();
     signer =
         PublicAccount.fromPublicKey(value._transaction._signer, networkType);
 
@@ -1342,7 +1325,7 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
     signature = value._transaction._signature;
     networkType = extractNetworkType(value._transaction._version);
     version = extractVersion(value._transaction._version);
-    fee = value._transaction._fee.toBigInt();
+    maxFee = value._transaction._fee.toBigInt();
     signer =
         PublicAccount.fromPublicKey(value._transaction._signer, networkType);
 
@@ -1596,18 +1579,19 @@ SignedTransaction _signTransactionWith(Transaction tx, Account a) {
 CosignatureSignedTransaction _signCosignatureTransaction(
     CosignatureTransaction tx, Account a) {
   if (tx._transactionToCosign.getTransactionInfo == null ||
-      tx._transactionToCosign.getTransactionInfo.hash == '') {
+      tx._transactionToCosign.getTransactionInfo.transactionHash == '') {
     throw _errCosignatureTxHash;
   }
 
   final signer = a.account;
 
-  final hashByte = hex.decode(tx._transactionToCosign.getTransactionInfo.hash);
+  final hashByte =
+      hex.decode(tx._transactionToCosign.getTransactionInfo.transactionHash);
 
   final signatureByte = signer.sign(hashByte);
 
   return CosignatureSignedTransaction(
-      tx._transactionToCosign.getTransactionInfo.hash,
+      tx._transactionToCosign.getTransactionInfo.transactionHash,
       hex.encode(signatureByte),
       signer.publicKey.toString());
 }

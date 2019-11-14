@@ -33,7 +33,7 @@ class _AccountDTO {
         'publicKeyHeight': _publicKeyHeight,
         'mosaics': _mosaics,
         'accountType': _accountType,
-        'linkedAccountKey': _linkedAccountKey
+        'linkedAccountKey': _linkedAccountKey,
       };
 
   static List<_AccountDTO> listFromJson(List<dynamic> json) => json == null

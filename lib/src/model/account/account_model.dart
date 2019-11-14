@@ -109,6 +109,7 @@ class AccountInfo {
   List<Mosaic> mosaics;
   int accountType;
   String linkedAccountKey;
+  num reputation;
 
   @override
   String toString() => '{\n'
@@ -119,6 +120,7 @@ class AccountInfo {
       '\t"accountType": $accountType,\n'
       '\t"linkedAccountKey": $linkedAccountKey,\n'
       '\t"mosaics": $mosaics,\n'
+      '\t"reputation": $reputation,\n'
       '}\n';
 
   Map<String, dynamic> toJson() => {
@@ -128,7 +130,8 @@ class AccountInfo {
         'publicKeyHeight': publicKeyHeight,
         'accountType': accountType,
         'linkedAccountKey': linkedAccountKey,
-        'mosaics': mosaics
+        'mosaics': mosaics,
+        'reputation': reputation
       };
 }
 
