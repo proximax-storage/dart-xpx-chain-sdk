@@ -588,7 +588,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     final List<int> mb = List(mosaics.length);
     int i = 0;
     for (final mosaic in mosaics) {
-      final id = builder.writeListUint32(fromBigInt(mosaic.id.id));
+      final id = builder.writeListUint32(fromBigInt(mosaic.assetId.id));
       final amount = builder.writeListUint32(fromBigInt(mosaic.amount));
 
       final ms = MosaicBufferBuilder(builder)
@@ -811,7 +811,6 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       mosaicProperties = mosaicProps;
       // Signer of transaction must be the same with ownerPublicKey
       mosaicId = MosaicId.fromNonceAndOwner(nonce, ownerPublicKey);
-      duration = mosaicProps.duration;
     }
   }
 
@@ -839,7 +838,6 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   }
 
   MosaicProperties mosaicProperties;
-  BigInt duration;
   int mosaicNonce;
   MosaicId mosaicId;
 
@@ -856,7 +854,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
       '\t"mosaicProperties": $mosaicProperties,\n'
       '\t"mosaicNonce": $mosaicNonce,\n'
-      '\t"mosaicId": $mosaicId,\n'
+      '\t"assetId": $mosaicId,\n'
       '}\n';
 
   @override
@@ -892,7 +890,9 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
     final mV = builder.writeListUint32(bigIntToList(mosaicId.id));
 
-    final dV = builder.writeListUint32(fromBigInt(duration));
+    //TODO check duration
+//        final dV = builder.writeListUint32(fromBigInt(0));
+
 
     final vectors = _generateVector(builder);
 
@@ -910,8 +910,8 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       ..addNumOptionalProperties(1)
       ..addFlags(f)
       ..addDivisibility(mosaicProperties.divisibility)
-      ..addIndicateDuration(2)
-      ..addDurationOffset(dV);
+      ..addIndicateDuration(2);
+//      ..addDurationOffset(dV);
     final codedNamespace = txnBuilder.finish();
 
     return mosaicDefinitionTransactionSchema()
@@ -982,7 +982,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
         mosaicSupplyType.index == 0 ? 'decrease' : 'increase';
     return '{\n'
         '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
-        '\t"mosaicId": $mosaicId,\n'
+        '\t"assetId": $mosaicId,\n'
         '\t"mosaicSupplyType": $_supplyType,\n'
         '\t"delta": $delta,\n'
         '}\n';
@@ -1370,7 +1370,7 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
   Uint8List _generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final mV = builder.writeListUint32(bigIntToList(mosaic.id.toBigInt()));
+    final mV = builder.writeListUint32(bigIntToList(mosaic.assetId.toBigInt()));
 
     final maV = builder.writeListUint32(fromBigInt(mosaic.amount));
 
@@ -1475,7 +1475,7 @@ class MosaicAliasTransaction extends AliasTransaction {
 
   String _mosaicAliasTransactionToString() => '{\n'
       '${super.toString()}'
-      '\t"mosaicId": ${mosaicId.toHex()}\n'
+      '\t"assetId": ${mosaicId.toHex()}\n'
       '}\n';
 
   @override
