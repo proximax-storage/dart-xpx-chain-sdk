@@ -109,7 +109,11 @@ class NamespaceInfo {
     depth = value._namespace._depth;
     levels = extractLevels(value);
     typeSpace = value._namespace._type;
-    alias = Alias.fromDTO(value._namespace._alias);
+
+    alias = value._namespace._alias._address.isNotEmpty
+        ? Alias._(
+            address: Address.fromEncoded(value._namespace._alias._address))
+        : null;
     if (value._namespace._parentId.toBigInt().toInt() != 0) {
       namespaceId = NamespaceId._(levels[0]);
       parent = NamespaceInfo()

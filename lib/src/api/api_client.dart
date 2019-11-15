@@ -83,8 +83,8 @@ class _ApiClient {
           return _AccountPropertyDTO.fromJson(value);
         case 'Addresses':
           return Addresses.fromJson(value);
-        case '_AliasDTO':
-          return _AliasDTO.fromJson(value);
+        case '_AddressAliasDTO':
+          return _AddressAliasTransactionInfoDTO.fromJson(value);
         case 'AnnounceTransactionInfoDTO':
           return AnnounceTransactionInfoDTO.fromJson(value);
         case 'BlockDTO':
@@ -275,6 +275,8 @@ dynamic _txnDeserialize(value, String targetType) {
         return _AggregateTransactionInfoDTO.fromJson(value);
       case 'AggregateBonded':
         return _AggregateTransactionInfoDTO.fromJson(value);
+      case 'AddressAlias':
+        return _AddressAliasTransactionInfoDTO.fromJson(value);
       case 'ModifyMultisig':
         return _ModifyMultisigAccountTransactionInfoDTO.fromJson(value);
       case 'Lock':

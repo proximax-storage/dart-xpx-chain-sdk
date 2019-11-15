@@ -208,7 +208,6 @@ class BlockchainRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{height}', height.toString());
 
-    print(path);
     // query params
     final List<QueryParam> queryParams = [];
     final Map<String, String> headerParams = {};

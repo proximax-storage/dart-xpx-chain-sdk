@@ -1,37 +1,40 @@
 part of xpx_chain_sdk;
 
-class _AliasDTO {
-  _AliasDTO.fromJson(Map<String, dynamic> json)
+class _AddressAliasDTO extends _AbstractTransactionDTO {
+  _AddressAliasDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
+    _deadline = UInt64DTO.fromJson(json['deadline']);
+    _signature = json['signature'];
+    _signer = json['signer'];
+    _version = json['version'];
     _type = json['type'];
-    _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
+    _fee = UInt64DTO.fromJson(json['maxFee']);
+    _aliasAction = json['aliasAction'];
     _address = json['address'];
+    _namespaceId = UInt64DTO.fromJson(json['namespaceId']);
   }
 
-  int _type;
-
-  UInt64DTO _mosaicId;
-
+  int _aliasAction;
   String _address;
+  UInt64DTO _namespaceId;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['type'] = _type;
-    data['mosaicId'] = _mosaicId;
+    data['aliasAction'] = _aliasAction;
     data['address'] = _address;
-
+    data['namespaceId'] = _namespaceId;
     return data;
   }
 
-  static List<_AliasDTO> listFromJson(List<dynamic> json) => json == null
+  static List<_AddressAliasDTO> listFromJson(List<dynamic> json) => json == null
       ? null
-      : json.map((value) => _AliasDTO.fromJson(value)).toList();
+      : json.map((value) => _AddressAliasDTO.fromJson(value)).toList();
 
-  static Map<String, _AliasDTO> mapFromJson(
+  static Map<String, _AddressAliasDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    final map = <String, _AliasDTO>{};
+    final map = <String, _AddressAliasDTO>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _AliasDTO.fromJson(value));
+      json.forEach((key, value) => map[key] = _AddressAliasDTO.fromJson(value));
     }
     return map;
   }

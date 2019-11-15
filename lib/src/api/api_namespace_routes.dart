@@ -240,10 +240,8 @@ class NamespaceRoutesApi {
           .deserialize(response.body, 'List<_NamespaceNameDTO>'))
           .map((item) => item)
           .toList() as List<_NamespaceNameDTO>;
-      print(resp[0].runtimeType);
 
       final g = NamespaceName.listFromDTO(resp);
-      print("DSFdfsdfs");
       return g;
     } else {
       return null;

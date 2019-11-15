@@ -43,7 +43,6 @@ class MosaicRoutesApi {
 
     final response = await apiClient.invokeAPI(path, 'GET', queryParams,
         postBody, headerParams, formParams, contentType);
-    print(response.body);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
