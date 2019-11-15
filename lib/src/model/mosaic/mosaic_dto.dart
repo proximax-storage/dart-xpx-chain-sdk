@@ -340,3 +340,57 @@ class _MosaicSupplyChangeTransactionDTO extends _AbstractTransactionDTO {
     return data;
   }
 }
+
+class _MosaicAliasTransactionInfoDTO {
+  _MosaicAliasTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
+    _meta = json['meta'] != null
+        ? _MetaTransactionDTO.fromJson(json['meta'])
+        : null;
+
+    _transaction = json['transaction'] != null
+        ? _MosaicAliasDTO.fromJson(json['transaction'])
+        : null;
+  }
+
+  _MetaTransactionDTO _meta;
+  _MosaicAliasDTO _transaction;
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    if (_meta != null) {
+      data['meta'] = _meta.toJson();
+    }
+    if (_transaction != null) {
+      data['transaction'] = _transaction.toJson();
+    }
+    return data;
+  }
+}
+
+class _MosaicAliasDTO extends _AbstractTransactionDTO {
+  _MosaicAliasDTO.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    _deadline = UInt64DTO.fromJson(json['deadline']);
+    _signature = json['signature'];
+    _signer = json['signer'];
+    _version = json['version'];
+    _type = json['type'];
+    _fee = UInt64DTO.fromJson(json['maxFee']);
+    _aliasAction = json['aliasAction'];
+    _address = json['address'];
+    _namespaceId = UInt64DTO.fromJson(json['namespaceId']);
+  }
+
+  int _aliasAction;
+  String _address;
+  UInt64DTO _namespaceId;
+
+  @override
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['aliasAction'] = _aliasAction;
+    data['address'] = _address;
+    data['namespaceId'] = _namespaceId;
+    return data;
+  }
+}

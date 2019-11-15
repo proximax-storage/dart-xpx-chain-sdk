@@ -3,7 +3,7 @@ part of xpx_chain_sdk;
 class Message {
   Message(this.type, this.payload);
 
-  Message.fromDTO(_MessageDTO value) {
+  Message._fromDTO(_MessageDTO value) {
     if (value?._payload == null) {
       return;
     }

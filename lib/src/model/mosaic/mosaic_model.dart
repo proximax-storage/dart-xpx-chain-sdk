@@ -32,7 +32,7 @@ class Mosaic {
 
   Mosaic._(this.assetId, this.amount);
 
-  Mosaic.fromDTO(_MosaicDTO v) {
+  Mosaic._fromDTO(_MosaicDTO v) {
     assetId = MosaicId.fromId(v._id.toBigInt());
     amount = v._amount.toBigInt();
   }
@@ -44,20 +44,19 @@ class Mosaic {
   @override
   String toString() => '\n\t{\n'
       '\t"assetId": ${assetId.toHex()},\n'
-      '\t"mmount": $amount\n'
+      '\t"amount": $amount\n'
       '\t}';
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['id'] = assetId.toHex();
     data['amount'] = amount;
-
     return data;
   }
 
   static List<Mosaic> listFromDTO(List<_MosaicDTO> json) => json == null
       ? <Mosaic>[]
-      : json.map((value) => Mosaic.fromDTO(value)).toList();
+      : json.map((value) => Mosaic._fromDTO(value)).toList();
 }
 
 class MosaicId extends Id {
@@ -125,7 +124,7 @@ class MosaicIds {
 }
 
 class MosaicInfo {
-  MosaicInfo.fromDTO(_MosaicInfoDTO value)
+  MosaicInfo._fromDTO(_MosaicInfoDTO value)
       : assert(json != null, 'json must not be null') {
     mosaicId = MosaicId(id: value._mosaic._mosaicId.toBigInt());
     supply = value._mosaic._supply.toBigInt();
@@ -133,7 +132,7 @@ class MosaicInfo {
     owner =
         PublicAccount.fromPublicKey(value._mosaic._owner, configNetworkType);
     revision = value._mosaic._revision;
-    properties = MosaicProperties.fromDTO(value._mosaic._properties);
+    properties = MosaicProperties._fromDTO(value._mosaic._properties);
   }
 
   MosaicId mosaicId;
@@ -155,11 +154,11 @@ class MosaicInfo {
 
   static List<MosaicInfo> listFromDTO(List<_MosaicInfoDTO> json) => json == null
       ? null
-      : json.map((value) => MosaicInfo.fromDTO(value)).toList();
+      : json.map((value) => MosaicInfo._fromDTO(value)).toList();
 }
 
 class MosaicName {
-  MosaicName.fromDTO(_MosaicNameDTO value)
+  MosaicName._fromDTO(_MosaicNameDTO value)
       : assert(json != null, 'json must not be null') {
     mosaicId = MosaicId.fromId(value._mosaicId.toBigInt());
     names = value._names != null ? List.from(value._names) : null;
@@ -175,13 +174,13 @@ class MosaicName {
 
   static List<MosaicName> listFromDTO(List<_MosaicNameDTO> json) => json == null
       ? null
-      : json.map((value) => MosaicName.fromDTO(value)).toList();
+      : json.map((value) => MosaicName._fromDTO(value)).toList();
 }
 
 class MosaicProperty {
   MosaicProperty(this.id, this.value);
 
-  MosaicProperty.fromDTO(_MosaicPropertyDTO value) {
+  MosaicProperty._fromDTO(_MosaicPropertyDTO value) {
     if (value == null) return;
     id = value._id;
     this.value = value._value.toBigInt();
@@ -194,7 +193,7 @@ class MosaicProperty {
   static List<MosaicProperty> listFromDTO(List<_MosaicPropertyDTO> json) =>
       json == null
           ? <MosaicProperty>[]
-          : json.map((value) => new MosaicProperty.fromDTO(value)).toList();
+          : json.map((value) => new MosaicProperty._fromDTO(value)).toList();
 
   @override
   String toString() => 'id: $id, value: $value';
@@ -224,7 +223,7 @@ class MosaicProperties {
 //    duration = value[2].toBigInt();
 //  }
 
-  MosaicProperties.fromDTO(List<_MosaicPropertyDTO> value)
+  MosaicProperties._fromDTO(List<_MosaicPropertyDTO> value)
       : assert(json != null, 'mosaic Properties is not valid') {
 //    if (value.length < 3) {
 //      print(value.length);
@@ -245,8 +244,7 @@ class MosaicProperties {
           divisibility = property._value.toBigInt().toInt();
           break;
         case 2:
-          optionalProperties = <MosaicProperty>[
-          ];
+          optionalProperties = <MosaicProperty>[];
           break;
         default:
           throw _errPropertyId;
@@ -266,11 +264,11 @@ class MosaicProperties {
   String toString() {
     final sb = StringBuffer()
       ..writeln('{')
-      ..writeln('\t"supplyMutable": $supplyMutable,')
-      ..writeln('\t"transferable": $transferable,')
-      ..writeln('\t"optionalProperties": $optionalProperties,')
-      ..writeln('\t"divisibility": $divisibility,')
-      ..write('}');
+      ..writeln('\t\t"supplyMutable": $supplyMutable,')
+      ..writeln('\t\t"transferable": $transferable,')
+      ..writeln('\t\t"optionalProperties": $optionalProperties,')
+      ..writeln('\t\t"divisibility": $divisibility,')
+      ..write('\t}');
     return sb.toString();
   }
 }

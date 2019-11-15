@@ -43,7 +43,7 @@ class BlockchainRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = apiClient.deserialize(response.body, 'HeightDTO');
-      return Height.fromDTO(resp);
+      return Height._fromDTO(resp);
     } else {
       return null;
     }
@@ -91,7 +91,7 @@ class BlockchainRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = apiClient.deserialize(response.body, '_BlockInfoDTO');
-      return BlockInfo.fromDTO(resp);
+      return BlockInfo._fromDTO(resp);
     } else {
       return null;
     }
@@ -141,7 +141,7 @@ class BlockchainRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = apiClient.deserialize(response.body, '_BlockchainScoreDTO');
-      return BlockchainScore.fromDTO(resp);
+      return BlockchainScore._fromDTO(resp);
     } else {
       return null;
     }

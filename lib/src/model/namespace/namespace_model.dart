@@ -46,7 +46,7 @@ class NamespaceId extends Id {
 }
 
 class NamespaceName {
-  NamespaceName.fromDTO(_NamespaceNameDTO value)
+  NamespaceName._fromDTO(_NamespaceNameDTO value)
       : assert(json != null, 'json must not be null') {
     parentId = value.parentId == null
         ? NamespaceId._(value.parentId.toBigInt())
@@ -76,7 +76,7 @@ class NamespaceName {
   static List<NamespaceName> listFromDTO(List<_NamespaceNameDTO> json) =>
       json == null
           ? null
-          : json.map((value) => NamespaceName.fromDTO(value)).toList();
+          : json.map((value) => NamespaceName._fromDTO(value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -93,7 +93,7 @@ class NamespaceName {
 class NamespaceInfo {
   NamespaceInfo();
 
-  NamespaceInfo.fromDTO(_NamespaceInfoDTO value)
+  NamespaceInfo._fromDTO(_NamespaceInfoDTO value)
       : assert(json != null, 'json must not be null') {
     metaId = value._meta.id;
     active = value._meta.active;
@@ -167,7 +167,7 @@ class NamespaceInfo {
 
   static List<NamespaceInfo> listFromDTO(List<dynamic> json) => json == null
       ? null
-      : json.map((value) => NamespaceInfo.fromDTO(value)).toList();
+      : json.map((value) => NamespaceInfo._fromDTO(value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

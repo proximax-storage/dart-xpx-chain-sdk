@@ -48,7 +48,7 @@ class MosaicRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = apiClient.deserialize(response.body, '_MosaicInfoDTO');
-      return MosaicInfo.fromDTO(resp);
+      return MosaicInfo._fromDTO(resp);
     } else {
       return null;
     }

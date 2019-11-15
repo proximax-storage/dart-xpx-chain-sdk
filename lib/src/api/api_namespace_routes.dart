@@ -62,7 +62,7 @@ class NamespaceRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = apiClient.deserialize(response.body, '_NamespaceInfoDTO');
-      final ns = NamespaceInfo.fromDTO(resp);
+      final ns = NamespaceInfo._fromDTO(resp);
 
       if (ns.parent != null) {
         ns.parent = await buildNamespaceHierarchy(ns);

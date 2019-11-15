@@ -50,7 +50,7 @@ class AccountRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = _apiClient.deserialize(response.body, '_AccountInfoDTO');
-      return AccountInfo.fromDTO(resp);
+      return AccountInfo._fromDTO(resp);
     } else {
       return null;
     }
@@ -101,7 +101,7 @@ class AccountRoutesApi {
           .deserialize(response.body, 'List<_AccountInfoDTO>')
           .map((item) => item)
           .toList();
-      return resp.map((t) => AccountInfo.fromDTO(t)).toList();
+      return resp.map((t) => AccountInfo._fromDTO(t)).toList();
     } else {
       return null;
     }

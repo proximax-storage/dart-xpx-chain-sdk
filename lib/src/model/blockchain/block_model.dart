@@ -1,7 +1,7 @@
 part of xpx_chain_sdk;
 
 class BlockInfo {
-  BlockInfo.fromDTO(_BlockInfoDTO v) {
+  BlockInfo._fromDTO(_BlockInfoDTO v) {
     networkType = extractNetworkType(v._block._version);
     hash = v._meta._hash;
     generationHash = v._meta._generationHash;
@@ -95,11 +95,11 @@ class BlockInfo {
 
   static List<BlockInfo> listFromDTO(List<_BlockInfoDTO> json) => json == null
       ? null
-      : json.map((value) => BlockInfo.fromDTO(value)).toList();
+      : json.map((value) => BlockInfo._fromDTO(value)).toList();
 }
 
 class Height {
-  Height.fromDTO(_HeightDTO v) {
+  Height._fromDTO(_HeightDTO v) {
     height = v._height.toBigInt();
   }
 
@@ -117,7 +117,7 @@ class Height {
 }
 
 class BlockchainScore {
-  BlockchainScore.fromDTO(_BlockchainScoreDTO value)
+  BlockchainScore._fromDTO(_BlockchainScoreDTO value)
       : assert(json != null, 'json must not be null') {
     List<dynamic> raw() => <dynamic>[
           value._scoreLow.toBigInt().toInt(),

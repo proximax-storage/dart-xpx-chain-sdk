@@ -458,13 +458,13 @@ class _LockFundsTransactionDTO extends _AbstractTransactionDTO {
     _type = json['type'];
     _fee = UInt64DTO.fromJson(json['maxFee']);
     _deadline = UInt64DTO.fromJson(json['deadline']);
-    _mosaic = UInt64DTO.fromJson(json['mosaicId']);
+    _assetId = UInt64DTO.fromJson(json['mosaicId']);
     _amount = UInt64DTO.fromJson(json['amount']);
     _duration = UInt64DTO.fromJson(json['duration']);
     _hash = json['hash'];
   }
 
-  UInt64DTO _mosaic;
+  UInt64DTO _assetId;
   UInt64DTO _amount;
   UInt64DTO _duration;
   String _hash;
@@ -479,7 +479,7 @@ class _LockFundsTransactionDTO extends _AbstractTransactionDTO {
         'type': _type,
         'maxFee': _fee,
         'deadline': _deadline,
-        'mosaic': _mosaic,
+        'mosaicId': _assetId,
         'amount': _amount,
         'duration': _duration,
         'hash': _hash,

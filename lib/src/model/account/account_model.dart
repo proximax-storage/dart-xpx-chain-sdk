@@ -87,10 +87,10 @@ class Account {
 
 // ignore: public_member_api_docs
 class AccountInfo {
-  AccountInfo.fromDTO(_AccountInfoDTO v) {
+  AccountInfo._fromDTO(_AccountInfoDTO v) {
     final List<Mosaic> mList = List(v._account._mosaics.length);
     for (var i = 0; i < v._account._mosaics.length; i++) {
-      mList[i] = Mosaic.fromDTO(v._account._mosaics[i]);
+      mList[i] = Mosaic._fromDTO(v._account._mosaics[i]);
     }
 
     address = Address.fromEncoded(v._account._address);
