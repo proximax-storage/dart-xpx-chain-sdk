@@ -19,20 +19,25 @@ const Map<String, int> addressNet = {
 };
 
 class NetworkType {
-  NetworkType._(this.name, this.description);
+  NetworkType._(this.networkType, this.description);
 
   NetworkType.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    name = json['name'];
+    networkType = json['name'];
     description = json['description'];
   }
 
-  String name;
-
+  String networkType;
   String description;
 
+  int get networkIdentifier => getTypeNum(networkType);
+
   @override
-  String toString() => '{name:$name, description=$description}';
+  String toString() => '{\n'
+      'networkIdentifier: $networkIdentifier\n'
+      'networkType: $networkType,\n'
+      'description: $description,\n'
+      '}';
 
   static int getType(int networkType) {
     switch (networkType) {
@@ -53,11 +58,43 @@ class NetworkType {
     }
   }
 
+  static int getTypeNum(String networkType) {
+    switch (networkType) {
+      case 'mijin':
+        return addressNet['M'];
+      case 'mijinTest':
+        return addressNet['S'];
+      case 'public':
+        return addressNet['X'];
+      case 'publicTest':
+        return addressNet['V'];
+      case 'private':
+        return addressNet['Z'];
+      case 'privateTest':
+        return addressNet['W'];
+      default:
+        return notSupportedNet;
+    }
+  }
+
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['name'] = name;
+    data['networkType'] = networkType;
     data['description'] = description;
-
+    data['networkIdentifier'] = networkIdentifier;
     return data;
   }
+}
+
+class NetworkVersion {
+  NetworkVersion._(this.startedHeight, this.blockChainVersion);
+
+  String startedHeight;
+  String blockChainVersion;
+
+  @override
+  String toString() => '{\n'
+      'startedHeight: $startedHeight,\n'
+      'blockChainVersion: $blockChainVersion\n'
+      '}';
 }

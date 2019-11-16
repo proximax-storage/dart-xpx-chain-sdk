@@ -8,8 +8,8 @@ class Multisig {
         json['account'], accountAddress._networkType);
     minApproval = json['minApproval'];
     minRemoval = json['minRemoval'];
-    cosignatories = (json['cosignatories']).map((item) => item).toList();
-    multisigAccounts = (json['multisigAccounts']).map((item) => item).toList();
+    cosignatories = List<String>.from(json['cosignatories']);
+    multisigAccounts = List<String>.from(json['multisigAccounts']);
   }
 
   PublicAccount account;
