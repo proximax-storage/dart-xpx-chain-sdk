@@ -953,7 +953,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   @override
   String toString() {
     final String _supplyType =
-    mosaicSupplyType.index == 0 ? 'decrease' : 'increase';
+        mosaicSupplyType.index == 0 ? 'decrease' : 'increase';
     final sb = StringBuffer()
       ..writeln('{')
       ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()},')
@@ -1354,7 +1354,18 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
     this.networkType = networkType;
   }
 
-  AliasTransaction._fromDTO(_AddressAliasTransactionInfoDTO value)
+  AliasTransaction._fromAddressAliasDTO(_AddressAliasTransactionInfoDTO value)
+      : assert(value != null, 'value must not be null'),
+        super._fromDto(value._transaction, value._meta) {
+    actionType = value._transaction._aliasAction == 0
+        ? actionType = AliasActionType.aliasLink
+        : AliasActionType.aliasUnlink;
+    namespaceId = value._transaction._namespaceId != null
+        ? NamespaceId.fromId(value._transaction._namespaceId.toBigInt())
+        : null;
+  }
+
+  AliasTransaction._fromMosaicAliasDTO(_MosaicAliasTransactionInfoDTO value)
       : assert(value != null, 'value must not be null'),
         super._fromDto(value._transaction, value._meta) {
     actionType = value._transaction._aliasAction == 0
@@ -1373,8 +1384,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
     return '{\n'
         '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
         '\t"aliasActionType": $_actionType,\n'
-        '\t"namespaceId": ${namespaceId.toHex()}\n'
-        '}\n';
+        '\t"namespaceId": ${namespaceId.toHex()}\n';
   }
 
   @override
@@ -1429,13 +1439,13 @@ class AddressAliasTransaction extends AliasTransaction {
 
   AddressAliasTransaction._fromDTO(_AddressAliasTransactionInfoDTO value)
       : assert(value != null, 'value must not be null'),
-        super._fromDTO(value) {
+        super._fromAddressAliasDTO(value) {
     address = Address.fromEncoded(value._transaction._address);
   }
 
   Address address;
 
-  String _addressAliasTransactionToString() => '{\n'
+  String _addressAliasTransactionToString() =>
       '${super.toString()}'
       '\t"address": $address\n'
       '}\n';
@@ -1478,9 +1488,16 @@ class MosaicAliasTransaction extends AliasTransaction {
       : super._(_mosaicAliasVersion, deadline, actionType, namespaceId,
             networkType);
 
+  MosaicAliasTransaction._fromDTO(
+    _MosaicAliasTransactionInfoDTO value,
+  )   : assert(value != null, 'value must not be null'),
+        super._fromMosaicAliasDTO(value) {
+    mosaicId = MosaicId.fromBigInt(value._transaction._mosaicId.toBigInt());
+  }
+
   MosaicId mosaicId;
 
-  String _mosaicAliasTransactionToString() => '{\n'
+  String _mosaicAliasTransactionToString() =>
       '${super.toString()}'
       '\t"assetId": ${mosaicId.toHex()}\n'
       '}\n';
@@ -1594,6 +1611,21 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
   return Uint8List.fromList(rB);
 }
 
+int cosignatoryModificationArrayToBuffer(
+    fb.Builder builder, List<MultisigCosignatoryModification> modifications) {
+  final msb = <int>[];
+  for (final m in modifications) {
+    final b = hexDecodeStringOdd(m.publicAccount.publicKey);
+    final pV = builder.writeListUint8(b);
+    final txnBuilder = CosignatoryModificationBufferBuilder(builder)
+      ..begin()
+      ..addType(m.type.index)
+      ..addCosignatoryPublicKeyOffset(pV);
+    msb.add(txnBuilder.finish());
+  }
+  return builder.writeList(msb);
+}
+
 Transaction _deserializeDTO(value) {
   switch (value.runtimeType) {
     case _TransferTransactionInfoDTO:
@@ -1604,6 +1636,8 @@ Transaction _deserializeDTO(value) {
       return MosaicDefinitionTransaction._fromDTO(value);
     case _MosaicSupplyChangeTransactionInfoDTO:
       return MosaicSupplyChangeTransaction._fromDTO(value);
+    case _MosaicAliasTransactionInfoDTO:
+      return MosaicAliasTransaction._fromDTO(value);
     case _AggregateTransactionInfoDTO:
       return AggregateTransaction._fromDTO(value);
     case _AddressAliasTransactionInfoDTO:
@@ -1618,19 +1652,4 @@ Transaction _deserializeDTO(value) {
       }
       return null;
   }
-}
-
-int cosignatoryModificationArrayToBuffer(
-    fb.Builder builder, List<MultisigCosignatoryModification> modifications) {
-  final msb = <int>[];
-  for (final m in modifications) {
-    final b = hexDecodeStringOdd(m.publicAccount.publicKey);
-    final pV = builder.writeListUint8(b);
-    final txnBuilder = CosignatoryModificationBufferBuilder(builder)
-      ..begin()
-      ..addType(m.type.index)
-      ..addCosignatoryPublicKeyOffset(pV);
-    msb.add(txnBuilder.finish());
-  }
-  return builder.writeList(msb);
 }

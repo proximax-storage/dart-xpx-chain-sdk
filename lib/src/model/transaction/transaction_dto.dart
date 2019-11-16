@@ -270,20 +270,18 @@ class _AddressAliasTransactionInfoDTO {
 class _AliasDTO {
   _AliasDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    _type = json['type'];
+    _aliasAction = json['aliasAction'];
     _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
     _address = json['address'];
   }
 
-  int _type;
-
+  int _aliasAction;
   UInt64DTO _mosaicId;
-
   String _address;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['type'] = _type;
+    data['aliasAction'] = _aliasAction;
     data['mosaicId'] = _mosaicId;
     data['address'] = _address;
 
@@ -485,3 +483,4 @@ class _LockFundsTransactionDTO extends _AbstractTransactionDTO {
         'hash': _hash,
       };
 }
+

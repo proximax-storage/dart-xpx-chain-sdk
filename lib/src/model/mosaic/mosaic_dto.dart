@@ -367,7 +367,7 @@ class _MosaicAliasTransactionInfoDTO {
   }
 }
 
-class _MosaicAliasDTO extends _AbstractTransactionDTO {
+class _MosaicAliasDTO extends _AbstractTransactionDTO{
   _MosaicAliasDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
     _deadline = UInt64DTO.fromJson(json['deadline']);
@@ -377,19 +377,19 @@ class _MosaicAliasDTO extends _AbstractTransactionDTO {
     _type = json['type'];
     _fee = UInt64DTO.fromJson(json['maxFee']);
     _aliasAction = json['aliasAction'];
-    _address = json['address'];
+    _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
     _namespaceId = UInt64DTO.fromJson(json['namespaceId']);
   }
 
   int _aliasAction;
-  String _address;
+  UInt64DTO _mosaicId;
   UInt64DTO _namespaceId;
 
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['aliasAction'] = _aliasAction;
-    data['address'] = _address;
+    data['mosaicId'] = _mosaicId;
     data['namespaceId'] = _namespaceId;
     return data;
   }
