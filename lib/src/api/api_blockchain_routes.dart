@@ -244,8 +244,7 @@ class BlockchainRoutesApi {
           .deserialize(response.body, 'List<Transaction>')
           .map((item) => item)
           .toList();
-      final d = resp.map(_deserializeDTO).toList();
-      return d;
+      return resp.map(_deserializeDTO).toList();
     } else {
       return null;
     }

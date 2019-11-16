@@ -250,46 +250,6 @@ class CosignatureSignedTransaction {
   }
 }
 
-// AggregateTransactionCosignature
-class AggregateTransactionCosignature {
-  AggregateTransactionCosignature(this._signature, this._signer);
-
-  AggregateTransactionCosignature._fromDTO(
-      int networkType, _AggregateTransactionCosignatureDTO value) {
-    if (value?._signer == null) {
-      return;
-    }
-
-    _signature = value._signature;
-    _signer = PublicAccount.fromPublicKey(value._signer, networkType);
-  }
-
-  String _signature;
-  PublicAccount _signer;
-
-  @override
-  String toString() => '{\n'
-      '\t"signature": $_signature\n'
-      '\t"signer": $_signer\n'
-      '}\n';
-
-  static List<AggregateTransactionCosignature> listFromDTO(
-          int networkType, List<_AggregateTransactionCosignatureDTO> json) =>
-      json == null
-          ? null
-          : json
-              .map((value) =>
-                  AggregateTransactionCosignature._fromDTO(networkType, value))
-              .toList();
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['signature'] = _signature;
-    data['signer'] = _signer;
-    return data;
-  }
-}
-
 class MultisigCosignatoryModification {
   MultisigCosignatoryModification(this.type, this.publicAccount);
 
@@ -332,6 +292,7 @@ class MultisigCosignatoryModification {
 
 abstract class Transaction {
   AbstractTransaction getAbstractTransaction();
+  Map<String, dynamic> toJson();
   Uint8List _generateBytes();
   int _size();
 }
@@ -1060,8 +1021,8 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
     final sb = StringBuffer()
       ..writeln('{')
       ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()}')
-      ..writeln('\t"innerTransactions": $innerTransactions')
-      ..writeln('\t"cosignatures": $cosignatures,')
+      ..writeln('\t"innerTransactions": $innerTransactions,')
+      ..writeln('\t"cosignatures": $cosignatures')
       ..write('}');
     return sb.toString();
   }
@@ -1119,6 +1080,46 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
     return aggregateTransactionSchema()
         .serialize(builder.finish(codedTransfer));
+  }
+}
+
+// AggregateTransactionCosignature
+class AggregateTransactionCosignature {
+  AggregateTransactionCosignature(this._signature, this._signer);
+
+  AggregateTransactionCosignature._fromDTO(
+      int networkType, _AggregateTransactionCosignatureDTO value) {
+    if (value?._signer == null) {
+      return;
+    }
+
+    _signature = value._signature;
+    _signer = PublicAccount.fromPublicKey(value._signer, networkType);
+  }
+
+  String _signature;
+  PublicAccount _signer;
+
+  @override
+  String toString() => '{\n'
+      '\t"signature": $_signature\n'
+      '\t"signer": $_signer\n'
+      '}\n';
+
+  static List<AggregateTransactionCosignature> listFromDTO(
+      int networkType, List<_AggregateTransactionCosignatureDTO> json) =>
+      json == null
+          ? null
+          : json
+          .map((value) =>
+          AggregateTransactionCosignature._fromDTO(networkType, value))
+          .toList();
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['signature'] = _signature;
+    data['signer'] = _signer;
+    return data;
   }
 }
 
