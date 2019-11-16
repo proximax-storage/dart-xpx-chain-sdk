@@ -200,10 +200,9 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (_apiClient.deserialize(
+      return List<MultisigAccountGraphInfo>.from((_apiClient.deserialize(
               response.body, 'List<MultisigAccountGraphInfo>'))
-          .map((item) => item)
-          .toList();
+          .map((item) => item));
     } else {
       return null;
     }
