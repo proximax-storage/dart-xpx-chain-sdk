@@ -483,4 +483,3 @@ class _LockFundsTransactionDTO extends _AbstractTransactionDTO {
         'hash': _hash,
       };
 }
-

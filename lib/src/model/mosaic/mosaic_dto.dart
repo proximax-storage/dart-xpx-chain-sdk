@@ -367,7 +367,7 @@ class _MosaicAliasTransactionInfoDTO {
   }
 }
 
-class _MosaicAliasDTO extends _AbstractTransactionDTO{
+class _MosaicAliasDTO extends _AbstractTransactionDTO {
   _MosaicAliasDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
     _deadline = UInt64DTO.fromJson(json['deadline']);

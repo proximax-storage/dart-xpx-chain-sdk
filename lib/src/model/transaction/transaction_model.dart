@@ -486,7 +486,7 @@ class AbstractTransaction with TransactionInfo {
       sb.writeln('\t\t"signature": $signature,');
     }
     sb.writeln('\t\t"signer": $signer,');
-    sb.write('\t}');
+    sb.write('\t},');
     return sb.toString();
   }
 
@@ -715,7 +715,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   String toString() {
     final sb = StringBuffer()
       ..writeln('\n{')
-      ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()},')
+      ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()}')
       ..writeln('\t"namespaceType": ${namespaceType.toString().split('.')[1]},')
       ..writeln('\t"namespaceName": $namespaceName,')
       ..writeln('\t"namespaceId": $namespaceId,');
@@ -837,7 +837,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   String toString() {
     final sb = StringBuffer()
       ..writeln('{')
-      ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()},')
+      ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()}')
       ..writeln('\t"mosaicProperties": $mosaicProperties')
       ..writeln('\t"mosaicNonce": ${mosaicNonce.toSigned(64)},')
       ..writeln('\t"assetId": $mosaicId,')
@@ -956,11 +956,11 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
         mosaicSupplyType.index == 0 ? 'decrease' : 'increase';
     final sb = StringBuffer()
       ..writeln('{')
-      ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()},')
+      ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()}')
       ..writeln('\t"assetId": $mosaicId')
       ..writeln('\t"mosaicSupplyType": $_supplyType,')
-      ..writeln('\t"delta": $delta,')
-      ..write('\t"}');
+      ..writeln('\t"delta": $delta')
+      ..write('\t}');
     return sb.toString();
   }
 
@@ -1059,7 +1059,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   String toString() {
     final sb = StringBuffer()
       ..writeln('{')
-      ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()},')
+      ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()}')
       ..writeln('\t"innerTransactions": $innerTransactions')
       ..writeln('\t"cosignatures": $cosignatures,')
       ..write('}');
@@ -1384,7 +1384,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
     return '{\n'
         '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
         '\t"aliasActionType": $_actionType,\n'
-        '\t"namespaceId": ${namespaceId.toHex()}\n';
+        '\t"namespaceId": ${namespaceId.toHex()},\n';
   }
 
   @override
@@ -1412,7 +1412,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
   @override
   Uint8List _generateBytes() => null;
 
-  Uint8List _generateAstractBytes(fb.Builder builder, int aliasV) {
+  Uint8List _generateAbstractBytes(fb.Builder builder, int aliasV) {
     final nV = builder.writeListUint32(bigIntToList(namespaceId.toBigInt()));
 
     final vectors = _generateVector(builder);
@@ -1445,8 +1445,7 @@ class AddressAliasTransaction extends AliasTransaction {
 
   Address address;
 
-  String _addressAliasTransactionToString() =>
-      '${super.toString()}'
+  String _addressAliasTransactionToString() => '${super.toString()}'
       '\t"address": $address\n'
       '}\n';
 
@@ -1478,7 +1477,7 @@ class AddressAliasTransaction extends AliasTransaction {
 
     final aV = builder.writeListUint8(a);
 
-    return _generateAstractBytes(builder, aV);
+    return _generateAbstractBytes(builder, aV);
   }
 }
 
@@ -1497,9 +1496,8 @@ class MosaicAliasTransaction extends AliasTransaction {
 
   MosaicId mosaicId;
 
-  String _mosaicAliasTransactionToString() =>
-      '${super.toString()}'
-      '\t"assetId": ${mosaicId.toHex()}\n'
+  String _mosaicAliasTransactionToString() => '${super.toString()}'
+      '\t"mosaicId": ${mosaicId.toHex()}\n'
       '}\n';
 
   @override
@@ -1532,7 +1530,7 @@ class MosaicAliasTransaction extends AliasTransaction {
 
     final mV = builder.writeListUint8(bufferData.buffer.asUint8List());
 
-    return _generateAstractBytes(builder, mV);
+    return _generateAbstractBytes(builder, mV);
   }
 }
 

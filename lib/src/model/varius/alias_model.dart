@@ -21,7 +21,8 @@ class Alias {
   final MosaicId mosaicId;
 
   @override
-  String toString() => '{aliasAction:$type, mosaicId:$mosaicId, address:$address}';
+  String toString() =>
+      '{aliasAction:$type, mosaicId:$mosaicId, address:$address}';
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -52,4 +53,3 @@ class AddressAlias implements Alias {
   @override
   AliasType get type => AliasType.addressAliasType;
 }
-

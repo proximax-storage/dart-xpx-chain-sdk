@@ -3,7 +3,7 @@ part of xpx_chain_sdk;
 class BlockInfo {
   BlockInfo._fromDTO(_BlockInfoDTO v) {
     networkType = extractNetworkType(v._block._version);
-    hash = v._meta._hash;
+    blockHash = v._meta._hash;
     generationHash = v._meta._generationHash;
     totalFee = v._meta._totalFee.toBigInt();
     numTransactions = v._meta._numTransactions;
@@ -12,7 +12,9 @@ class BlockInfo {
     version = v._block._version;
     type = v._block._type;
     height = v._block._height.toBigInt();
-    timestamp = v._block._timestamp.toBigInt();
+    timestamp = DateTime.fromMillisecondsSinceEpoch(
+        v._block._timestamp.toBigInt().toInt() +
+            _timestampNemesisBlock.toUtc().millisecondsSinceEpoch);
     difficulty = v._block._difficulty.toBigInt();
     feeMultiplier = v._block._feeMultiplier;
     previousBlockHash = v._block._previousBlockHash;
@@ -23,10 +25,12 @@ class BlockInfo {
         ? PublicAccount.fromPublicKey(
             v._block._beneficiaryPublicKey, networkType)
         : null;
+    feeInterest = v._block._feeInterest;
+    feeInterestDenominator = v._block._feeInterestDenominator;
   }
 
   int networkType;
-  String hash;
+  String blockHash;
   String generationHash;
   BigInt totalFee;
   int numTransactions;
@@ -35,7 +39,7 @@ class BlockInfo {
   int version;
   int type;
   BigInt height;
-  BigInt timestamp;
+  DateTime timestamp;
   BigInt difficulty;
   int feeMultiplier;
   String previousBlockHash;
@@ -43,13 +47,15 @@ class BlockInfo {
   String blockReceiptsHash;
   String stateHash;
   PublicAccount beneficiary;
+  int feeInterest;
+  int feeInterestDenominator;
 
   @override
   String toString() {
     final sb = StringBuffer()
       ..writeln('\n{')
       ..writeln('\tnetworkType: $networkType,')
-      ..writeln('\tcontent: $hash,')
+      ..writeln('\tblockHash: $blockHash,')
       ..writeln('\tgenerationHash: $generationHash,')
       ..writeln('\ttotalFee: $totalFee,')
       ..writeln('\tnumTransactions: $numTransactions,')
@@ -66,6 +72,8 @@ class BlockInfo {
       ..writeln('\tblockReceiptsHash: $blockReceiptsHash,')
       ..writeln('\tstateHash: $stateHash,')
       ..writeln('\tbeneficiary: $beneficiary')
+      ..writeln('\tfeeInterest: $feeInterest')
+      ..writeln('\tfeeInterestDenominator: $feeInterestDenominator')
       ..write('}');
     return sb.toString();
   }
@@ -73,7 +81,7 @@ class BlockInfo {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['networkType'] = networkType;
-    data['hash'] = hash;
+    data['hash'] = blockHash;
     data['generationHash'] = generationHash;
     data['totalFee'] = totalFee;
     data['numTransactions'] = numTransactions;
@@ -90,6 +98,8 @@ class BlockInfo {
     data['blockReceiptsHash'] = blockReceiptsHash;
     data['stateHash'] = stateHash;
     data['beneficiary'] = beneficiary.publicKey;
+    data['feeInterest'] = feeInterest;
+    data['beneficiary'] = feeInterestDenominator;
     return data;
   }
 

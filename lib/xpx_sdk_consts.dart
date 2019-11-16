@@ -19,7 +19,7 @@ enum AliasType {
   addressAliasType,
 }
 
-enum AliasActionType {aliasLink, aliasUnlink}
+enum AliasActionType { aliasLink, aliasUnlink }
 
 const decrease = MosaicSupplyType.decrease,
     increase = MosaicSupplyType.increase;

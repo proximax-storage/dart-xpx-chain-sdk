@@ -19,6 +19,8 @@ class _BlockDTO {
             '0000000000000000000000000000000000000000000000000000000000000000'
         ? json['beneficiary']
         : null;
+    _feeInterest = json['feeInterest'];
+    _feeInterestDenominator = json['feeInterestDenominator'];
   }
 
   String _signature;
@@ -36,6 +38,10 @@ class _BlockDTO {
   UInt64DTO _difficulty;
 
   int _feeMultiplier;
+
+  int _feeInterest;
+
+  int _feeInterestDenominator;
 
   String _previousBlockHash;
 

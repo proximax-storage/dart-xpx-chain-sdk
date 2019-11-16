@@ -236,10 +236,10 @@ class NamespaceRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp = (apiClient
-          .deserialize(response.body, 'List<_NamespaceNameDTO>'))
-          .map((item) => item)
-          .toList() as List<_NamespaceNameDTO>;
+      final List resp =
+          (apiClient.deserialize(response.body, 'List<_NamespaceNameDTO>'))
+              .map((item) => item)
+              .toList() as List<_NamespaceNameDTO>;
 
       final g = NamespaceName.listFromDTO(resp);
       return g;

@@ -13,7 +13,6 @@ class Address {
 
   /// Create an Address from a given public key.
   Address.fromPublicKey(String pKey, int networkType) {
-
     if (networkType == null || NetworkType.getType(networkType) == 0) {
       throw ArgumentError('Network type unsupported');
     }
