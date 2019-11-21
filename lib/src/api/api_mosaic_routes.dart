@@ -22,27 +22,7 @@ class MosaicRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{mosaicId}', nsId);
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.get(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -58,7 +38,7 @@ class MosaicRoutesApi {
   ///
   /// Gets an List of [MosaicInfo].
   Future<List<MosaicInfo>> getMosaics(MosaicIds mosaicIds) async {
-    Object postBody = mosaicIds;
+    final Object postBody = mosaicIds;
 
     // verify required params are set
     if (mosaicIds == null) {
@@ -68,27 +48,7 @@ class MosaicRoutesApi {
     // create path and map variables
     final String path = '/mosaic'.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -109,7 +69,7 @@ class MosaicRoutesApi {
   ///
   /// Returns a [MosaicName] friendly names for mosaics.
   Future<List<MosaicName>> getMosaicsName(List<MosaicId> mosaicIds) async {
-    Object postBody = MosaicIds.fromList(mosaicIds);
+    final Object postBody = MosaicIds.fromList(mosaicIds);
 
     // verify required params are set
     if (mosaicIds == null) {
@@ -119,27 +79,7 @@ class MosaicRoutesApi {
     // create path and map variables
     final String path = '/mosaic/names'.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
