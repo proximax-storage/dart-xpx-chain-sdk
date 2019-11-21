@@ -190,18 +190,24 @@ class NamespaceInfo {
 }
 
 class NamespaceIds {
-  List<NamespaceId> namespaceIds = [];
+
+  NamespaceIds.fromList(List<NamespaceId> list)
+      : assert(list != null, 'list must not be null') {
+    _list = list.map((item) => item).toList();
+  }
+
+  List<NamespaceId> _list = [];
 
   @override
-  String toString() => '{"namespaceIds":$namespaceIds}';
+  String toString() => '{"namespaceIds":$_list}';
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
 
-    final List<String> nsIds = List(namespaceIds.length);
+    final List<String> nsIds = List(_list.length);
 
-    for (int i = 0; i < namespaceIds.length; i++) {
-      nsIds[i] = bigIntegerToHex(namespaceIds[i].toBigInt());
+    for (int i = 0; i < _list.length; i++) {
+      nsIds[i] = bigIntegerToHex(_list[i].toBigInt());
     }
 
     data['namespaceIds'] = nsIds;
