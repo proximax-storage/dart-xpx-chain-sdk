@@ -194,7 +194,7 @@ class _ApiClient {
 
   // We don't use a Map<String, String> for queryParams.
   // If collectionFormat is 'multi' a key might appear multiple times.
-  Future<http.Response> invokeAPI(
+  Future<http.Response> _invokeAPI(
       final String path,
       String method,
       Iterable<QueryParam> queryParams,
@@ -272,7 +272,7 @@ class _ApiClient {
     final String contentType =
         contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
 
-    return await invokeAPI(path, method, queryParams, postBody, headerParams,
+    return await _invokeAPI(path, method, queryParams, postBody, headerParams,
         formParams, contentType);
   }
 }
