@@ -240,6 +240,35 @@ class _ApiClient {
       }
     }
   }
+
+  Future<http.Response> get(String path, Object postBody,
+          [List<QueryParam> queryParams,
+          Map<String, String> headerParams,
+          Map<String, String> formParams]) async =>
+      _response(path, 'GET', postBody, queryParams, headerParams, formParams);
+
+  Future<http.Response> post(String path, Object postBody,
+          [List<QueryParam> queryParams,
+          Map<String, String> headerParams,
+          Map<String, String> formParams]) async =>
+      _response(path, 'POST', postBody, queryParams, headerParams, formParams);
+
+  Future<http.Response> _response(String path, String method, Object postBody,
+      [List<QueryParam> queryParams,
+      Map<String, String> headerParams,
+      Map<String, String> formParams]) async {
+    queryParams ??= [];
+    headerParams ??= {};
+    formParams ??= {};
+
+    final List<String> contentTypes = [];
+
+    final String contentType =
+        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
+
+    return await invokeAPI(path, method, queryParams, postBody, headerParams,
+        formParams, contentType);
+  }
 }
 
 dynamic _txnDeserialize(value, String targetType) {

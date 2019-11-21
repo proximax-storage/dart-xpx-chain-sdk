@@ -22,29 +22,7 @@ class AccountRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{accountId}', address.address);
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -65,34 +43,12 @@ class AccountRoutesApi {
       throw ApiException(400, 'Missing required param: addresses');
     }
 
-    Object postBody = Addresses.fromList(addresses);
+    final Object postBody = Addresses.fromList(addresses);
 
     // create path and map variables
     final String path = '/account'.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -123,29 +79,7 @@ class AccountRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{accountId}', address.address);
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -173,29 +107,7 @@ class AccountRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{accountId}', address.address);
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -229,8 +141,6 @@ class AccountRoutesApi {
 
     // query params
     final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
           _convertParametersForCollectionFormat('', 'pageSize', pageSize));
@@ -243,24 +153,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, postBody, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -296,8 +189,6 @@ class AccountRoutesApi {
 
     // query params
     final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
           _convertParametersForCollectionFormat('', 'pageSize', pageSize));
@@ -310,24 +201,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, postBody, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -362,8 +236,6 @@ class AccountRoutesApi {
 
     // query params
     final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
           _convertParametersForCollectionFormat('', 'pageSize', pageSize));
@@ -376,24 +248,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, postBody, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -428,8 +283,6 @@ class AccountRoutesApi {
 
     // query params
     final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
           _convertParametersForCollectionFormat('', 'pageSize', pageSize));
@@ -442,24 +295,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, postBody, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -494,8 +330,6 @@ class AccountRoutesApi {
 
     // query params
     final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
           _convertParametersForCollectionFormat('', 'pageSize', pageSize));
@@ -508,24 +342,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, postBody, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -542,8 +359,7 @@ class AccountRoutesApi {
 
   Future<List<AccountNames>> getAccountsNames(List<Address> addresses,
       {int pageSize, String id, String ordering}) async {
-    Object postBody =
-        Addresses.fromList(addresses);
+    final Object postBody = Addresses.fromList(addresses);
 
     // verify required params are set
     if (addresses.isEmpty) {
@@ -553,29 +369,7 @@ class AccountRoutesApi {
     // create path and map variables
     final String path = '/account/names'.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
