@@ -31,7 +31,7 @@ class TransactionRoutesApi {
   ///
   /// Announces a transaction to the network.
   Future<Object> _announceTransaction(tx, String uri) async {
-    Object postBody = tx;
+    final Object postBody = tx;
 
     // verify required params are set
     if (tx == null) {
@@ -41,27 +41,7 @@ class TransactionRoutesApi {
     // create path and map variables
     final String path = uri.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'PUT', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.put(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -88,27 +68,7 @@ class TransactionRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{transactionId}', transactionId.toString());
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.get(path, postBody);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
@@ -125,7 +85,7 @@ class TransactionRoutesApi {
   /// List of transactionIds.
   Future<List<Transaction>> getTransactions(
       TransactionIds transactionIds) async {
-    Object postBody = transactionIds;
+    final Object postBody = transactionIds;
 
     // verify required params are set
     if (transactionIds == null) {
@@ -135,27 +95,7 @@ class TransactionRoutesApi {
     // create path and map variables
     final String path = _transactionsRoute.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -186,27 +126,7 @@ class TransactionRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{hash}', hash.toString());
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.get(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -233,27 +153,7 @@ class TransactionRoutesApi {
     // create path and map variables
     final String path = _transactionsStatusRoute.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);

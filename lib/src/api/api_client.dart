@@ -253,6 +253,12 @@ class _ApiClient {
           Map<String, String> formParams]) async =>
       _response(path, 'POST', postBody, queryParams, headerParams, formParams);
 
+  Future<http.Response> put(String path, Object postBody,
+      [List<QueryParam> queryParams,
+        Map<String, String> headerParams,
+        Map<String, String> formParams]) async =>
+      _response(path, 'PUT', postBody, queryParams, headerParams, formParams);
+
   Future<http.Response> _response(String path, String method, Object postBody,
       [List<QueryParam> queryParams,
       Map<String, String> headerParams,
