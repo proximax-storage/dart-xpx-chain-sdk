@@ -22,15 +22,6 @@ class _MosaicDTO {
   static List<_MosaicDTO> listFromJson(List<dynamic> json) => json == null
       ? null
       : json.map((value) => _MosaicDTO.fromJson(value)).toList();
-
-  static Map<String, _MosaicDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final map = <String, _MosaicDTO>{};
-    if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _MosaicDTO.fromJson(value));
-    }
-    return map;
-  }
 }
 
 class _MosaicInfoDTO {
@@ -51,19 +42,6 @@ class _MosaicInfoDTO {
 
     return data;
   }
-
-  static List<_MosaicInfoDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => _MosaicInfoDTO.fromJson(value)).toList();
-
-  static Map<String, _MosaicInfoDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final map = <String, _MosaicInfoDTO>{};
-    if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _MosaicInfoDTO.fromJson(value));
-    }
-    return map;
-  }
 }
 
 class _MosaicMetaDTO {
@@ -73,19 +51,6 @@ class _MosaicMetaDTO {
   }
 
   String _id;
-
-  static List<_MosaicMetaDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => _MosaicMetaDTO.fromJson(value)).toList();
-
-  static Map<String, _MosaicMetaDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final map = <String, _MosaicMetaDTO>{};
-    if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _MosaicMetaDTO.fromJson(value));
-    }
-    return map;
-  }
 
   Map<String, dynamic> toJson() => {'id': _id};
 }
@@ -113,8 +78,6 @@ class _MosaicDefinitionDTO {
   String _owner;
   int _revision;
   List<_MosaicPropertyDTO> _properties;
-
-  Object _levy;
 }
 
 class _MosaicNameDTO {

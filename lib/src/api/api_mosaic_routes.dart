@@ -10,8 +10,6 @@ class MosaicRoutesApi {
   ///
   /// Gets a [MosaicInfo] definition for a given mosaicId.
   Future<MosaicInfo> getMosaic(MosaicId mosaicId) async {
-    Object postBody;
-
     // verify required params are set
     if (mosaicId == null) {
       throw ApiException(400, 'Missing required param: mosaicId');
@@ -22,7 +20,7 @@ class MosaicRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{mosaicId}', nsId);
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);

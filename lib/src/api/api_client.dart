@@ -70,8 +70,6 @@ class _ApiClient {
           return _AccountDTO.fromJson(value);
         case '_AccountInfoDTO':
           return _AccountInfoDTO.fromJson(value);
-        case '_AccountMetaDTO':
-          return _AccountMetaDTO.fromJson(value);
         case '_AccountNames':
           return _AccountNames.fromJson(value);
         case '_AccountPropertiesDTO':
@@ -241,26 +239,26 @@ class _ApiClient {
     }
   }
 
-  Future<http.Response> get(String path, Object postBody,
-          [List<QueryParam> queryParams,
+  Future<http.Response> get(String path, [Object postBody,
+          List<QueryParam> queryParams,
           Map<String, String> headerParams,
           Map<String, String> formParams]) async =>
       _response(path, 'GET', postBody, queryParams, headerParams, formParams);
 
-  Future<http.Response> post(String path, Object postBody,
-          [List<QueryParam> queryParams,
+  Future<http.Response> post(String path, [Object postBody,
+          List<QueryParam> queryParams,
           Map<String, String> headerParams,
           Map<String, String> formParams]) async =>
       _response(path, 'POST', postBody, queryParams, headerParams, formParams);
 
-  Future<http.Response> put(String path, Object postBody,
-      [List<QueryParam> queryParams,
+  Future<http.Response> put(String path, [Object postBody,
+        List<QueryParam> queryParams,
         Map<String, String> headerParams,
         Map<String, String> formParams]) async =>
       _response(path, 'PUT', postBody, queryParams, headerParams, formParams);
 
-  Future<http.Response> _response(String path, String method, Object postBody,
-      [List<QueryParam> queryParams,
+  Future<http.Response> _response(String path, String method, [Object postBody,
+      List<QueryParam> queryParams,
       Map<String, String> headerParams,
       Map<String, String> formParams]) async {
     queryParams ??= [];

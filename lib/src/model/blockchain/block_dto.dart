@@ -53,19 +53,6 @@ class _BlockDTO {
 
   String _beneficiaryPublicKey;
 
-  static List<_BlockDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => _BlockDTO.fromJson(value)).toList();
-
-  static Map<String, _BlockDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final map = <String, _BlockDTO>{};
-    if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _BlockDTO.fromJson(value));
-    }
-    return map;
-  }
-
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['signature'] = _signature;
@@ -104,19 +91,6 @@ class _BlockInfoDTO {
 
     return data;
   }
-
-  static List<_BlockInfoDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => _BlockInfoDTO.fromJson(value)).toList();
-
-  static Map<String, _BlockInfoDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final map = <String, _BlockInfoDTO>{};
-    if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _BlockInfoDTO.fromJson(value));
-    }
-    return map;
-  }
 }
 
 class _BlockMetaDTO {
@@ -135,19 +109,6 @@ class _BlockMetaDTO {
   UInt64DTO _totalFee;
 
   num _numTransactions;
-
-  static List<_BlockMetaDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => _BlockMetaDTO.fromJson(value)).toList();
-
-  static Map<String, _BlockMetaDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final map = <String, _BlockMetaDTO>{};
-    if (json != null && json.isEmpty) {
-      json.forEach((key, value) => map[key] = _BlockMetaDTO.fromJson(value));
-    }
-    return map;
-  }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -177,20 +138,5 @@ class _BlockchainScoreDTO {
     data['scoreLow'] = _scoreLow;
 
     return data;
-  }
-
-  static List<_BlockchainScoreDTO> listFromJson(List<dynamic> json) =>
-      json == null
-          ? null
-          : json.map((value) => _BlockchainScoreDTO.fromJson(value)).toList();
-
-  static Map<String, _BlockchainScoreDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final map = <String, _BlockchainScoreDTO>{};
-    if (json != null && json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = _BlockchainScoreDTO.fromJson(value));
-    }
-    return map;
   }
 }

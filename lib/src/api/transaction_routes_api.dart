@@ -56,8 +56,6 @@ class TransactionRoutesApi {
   ///
   /// Returns a [Transaction] information given a transactionId or hash.
   Future<Transaction> getTransaction(String transactionId) async {
-    Object postBody;
-
     // verify required params are set
     if (transactionId == null) {
       throw ApiException(400, 'Missing required param: transactionId');
@@ -68,7 +66,7 @@ class TransactionRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{transactionId}', transactionId.toString());
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
@@ -114,8 +112,6 @@ class TransactionRoutesApi {
   ///
   /// Returns the transaction status for a given hash.
   Future<TransactionStatus> getTransactionStatus(String hash) async {
-    Object postBody;
-
     // verify required params are set
     if (hash == null) {
       throw ApiException(400, 'Missing required param: hash');
@@ -126,7 +122,7 @@ class TransactionRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{hash}', hash.toString());
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -143,7 +139,7 @@ class TransactionRoutesApi {
   /// List of transaction hashes.
   Future<List<TransactionStatus>> getTransactionsStatuses(
       List<String> transactionHashes) async {
-    Object postBody = TransactionHashes.fromList(transactionHashes);
+    final Object postBody = TransactionHashes.fromList(transactionHashes);
 
     // verify required params are set
     if (transactionHashes == null) {

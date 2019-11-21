@@ -1,5 +1,47 @@
 part of xpx_chain_sdk;
 
+class Account {
+  Account._(this._publicAccount, this._account);
+
+  /// Create an Account from a given hex private key.
+  Account.fromPrivateKey(String shex, int networkType) {
+    _account = crypto.KeyPair.fromHexString(shex);
+    _publicAccount =
+        PublicAccount.fromPublicKey(_account.publicKey.toString(), networkType);
+  }
+
+  /// Create an Account from a given networkType.
+  Account.random(int networkType) {
+    final kp = crypto.KeyPair.fromRandomKeyPair();
+    final acc = Account.fromPrivateKey(kp.privateKey.toString(), networkType);
+    _publicAccount = acc._publicAccount;
+    _account = acc._account;
+  }
+
+  PublicAccount _publicAccount;
+  crypto.KeyPair _account;
+
+  PublicAccount get publicAccount => _publicAccount;
+
+  crypto.KeyPair get account => _account;
+
+  String get publicKey => _publicAccount._publicKey;
+
+  Address get address => _publicAccount.address;
+
+  @override
+  String toString() => publicAccount.toString();
+
+  Map<String, dynamic> toJson() =>
+      {'publicAccount': publicAccount, 'account': account};
+
+  SignedTransaction sign(Transaction tx) => _signTransactionWith(tx, this);
+
+  CosignatureSignedTransaction signCosignatureTransaction(
+          CosignatureTransaction tx) =>
+      _signCosignatureTransaction(tx, this);
+}
+
 class PublicAccount {
   PublicAccount._(this._publicKey, this._address);
 
@@ -43,49 +85,32 @@ class PublicAccount {
   Map<String, dynamic> toJson() => {'address': address, 'publicKey': publicKey};
 }
 
-class Account {
-  Account._(this._publicAccount, this._account);
+class AccountNames {
+  AccountNames._();
 
-  /// Create an Account from a given hex private key.
-  Account.fromPrivateKey(String shex, int networkType) {
-    _account = crypto.KeyPair.fromHexString(shex);
-    _publicAccount =
-        PublicAccount.fromPublicKey(_account.publicKey.toString(), networkType);
+  AccountNames._fromDto(_AccountNames value) {
+    if (json == null) return;
+    address = Address.fromEncoded(value._address);
+    names = (value._names == null) ? null : value._names.cast<String>();
   }
 
-  /// Create an Account from a given networkType.
-  Account.random(int networkType) {
-    final kp = crypto.KeyPair.fromRandomKeyPair();
-    final acc = Account.fromPrivateKey(kp.privateKey.toString(), networkType);
-    _publicAccount = acc._publicAccount;
-    _account = acc._account;
-  }
+  /* The address of the account in hexadecimal. */
+  Address address;
+  /* The mosaic linked namespace names. */
+  List<String> names;
 
-  PublicAccount _publicAccount;
-  crypto.KeyPair _account;
-
-  PublicAccount get publicAccount => _publicAccount;
-
-  crypto.KeyPair get account => _account;
-
-  String get publicKey => _publicAccount._publicKey;
-
-  Address get address => _publicAccount.address;
+  static List<AccountNames> listFromJson(List<_AccountNames> json) =>
+      json == null
+          ? <AccountNames>[]
+          : json.map((value) => AccountNames._fromDto(value)).toList();
 
   @override
-  String toString() => publicAccount.toString();
-
-  Map<String, dynamic> toJson() =>
-      {'publicAccount': publicAccount, 'account': account};
-
-  SignedTransaction sign(Transaction tx) => _signTransactionWith(tx, this);
-
-  CosignatureSignedTransaction signCosignatureTransaction(
-          CosignatureTransaction tx) =>
-      _signCosignatureTransaction(tx, this);
+  String toString() => '{\n'
+      '\taddress: $address,\n'
+      '\tnames: $names\n'
+      ' }';
 }
 
-// ignore: public_member_api_docs
 class AccountInfo {
   AccountInfo._fromDTO(_AccountInfoDTO v) {
     final List<Mosaic> mList = List(v._account._mosaics.length);
@@ -133,67 +158,4 @@ class AccountInfo {
         'mosaics': mosaics,
         'reputation': reputation
       };
-}
-
-String _generateEncodedAddress(String pKey, int version) {
-  // step 1: sha3 hash of the public key
-  final pKeyD = hex.decode(pKey);
-
-  final sha3PublicKeyHash = crypto.HashesSha3_256(Uint8List.fromList(pKeyD));
-
-  // step 2: ripemd160 hash of (1)
-  final ripemd160StepOneHash = crypto.HashesRipemd160(sha3PublicKeyHash);
-
-  // step 3: add version byte in front of (2)
-  final versionPrefixedRipemd160Hash =
-      addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
-
-  // step 4: get the checksum of (3)
-  final stepThreeChecksum = _generateChecksum(versionPrefixedRipemd160Hash);
-
-  // step 5: concatenate (3) and (4)
-  final concatStepThreeAndStepSix =
-      addUint8List(versionPrefixedRipemd160Hash, stepThreeChecksum);
-
-  // step 6: base32 encode (5)
-  return base32.encode(concatStepThreeAndStepSix);
-}
-
-Uint8List _generateChecksum(Uint8List b) {
-  // step 1: sha3 hash of (input
-  final sha3StepThreeHash = crypto.HashesSha3_256(b);
-
-  // step 2: get the first numChecksumBytes bytes of (1)
-  final p = sha3StepThreeHash.getRange(0, numChecksumBytes);
-  final Uint8List hash = Uint8List(numChecksumBytes);
-  for (int i = 0; i < numChecksumBytes; i++) {
-    hash[i] = p.toList()[i];
-  }
-  return hash;
-}
-
-class AccountNames {
-  AccountNames._();
-
-  AccountNames._fromDto(_AccountNames value) {
-    if (json == null) return;
-    address = Address.fromEncoded(value._address);
-    names = (value._names == null) ? null : value._names.cast<String>();
-  }
-
-  /* The address of the account in hexadecimal. */
-  Address address;
-  /* The mosaic linked namespace names. */
-  List<String> names;
-
-  static List<AccountNames> listFromJson(List<_AccountNames> json) =>
-      json == null
-          ? <AccountNames>[]
-          : json.map((value) => AccountNames._fromDto(value)).toList();
-
-  @override
-  String toString() => '{\n'
-      '\taddress: $address,\n'
-      '\tnames: $names\n'
-      ' }';
 }

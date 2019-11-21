@@ -10,8 +10,6 @@ class AccountRoutesApi {
   ///
   /// Returns the account information.
   Future<AccountInfo> getAccountInfo(Address address) async {
-    Object postBody;
-
     // verify required params are set
     if (address.address == null) {
       throw ApiException(400, 'Missing required param: accountId');
@@ -22,7 +20,7 @@ class AccountRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{accountId}', address.address);
 
-    final response = await _apiClient.get(path, postBody);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -67,8 +65,6 @@ class AccountRoutesApi {
   ///
   /// Returns the [MultisigAccountInfo] information.
   Future<MultisigAccountInfo> getAccountMultisig(Address address) async {
-    Object postBody;
-
     // verify required params are set
     if (address == null) {
       throw ApiException(400, 'Missing required param: address');
@@ -79,7 +75,7 @@ class AccountRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{accountId}', address.address);
 
-    final response = await _apiClient.get(path, postBody);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -95,8 +91,6 @@ class AccountRoutesApi {
   /// Returns list [MultisigAccountGraphInfo] graph.
   Future<List<MultisigAccountGraphInfo>> getAccountMultisigGraph(
       Address address) async {
-    Object postBody;
-
     // verify required params are set
     if (address == null) {
       throw ApiException(400, 'Missing required param: accountId');
@@ -107,7 +101,7 @@ class AccountRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{accountId}', address.address);
 
-    final response = await _apiClient.get(path, postBody);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -127,8 +121,6 @@ class AccountRoutesApi {
   /// account if the account is the recipient of the transaction.
   Future<List<Transaction>> incomingTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody;
-
     // verify required params are set
     if (account == null) {
       throw ApiException(400, 'Missing required param: publicKey');
@@ -153,7 +145,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final response = await _apiClient.get(path, postBody, queryParams);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -175,8 +167,6 @@ class AccountRoutesApi {
   /// account if the account is the sender of the transaction.
   Future<List<Transaction>> outgoingTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody;
-
     // verify required params are set
     if (account == null) {
       throw ApiException(400, 'Missing required param: publicKey');
@@ -201,7 +191,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final response = await _apiClient.get(path, postBody, queryParams);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -222,8 +212,6 @@ class AccountRoutesApi {
   /// the sender or requires to cosign the transaction.
   Future<List<Transaction>> aggregateBondedTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody;
-
     // verify required params are set
     if (account == null) {
       throw ApiException(400, 'Missing required param: publicKey');
@@ -248,7 +236,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final response = await _apiClient.get(path, postBody, queryParams);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -269,8 +257,6 @@ class AccountRoutesApi {
   /// is the sender or receiver.
   Future<List<Transaction>> transactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody;
-
     // verify required params are set
     if (account == null) {
       throw ApiException(400, 'Missing required param: publicKey');
@@ -295,7 +281,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final response = await _apiClient.get(path, postBody, queryParams);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -316,8 +302,6 @@ class AccountRoutesApi {
   /// is the sender or receiver.
   Future<List<Transaction>> unconfirmedTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody;
-
     // verify required params are set
     if (account == null) {
       throw ApiException(400, 'Missing required param: publicKey');
@@ -342,7 +326,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final response = await _apiClient.get(path, postBody, queryParams);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -357,6 +341,7 @@ class AccountRoutesApi {
     }
   }
 
+  /// Get readable names for a set of accountIds.
   Future<List<AccountNames>> getAccountsNames(List<Address> addresses,
       {int pageSize, String id, String ordering}) async {
     final Object postBody = Addresses.fromList(addresses);
@@ -376,6 +361,58 @@ class AccountRoutesApi {
     } else if (response.body != null) {
       final resp = List<_AccountNames>.from(
               _apiClient.deserialize(response.body, 'List<_AccountNames>'))
+          .map((item) => item)
+          .toList();
+      return AccountNames.listFromJson(resp);
+    } else {
+      return null;
+    }
+  }
+
+  Future<List<AccountNames>> getAccountProperties(Address address) async {
+    // verify required params are set
+    if (address != null) {
+      throw ApiException(400, 'Missing required param: address');
+    }
+
+    // create path and map variables
+    final String path = '/account/{address}/properties'
+        .replaceAll('{format}', 'json')
+        .replaceAll('{address}', address.address);
+
+    final response = await _apiClient.get(path);
+
+    if (response.statusCode >= 400) {
+      throw ApiException(response.statusCode, response.body);
+    } else if (response.body != null) {
+      final resp = List<_AccountNames>.from(
+              _apiClient.deserialize(response.body, '_AccountPropertiesDTO'))
+          .map((item) => item)
+          .toList();
+      return AccountNames.listFromJson(resp);
+    } else {
+      return null;
+    }
+  }
+
+  Future<List<AccountNames>> getAccountsProperties(List<Address> addresses) async {
+    final Object postBody = Addresses.fromList(addresses);
+
+    // verify required params are set
+    if (addresses.isEmpty) {
+      throw ApiException(400, 'Missing required param: addresses');
+    }
+
+    // create path and map variables
+    final String path = '/account/properties'.replaceAll('{format}', 'json');
+
+    final response = await _apiClient.post(path, postBody);
+
+    if (response.statusCode >= 400) {
+      throw ApiException(response.statusCode, response.body);
+    } else if (response.body != null) {
+      final resp = List<_AccountNames>.from(
+          _apiClient.deserialize(response.body, 'List<_AccountPropertiesDTO>'))
           .map((item) => item)
           .toList();
       return AccountNames.listFromJson(resp);

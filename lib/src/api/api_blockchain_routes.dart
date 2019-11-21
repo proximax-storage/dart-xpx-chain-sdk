@@ -10,14 +10,10 @@ class BlockchainRoutesApi {
   ///
   /// Returns the current height of the blockchain.
   Future<Height> getBlockchainHeight() async {
-    Object postBody;
-
-    // verify required params are set
-
     // create path and map variables
     final String path = '/chain/height'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -33,8 +29,6 @@ class BlockchainRoutesApi {
   ///
   /// Gets a [BlockInfo] from the chain that has the given height.
   Future<BlockInfo> getBlockByHeight(BigInt height) async {
-    Object postBody;
-
     // verify required params are set
     if (height == null) {
       throw ApiException(400, 'Missing required param: height');
@@ -45,7 +39,7 @@ class BlockchainRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{height}', height.toString());
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -68,14 +62,10 @@ class BlockchainRoutesApi {
   /// that has elapsed since the last block:
   /// block score &#x3D; difficulty − time elasped since last block
   Future<BlockchainScore> getBlockchainScore() async {
-    Object postBody;
-
-    // verify required params are set
-
     // create path and map variables
     final String path = '/chain/score'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -92,12 +82,10 @@ class BlockchainRoutesApi {
   /// Returns a [BlockchainStorageInfo] statistical information about
   /// the blockchain.
   Future<BlockchainStorageInfo> getDiagnosticStorage() async {
-    Object postBody;
-
     // create path and map variables
     final String path = '/diagnostic/storage'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -114,8 +102,6 @@ class BlockchainRoutesApi {
   /// block height.
   Future<List<Transaction>> getBlockTransactions(BigInt height,
       {int pageSize, String id}) async {
-    Object postBody;
-
     // verify required params are set
     if (height == null) {
       throw ApiException(400, 'Missing required param: height');
@@ -136,7 +122,7 @@ class BlockchainRoutesApi {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
 
-    final response = await apiClient.get(path, postBody, queryParams);
+    final response = await apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -156,8 +142,6 @@ class BlockchainRoutesApi {
   /// Gets up to limit number of blocks after given block height.
   Future<List<BlockInfo>> getBlocksByHeightWithLimit(
       BigInt height, int limit) async {
-    Object postBody;
-
     // verify required params are set
     if (height == null) {
       throw _errNullOrZeroHeight;
@@ -172,7 +156,7 @@ class BlockchainRoutesApi {
         .replaceAll('{height}', height.toString())
         .replaceAll('{limit}', limit.toString());
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);

@@ -23,8 +23,6 @@ class NamespaceRoutesApi {
   ///
   /// Gets a [NamespaceInfo] for a given namespaceId.
   Future<NamespaceInfo> getNamespace(NamespaceId namespaceId) async {
-    Object postBody;
-
     // verify required params are set
     if (namespaceId == null) {
       throw ApiException(400, 'Missing required param: namespaceId');
@@ -37,7 +35,7 @@ class NamespaceRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{namespaceId}', nsId);
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -59,8 +57,6 @@ class NamespaceRoutesApi {
   /// Gets an List of [NamespaceInfo] for a given account address.
   Future<List<NamespaceInfo>> getNamespacesFromAccount(Address accountIds,
       {int pageSize, String id}) async {
-    Object postBody;
-
     // verify required params are set
     if (accountIds == null) {
       throw ApiException(400, 'Missing required param: accountId');
@@ -81,7 +77,7 @@ class NamespaceRoutesApi {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
 
-    final response = await apiClient.get(path, postBody, queryParams);
+    final response = await apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -103,7 +99,7 @@ class NamespaceRoutesApi {
   /// Gets namespaces for a given List of addresses.
   Future<List<NamespaceInfo>> getNamespacesFromAccounts(Addresses addresses,
       {int pageSize, String id}) async {
-    Object postBody = addresses;
+    final Object postBody = addresses;
 
     // verify required params are set
     if (addresses == null) {
@@ -122,20 +118,6 @@ class NamespaceRoutesApi {
     if (id != null) {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
 
     final response = await apiClient.post(path, postBody, queryParams);
 

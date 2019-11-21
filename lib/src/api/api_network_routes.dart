@@ -10,12 +10,10 @@ class NetworkRoutesApi {
   ///
   /// Returns the current network type.
   Future<NetworkType> getNetworkType() async {
-    Object postBody;
-
     // create path and map variables
     final String path = '/network'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);

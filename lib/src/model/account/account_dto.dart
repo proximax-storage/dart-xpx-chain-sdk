@@ -35,64 +35,17 @@ class _AccountDTO {
         'accountType': _accountType,
         'linkedAccountKey': _linkedAccountKey,
       };
-
-  static List<_AccountDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => _AccountDTO.fromJson(value)).toList();
-
-  static Map<String, _AccountDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final Map<String, _AccountDTO> map = {};
-    if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _AccountDTO.fromJson(value));
-    }
-    return map;
-  }
 }
 
 class _AccountInfoDTO {
   _AccountInfoDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    _meta = _AccountMetaDTO.fromJson(json['meta']);
     _account = _AccountDTO.fromJson(json['account']);
   }
 
-  _AccountMetaDTO _meta;
-
   _AccountDTO _account;
 
-  Map<String, dynamic> toJson() => {'meta': _meta, 'account': _account};
-
-  static List<_AccountInfoDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => _AccountInfoDTO.fromJson(value)).toList();
-
-  static Map<String, _AccountInfoDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final Map<String, _AccountInfoDTO> map = {};
-    if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _AccountInfoDTO.fromJson(value));
-    }
-    return map;
-  }
-}
-
-class _AccountMetaDTO {
-  _AccountMetaDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null');
-
-  static List<_AccountMetaDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => _AccountMetaDTO.fromJson(value)).toList();
-
-  static Map<String, _AccountMetaDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final Map<String, _AccountMetaDTO> map = {};
-    if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _AccountMetaDTO.fromJson(value));
-    }
-    return map;
-  }
+  Map<String, dynamic> toJson() => {'account': _account};
 }
 
 class _AccountNames {

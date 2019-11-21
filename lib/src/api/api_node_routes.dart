@@ -10,14 +10,10 @@ class NodeRoutesApi {
   ///
   /// Supplies additional information about the application running on a node.
   Future<NodeInfo> getNodeInfo() async {
-    Object postBody;
-
-    // verify required params are set
-
     // create path and map variables
     final String path = '/node/info'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -32,12 +28,10 @@ class NodeRoutesApi {
   ///
   /// Supplies additional information about the application running on a node.
   Future<NodeTime> getNodeTime() async {
-    Object postBody;
-
     // create path and map variables
     final String path = '/node/time'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path, postBody);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
