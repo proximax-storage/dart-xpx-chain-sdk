@@ -59,7 +59,7 @@ class AccountRoutesApi {
   /// Get accounts information
   ///
   /// Returns the account information for an List of accounts.
-  Future<List<AccountInfo>> getAccountsInfo(List<String> addresses) async {
+  Future<List<AccountInfo>> getAccountsInfo(List<Address> addresses) async {
     // verify required params are set
     if (addresses == null) {
       throw ApiException(400, 'Missing required param: addresses');
@@ -543,7 +543,7 @@ class AccountRoutesApi {
   Future<List<AccountNames>> getAccountsNames(List<Address> addresses,
       {int pageSize, String id, String ordering}) async {
     Object postBody =
-        Addresses.fromList(addresses.map((a) => a._address).toList());
+        Addresses.fromList(addresses);
 
     // verify required params are set
     if (addresses.isEmpty) {

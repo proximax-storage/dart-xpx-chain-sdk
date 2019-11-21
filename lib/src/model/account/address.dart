@@ -70,17 +70,17 @@ class Addresses {
     addresses = (json['addresses']).map((item) => item).toList();
   }
 
-  Addresses.fromList(List<String> list)
+  Addresses.fromList(List<Address> list)
       : assert(json != null, 'json must not be null') {
     addresses = list.map((item) => item).toList();
   }
 
-  List<String> addresses = [];
+  List<Address> addresses = [];
 
   @override
   String toString() => 'addresses:$addresses';
 
-  Map<String, dynamic> toJson() => {'addresses':addresses};
+  Map<String, dynamic> toJson() => {'addresses':addresses.map((a) => a._address).toList()};
 
   static List<Addresses> listFromJson(List<dynamic> json) => json == null
       ? null

@@ -107,11 +107,15 @@ class MosaicId extends Id {
 }
 
 class MosaicIds {
-  final List<MosaicId> _list = [];
 
-  void add(MosaicId id) {
-    _list.add(id);
+  MosaicIds._();
+
+  MosaicIds.fromList(List<MosaicId> list)
+      : assert(list != null, 'list must not be null') {
+    _list = list.map((item) => item).toList();
   }
+
+  List<MosaicId> _list = [];
 
   @override
   String toString() => '{mosaicIds:$_list}';

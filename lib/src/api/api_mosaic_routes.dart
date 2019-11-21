@@ -108,8 +108,8 @@ class MosaicRoutesApi {
   /// Get readable names for a set of mosaics
   ///
   /// Returns a [MosaicName] friendly names for mosaics.
-  Future<List<MosaicName>> getMosaicsName(MosaicIds mosaicIds) async {
-    Object postBody = mosaicIds;
+  Future<List<MosaicName>> getMosaicsName(List<MosaicId> mosaicIds) async {
+    Object postBody = MosaicIds.fromList(mosaicIds);
 
     // verify required params are set
     if (mosaicIds == null) {

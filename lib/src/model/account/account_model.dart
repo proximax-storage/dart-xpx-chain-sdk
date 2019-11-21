@@ -173,7 +173,7 @@ Uint8List _generateChecksum(Uint8List b) {
 }
 
 class AccountNames {
-  AccountNames();
+  AccountNames._();
 
   AccountNames._fromDto(_AccountNames value) {
     if (json == null) return;
@@ -195,5 +195,5 @@ class AccountNames {
   String toString() => '{\n'
       '\taddress: $address,\n'
       '\tnames: $names\n'
-      '}\n';
+      ' }';
 }
