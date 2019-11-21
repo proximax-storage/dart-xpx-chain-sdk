@@ -94,3 +94,20 @@ class _AccountMetaDTO {
     return map;
   }
 }
+
+class _AccountNames {
+  _AccountNames();
+
+  _AccountNames.fromJson(Map<String, dynamic> json) {
+    if (json == null) return;
+    _address = json['address'];
+    _names = (json['names'] == null) ?
+    null :
+    (json['names'] as List).cast<String>();
+  }
+
+  /* The address of the account in hexadecimal. */
+  String _address;
+  /* The mosaic linked namespace names. */
+  List<String> _names;
+}

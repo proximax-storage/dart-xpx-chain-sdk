@@ -133,19 +133,6 @@ class _MosaicNameDTO {
 
   List<String> _names;
 
-  static List<_MosaicNameDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => _MosaicNameDTO.fromJson(value)).toList();
-
-  static Map<String, _MosaicNameDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final map = <String, _MosaicNameDTO>{};
-    if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _MosaicNameDTO.fromJson(value));
-    }
-    return map;
-  }
-
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['parentId'] = _parentId;

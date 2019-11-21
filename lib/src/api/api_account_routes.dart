@@ -539,4 +539,54 @@ class AccountRoutesApi {
       return null;
     }
   }
+
+  Future<List<AccountNames>> getAccountsNames(List<Address> addresses,
+      {int pageSize, String id, String ordering}) async {
+    Object postBody =
+        Addresses.fromList(addresses.map((a) => a._address).toList());
+
+    // verify required params are set
+    if (addresses.isEmpty) {
+      throw ApiException(400, 'Missing required param: addresses');
+    }
+
+    // create path and map variables
+    final String path = '/account/names'.replaceAll('{format}', 'json');
+
+    // query params
+    final List<QueryParam> queryParams = [];
+    final Map<String, String> headerParams = {};
+    final Map<String, String> formParams = {};
+
+    final List<String> contentTypes = [];
+
+    final String contentType =
+        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
+
+    if (contentType.startsWith('multipart/form-data')) {
+      const bool hasFields = false;
+      final http.MultipartRequest mp = http.MultipartRequest(null, null);
+
+      if (hasFields) {
+        {
+          postBody = mp;
+        }
+      }
+    } else {}
+
+    final response = await _apiClient.invokeAPI(path, 'POST', queryParams,
+        postBody, headerParams, formParams, contentType);
+
+    if (response.statusCode >= 400) {
+      throw ApiException(response.statusCode, response.body);
+    } else if (response.body != null) {
+      final resp = List<_AccountNames>.from(
+              _apiClient.deserialize(response.body, 'List<_AccountNames>'))
+          .map((item) => item)
+          .toList();
+      return AccountNames.listFromJson(resp);
+    } else {
+      return null;
+    }
+  }
 }

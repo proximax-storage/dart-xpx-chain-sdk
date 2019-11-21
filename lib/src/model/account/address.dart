@@ -78,9 +78,9 @@ class Addresses {
   List<String> addresses = [];
 
   @override
-  String toString() => 'addresses: $addresses';
+  String toString() => 'addresses:$addresses';
 
-  Map<String, dynamic> toJson() => {'addresses': addresses};
+  Map<String, dynamic> toJson() => {'addresses':addresses};
 
   static List<Addresses> listFromJson(List<dynamic> json) => json == null
       ? null

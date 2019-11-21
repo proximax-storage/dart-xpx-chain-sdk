@@ -72,6 +72,8 @@ class _ApiClient {
           return _AccountInfoDTO.fromJson(value);
         case '_AccountMetaDTO':
           return _AccountMetaDTO.fromJson(value);
+        case '_AccountNames':
+          return _AccountNames.fromJson(value);
         case '_AccountPropertiesDTO':
           return _AccountPropertiesDTO.fromJson(value);
         case '_AccountPropertiesInfoDTO':

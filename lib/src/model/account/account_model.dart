@@ -171,3 +171,29 @@ Uint8List _generateChecksum(Uint8List b) {
   }
   return hash;
 }
+
+class AccountNames {
+  AccountNames();
+
+  AccountNames._fromDto(_AccountNames value) {
+    if (json == null) return;
+    address = Address.fromEncoded(value._address);
+    names = (value._names == null) ? null : value._names.cast<String>();
+  }
+
+  /* The address of the account in hexadecimal. */
+  Address address;
+  /* The mosaic linked namespace names. */
+  List<String> names;
+
+  static List<AccountNames> listFromJson(List<_AccountNames> json) =>
+      json == null
+          ? <AccountNames>[]
+          : json.map((value) => AccountNames._fromDto(value)).toList();
+
+  @override
+  String toString() => '{\n'
+      '\taddress: $address,\n'
+      '\tnames: $names\n'
+      '}\n';
+}
