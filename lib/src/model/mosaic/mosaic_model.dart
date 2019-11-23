@@ -1,7 +1,7 @@
 part of xpx_chain_sdk;
 
 // Create xpx with using xpx as unit
-Mosaic xpx(int amount) => Mosaic(xpxMosaicId, BigInt.from(amount));
+Mosaic xpx(int amount) => Mosaic(xpxNamespaceId, BigInt.from(amount));
 
 Mosaic xpxRelative(int amount) =>
     xpx((BigInt.from(1000000) * BigInt.from(amount)).toInt());

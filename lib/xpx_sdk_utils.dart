@@ -96,6 +96,16 @@ Uint8List addUint8List(Uint8List a, Uint8List b) {
   return hash;
 }
 
+List<int> bigIntToArray(BigInt v) {
+  if (v == null) {
+    return [0, 0];
+  }
+  final l = v.toUnsigned(32);
+  final r = (v >> 32).toUnsigned(32);
+
+  return List<int>.from([l.toInt(), r.toInt()]);
+}
+
 List<int> fromBigInt(BigInt v) {
   if (v == null) {
     return [0, 0];

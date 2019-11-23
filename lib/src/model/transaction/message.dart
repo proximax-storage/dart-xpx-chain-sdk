@@ -43,7 +43,7 @@ class PlainMessage extends Message {
     if (_hexadecimal.hasMatch(payload)) {
       return new PlainMessage._(Uint8List.fromList(payload.codeUnits));
     }
-    return new PlainMessage._(Uint8List.fromList(hex.decode(payload)));
+    return new PlainMessage._(Uint8List.fromList(payload.codeUnits));
   }
 
   PlainMessage._(Uint8List payload) : super(MessageType.unencrypted, payload);

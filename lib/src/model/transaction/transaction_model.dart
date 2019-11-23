@@ -187,12 +187,7 @@ class Deadline {
     }
   }
 
-  Int64 getInstant() {
-    final x = Int64((value.microsecondsSinceEpoch * 1000) ~/ 1e6);
-    final y =
-        Int64((_timestampNemesisBlock.microsecondsSinceEpoch * 1e+6) ~/ 1e6);
-    return x - y;
-  }
+  int toBlockchainTimestamp() => value.millisecondsSinceEpoch - _timestampNemesisBlock.millisecondsSinceEpoch;
 }
 
 class SignedTransaction {
@@ -395,24 +390,23 @@ class AbstractTransaction with TransactionInfo {
 
   Map<String, int> _generateVector(fb.Builder builder) {
     final Map<String, int> data = {};
-    data['versionV'] = (networkType << 8) + version;
+    data['versionV'] = (networkType << 24) + version;
     data['signatureV'] = builder.writeListUint8(Uint8List(signatureSize));
     data['signerV'] = builder.writeListUint8(Uint8List(signerSize));
-    data['feeV'] = builder.writeListUint32(fromBigInt(maxFee));
     data['deadlineV'] = builder.writeListUint32(
-        fromBigInt(BigInt.from(deadline.getInstant().toInt())));
+        bigIntToArray(BigInt.from(deadline.toBlockchainTimestamp())));
+    data['feeV'] = builder.writeListUint32(bigIntToArray(maxFee));
     return data;
   }
 
-  void _buildVector(fb.Builder builder, int versionV, int signatureV,
-      int signerV, int deadlineV, int feeV) {
+  void _buildVector(fb.Builder builder, Map<String, int> value) {
     Transactions(builder)
-      ..addSignatureOffset(signatureV)
-      ..addSignerOffset(signerV)
-      ..addVersion(versionV)
+      ..addSignatureOffset(value['signatureV'])
+      ..addSignerOffset(value['signerV'])
+      ..addVersion(value['versionV'])
       ..addType(type._hex)
-      ..addFeeOffset(feeV)
-      ..addDeadlineOffset(deadlineV);
+      ..addFeeOffset(value['feeV'])
+      ..addDeadlineOffset(value['deadlineV']);
   }
 
   AbstractTransaction _getAbstractTransaction() => this;
@@ -545,22 +539,12 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
   Uint8List _generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    // Create message;
-    final payload = this.message.payload;
-    final mp =
-        this.message.type.value == 0 ? builder.writeListUint8(payload) : null;
-    final message = MessageBufferBuilder(builder)
-      ..begin()
-      ..addType(this.message.type.value)
-      ..addPayloadOffset(mp);
-    final int m = message.finish();
-
-// Create mosaics
+    /// Create mosaics
     final List<int> mb = List(mosaics.length);
     int i = 0;
     for (final mosaic in mosaics) {
-      final id = builder.writeListUint32(fromBigInt(mosaic.assetId.id));
-      final amount = builder.writeListUint32(fromBigInt(mosaic.amount));
+      final id = builder.writeListUint32(bigIntToArray(mosaic.assetId.id));
+      final amount = builder.writeListUint32(bigIntToArray(mosaic.amount));
 
       final ms = MosaicBufferBuilder(builder)
         ..begin()
@@ -570,27 +554,31 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
       i++;
     }
 
+    /// Create message;
+    final mp = builder.writeListUint8(this.message.payload);
+    final message = MessageBufferBuilder(builder)
+      ..begin()
+      ..addType(this.message.type.value)
+      ..addPayloadOffset(mp);
+    final int m = message.finish();
+
     final recipient = base32.decode(this.recipient.address);
+
+    final rV = builder.writeListUint8(recipient);
+
+    final mV = builder.writeList(mb);
 
     final vectors = _generateVector(builder);
 
-    final rV = builder.writeListUint8(recipient);
-    final mV = builder.writeList(mb);
-
     final txnBuilder = TransferTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size())
-      ..addSignatureOffset(vectors['signatureV'])
-      ..addSignerOffset(vectors['signerV'])
-      ..addVersion(vectors['versionV'])
-      ..addType(type._hex)
-      ..addFeeOffset(vectors['feeV'])
-      ..addDeadlineOffset(vectors['deadlineV'])
-      ..addRecipientOffset(rV)
-      ..addNumMosaics(mosaics.length)
-      ..addMessageSize(payload.length + 1)
-      ..addMessageOffset(m)
-      ..addMosaicsOffset(mV);
+      ..addSize(_size());
+    _buildVector(builder, vectors);
+    txnBuilder.addRecipientOffset(rV);
+    txnBuilder.addNumMosaics(mosaics.length);
+    txnBuilder.addMessageSize(this.message.payload.length + 1);
+    txnBuilder.addMessageOffset(m);
+    txnBuilder.addMosaicsOffset(mV);
 
     final codedTransfer = txnBuilder.finish();
 
@@ -1107,13 +1095,13 @@ class AggregateTransactionCosignature {
       '}\n';
 
   static List<AggregateTransactionCosignature> listFromDTO(
-      int networkType, List<_AggregateTransactionCosignatureDTO> json) =>
+          int networkType, List<_AggregateTransactionCosignatureDTO> json) =>
       json == null
           ? null
           : json
-          .map((value) =>
-          AggregateTransactionCosignature._fromDTO(networkType, value))
-          .toList();
+              .map((value) =>
+                  AggregateTransactionCosignature._fromDTO(networkType, value))
+              .toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -1239,8 +1227,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
     final txnBuilder = ModifyMultisigAccountTransactionBufferBuilder(builder)
       ..begin()
       ..addSize(_size());
-    _buildVector(builder, vectors['versionV'], vectors['signatureV'],
-        vectors['signerV'], vectors['deadlineV'], vectors['feeV']);
+    _buildVector(builder, vectors);
     txnBuilder.addMinRemovalDelta(minRemovalDelta);
     txnBuilder.addMinApprovalDelta(minApprovalDelta);
     txnBuilder.addNumModifications(modifications.length);
@@ -1331,8 +1318,7 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
     final txnBuilder = LockFundsTransactionBufferBuilder(builder)
       ..begin()
       ..addSize(_size());
-    _buildVector(builder, vectors['versionV'], vectors['signatureV'],
-        vectors['signerV'], vectors['deadlineV'], vectors['feeV']);
+    _buildVector(builder, vectors);
     txnBuilder.addMosaicIdOffset(mV);
     txnBuilder.addMosaicAmountOffset(maV);
     txnBuilder.addDurationOffset(dV);
@@ -1421,8 +1407,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
     final txnBuilder = AliasTransactionBufferBuilder(builder)
       ..begin()
       ..addSize(_size());
-    _buildVector(builder, vectors['versionV'], vectors['signatureV'],
-        vectors['signerV'], vectors['deadlineV'], vectors['feeV']);
+    _buildVector(builder, vectors);
     txnBuilder.addActionType(actionType.index);
     txnBuilder.addNamespaceIdOffset(nV);
     txnBuilder.addAliasIdOffset(aliasV);
@@ -1535,12 +1520,16 @@ class MosaicAliasTransaction extends AliasTransaction {
   }
 }
 
-SignedTransaction _signTransactionWith(Transaction tx, Account a) {
+SignedTransaction _signTransactionWith(
+    Transaction tx, Account a, String generationHash) {
   final s = a.account;
   final b = tx._generateBytes();
-  final sb = Uint8List.fromList(b.skip(100).take(b.length).toList());
+  var sb = Uint8List.fromList(b.skip(100).take(b.length).toList());
+
+  sb = Uint8List.fromList(hex.decode(generationHash) + sb);
 
   final signature = s.sign(sb);
+
   final p = <int>[]
     ..insertAll(0, b.skip(0).take(4))
     ..insertAll(4, signature)
@@ -1549,7 +1538,7 @@ SignedTransaction _signTransactionWith(Transaction tx, Account a) {
 
   final pHex = hex.encode(p);
 
-  final hash = _createTransactionHash(pHex);
+  final hash = _createTransactionHash(pHex, generationHash);
 
   return SignedTransaction(
       tx.getAbstractTransaction().type.raw, pHex.toUpperCase(), hash);
@@ -1575,12 +1564,16 @@ CosignatureSignedTransaction _signCosignatureTransaction(
       signer.publicKey.toString());
 }
 
-String _createTransactionHash(String pHex) {
+String _createTransactionHash(String pHex, String generationHash) {
   final p = hex.decode(pHex);
+
+  final generationHashBytes = hexDecodeStringOdd(generationHash);
 
   final sb = <int>[]
     ..insertAll(0, p.skip(4).take(32))
-    ..insertAll(32, p.skip(68).take(p.length));
+    ..insertAll(32, p.skip(68).take(32))
+    ..insertAll(64, generationHashBytes)
+    ..addAll(p.skip(100));
 
   final r = crypto.HashesSha3_256(Uint8List.fromList(sb));
 

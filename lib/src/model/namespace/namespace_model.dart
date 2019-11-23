@@ -1,5 +1,7 @@
 part of xpx_chain_sdk;
 
+
+
 class NamespaceId extends Id {
   factory NamespaceId({final BigInt id}) {
     if (id == null) {

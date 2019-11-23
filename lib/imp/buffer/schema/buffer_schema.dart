@@ -64,14 +64,8 @@ abstract class AbstractSchemaAttribute {
   }
 
   int offset(int innerObjectPosition, int position, Uint8List buffer) {
-    final f = readUint32(innerObjectPosition, buffer);
-    final vTable =
-        fromBigInt(BigInt.from(innerObjectPosition - f)).elementAt(0);
-    if (position < readUint16(vTable, buffer)) {
-      return readUint16(vTable + position, buffer);
-    }
-
-    return 0;
+    final vTable = innerObjectPosition - readUint32(innerObjectPosition, buffer);
+    return position < readUint16(vTable, buffer) ? readUint16(vTable + position, buffer) :0;
   }
 
   int readUint16(int offset, Uint8List buffer) {

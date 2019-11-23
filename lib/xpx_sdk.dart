@@ -63,5 +63,6 @@ part 'src/model/transaction/transaction_ids.dart';
 part 'src/model/transaction/transaction_status.dart';
 part 'src/model/transaction/announce_transaction_info_dto.dart';
 part 'src/model/varius/u_int64_dto.dart';
+part 'src/model/varius/consts.dart';
 
 _ApiClient defaultApiClient = _ApiClient(null, null);
