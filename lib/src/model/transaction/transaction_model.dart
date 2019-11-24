@@ -187,7 +187,9 @@ class Deadline {
     }
   }
 
-  int toBlockchainTimestamp() => value.millisecondsSinceEpoch - _timestampNemesisBlock.millisecondsSinceEpoch;
+  int toBlockchainTimestamp() =>
+      value.millisecondsSinceEpoch -
+      _timestampNemesisBlock.millisecondsSinceEpoch;
 }
 
 class SignedTransaction {
@@ -399,14 +401,14 @@ class AbstractTransaction with TransactionInfo {
     return data;
   }
 
-  void _buildVector(fb.Builder builder, Map<String, int> value) {
+  void _buildVector(fb.Builder builder, Map<String, int> vector) {
     Transactions(builder)
-      ..addSignatureOffset(value['signatureV'])
-      ..addSignerOffset(value['signerV'])
-      ..addVersion(value['versionV'])
+      ..addSignatureOffset(vector['signatureV'])
+      ..addSignerOffset(vector['signerV'])
+      ..addVersion(vector['versionV'])
       ..addType(type._hex)
-      ..addFeeOffset(value['feeV'])
-      ..addDeadlineOffset(value['deadlineV']);
+      ..addFeeOffset(vector['feeV'])
+      ..addDeadlineOffset(vector['deadlineV']);
   }
 
   AbstractTransaction _getAbstractTransaction() => this;
@@ -701,32 +703,27 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   Uint8List _generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final nV = builder.writeListUint32(bigIntToList(namespaceId.toBigInt()));
+    final nV = builder.writeListUint32(bigIntToArray(namespaceId.toBigInt()));
     int dV;
     if (namespaceType == NamespaceType.root) {
-      dV = builder.writeListUint32(fromBigInt(duration));
+      dV = builder.writeListUint32(bigIntToArray(duration));
     } else {
-      dV = builder.writeListUint32(bigIntToList(parentId.toBigInt()));
+      dV = builder.writeListUint32(bigIntToArray(parentId.toBigInt()));
     }
 
     final n = builder.writeString(namespaceName);
 
-    final vectors = _generateVector(builder);
+    final vector = _generateVector(builder);
 
     final txnBuilder = RegisterNamespaceTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size())
-      ..addSignatureOffset(vectors['signatureV'])
-      ..addSignerOffset(vectors['signerV'])
-      ..addVersion(vectors['versionV'])
-      ..addType(type._hex)
-      ..addFeeOffset(vectors['feeV'])
-      ..addDeadlineOffset(vectors['deadlineV'])
-      ..addNamespaceType(namespaceType.index)
-      ..addDurationParentIdOffset(dV)
-      ..addNamespaceIdOffset(nV)
-      ..addNamespaceNameSize(namespaceName.length)
-      ..addNamespaceNameOffset(n);
+      ..addSize(_size());
+    _buildVector(builder, vector);
+    txnBuilder.addNamespaceType(namespaceType.index);
+    txnBuilder.addDurationParentIdOffset(dV);
+    txnBuilder.addNamespaceIdOffset(nV);
+    txnBuilder.addNamespaceNameSize(namespaceName.length);
+    txnBuilder.addNamespaceNameOffset(n);
     final codedNamespace = txnBuilder.finish();
     return registerNamespaceTransactionSchema()
         .serialize(builder.finish(codedNamespace));

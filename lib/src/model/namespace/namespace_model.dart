@@ -112,7 +112,7 @@ class NamespaceInfo {
     levels = extractLevels(value);
     typeSpace = value._namespace._type;
 
-    alias = value._namespace._alias._address.isNotEmpty
+    alias = value._namespace._alias._address != null
         ? Alias._(
             address: Address.fromEncoded(value._namespace._alias._address))
         : null;

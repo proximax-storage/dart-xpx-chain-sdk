@@ -7,7 +7,7 @@ Schema transferTransactionSchema() {
     _newArrayAttribute('signer', _byteSize),
     _newScalarAttribute('version', _intSize),
     _newScalarAttribute('type', _shortSize),
-    _newArrayAttribute('fee', _intSize),
+    _newArrayAttribute('maxFee', _intSize),
     _newArrayAttribute('deadline', _intSize),
     _newArrayAttribute('recipient', _byteSize),
     _newScalarAttribute('messageSize', _shortSize),

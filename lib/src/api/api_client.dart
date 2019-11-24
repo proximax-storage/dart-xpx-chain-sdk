@@ -10,42 +10,57 @@ class QueryParam {
   String value;
 }
 
-class ApiClient {
-  ApiClient._(this._apiClient)
-      : blockChain = BlockchainRoutesApi(_apiClient),
-        account = AccountRoutesApi(_apiClient),
-        mosaic = MosaicRoutesApi(_apiClient),
-        namespace = NamespaceRoutesApi(_apiClient),
-        network = NetworkRoutesApi(_apiClient),
-        node = NodeRoutesApi(_apiClient),
-        transaction = TransactionRoutesApi(_apiClient);
+class SiriusClient {
+  SiriusClient._(this._apiClient) {
+    blockChain = BlockchainRoutesApi(_apiClient);
+    node = NodeRoutesApi(_apiClient);
+    account = AccountRoutesApi(_apiClient);
+    mosaic = MosaicRoutesApi(_apiClient);
+    namespace = NamespaceRoutesApi(_apiClient);
+    network = NetworkRoutesApi(_apiClient);
+    transaction = TransactionRoutesApi(_apiClient);
+  }
 
-  final _ApiClient _apiClient;
-  final BlockchainRoutesApi blockChain;
-  final AccountRoutesApi account;
-  final MosaicRoutesApi mosaic;
-  final NamespaceRoutesApi namespace;
-  final NetworkRoutesApi network;
-  final NodeRoutesApi node;
-  final TransactionRoutesApi transaction;
+  _ApiClient _apiClient;
+  BlockchainRoutesApi blockChain;
+  AccountRoutesApi account;
+  MosaicRoutesApi mosaic;
+  NamespaceRoutesApi namespace;
+  NetworkRoutesApi network;
+  NodeRoutesApi node;
+  TransactionRoutesApi transaction;
 
-  static ApiClient fromConf(Config conf, http.Client client) {
+  Future<String> get generationHash => _getGenerationHash();
+
+  Future<int> get networkType => _getNetworkType();
+
+  Future<String> _getGenerationHash() async {
+    final BlockInfo hash = await blockChain.getBlockByHeight(BigInt.from(1));
+    return hash.generationHash;
+  }
+
+  Future<int> _getNetworkType() async {
+    final NodeInfo info = await node.getNodeInfo();
+    return NetworkType.getType(info.networkIdentifier);
+  }
+
+  static SiriusClient fromUrl(String baseUrl, http.Client client) {
     // ignore: parameter_assignments
-    conf ??= Config('http://127.0.0.1:3000', publicTest);
+    baseUrl ??= 'http://127.0.0.1:3000';
 
     // ignore: parameter_assignments
     client ??= http.Client();
 
-    final _ApiClient apiClient = _ApiClient(conf, client);
+    final _ApiClient apiClient = _ApiClient(baseUrl, client);
 
-    return ApiClient._(apiClient);
+    return SiriusClient._(apiClient);
   }
 }
 
 class _ApiClient {
-  _ApiClient(this.conf, this._client);
+  _ApiClient(this.baseUrl, this._client);
 
-  Config conf;
+  String baseUrl;
 
   final http.Client _client;
 
@@ -205,7 +220,7 @@ class _ApiClient {
         .map((p) => '${p.name}=${p.value}');
     final String queryString = ps.isNotEmpty ? '?${ps.join('&')}' : '';
 
-    final String url = conf.baseUrl + path + queryString;
+    final String url = baseUrl + path + queryString;
 
     headerParams.addAll(_defaultHeaderMap);
     headerParams['Content-Type'] = contentType;
@@ -239,25 +254,29 @@ class _ApiClient {
     }
   }
 
-  Future<http.Response> get(String path, [Object postBody,
+  Future<http.Response> get(String path,
+          [Object postBody,
           List<QueryParam> queryParams,
           Map<String, String> headerParams,
           Map<String, String> formParams]) async =>
       _response(path, 'GET', postBody, queryParams, headerParams, formParams);
 
-  Future<http.Response> post(String path, [Object postBody,
+  Future<http.Response> post(String path,
+          [Object postBody,
           List<QueryParam> queryParams,
           Map<String, String> headerParams,
           Map<String, String> formParams]) async =>
       _response(path, 'POST', postBody, queryParams, headerParams, formParams);
 
-  Future<http.Response> put(String path, [Object postBody,
-        List<QueryParam> queryParams,
-        Map<String, String> headerParams,
-        Map<String, String> formParams]) async =>
+  Future<http.Response> put(String path,
+          [Object postBody,
+          List<QueryParam> queryParams,
+          Map<String, String> headerParams,
+          Map<String, String> formParams]) async =>
       _response(path, 'PUT', postBody, queryParams, headerParams, formParams);
 
-  Future<http.Response> _response(String path, String method, [Object postBody,
+  Future<http.Response> _response(String path, String method,
+      [Object postBody,
       List<QueryParam> queryParams,
       Map<String, String> headerParams,
       Map<String, String> formParams]) async {
