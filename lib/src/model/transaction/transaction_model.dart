@@ -147,6 +147,16 @@ abstract class Id {
   int toIn() => id.toInt();
 
   BigInt toBigInt() => id;
+
+  List<int> toArray() {
+    if (id == null) {
+      return [0, 0];
+    }
+    final l = id.toUnsigned(32);
+    final r = (id >> 32).toUnsigned(32);
+
+    return List<int>.from([l.toInt(), r.toInt()]);
+  }
 }
 
 class Deadline {
@@ -545,7 +555,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     final List<int> mb = List(mosaics.length);
     int i = 0;
     for (final mosaic in mosaics) {
-      final id = builder.writeListUint32(bigIntToArray(mosaic.assetId.id));
+      final id = builder.writeListUint32(mosaic.assetId.toArray());
       final amount = builder.writeListUint32(bigIntToArray(mosaic.amount));
 
       final ms = MosaicBufferBuilder(builder)
@@ -574,13 +584,13 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
     final txnBuilder = TransferTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size());
+      ..addSize(_size())
+      ..addRecipientOffset(rV)
+      ..addNumMosaics(mosaics.length)
+      ..addMessageSize(this.message.payload.length + 1)
+      ..addMessageOffset(m)
+      ..addMosaicsOffset(mV);
     _buildVector(builder, vectors);
-    txnBuilder.addRecipientOffset(rV);
-    txnBuilder.addNumMosaics(mosaics.length);
-    txnBuilder.addMessageSize(this.message.payload.length + 1);
-    txnBuilder.addMessageOffset(m);
-    txnBuilder.addMosaicsOffset(mV);
 
     final codedTransfer = txnBuilder.finish();
 
@@ -717,16 +727,17 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 
     final txnBuilder = RegisterNamespaceTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size());
+      ..addSize(_size())
+      ..addNamespaceType(namespaceType.index)
+      ..addDurationParentIdOffset(dV)
+      ..addNamespaceIdOffset(nV)
+      ..addNamespaceNameSize(namespaceName.length)
+      ..addNamespaceNameOffset(n);
     _buildVector(builder, vector);
-    txnBuilder.addNamespaceType(namespaceType.index);
-    txnBuilder.addDurationParentIdOffset(dV);
-    txnBuilder.addNamespaceIdOffset(nV);
-    txnBuilder.addNamespaceNameSize(namespaceName.length);
-    txnBuilder.addNamespaceNameOffset(n);
-    final codedNamespace = txnBuilder.finish();
+
+    final codedRegisterNamespace = txnBuilder.finish();
     return registerNamespaceTransactionSchema()
-        .serialize(builder.finish(codedNamespace));
+        .serialize(builder.finish(codedRegisterNamespace));
   }
 
   @override
@@ -807,48 +818,58 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   @override
   AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
 
+  int _buildMosaicPropertyBuffer(
+      fb.Builder builder, List<MosaicProperty> properties) {
+    final List<int> pBuffer = List(properties.length);
+
+    int i = 0;
+    for (final p in properties) {
+      final valueV = builder.writeListUint32(bigIntToArray(p.value));
+
+      final mosaicBuilder = MosaicPropertyBuilder(builder)
+        ..begin()
+        ..addMosaicPropertyId(p.id.index)
+        ..addValueOffset(valueV);
+      pBuffer[i] = mosaicBuilder.finish();
+      i++;
+    }
+    return builder.writeList(pBuffer);
+  }
+
   @override
   Uint8List _generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
     int f = 0;
     if (mosaicProperties.supplyMutable) {
-      f += 1;
+      f += _supplyMutable;
     }
     if (mosaicProperties.transferable) {
-      f += 2;
-    }
-    if (mosaicProperties.optionalProperties == null) {
-      f += 4;
+      f += _transferable;
     }
 
-    final mV = builder.writeListUint32(bigIntToList(mosaicId.id));
+    final mV = builder.writeListUint32(mosaicId.toArray());
 
-    //TODO check duration
-//        final dV = builder.writeListUint32(fromBigInt(0));
+    final pV = _buildMosaicPropertyBuffer(
+        builder, mosaicProperties.optionalProperties);
 
-    final vectors = _generateVector(builder);
+    final vector = _generateVector(builder);
 
     final txnBuilder = MosaicDefinitionTransactionBufferBuilder(builder)
       ..begin()
       ..addSize(_size())
-      ..addSignatureOffset(vectors['signatureV'])
-      ..addSignerOffset(vectors['signerV'])
-      ..addVersion(vectors['versionV'])
-      ..addType(type._hex)
-      ..addFeeOffset(vectors['feeV'])
-      ..addDeadlineOffset(vectors['deadlineV'])
       ..addMosaicNonce(mosaicNonce)
       ..addMosaicIdOffset(mV)
-      ..addNumOptionalProperties(1)
       ..addFlags(f)
       ..addDivisibility(mosaicProperties.divisibility)
-      ..addIndicateDuration(2);
-//      ..addDurationOffset(dV);
-    final codedNamespace = txnBuilder.finish();
+      ..addNumOptionalProperties(mosaicProperties.optionalProperties.length)
+      ..addOptionalPropertiesOffset(pV);
+    _buildVector(builder, vector);
+
+    final codedMosaicDefinition = txnBuilder.finish();
 
     return mosaicDefinitionTransactionSchema()
-        .serialize(builder.finish(codedNamespace));
+        .serialize(builder.finish(codedMosaicDefinition));
   }
 }
 
@@ -930,24 +951,20 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   Uint8List _generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final mV = builder.writeListUint32(bigIntToList(mosaicId.id));
+    final mV = builder.writeListUint32(mosaicId.toArray());
 
-    final dV = builder.writeListUint32(fromBigInt(delta));
+    final dV = builder.writeListUint32(bigIntToArray(delta));
 
-    final vectors = _generateVector(builder);
+    final vector = _generateVector(builder);
 
     final txnBuilder = MosaicSupplyChangeTransactionBufferBuilder(builder)
       ..begin()
       ..addSize(_size())
-      ..addSignatureOffset(vectors['signatureV'])
-      ..addSignerOffset(vectors['signerV'])
-      ..addVersion(vectors['versionV'])
-      ..addType(type._hex)
-      ..addFeeOffset(vectors['feeV'])
-      ..addDeadlineOffset(vectors['deadlineV'])
       ..addMosaicIdOffset(mV)
       ..addDirection(mosaicSupplyType.index)
       ..addDeltaOffset(dV);
+    _buildVector(builder, vector);
+
     final codedMosaicSupply = txnBuilder.finish();
 
     return mosaicSupplyChangeTransactionSchema()
@@ -1047,24 +1064,19 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
     final tV = builder.writeListUint8(Uint8List.fromList(txsBytes));
 
-    final vectors = _generateVector(builder);
+    final vector = _generateVector(builder);
 
     final txnBuilder = AggregateTransactionBufferBuilder(builder)
       ..begin()
       ..addSize(_size())
-      ..addSignatureOffset(vectors['signatureV'])
-      ..addSignerOffset(vectors['signerV'])
-      ..addVersion(vectors['versionV'])
-      ..addType(type._hex)
-      ..addFeeOffset(vectors['feeV'])
-      ..addDeadlineOffset(vectors['deadlineV'])
       ..addTransactionsSize(txsBytes.length)
       ..addTransactionsOffset(tV);
+    _buildVector(builder, vector);
 
-    final codedTransfer = txnBuilder.finish();
+    final codedAggregate = txnBuilder.finish();
 
     return aggregateTransactionSchema()
-        .serialize(builder.finish(codedTransfer));
+        .serialize(builder.finish(codedAggregate));
   }
 }
 
@@ -1223,15 +1235,16 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
 
     final txnBuilder = ModifyMultisigAccountTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size());
+      ..addSize(_size())
+      ..addMinRemovalDelta(minRemovalDelta)
+      ..addMinApprovalDelta(minApprovalDelta)
+      ..addNumModifications(modifications.length)
+      ..addModificationsOffset(mV);
     _buildVector(builder, vectors);
-    txnBuilder.addMinRemovalDelta(minRemovalDelta);
-    txnBuilder.addMinApprovalDelta(minApprovalDelta);
-    txnBuilder.addNumModifications(modifications.length);
-    txnBuilder.addModificationsOffset(mV);
-    final codedTransfer = txnBuilder.finish();
+
+    final codedModifyMultisigAccount = txnBuilder.finish();
     return modifyMultisigAccountTransactionSchema()
-        .serialize(builder.finish(codedTransfer));
+        .serialize(builder.finish(codedModifyMultisigAccount));
   }
 }
 
@@ -1314,16 +1327,17 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
 
     final txnBuilder = LockFundsTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size());
+      ..addSize(_size())
+      ..addMosaicIdOffset(mV)
+      ..addMosaicAmountOffset(maV)
+      ..addDurationOffset(dV)
+      ..addHashOffset(hV);
     _buildVector(builder, vectors);
-    txnBuilder.addMosaicIdOffset(mV);
-    txnBuilder.addMosaicAmountOffset(maV);
-    txnBuilder.addDurationOffset(dV);
-    txnBuilder.addHashOffset(hV);
-    final codedTransfer = txnBuilder.finish();
+
+    final codedLockFunds = txnBuilder.finish();
 
     return lockFundsTransactionSchema()
-        .serialize(builder.finish(codedTransfer));
+        .serialize(builder.finish(codedLockFunds));
   }
 }
 
@@ -1403,13 +1417,14 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
 
     final txnBuilder = AliasTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size());
+      ..addSize(_size())
+      ..addActionType(actionType.index)
+      ..addNamespaceIdOffset(nV)
+      ..addAliasIdOffset(aliasV);
     _buildVector(builder, vectors);
-    txnBuilder.addActionType(actionType.index);
-    txnBuilder.addNamespaceIdOffset(nV);
-    txnBuilder.addAliasIdOffset(aliasV);
 
     final codedAlias = txnBuilder.finish();
+
     return aliasTransactionSchema().serialize(builder.finish(codedAlias));
   }
 }

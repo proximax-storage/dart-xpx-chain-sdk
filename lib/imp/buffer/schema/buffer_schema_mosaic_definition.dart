@@ -14,8 +14,12 @@ Schema mosaicDefinitionTransactionSchema() {
     _newScalarAttribute('numOptionalProperties', _byteSize),
     _newScalarAttribute('flags', _byteSize),
     _newScalarAttribute('divisibility', _byteSize),
-    _newScalarAttribute('indicateDuration', _byteSize),
-    _newArrayAttribute('duration', _intSize)
+    _newTableArrayAttribute(
+        'modifications',
+        Schema([
+          _newScalarAttribute('mosaicPropertyId', _byteSize),
+          _newArrayAttribute('value', _intSize),
+        ]).schemaDefinition)
   ];
   return Schema(schemaDefinition);
 }

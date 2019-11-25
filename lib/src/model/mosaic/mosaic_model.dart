@@ -9,6 +9,20 @@ Mosaic xpxRelative(int amount) =>
 enum MosaicPropertyId {
   mosaicPropertyFlagsId,
   mosaicPropertyDivisibilityId,
+  mosaicPropertyDurationId,
+}
+
+MosaicPropertyId getPropertyId(int value) {
+  switch (value) {
+    case 1:
+      return MosaicPropertyId.mosaicPropertyFlagsId;
+    case 2:
+      return MosaicPropertyId.mosaicPropertyDivisibilityId;
+    case 3:
+      return MosaicPropertyId.mosaicPropertyDurationId;
+    default:
+      return null;
+  }
 }
 
 // ignore: constant_identifier_names
@@ -107,7 +121,6 @@ class MosaicId extends Id {
 }
 
 class MosaicIds {
-
   MosaicIds._();
 
   MosaicIds.fromList(List<MosaicId> list)
@@ -186,11 +199,11 @@ class MosaicProperty {
 
   MosaicProperty._fromDTO(_MosaicPropertyDTO value) {
     if (value == null) return;
-    id = value._id;
+    id = getPropertyId(value._id);
     this.value = value._value.toBigInt();
   }
 
-  int id;
+  MosaicPropertyId id;
 
   BigInt value;
 
@@ -207,25 +220,14 @@ class MosaicProperty {
 
 /// MosaicProperties  structure describes mosaic properties.
 class MosaicProperties {
-  // ignore: avoid_positional_boolean_parameters
-  MosaicProperties(this.supplyMutable, this.transferable,
-      this.optionalProperties, this.divisibility);
-
-//  MosaicProperties.fromJsonOLD(List<UInt64DTO> value)
-//      : assert(json != null, 'mosaic Properties is not valid') {
-//    if (value.length < 3) {
-//      throw _errInvalidMosaicProperties;
-//    }
-//
-//    final flags = '00' + value[0].toBigInt().toRadixString(2);
-//    final bitMapFlags = flags.substring(flags.length - 3, flags.length);
-//
-//    supplyMutable = bitMapFlags[2] == '1';
-//    transferable = bitMapFlags[1] == '1';
-//    optionalProperties = bitMapFlags[0] == '1';
-//    divisibility = value[1].toBigInt().toInt();
-//    duration = value[2].toBigInt();
-//  }
+  MosaicProperties(
+      this.supplyMutable, this.transferable, this.divisibility, BigInt duration,
+      [this.optionalProperties]) {
+    if (duration != null)
+      optionalProperties = List<MosaicProperty>.from([
+        MosaicProperty(MosaicPropertyId.mosaicPropertyDurationId, duration)
+      ]);
+  }
 
   MosaicProperties._fromDTO(List<_MosaicPropertyDTO> value)
       : assert(json != null, 'mosaic Properties is not valid') {
@@ -261,8 +263,8 @@ class MosaicProperties {
 
   bool supplyMutable;
   bool transferable;
-  List<MosaicProperty> optionalProperties;
   int divisibility;
+  List<MosaicProperty> optionalProperties = [];
 
   @override
   String toString() {
