@@ -35,7 +35,7 @@ const numChecksumBytes = 4,
     privateKeySize = 64,
     publicKeySize = 64,
     hash256 = 32,
-    mosaicSize = 8,
+    mosaicIdSize = 8,
     namespaceSize = 8,
     sizeSize = 4,
     signerSize = keySize,
@@ -57,7 +57,7 @@ const numChecksumBytes = 4,
     accountPropertiesAddressModificationSize =
         propertyModificationTypeSize + addressDecodeSize,
     accountPropertiesMosaicModificationSize =
-        propertyModificationTypeSize + mosaicSize,
+        propertyModificationTypeSize + mosaicIdSize,
     accountPropertiesEntityModificationSize =
         propertyModificationTypeSize + typeSize,
     accountPropertyAddressHeader = transactionHeaderSize + propertyTypeSize,
@@ -72,7 +72,7 @@ const numChecksumBytes = 4,
     aggregateBondedHeader = transactionHeaderSize + sizeSize,
     hashTypeSize = 1,
     lockSize = transactionHeaderSize +
-        mosaicSize +
+        mosaicIdSize +
         amountSize +
         durationSize +
         hash256,
@@ -91,14 +91,14 @@ const numChecksumBytes = 4,
         modificationsSizeSize,
     mosaicNonceSize = 4,
     mosaicPropertySize = 4,
-    mosaicDefinitionTransactionSize = transactionHeaderSize +
+    mosaicPropertiesHeaderSize = 3,
+    mosaicDefinitionTransactionHeaderSize = transactionHeaderSize +
         mosaicNonceSize +
-        mosaicSize +
-        durationSize +
-        mosaicPropertySize,
+        mosaicIdSize +
+        mosaicPropertiesHeaderSize,
     mosaicSupplyDirectionSize = 1,
     mosaicSupplyChangeTransactionSize = transactionHeaderSize +
-        mosaicSize +
+        mosaicIdSize +
         amountSize +
         mosaicSupplyDirectionSize,
     namespaceTypeSize = 1,
@@ -109,7 +109,7 @@ const numChecksumBytes = 4,
         namespaceSize +
         namespaceNameSizeSize,
     secretLockSize = transactionHeaderSize +
-        mosaicSize +
+        mosaicIdSize +
         amountSize +
         durationSize +
         hashTypeSize +

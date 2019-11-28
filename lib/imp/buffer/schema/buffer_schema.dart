@@ -64,8 +64,11 @@ abstract class AbstractSchemaAttribute {
   }
 
   int offset(int innerObjectPosition, int position, Uint8List buffer) {
-    final vTable = innerObjectPosition - readUint32(innerObjectPosition, buffer);
-    return position < readUint16(vTable, buffer) ? readUint16(vTable + position, buffer) :0;
+    final vTable =
+        innerObjectPosition - readUint32(innerObjectPosition, buffer);
+    return position < readUint16(vTable, buffer)
+        ? readUint16(vTable + position, buffer)
+        : 0;
   }
 
   int readUint16(int offset, Uint8List buffer) {
@@ -108,6 +111,9 @@ abstract class AbstractSchemaAttribute {
 
   int indirect(int offset, Uint8List buffer) =>
       offset + readUint32(offset, buffer);
+
+  @override
+  String toString() =>'$name';
 }
 
 class ArrayAttribute extends AbstractSchemaAttribute
@@ -120,6 +126,9 @@ class ArrayAttribute extends AbstractSchemaAttribute
   Uint8List serialize(
           Uint8List buffer, int position, int innerObjectPosition) =>
       findVector(innerObjectPosition, position, buffer, size);
+
+  @override
+  String toString() =>'$name, $size';
 }
 
 class ScalarAttribute extends AbstractSchemaAttribute
@@ -132,6 +141,9 @@ class ScalarAttribute extends AbstractSchemaAttribute
   Uint8List serialize(
           Uint8List buffer, int position, int innerObjectPosition) =>
       findParam(innerObjectPosition, position, buffer, size);
+
+  @override
+  String toString() =>'$name, $size';
 }
 
 class TableArrayAttribute extends AbstractSchemaAttribute
@@ -205,3 +217,13 @@ TableArrayAttribute _newTableArrayAttribute(
 
 TableAttribute _newTableAttribute(String name, List<SchemaAttribute> schema) =>
     TableAttribute(name, schema);
+
+List<SchemaAttribute> commonSchema() => [
+      _newScalarAttribute('size', _intSize),
+      _newArrayAttribute('signature', _byteSize),
+      _newArrayAttribute('signer', _byteSize),
+      _newScalarAttribute('version', _intSize),
+      _newScalarAttribute('type', _shortSize),
+      _newArrayAttribute('maxFee', _intSize),
+      _newArrayAttribute('deadline', _intSize),
+    ];

@@ -7,7 +7,6 @@ class Message {
     if (value?._payload == null) {
       return;
     }
-
     if (_hexadecimal.hasMatch(value._payload)) {
       payload = hex.decode(value._payload);
     } else {

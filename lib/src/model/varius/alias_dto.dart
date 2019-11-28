@@ -18,6 +18,7 @@ class _AddressAliasDTO extends _AbstractTransactionDTO {
   String _address;
   UInt64DTO _namespaceId;
 
+  @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['aliasAction'] = _aliasAction;

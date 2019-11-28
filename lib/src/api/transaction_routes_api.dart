@@ -64,7 +64,7 @@ class TransactionRoutesApi {
     // create path and map variables
     final String path = _transactionRoute
         .replaceAll('{format}', 'json')
-        .replaceAll('{transactionId}', transactionId.toString());
+        .replaceAll('{transactionId}', transactionId);
 
     final response = await apiClient.get(path);
     if (response.statusCode >= 400) {
@@ -82,8 +82,8 @@ class TransactionRoutesApi {
   /// Returns a List of [Transaction] information for a given
   /// List of transactionIds.
   Future<List<Transaction>> getTransactions(
-      TransactionIds transactionIds) async {
-    final Object postBody = transactionIds;
+      List<String> transactionIds) async {
+    final Object postBody = TransactionIds.fromList(transactionIds);
 
     // verify required params are set
     if (transactionIds == null) {

@@ -21,7 +21,7 @@ class SiriusClient {
     transaction = TransactionRoutesApi(_apiClient);
   }
 
-  _ApiClient _apiClient;
+  final _ApiClient _apiClient;
   BlockchainRoutesApi blockChain;
   AccountRoutesApi account;
   MosaicRoutesApi mosaic;

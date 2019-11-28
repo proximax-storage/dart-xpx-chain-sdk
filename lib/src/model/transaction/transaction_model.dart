@@ -502,7 +502,9 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
         super._fromDto(value._transaction, value._meta) {
     mosaics = Mosaic.listFromDTO(value._transaction._mosaics);
     recipient = Address.fromEncoded(value._transaction._recipient);
-    message = Message._fromDTO(value._transaction._message);
+    message = value._transaction._message != null
+        ? Message._fromDTO(value._transaction._message)
+        : null;
   }
 
   List<Mosaic> mosaics;
@@ -516,13 +518,19 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
           : json.map((value) => TransferTransaction._fromDTO(value)).toList();
 
   @override
-  String toString() => '{\n'
-      '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
-      '\t"recipient": $recipient,\n'
-      '\t"mosaics": ${mosaics.map((v) => v.toJson()).toList()},\n'
-      '\t"message'
-      ': $message\n'
-      '}\n';
+  String toString() {
+    final sb = StringBuffer()
+      ..writeln('\n{')
+      ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()}')
+      ..writeln('\t"recipient": $recipient')
+      ..writeln('\t"mosaics": ${mosaics.map((v) => v.toJson()).toList()},');
+    if (message != null) {
+      print(message);
+      sb.writeln('\t"message": $message,');
+    }
+    sb.write('}\n');
+    return sb.toString();
+  }
 
   @override
   Map<String, dynamic> toJson() {
@@ -541,7 +549,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
   @override
   int _size() =>
       transferHeaderSize +
-      (mosaicSize + amountSize) * mosaics.length +
+      (mosaicIdSize + amountSize) * mosaics.length +
       messageSize();
 
   @override
@@ -813,13 +821,14 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   }
 
   @override
-  int _size() => mosaicDefinitionTransactionSize;
+  int _size() => mosaicDefinitionTransactionHeaderSize;
 
   @override
   AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
 
   int _buildMosaicPropertyBuffer(
       fb.Builder builder, List<MosaicProperty> properties) {
+    if (properties == null) return 0;
     final List<int> pBuffer = List(properties.length);
 
     int i = 0;
@@ -864,6 +873,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       ..addDivisibility(mosaicProperties.divisibility)
       ..addNumOptionalProperties(mosaicProperties.optionalProperties.length)
       ..addOptionalPropertiesOffset(pV);
+
     _buildVector(builder, vector);
 
     final codedMosaicDefinition = txnBuilder.finish();
@@ -1313,7 +1323,7 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
   Uint8List _generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final mV = builder.writeListUint32(bigIntToList(mosaic.assetId.toBigInt()));
+    final mV = builder.writeListUint32(mosaic.assetId.toArray());
 
     final maV = builder.writeListUint32(fromBigInt(mosaic.amount));
 
@@ -1411,7 +1421,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
   Uint8List _generateBytes() => null;
 
   Uint8List _generateAbstractBytes(fb.Builder builder, int aliasV) {
-    final nV = builder.writeListUint32(bigIntToList(namespaceId.toBigInt()));
+    final nV = builder.writeListUint32(namespaceId.toArray());
 
     final vectors = _generateVector(builder);
 
@@ -1463,7 +1473,7 @@ class AddressAliasTransaction extends AliasTransaction {
   }
 
   @override
-  int _size() => super._size() + mosaicSize;
+  int _size() => super._size() + mosaicIdSize;
 
   @override
   AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
@@ -1514,7 +1524,7 @@ class MosaicAliasTransaction extends AliasTransaction {
   }
 
   @override
-  int _size() => super._size() + mosaicSize;
+  int _size() => super._size() + mosaicIdSize;
 
   @override
   AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
@@ -1522,7 +1532,7 @@ class MosaicAliasTransaction extends AliasTransaction {
   @override
   Uint8List _generateBytes() {
     final builder = fb.Builder(initialSize: 0);
-    final buffer = Uint8List(mosaicSize).buffer;
+    final buffer = Uint8List(mosaicIdSize).buffer;
     final bufferData = ByteData.view(buffer)
       ..setUint64(0, mosaicId.toIn(), Endian.little);
 
@@ -1603,14 +1613,14 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
 
   final List<int> rB = <int>[0, 0, 0, 0];
   rB.insertAll(4, sb.take(32));
-  rB.insertAll(rB.length, b.skip(100).take(4));
-  rB.insertAll(rB.length, b.skip(100 + 2 + 2 + 16).take(b.length - 120));
 
-  final s = crypto.encodeBigInt(BigInt.from(b.length - 64 - 16));
+  rB.insertAll(rB.length, b.skip(100).take(versionSize + typeSize));
 
-  final sr = s.reversed;
+  rB.insertAll(signerSize + sizeSize + versionSize + typeSize,
+      b.skip(transactionHeaderSize));
+  final s = Buffer.littleEndian(4)..writeInt32(b.length - 64 - 16);
 
-  rB.replaceRange(0, s.length, sr);
+  rB.replaceRange(0, s.out.length, s.out);
 
   return Uint8List.fromList(rB);
 }

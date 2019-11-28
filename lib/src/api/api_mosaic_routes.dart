@@ -20,6 +20,7 @@ class MosaicRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{mosaicId}', nsId);
 
+    print(path);
     final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {

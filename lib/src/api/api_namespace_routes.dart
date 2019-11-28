@@ -97,9 +97,9 @@ class NamespaceRoutesApi {
   /// Get namespaces for given List of addresses
   ///
   /// Gets namespaces for a given List of addresses.
-  Future<List<NamespaceInfo>> getNamespacesFromAccounts(Addresses addresses,
+  Future<List<NamespaceInfo>> getNamespacesFromAccounts(List<Address> addresses,
       {int pageSize, String id}) async {
-    final Object postBody = addresses;
+    final Object postBody = Addresses.fromList(addresses);
 
     // verify required params are set
     if (addresses == null) {

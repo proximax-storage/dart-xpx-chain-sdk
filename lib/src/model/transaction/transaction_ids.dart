@@ -8,6 +8,11 @@ class TransactionIds {
     transactionIds = (json['transactionIds']).map((item) => item).toList();
   }
 
+  TransactionIds.fromList(List<String> list)
+      : assert(json != null, 'json must not be null') {
+    transactionIds = list.map((item) => item).toList();
+  }
+
   List<String> transactionIds = [];
 
   @override

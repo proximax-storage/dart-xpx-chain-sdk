@@ -1,38 +1,38 @@
 part of xpx_chain_sdk.buffer;
 
 class MosaicProperty {
-  MosaicProperty._(this._bc, this._bcOffset);
   factory MosaicProperty(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
+
+  MosaicProperty._(this._bc, this._bcOffset);
 
   static const fb.Reader<MosaicProperty> reader = const _MosaicPropertyReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  int get mosaicPropertyId => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get value => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 6, null);
+  int get mosaicPropertyId =>
+      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
+  List<int> get value => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 6, null);
 
   @override
-  String toString() {
-    return 'MosaicProperty{mosaicPropertyId: $mosaicPropertyId, value: $value}';
-  }
+  String toString() =>
+      'MosaicProperty{mosaicPropertyId: $mosaicPropertyId, value: $value}';
 }
 
 class _MosaicPropertyReader extends fb.TableReader<MosaicProperty> {
   const _MosaicPropertyReader();
 
   @override
-  MosaicProperty createObject(fb.BufferContext bc, int offset) => 
-    new MosaicProperty._(bc, offset);
+  MosaicProperty createObject(fb.BufferContext bc, int offset) =>
+      new MosaicProperty._(bc, offset);
 }
 
 class MosaicPropertyBuilder {
-  MosaicPropertyBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  MosaicPropertyBuilder(this.fbBuilder) : assert(fbBuilder != null);
 
   final fb.Builder fbBuilder;
 
@@ -44,35 +44,31 @@ class MosaicPropertyBuilder {
     fbBuilder.addUint8(0, mosaicPropertyId);
     return fbBuilder.offset;
   }
+
   int addValueOffset(int offset) {
     fbBuilder.addOffset(1, offset);
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class MosaicPropertyObjectBuilder extends fb.ObjectBuilder {
-  final int _mosaicPropertyId;
-  final List<int> _value;
-
   MosaicPropertyObjectBuilder({
     int mosaicPropertyId,
     List<int> value,
-  })
-      : _mosaicPropertyId = mosaicPropertyId,
+  })  : _mosaicPropertyId = mosaicPropertyId,
         _value = value;
+
+  final int _mosaicPropertyId;
+  final List<int> _value;
 
   /// Finish building, and store into the [fbBuilder].
   @override
-  int finish(
-    fb.Builder fbBuilder) {
+  int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null);
-    final int valueOffset = _value?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_value)
-        : null;
+    final int valueOffset =
+        _value?.isNotEmpty == true ? fbBuilder.writeListUint32(_value) : null;
 
     fbBuilder.startTable();
     fbBuilder.addUint8(0, _mosaicPropertyId);
@@ -85,55 +81,68 @@ class MosaicPropertyObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = new fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }
+
 class MosaicDefinitionTransactionBuffer {
-  MosaicDefinitionTransactionBuffer._(this._bc, this._bcOffset);
   factory MosaicDefinitionTransactionBuffer(List<int> bytes) {
-    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<MosaicDefinitionTransactionBuffer> reader = const _MosaicDefinitionTransactionBufferReader();
+  MosaicDefinitionTransactionBuffer._(this._bc, this._bcOffset);
+
+  static const fb.Reader<MosaicDefinitionTransactionBuffer> reader =
+      const _MosaicDefinitionTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 8, null);
+  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+      .vTableGet(_bc, _bcOffset, 8, null);
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 16, null);
-  int get mosaicNonce => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 18, 0);
-  List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 20, null);
-  int get numOptionalProperties => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
+  List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 16, null);
+  int get mosaicNonce =>
+      const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 18, 0);
+  List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 20, null);
+  int get numOptionalProperties =>
+      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
   int get flags => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 24, 0);
-  int get divisibility => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 26, 0);
-  List<MosaicProperty> get optionalProperties => const fb.ListReader<MosaicProperty>(MosaicProperty.reader).vTableGet(_bc, _bcOffset, 28, null);
+  int get divisibility =>
+      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 26, 0);
+  List<MosaicProperty> get optionalProperties =>
+      const fb.ListReader<MosaicProperty>(MosaicProperty.reader)
+          .vTableGet(_bc, _bcOffset, 28, null);
 
   @override
-  String toString() {
-    return 'MosaicDefinitionTransactionBuffer{size: $size, signature: $signature, signer: $signer, version: $version, type: $type, maxFee: $maxFee, deadline: $deadline, mosaicNonce: $mosaicNonce, mosaicId: $mosaicId, numOptionalProperties: $numOptionalProperties, flags: $flags, divisibility: $divisibility, optionalProperties: $optionalProperties}';
-  }
+  String toString() =>
+      'MosaicDefinitionTransactionBuffer{size: $size, signature: $signature, signer: $signer, version: $version, type: $type, maxFee: $maxFee, deadline: $deadline, mosaicNonce: $mosaicNonce, mosaicId: $mosaicId, numOptionalProperties: $numOptionalProperties, flags: $flags, divisibility: $divisibility, optionalProperties: $optionalProperties}';
 }
 
-class _MosaicDefinitionTransactionBufferReader extends fb.TableReader<MosaicDefinitionTransactionBuffer> {
+class _MosaicDefinitionTransactionBufferReader
+    extends fb.TableReader<MosaicDefinitionTransactionBuffer> {
   const _MosaicDefinitionTransactionBufferReader();
 
   @override
-  MosaicDefinitionTransactionBuffer createObject(fb.BufferContext bc, int offset) => 
-    new MosaicDefinitionTransactionBuffer._(bc, offset);
+  MosaicDefinitionTransactionBuffer createObject(
+          fb.BufferContext bc, int offset) =>
+      new MosaicDefinitionTransactionBuffer._(bc, offset);
 }
 
 class MosaicDefinitionTransactionBufferBuilder {
-  MosaicDefinitionTransactionBufferBuilder(this.fbBuilder) {
-    assert(fbBuilder != null);
-  }
+  MosaicDefinitionTransactionBufferBuilder(this.fbBuilder)
+      : assert(fbBuilder != null);
 
   final fb.Builder fbBuilder;
 
@@ -145,75 +154,71 @@ class MosaicDefinitionTransactionBufferBuilder {
     fbBuilder.addUint32(0, size);
     return fbBuilder.offset;
   }
+
   int addSignatureOffset(int offset) {
     fbBuilder.addOffset(1, offset);
     return fbBuilder.offset;
   }
+
   int addSignerOffset(int offset) {
     fbBuilder.addOffset(2, offset);
     return fbBuilder.offset;
   }
+
   int addVersion(int version) {
     fbBuilder.addUint16(3, version);
     return fbBuilder.offset;
   }
+
   int addType(int type) {
     fbBuilder.addUint16(4, type);
     return fbBuilder.offset;
   }
+
   int addMaxFeeOffset(int offset) {
     fbBuilder.addOffset(5, offset);
     return fbBuilder.offset;
   }
+
   int addDeadlineOffset(int offset) {
     fbBuilder.addOffset(6, offset);
     return fbBuilder.offset;
   }
+
   int addMosaicNonce(int mosaicNonce) {
     fbBuilder.addUint32(7, mosaicNonce);
     return fbBuilder.offset;
   }
+
   int addMosaicIdOffset(int offset) {
     fbBuilder.addOffset(8, offset);
     return fbBuilder.offset;
   }
+
   int addNumOptionalProperties(int numOptionalProperties) {
     fbBuilder.addUint8(9, numOptionalProperties);
     return fbBuilder.offset;
   }
+
   int addFlags(int flags) {
     fbBuilder.addUint8(10, flags);
     return fbBuilder.offset;
   }
+
   int addDivisibility(int divisibility) {
     fbBuilder.addUint8(11, divisibility);
     return fbBuilder.offset;
   }
+
   int addOptionalPropertiesOffset(int offset) {
     fbBuilder.addOffset(12, offset);
     return fbBuilder.offset;
   }
 
-  int finish() {
-    return fbBuilder.endTable();
-  }
+  int finish() => fbBuilder.endTable();
 }
 
 class MosaicDefinitionTransactionBufferObjectBuilder extends fb.ObjectBuilder {
-  final int _size;
-  final List<int> _signature;
-  final List<int> _signer;
-  final int _version;
-  final int _type;
-  final List<int> _maxFee;
-  final List<int> _deadline;
-  final int _mosaicNonce;
-  final List<int> _mosaicId;
-  final int _numOptionalProperties;
-  final int _flags;
-  final int _divisibility;
-  final List<MosaicPropertyObjectBuilder> _optionalProperties;
-
   MosaicDefinitionTransactionBufferObjectBuilder({
     int size,
     List<int> signature,
@@ -228,8 +233,7 @@ class MosaicDefinitionTransactionBufferObjectBuilder extends fb.ObjectBuilder {
     int flags,
     int divisibility,
     List<MosaicPropertyObjectBuilder> optionalProperties,
-  })
-      : _size = size,
+  })  : _size = size,
         _signature = signature,
         _signer = signer,
         _version = version,
@@ -243,20 +247,31 @@ class MosaicDefinitionTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         _divisibility = divisibility,
         _optionalProperties = optionalProperties;
 
+  final int _size;
+  final List<int> _signature;
+  final List<int> _signer;
+  final int _version;
+  final int _type;
+  final List<int> _maxFee;
+  final List<int> _deadline;
+  final int _mosaicNonce;
+  final List<int> _mosaicId;
+  final int _numOptionalProperties;
+  final int _flags;
+  final int _divisibility;
+  final List<MosaicPropertyObjectBuilder> _optionalProperties;
+
   /// Finish building, and store into the [fbBuilder].
   @override
-  int finish(
-    fb.Builder fbBuilder) {
+  int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null);
     final int signatureOffset = _signature?.isNotEmpty == true
         ? fbBuilder.writeListUint8(_signature)
         : null;
-    final int signerOffset = _signer?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_signer)
-        : null;
-    final int maxFeeOffset = _maxFee?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_maxFee)
-        : null;
+    final int signerOffset =
+        _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
+    final int maxFeeOffset =
+        _maxFee?.isNotEmpty == true ? fbBuilder.writeListUint32(_maxFee) : null;
     final int deadlineOffset = _deadline?.isNotEmpty == true
         ? fbBuilder.writeListUint32(_deadline)
         : null;
@@ -264,7 +279,9 @@ class MosaicDefinitionTransactionBufferObjectBuilder extends fb.ObjectBuilder {
         ? fbBuilder.writeListUint32(_mosaicId)
         : null;
     final int optionalPropertiesOffset = _optionalProperties?.isNotEmpty == true
-        ? fbBuilder.writeList(_optionalProperties.map((b) => b.getOrCreateOffset(fbBuilder)).toList())
+        ? fbBuilder.writeList(_optionalProperties
+            .map((b) => b.getOrCreateOffset(fbBuilder))
+            .toList())
         : null;
 
     fbBuilder.startTable();
@@ -299,8 +316,8 @@ class MosaicDefinitionTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    fb.Builder fbBuilder = new fb.Builder();
-    int offset = finish(fbBuilder);
+    final fb.Builder fbBuilder = new fb.Builder();
+    final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
 }

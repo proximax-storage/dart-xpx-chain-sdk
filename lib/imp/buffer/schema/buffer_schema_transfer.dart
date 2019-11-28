@@ -2,13 +2,6 @@ part of xpx_chain_sdk.buffer;
 
 Schema transferTransactionSchema() {
   final List<SchemaAttribute> schemaDefinition = [
-    _newScalarAttribute('size', _intSize),
-    _newArrayAttribute('signature', _byteSize),
-    _newArrayAttribute('signer', _byteSize),
-    _newScalarAttribute('version', _intSize),
-    _newScalarAttribute('type', _shortSize),
-    _newArrayAttribute('maxFee', _intSize),
-    _newArrayAttribute('deadline', _intSize),
     _newArrayAttribute('recipient', _byteSize),
     _newScalarAttribute('messageSize', _shortSize),
     _newScalarAttribute('numMosaics', _byteSize),
@@ -25,5 +18,8 @@ Schema transferTransactionSchema() {
           _newArrayAttribute('amount', _intSize),
         ]).schemaDefinition)
   ];
+
+  schemaDefinition.insertAll(0, commonSchema());
+
   return Schema(schemaDefinition);
 }

@@ -119,12 +119,4 @@ List<int> fromBigInt(BigInt v) {
   return r;
 }
 
-List<int> bigIntToList(BigInt v) {
-  final u64 = Int64.fromBytesBigEndian(crypto.encodeBigInt(v));
-
-  final l = u64 & 0xFFFFFFFF;
-  final r = u64 >> 32 & 0xFFFFFFFF;
-  return [l.toInt(), r.toInt()];
-}
-
 bool hasBits(BigInt number, int bits) => number.toInt() & bits == bits;

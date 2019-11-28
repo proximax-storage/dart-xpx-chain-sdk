@@ -223,10 +223,11 @@ class MosaicProperties {
   MosaicProperties(
       this.supplyMutable, this.transferable, this.divisibility, BigInt duration,
       [this.optionalProperties]) {
-    if (duration != null)
-      optionalProperties = List<MosaicProperty>.from([
-        MosaicProperty(MosaicPropertyId.mosaicPropertyDurationId, duration)
-      ]);
+    optionalProperties = duration.toInt() != 0
+        ? List<MosaicProperty>.from([
+            MosaicProperty(MosaicPropertyId.mosaicPropertyDurationId, duration)
+          ])
+        : List(0);
   }
 
   MosaicProperties._fromDTO(List<_MosaicPropertyDTO> value)
@@ -264,7 +265,7 @@ class MosaicProperties {
   bool supplyMutable;
   bool transferable;
   int divisibility;
-  List<MosaicProperty> optionalProperties = [];
+  List<MosaicProperty> optionalProperties;
 
   @override
   String toString() {
