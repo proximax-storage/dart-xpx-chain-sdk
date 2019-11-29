@@ -146,8 +146,7 @@ class MosaicInfo {
     mosaicId = MosaicId(id: value._mosaic._mosaicId.toBigInt());
     supply = value._mosaic._supply.toBigInt();
     height = value._mosaic._height.toBigInt();
-    owner =
-        PublicAccount.fromPublicKey(value._mosaic._owner, configNetworkType);
+    owner = value._mosaic._owner;
     revision = value._mosaic._revision;
     properties = MosaicProperties._fromDTO(value._mosaic._properties);
   }
@@ -155,19 +154,23 @@ class MosaicInfo {
   MosaicId mosaicId;
   BigInt supply;
   BigInt height;
-  PublicAccount owner;
+  String owner;
   int revision;
   MosaicProperties properties;
 
   @override
-  String toString() => '\n\t{\n'
-      '\t"assetId": ${mosaicId.toHex()},\n'
-      '\t"supply": $supply\n'
-      '\t"height": $height\n'
-      '\t"owner": $owner\n'
-      '\t"revision": $revision\n'
-      '\t"properties": $properties\n'
-      '\t}';
+  String toString() {
+    final sb = StringBuffer()
+      ..writeln('{')
+      ..writeln('\t"assetId": ${mosaicId.toHex()},')
+      ..writeln('\t"supply": $supply,')
+      ..writeln('\t"height": $height,')
+      ..writeln('\t"owner": $owner,')
+      ..writeln('\t"revision": $revision,')
+      ..writeln('\t"properties": $properties');
+    sb.write('}');
+    return sb.toString();
+  }
 
   static List<MosaicInfo> listFromDTO(List<_MosaicInfoDTO> json) => json == null
       ? null
@@ -272,10 +275,12 @@ class MosaicProperties {
     final sb = StringBuffer()
       ..writeln('{')
       ..writeln('\t\t"supplyMutable": $supplyMutable,')
-      ..writeln('\t\t"transferable": $transferable,')
-      ..writeln('\t\t"optionalProperties": $optionalProperties,')
-      ..writeln('\t\t"divisibility": $divisibility,')
-      ..write('\t}');
+      ..writeln('\t\t"transferable": $transferable,');
+    if (optionalProperties.isNotEmpty) {
+      sb.writeln('\t\t"optionalProperties": $optionalProperties,');
+    }
+    sb.writeln('\t\t"divisibility": $divisibility');
+    sb.write('\t}');
     return sb.toString();
   }
 }

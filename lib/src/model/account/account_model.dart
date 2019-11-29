@@ -35,7 +35,12 @@ class Account {
   Map<String, dynamic> toJson() =>
       {'publicAccount': publicAccount, 'account': account};
 
-  SignedTransaction sign(Transaction tx, String generationHash) => _signTransactionWith(tx, this, generationHash);
+  SignedTransaction sign(Transaction tx, String generationHash) =>
+      _signTransactionWith(tx, this, generationHash);
+
+  SignedTransaction signWithCosignatures(
+          Transaction tx, List<Account> cosignatories, String generationHash) =>
+      _signTransactionWithCosignatures(tx, this, cosignatories, generationHash);
 
   CosignatureSignedTransaction signCosignatureTransaction(
           CosignatureTransaction tx) =>

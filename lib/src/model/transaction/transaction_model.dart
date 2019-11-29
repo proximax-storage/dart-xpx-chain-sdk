@@ -1566,6 +1566,29 @@ SignedTransaction _signTransactionWith(
       tx.getAbstractTransaction().type.raw, pHex.toUpperCase(), hash);
 }
 
+SignedTransaction _signTransactionWithCosignatures(Transaction tx, Account a,
+    List<Account> cosignatories, String generationHash) {
+  final stx = _signTransactionWith(tx, a, generationHash);
+
+  final p = StringBuffer(stx.payload);
+
+  for (final cos in cosignatories) {
+    final s = cos.account;
+    final sb = s.sign(hexDecodeStringOdd(stx.hash));
+    p.write(cos.publicAccount._publicKey + hex.encode(sb));
+  }
+
+  final List<int> i = <int>[];
+  i.addAll(hex.decode(p.toString()));
+
+  final s = Buffer.littleEndian(4)..writeInt32(i.length);
+
+  i.replaceRange(0, s.out.length, s.out);
+
+  return SignedTransaction(tx.getAbstractTransaction().type.raw,
+      hex.encode(i).toUpperCase(), stx.hash);
+}
+
 CosignatureSignedTransaction _signCosignatureTransaction(
     CosignatureTransaction tx, Account a) {
   if (tx._transactionToCosign.getTransactionInfo == null ||
@@ -1631,6 +1654,7 @@ int cosignatoryModificationArrayToBuffer(
   for (final m in modifications) {
     final b = hexDecodeStringOdd(m.publicAccount.publicKey);
     final pV = builder.writeListUint8(b);
+
     final txnBuilder = CosignatoryModificationBufferBuilder(builder)
       ..begin()
       ..addType(m.type.index)

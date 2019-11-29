@@ -20,7 +20,6 @@ class MosaicRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{mosaicId}', nsId);
 
-    print(path);
     final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
@@ -36,8 +35,8 @@ class MosaicRoutesApi {
   /// Get mosaics information for an array of mosaics
   ///
   /// Gets an List of [MosaicInfo].
-  Future<List<MosaicInfo>> getMosaics(MosaicIds mosaicIds) async {
-    final Object postBody = mosaicIds;
+  Future<List<MosaicInfo>> getMosaics(List<MosaicId> mosaicIds) async {
+    final Object postBody = MosaicIds.fromList(mosaicIds);
 
     // verify required params are set
     if (mosaicIds == null) {

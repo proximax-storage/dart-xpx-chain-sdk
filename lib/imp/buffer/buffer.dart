@@ -3,6 +3,7 @@ library xpx_chain_sdk.buffer;
 import 'dart:typed_data';
 
 import 'package:flat_buffers/flat_buffers.dart' as fb;
+import 'package:xpx_chain_sdk/xpx_sdk.dart' as endian;
 
 part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema.dart';
 part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_transfer.dart';

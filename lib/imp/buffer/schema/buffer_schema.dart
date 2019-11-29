@@ -72,12 +72,12 @@ abstract class AbstractSchemaAttribute {
   }
 
   int readUint16(int offset, Uint8List buffer) {
-    final b = buffer.getRange(offset, 2 + offset).toList();
+    final b = buffer.getRange(offset.toUnsigned(32), 2 + offset.toUnsigned(32)).toList();
     return (b[0]) | (b[1]) << 8;
   }
 
   int readUint32(int offset, Uint8List buffer) {
-    final b = buffer.getRange(offset, offset + 4).toList();
+    final b = buffer.getRange(offset.toUnsigned(32), offset.toUnsigned(32) + 4).toList();
     return (b[0]) | (b[1]) << 8 | (b[2]) << 16 | (b[3]) << 24;
   }
 
