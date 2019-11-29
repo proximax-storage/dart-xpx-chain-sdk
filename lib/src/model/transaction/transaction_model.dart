@@ -275,10 +275,14 @@ class MultisigCosignatoryModification {
   PublicAccount publicAccount;
 
   @override
-  String toString() => '{\n'
-      '\t"type": ${type.index}\n'
-      '\t"publicAccount": $publicAccount\n'
-      '}\n';
+  String toString() {
+    final sb = StringBuffer()
+      ..writeln('{')
+      ..writeln('\t"type": ${type.index},')
+      ..writeln('\t"publicAccount": $publicAccount')
+      ..write('}');
+    return sb.toString();
+  }
 
   static List<MultisigCosignatoryModification> listFromDTO(
           int networkType, List<_MultisigCosignatoryModificationDTO> json) =>
@@ -1134,7 +1138,8 @@ class AggregateTransactionCosignature {
 /// [CosignatureTransaction] are used to sign announced aggregate bonded transactions with missing cosignatures.
 ///
 class CosignatureTransaction {
-  CosignatureTransaction(this._transactionToCosign);
+  CosignatureTransaction(this._transactionToCosign)
+      : assert(_transactionToCosign != null, 'txToCosign must not be null');
 
   final AggregateTransaction _transactionToCosign;
 
@@ -1208,12 +1213,16 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
               .toList();
 
   @override
-  String toString() => '{\n'
-      '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
-      '\t"minApproval": $minApprovalDelta,\n'
-      '\t"cosignatures": $minRemovalDelta,\n'
-      '\t"modifications": $modifications,\n'
-      '}\n';
+  String toString() {
+    final sb = StringBuffer()
+      ..writeln('{')
+      ..writeln('\t"abstractTransaction": ${_abstractTransactionToString()}')
+      ..writeln('\t"minApproval": $minApprovalDelta,')
+      ..writeln('\t"minRemoval": $minRemovalDelta,')
+      ..writeln('\t"modifications": $modifications')
+      ..write('}');
+    return sb.toString();
+  }
 
   @override
   Map<String, dynamic> toJson() {
