@@ -56,6 +56,7 @@ class _AccountNames {
     _address = json['address'];
     _names = (json['names'] == null) ?
     null :
+    // ignore: avoid_as
     (json['names'] as List).cast<String>();
   }
 

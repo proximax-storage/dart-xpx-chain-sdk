@@ -224,6 +224,7 @@ class MosaicProperty {
 /// MosaicProperties  structure describes mosaic properties.
 class MosaicProperties {
   MosaicProperties(
+      // ignore: avoid_positional_boolean_parameters
       this.supplyMutable, this.transferable, this.divisibility, BigInt duration,
       [this.optionalProperties]) {
     optionalProperties = duration.toInt() != 0
