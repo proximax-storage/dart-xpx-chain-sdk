@@ -64,23 +64,20 @@ abstract class AbstractSchemaAttribute {
   }
 
   int offset(int innerObjectPosition, int position, Uint8List buffer) {
-    final f = readUint32(innerObjectPosition, buffer);
     final vTable =
-        fromBigInt(BigInt.from(innerObjectPosition - f)).elementAt(0);
-    if (position < readUint16(vTable, buffer)) {
-      return readUint16(vTable + position, buffer);
-    }
-
-    return 0;
+        innerObjectPosition - readUint32(innerObjectPosition, buffer);
+    return position < readUint16(vTable, buffer)
+        ? readUint16(vTable + position, buffer)
+        : 0;
   }
 
   int readUint16(int offset, Uint8List buffer) {
-    final b = buffer.getRange(offset, 2 + offset).toList();
+    final b = buffer.getRange(offset.toUnsigned(32), 2 + offset.toUnsigned(32)).toList();
     return (b[0]) | (b[1]) << 8;
   }
 
   int readUint32(int offset, Uint8List buffer) {
-    final b = buffer.getRange(offset, offset + 4).toList();
+    final b = buffer.getRange(offset.toUnsigned(32), offset.toUnsigned(32) + 4).toList();
     return (b[0]) | (b[1]) << 8 | (b[2]) << 16 | (b[3]) << 24;
   }
 
@@ -114,6 +111,9 @@ abstract class AbstractSchemaAttribute {
 
   int indirect(int offset, Uint8List buffer) =>
       offset + readUint32(offset, buffer);
+
+  @override
+  String toString() =>'$name';
 }
 
 class ArrayAttribute extends AbstractSchemaAttribute
@@ -126,6 +126,9 @@ class ArrayAttribute extends AbstractSchemaAttribute
   Uint8List serialize(
           Uint8List buffer, int position, int innerObjectPosition) =>
       findVector(innerObjectPosition, position, buffer, size);
+
+  @override
+  String toString() =>'$name, $size';
 }
 
 class ScalarAttribute extends AbstractSchemaAttribute
@@ -138,6 +141,9 @@ class ScalarAttribute extends AbstractSchemaAttribute
   Uint8List serialize(
           Uint8List buffer, int position, int innerObjectPosition) =>
       findParam(innerObjectPosition, position, buffer, size);
+
+  @override
+  String toString() =>'$name, $size';
 }
 
 class TableArrayAttribute extends AbstractSchemaAttribute
@@ -211,3 +217,13 @@ TableArrayAttribute _newTableArrayAttribute(
 
 TableAttribute _newTableAttribute(String name, List<SchemaAttribute> schema) =>
     TableAttribute(name, schema);
+
+List<SchemaAttribute> commonSchema() => [
+      _newScalarAttribute('size', _intSize),
+      _newArrayAttribute('signature', _byteSize),
+      _newArrayAttribute('signer', _byteSize),
+      _newScalarAttribute('version', _intSize),
+      _newScalarAttribute('type', _shortSize),
+      _newArrayAttribute('maxFee', _intSize),
+      _newArrayAttribute('deadline', _intSize),
+    ];

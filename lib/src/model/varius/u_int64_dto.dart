@@ -45,6 +45,17 @@ class UInt64DTO {
     return buffer.toBigInt();
   }
 
+  int toInt() {
+    if (_lower == null || _higher == null) {
+      return 0;
+    }
+    final buffer = Buffer.bigEndian(8)
+      ..writeInt32(_lower.toInt())
+      ..writeInt32(_higher.toInt());
+
+    return buffer.position;
+  }
+
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['higher'] = _higher;

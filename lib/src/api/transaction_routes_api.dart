@@ -31,7 +31,7 @@ class TransactionRoutesApi {
   ///
   /// Announces a transaction to the network.
   Future<Object> _announceTransaction(tx, String uri) async {
-    Object postBody = tx;
+    final Object postBody = tx;
 
     // verify required params are set
     if (tx == null) {
@@ -41,27 +41,7 @@ class TransactionRoutesApi {
     // create path and map variables
     final String path = uri.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'PUT', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.put(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -76,8 +56,6 @@ class TransactionRoutesApi {
   ///
   /// Returns a [Transaction] information given a transactionId or hash.
   Future<Transaction> getTransaction(String transactionId) async {
-    Object postBody;
-
     // verify required params are set
     if (transactionId == null) {
       throw ApiException(400, 'Missing required param: transactionId');
@@ -86,29 +64,9 @@ class TransactionRoutesApi {
     // create path and map variables
     final String path = _transactionRoute
         .replaceAll('{format}', 'json')
-        .replaceAll('{transactionId}', transactionId.toString());
+        .replaceAll('{transactionId}', transactionId);
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.get(path);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
@@ -124,8 +82,8 @@ class TransactionRoutesApi {
   /// Returns a List of [Transaction] information for a given
   /// List of transactionIds.
   Future<List<Transaction>> getTransactions(
-      TransactionIds transactionIds) async {
-    Object postBody = transactionIds;
+      List<String> transactionIds) async {
+    final Object postBody = TransactionIds.fromList(transactionIds);
 
     // verify required params are set
     if (transactionIds == null) {
@@ -135,27 +93,7 @@ class TransactionRoutesApi {
     // create path and map variables
     final String path = _transactionsRoute.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -174,8 +112,6 @@ class TransactionRoutesApi {
   ///
   /// Returns the transaction status for a given hash.
   Future<TransactionStatus> getTransactionStatus(String hash) async {
-    Object postBody;
-
     // verify required params are set
     if (hash == null) {
       throw ApiException(400, 'Missing required param: hash');
@@ -186,27 +122,7 @@ class TransactionRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{hash}', hash.toString());
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -223,7 +139,7 @@ class TransactionRoutesApi {
   /// List of transaction hashes.
   Future<List<TransactionStatus>> getTransactionsStatuses(
       List<String> transactionHashes) async {
-    Object postBody = TransactionHashes.fromList(transactionHashes);
+    final Object postBody = TransactionHashes.fromList(transactionHashes);
 
     // verify required params are set
     if (transactionHashes == null) {
@@ -233,27 +149,7 @@ class TransactionRoutesApi {
     // create path and map variables
     final String path = _transactionsStatusRoute.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);

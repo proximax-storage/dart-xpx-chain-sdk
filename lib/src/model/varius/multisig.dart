@@ -8,8 +8,8 @@ class Multisig {
         json['account'], accountAddress._networkType);
     minApproval = json['minApproval'];
     minRemoval = json['minRemoval'];
-    cosignatories = (json['cosignatories']).map((item) => item).toList();
-    multisigAccounts = (json['multisigAccounts']).map((item) => item).toList();
+    cosignatories = List<String>.from(json['cosignatories']);
+    multisigAccounts = List<String>.from(json['multisigAccounts']);
   }
 
   PublicAccount account;
@@ -25,13 +25,17 @@ class Multisig {
   List<String> multisigAccounts = [];
 
   @override
-  String toString() => '{\n'
-      '\taccount: $account,\n'
-      '\tminApproval: $minApproval,\n'
-      '\tminRemoval: $minRemoval,\n'
-      '\tcosignatories: $cosignatories,\n'
-      '\tmultisigAccounts: $multisigAccounts\n'
-      '}\n';
+  String toString() {
+    final sb = StringBuffer()
+      ..write('{\n')
+      ..writeln('\taccount: $account,')
+      ..writeln('\tminApproval: $minApproval,')
+      ..writeln('\tminRemoval: $minRemoval,')
+      ..writeln('\tcosignatories: $cosignatories,')
+      ..writeln('\tmultisigAccounts: $multisigAccounts')
+      ..write('}\n');
+    return sb.toString();
+  }
 
   static List<Multisig> listFromJson(List<dynamic> json) => json == null
       ? null
@@ -111,7 +115,7 @@ class MultisigAccountInfo {
   Multisig multisig;
 
   @override
-  String toString() => '${toJson()}';
+  String toString() => '$multisig';
 
   static List<MultisigAccountInfo> listFromJson(List<dynamic> json) =>
       json == null

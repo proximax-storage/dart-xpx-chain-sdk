@@ -2,20 +2,18 @@ part of xpx_chain_sdk.buffer;
 
 Schema mosaicDefinitionTransactionSchema() {
   final List<SchemaAttribute> schemaDefinition = [
-    _newScalarAttribute('size', _intSize),
-    _newArrayAttribute('signature', _byteSize),
-    _newArrayAttribute('signer', _byteSize),
-    _newScalarAttribute('version', _shortSize),
-    _newScalarAttribute('type', _shortSize),
-    _newArrayAttribute('fee', _intSize),
-    _newArrayAttribute('deadline', _intSize),
     _newScalarAttribute('mosaicNonce', _intSize),
     _newArrayAttribute('mosaicId', _intSize),
     _newScalarAttribute('numOptionalProperties', _byteSize),
     _newScalarAttribute('flags', _byteSize),
     _newScalarAttribute('divisibility', _byteSize),
-    _newScalarAttribute('indicateDuration', _byteSize),
-    _newArrayAttribute('duration', _intSize)
+    _newTableArrayAttribute(
+        'modifications',
+        Schema([
+          _newScalarAttribute('mosaicPropertyId', _byteSize),
+          _newArrayAttribute('value', _intSize),
+        ]).schemaDefinition)
   ];
+  schemaDefinition.insertAll(0, commonSchema());
   return Schema(schemaDefinition);
 }

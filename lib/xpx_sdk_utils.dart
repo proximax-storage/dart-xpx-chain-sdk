@@ -16,12 +16,7 @@ Uint8List hexDecodeStringOdd(final String s) {
 }
 
 // extractNetworkType return networkType from version
-int extractNetworkType(int version) {
-  final buffer = Uint8List(8).buffer;
-  final bufferData = ByteData.view(buffer)
-    ..setUint64(0, version, Endian.little);
-  return bufferData.getUint8(1);
-}
+int extractNetworkType(int version) => version.toUnsigned(32) >> 24;
 
 int extractVersion(int version) {
   final buffer = Uint8List(8).buffer;
@@ -101,6 +96,16 @@ Uint8List addUint8List(Uint8List a, Uint8List b) {
   return hash;
 }
 
+List<int> bigIntToArray(BigInt v) {
+  if (v == null) {
+    return [0, 0];
+  }
+  final l = v.toUnsigned(32);
+  final r = (v >> 32).toUnsigned(32);
+
+  return List<int>.from([l.toInt(), r.toInt()]);
+}
+
 List<int> fromBigInt(BigInt v) {
   if (v == null) {
     return [0, 0];
@@ -114,10 +119,4 @@ List<int> fromBigInt(BigInt v) {
   return r;
 }
 
-List<int> bigIntToList(BigInt v) {
-  final u64 = Int64.fromBytesBigEndian(crypto.encodeBigInt(v));
-
-  final l = u64 & 0xFFFFFFFF;
-  final r = u64 >> 32 & 0xFFFFFFFF;
-  return [l.toInt(), r.toInt()];
-}
+bool hasBits(BigInt number, int bits) => number.toInt() & bits == bits;

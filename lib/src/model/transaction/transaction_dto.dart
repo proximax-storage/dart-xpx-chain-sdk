@@ -89,12 +89,16 @@ class _MetaTransactionDTO {
       String hash,
       String merkleComponentHash,
       int index,
-      String id}) {
+      String id,
+      String aggregateHash,
+      String aggregateId}) {
     _height = UInt64DTO.fromJson(height);
     _hash = hash;
     _merkleComponentHash = merkleComponentHash;
     _index = index;
     _id = id;
+    _aggregateHash = aggregateHash;
+    _aggregateId = aggregateId;
   }
 
   _MetaTransactionDTO.fromJson(Map<String, dynamic> json) {
@@ -103,6 +107,8 @@ class _MetaTransactionDTO {
     _merkleComponentHash = json['merkleComponentHash'];
     _index = json['index'];
     _id = json['id'];
+    _aggregateHash = json['aggregateHash'];
+    _aggregateId = json['aggregateId'];
   }
 
   UInt64DTO _height;
@@ -110,6 +116,8 @@ class _MetaTransactionDTO {
   String _merkleComponentHash;
   int _index;
   String _id;
+  String _aggregateHash;
+  String _aggregateId;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -230,6 +238,67 @@ class _LockFundsTransactionInfoDTO {
       data['transaction'] = _transaction.toJson();
     }
     return data;
+  }
+}
+
+class _AddressAliasTransactionInfoDTO {
+  _AddressAliasTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
+    _meta = json['meta'] != null
+        ? _MetaTransactionDTO.fromJson(json['meta'])
+        : null;
+
+    _transaction = json['transaction'] != null
+        ? _AddressAliasDTO.fromJson(json['transaction'])
+        : null;
+  }
+
+  _MetaTransactionDTO _meta;
+  _AddressAliasDTO _transaction;
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    if (_meta != null) {
+      data['meta'] = _meta.toJson();
+    }
+    if (_transaction != null) {
+      data['transaction'] = _transaction.toJson();
+    }
+    return data;
+  }
+}
+
+class _AliasDTO {
+  _AliasDTO.fromJson(Map<String, dynamic> json)
+      : assert(json != null, 'json must not be null') {
+    _aliasAction = json['aliasAction'];
+    _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
+    _address = json['address'];
+  }
+
+  int _aliasAction;
+  UInt64DTO _mosaicId;
+  String _address;
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['aliasAction'] = _aliasAction;
+    data['mosaicId'] = _mosaicId;
+    data['address'] = _address;
+
+    return data;
+  }
+
+  static List<_AliasDTO> listFromJson(List<dynamic> json) => json == null
+      ? null
+      : json.map((value) => _AliasDTO.fromJson(value)).toList();
+
+  static Map<String, _AliasDTO> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
+    final map = <String, _AliasDTO>{};
+    if (json != null && json.isNotEmpty) {
+      json.forEach((key, value) => map[key] = _AliasDTO.fromJson(value));
+    }
+    return map;
   }
 }
 
@@ -387,13 +456,13 @@ class _LockFundsTransactionDTO extends _AbstractTransactionDTO {
     _type = json['type'];
     _fee = UInt64DTO.fromJson(json['maxFee']);
     _deadline = UInt64DTO.fromJson(json['deadline']);
-    _mosaic = UInt64DTO.fromJson(json['mosaicId']);
+    _assetId = UInt64DTO.fromJson(json['mosaicId']);
     _amount = UInt64DTO.fromJson(json['amount']);
     _duration = UInt64DTO.fromJson(json['duration']);
     _hash = json['hash'];
   }
 
-  UInt64DTO _mosaic;
+  UInt64DTO _assetId;
   UInt64DTO _amount;
   UInt64DTO _duration;
   String _hash;
@@ -408,7 +477,7 @@ class _LockFundsTransactionDTO extends _AbstractTransactionDTO {
         'type': _type,
         'maxFee': _fee,
         'deadline': _deadline,
-        'mosaic': _mosaic,
+        'mosaicId': _assetId,
         'amount': _amount,
         'duration': _duration,
         'hash': _hash,

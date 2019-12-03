@@ -10,8 +10,6 @@ class AccountRoutesApi {
   ///
   /// Returns the account information.
   Future<AccountInfo> getAccountInfo(Address address) async {
-    Object postBody;
-
     // verify required params are set
     if (address.address == null) {
       throw ApiException(400, 'Missing required param: accountId');
@@ -22,35 +20,13 @@ class AccountRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{accountId}', address.address);
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = _apiClient.deserialize(response.body, '_AccountInfoDTO');
-      return AccountInfo.fromDTO(resp);
+      return AccountInfo._fromDTO(resp);
     } else {
       return null;
     }
@@ -59,40 +35,18 @@ class AccountRoutesApi {
   /// Get accounts information
   ///
   /// Returns the account information for an List of accounts.
-  Future<List<AccountInfo>> getAccountsInfo(List<String> addresses) async {
+  Future<List<AccountInfo>> getAccountsInfo(List<Address> addresses) async {
     // verify required params are set
     if (addresses == null) {
       throw ApiException(400, 'Missing required param: addresses');
     }
 
-    Object postBody = Addresses.fromList(addresses);
+    final Object postBody = Addresses.fromList(addresses);
 
     // create path and map variables
     final String path = '/account'.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -101,7 +55,7 @@ class AccountRoutesApi {
           .deserialize(response.body, 'List<_AccountInfoDTO>')
           .map((item) => item)
           .toList();
-      return resp.map((t) => AccountInfo.fromDTO(t)).toList();
+      return resp.map((t) => AccountInfo._fromDTO(t)).toList();
     } else {
       return null;
     }
@@ -111,8 +65,6 @@ class AccountRoutesApi {
   ///
   /// Returns the [MultisigAccountInfo] information.
   Future<MultisigAccountInfo> getAccountMultisig(Address address) async {
-    Object postBody;
-
     // verify required params are set
     if (address == null) {
       throw ApiException(400, 'Missing required param: address');
@@ -123,29 +75,7 @@ class AccountRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{accountId}', address.address);
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -161,8 +91,6 @@ class AccountRoutesApi {
   /// Returns list [MultisigAccountGraphInfo] graph.
   Future<List<MultisigAccountGraphInfo>> getAccountMultisigGraph(
       Address address) async {
-    Object postBody;
-
     // verify required params are set
     if (address == null) {
       throw ApiException(400, 'Missing required param: accountId');
@@ -173,37 +101,14 @@ class AccountRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{accountId}', address.address);
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return (_apiClient.deserialize(
+      return List<MultisigAccountGraphInfo>.from((_apiClient.deserialize(
               response.body, 'List<MultisigAccountGraphInfo>'))
-          .map((item) => item)
-          .toList();
+          .map((item) => item));
     } else {
       return null;
     }
@@ -216,8 +121,6 @@ class AccountRoutesApi {
   /// account if the account is the recipient of the transaction.
   Future<List<Transaction>> incomingTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody;
-
     // verify required params are set
     if (account == null) {
       throw ApiException(400, 'Missing required param: publicKey');
@@ -230,8 +133,6 @@ class AccountRoutesApi {
 
     // query params
     final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
           _convertParametersForCollectionFormat('', 'pageSize', pageSize));
@@ -244,24 +145,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -283,8 +167,6 @@ class AccountRoutesApi {
   /// account if the account is the sender of the transaction.
   Future<List<Transaction>> outgoingTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody;
-
     // verify required params are set
     if (account == null) {
       throw ApiException(400, 'Missing required param: publicKey');
@@ -297,8 +179,6 @@ class AccountRoutesApi {
 
     // query params
     final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
           _convertParametersForCollectionFormat('', 'pageSize', pageSize));
@@ -311,24 +191,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -349,8 +212,6 @@ class AccountRoutesApi {
   /// the sender or requires to cosign the transaction.
   Future<List<Transaction>> aggregateBondedTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody;
-
     // verify required params are set
     if (account == null) {
       throw ApiException(400, 'Missing required param: publicKey');
@@ -363,8 +224,6 @@ class AccountRoutesApi {
 
     // query params
     final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
           _convertParametersForCollectionFormat('', 'pageSize', pageSize));
@@ -377,24 +236,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -415,8 +257,6 @@ class AccountRoutesApi {
   /// is the sender or receiver.
   Future<List<Transaction>> transactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody;
-
     // verify required params are set
     if (account == null) {
       throw ApiException(400, 'Missing required param: publicKey');
@@ -429,8 +269,6 @@ class AccountRoutesApi {
 
     // query params
     final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
           _convertParametersForCollectionFormat('', 'pageSize', pageSize));
@@ -443,24 +281,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -481,8 +302,6 @@ class AccountRoutesApi {
   /// is the sender or receiver.
   Future<List<Transaction>> unconfirmedTransactions(PublicAccount account,
       {int pageSize, String id, String ordering}) async {
-    Object postBody;
-
     // verify required params are set
     if (account == null) {
       throw ApiException(400, 'Missing required param: publicKey');
@@ -495,8 +314,6 @@ class AccountRoutesApi {
 
     // query params
     final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
           _convertParametersForCollectionFormat('', 'pageSize', pageSize));
@@ -509,24 +326,7 @@ class AccountRoutesApi {
           _convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        {
-          postBody = mp;
-        }
-      }
-    } else {}
-
-    final response = await _apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -536,6 +336,86 @@ class AccountRoutesApi {
               .map((item) => item)
               .toList();
       return resp.map(_deserializeDTO).toList();
+    } else {
+      return null;
+    }
+  }
+
+  /// Get readable names for a set of accountIds.
+  Future<List<AccountNames>> getAccountsNames(List<Address> addresses,
+      {int pageSize, String id, String ordering}) async {
+    final Object postBody = Addresses.fromList(addresses);
+
+    // verify required params are set
+    if (addresses.isEmpty) {
+      throw ApiException(400, 'Missing required param: addresses');
+    }
+
+    // create path and map variables
+    final String path = '/account/names'.replaceAll('{format}', 'json');
+
+    final response = await _apiClient.post(path, postBody);
+
+    if (response.statusCode >= 400) {
+      throw ApiException(response.statusCode, response.body);
+    } else if (response.body != null) {
+      final resp = List<_AccountNames>.from(
+              _apiClient.deserialize(response.body, 'List<_AccountNames>'))
+          .map((item) => item)
+          .toList();
+      return AccountNames.listFromJson(resp);
+    } else {
+      return null;
+    }
+  }
+
+  Future<List<AccountNames>> getAccountProperties(Address address) async {
+    // verify required params are set
+    if (address != null) {
+      throw ApiException(400, 'Missing required param: address');
+    }
+
+    // create path and map variables
+    final String path = '/account/{address}/properties'
+        .replaceAll('{format}', 'json')
+        .replaceAll('{address}', address.address);
+
+    final response = await _apiClient.get(path);
+
+    if (response.statusCode >= 400) {
+      throw ApiException(response.statusCode, response.body);
+    } else if (response.body != null) {
+      final resp = List<_AccountNames>.from(
+              _apiClient.deserialize(response.body, '_AccountPropertiesDTO'))
+          .map((item) => item)
+          .toList();
+      return AccountNames.listFromJson(resp);
+    } else {
+      return null;
+    }
+  }
+
+  Future<List<AccountNames>> getAccountsProperties(List<Address> addresses) async {
+    final Object postBody = Addresses.fromList(addresses);
+
+    // verify required params are set
+    if (addresses.isEmpty) {
+      throw ApiException(400, 'Missing required param: addresses');
+    }
+
+    // create path and map variables
+    final String path = '/account/properties'.replaceAll('{format}', 'json');
+
+    final response = await _apiClient.post(path, postBody);
+
+    if (response.statusCode >= 400) {
+      throw ApiException(response.statusCode, response.body);
+    } else if (response.body != null) {
+      final resp = List<_AccountNames>.from(
+          _apiClient.deserialize(response.body, 'List<_AccountPropertiesDTO>'))
+          .map((item) => item)
+          .toList();
+      return AccountNames.listFromJson(resp);
     } else {
       return null;
     }

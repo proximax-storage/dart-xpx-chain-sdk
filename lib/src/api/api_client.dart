@@ -10,42 +10,57 @@ class QueryParam {
   String value;
 }
 
-class ApiClient {
-  ApiClient._(this._apiClient)
-      : blockChain = BlockchainRoutesApi(_apiClient),
-        account = AccountRoutesApi(_apiClient),
-        mosaic = MosaicRoutesApi(_apiClient),
-        namespace = NamespaceRoutesApi(_apiClient),
-        network = NetworkRoutesApi(_apiClient),
-        node = NodeRoutesApi(_apiClient),
-        transaction = TransactionRoutesApi(_apiClient);
+class SiriusClient {
+  SiriusClient._(this._apiClient) {
+    blockChain = BlockchainRoutesApi(_apiClient);
+    node = NodeRoutesApi(_apiClient);
+    account = AccountRoutesApi(_apiClient);
+    mosaic = MosaicRoutesApi(_apiClient);
+    namespace = NamespaceRoutesApi(_apiClient);
+    network = NetworkRoutesApi(_apiClient);
+    transaction = TransactionRoutesApi(_apiClient);
+  }
 
   final _ApiClient _apiClient;
-  final BlockchainRoutesApi blockChain;
-  final AccountRoutesApi account;
-  final MosaicRoutesApi mosaic;
-  final NamespaceRoutesApi namespace;
-  final NetworkRoutesApi network;
-  final NodeRoutesApi node;
-  final TransactionRoutesApi transaction;
+  BlockchainRoutesApi blockChain;
+  AccountRoutesApi account;
+  MosaicRoutesApi mosaic;
+  NamespaceRoutesApi namespace;
+  NetworkRoutesApi network;
+  NodeRoutesApi node;
+  TransactionRoutesApi transaction;
 
-  static ApiClient fromConf(Config conf, http.Client client) {
+  Future<String> get generationHash => _getGenerationHash();
+
+  Future<int> get networkType => _getNetworkType();
+
+  Future<String> _getGenerationHash() async {
+    final BlockInfo hash = await blockChain.getBlockByHeight(BigInt.from(1));
+    return hash.generationHash;
+  }
+
+  Future<int> _getNetworkType() async {
+    final NodeInfo info = await node.getNodeInfo();
+    return NetworkType.getType(info.networkIdentifier);
+  }
+
+  static SiriusClient fromUrl(String baseUrl, http.Client client) {
     // ignore: parameter_assignments
-    conf ??= Config('http://127.0.0.1:3000', publicTest);
+    baseUrl ??= 'http://127.0.0.1:3000';
 
     // ignore: parameter_assignments
     client ??= http.Client();
 
-    final _ApiClient apiClient = _ApiClient(conf, client);
+    final _ApiClient apiClient = _ApiClient(baseUrl, client);
 
-    return ApiClient._(apiClient);
+    return SiriusClient._(apiClient);
   }
 }
 
 class _ApiClient {
-  _ApiClient(this.conf, this._client);
+  _ApiClient(this.baseUrl, this._client);
 
-  Config conf;
+  String baseUrl;
 
   final http.Client _client;
 
@@ -70,8 +85,8 @@ class _ApiClient {
           return _AccountDTO.fromJson(value);
         case '_AccountInfoDTO':
           return _AccountInfoDTO.fromJson(value);
-        case '_AccountMetaDTO':
-          return _AccountMetaDTO.fromJson(value);
+        case '_AccountNames':
+          return _AccountNames.fromJson(value);
         case '_AccountPropertiesDTO':
           return _AccountPropertiesDTO.fromJson(value);
         case '_AccountPropertiesInfoDTO':
@@ -82,8 +97,8 @@ class _ApiClient {
           return _AccountPropertyDTO.fromJson(value);
         case 'Addresses':
           return Addresses.fromJson(value);
-        case '_AliasDTO':
-          return _AliasDTO.fromJson(value);
+        case '_AddressAliasDTO':
+          return _AddressAliasTransactionInfoDTO.fromJson(value);
         case 'AnnounceTransactionInfoDTO':
           return AnnounceTransactionInfoDTO.fromJson(value);
         case 'BlockDTO':
@@ -192,7 +207,7 @@ class _ApiClient {
 
   // We don't use a Map<String, String> for queryParams.
   // If collectionFormat is 'multi' a key might appear multiple times.
-  Future<http.Response> invokeAPI(
+  Future<http.Response> _invokeAPI(
       final String path,
       String method,
       Iterable<QueryParam> queryParams,
@@ -205,7 +220,7 @@ class _ApiClient {
         .map((p) => '${p.name}=${p.value}');
     final String queryString = ps.isNotEmpty ? '?${ps.join('&')}' : '';
 
-    final String url = conf.baseUrl + path + queryString;
+    final String url = baseUrl + path + queryString;
 
     headerParams.addAll(_defaultHeaderMap);
     headerParams['Content-Type'] = contentType;
@@ -237,6 +252,45 @@ class _ApiClient {
           return response;
       }
     }
+  }
+
+  Future<http.Response> get(String path,
+          [Object postBody,
+          List<QueryParam> queryParams,
+          Map<String, String> headerParams,
+          Map<String, String> formParams]) async =>
+      _response(path, 'GET', postBody, queryParams, headerParams, formParams);
+
+  Future<http.Response> post(String path,
+          [Object postBody,
+          List<QueryParam> queryParams,
+          Map<String, String> headerParams,
+          Map<String, String> formParams]) async =>
+      _response(path, 'POST', postBody, queryParams, headerParams, formParams);
+
+  Future<http.Response> put(String path,
+          [Object postBody,
+          List<QueryParam> queryParams,
+          Map<String, String> headerParams,
+          Map<String, String> formParams]) async =>
+      _response(path, 'PUT', postBody, queryParams, headerParams, formParams);
+
+  Future<http.Response> _response(String path, String method,
+      [Object postBody,
+      List<QueryParam> queryParams,
+      Map<String, String> headerParams,
+      Map<String, String> formParams]) async {
+    queryParams ??= [];
+    headerParams ??= {};
+    formParams ??= {};
+
+    final List<String> contentTypes = [];
+
+    final String contentType =
+        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
+
+    return await _invokeAPI(path, method, queryParams, postBody, headerParams,
+        formParams, contentType);
   }
 }
 
@@ -270,10 +324,14 @@ dynamic _txnDeserialize(value, String targetType) {
         return _MosaicDefinitionTransactionInfoDTO.fromJson(value);
       case 'MosaicSupplyChange':
         return _MosaicSupplyChangeTransactionInfoDTO.fromJson(value);
+      case 'MosaicAlias':
+        return _MosaicAliasTransactionInfoDTO.fromJson(value);
       case 'AggregateCompleted':
         return _AggregateTransactionInfoDTO.fromJson(value);
       case 'AggregateBonded':
         return _AggregateTransactionInfoDTO.fromJson(value);
+      case 'AddressAlias':
+        return _AddressAliasTransactionInfoDTO.fromJson(value);
       case 'ModifyMultisig':
         return _ModifyMultisigAccountTransactionInfoDTO.fromJson(value);
       case 'Lock':

@@ -1,5 +1,7 @@
 part of xpx_chain_sdk;
 
+
+
 class NamespaceId extends Id {
   factory NamespaceId({final BigInt id}) {
     if (id == null) {
@@ -19,6 +21,18 @@ class NamespaceId extends Id {
 
   NamespaceId.fromBigInt(final BigInt bigInt) : super(bigInt);
 
+  static NamespaceId fromHex(final String hex) {
+    if (hex.isEmpty) {
+      throw new ArgumentError('The hexString must not be null or empty');
+    }
+
+    if (0 != (hex.length % 2)) {
+      throw new ArgumentError('invalid hex');
+    }
+    final BigInt bigInt = BigInt.parse(hex, radix: 16);
+    return NamespaceId._(bigInt);
+  }
+
   @override
   String toString() => '${toHex()}';
 
@@ -34,7 +48,7 @@ class NamespaceId extends Id {
 }
 
 class NamespaceName {
-  NamespaceName.fromDTO(_NamespaceNameDTO value)
+  NamespaceName._fromDTO(_NamespaceNameDTO value)
       : assert(json != null, 'json must not be null') {
     parentId = value.parentId == null
         ? NamespaceId._(value.parentId.toBigInt())
@@ -50,20 +64,27 @@ class NamespaceName {
   String name;
 
   @override
-  String toString() => '{\n'
-      '\tparentId:${parentId?.toHex()},\n'
-      '\tnamespaceId:${namespaceId?.toHex()},\n'
-      '\tname:$name\n'
-      '}\n';
+  String toString() {
+    final sb = StringBuffer()..writeln('\n{');
+    if (parentId != null) {
+      sb.writeln('\tparentId: ${parentId.toHex()},');
+    }
+    sb.writeln('\tnamespaceId: ${namespaceId.toHex()},');
+    sb.writeln('\tname: $name,');
+    sb.writeln('\n{');
+    return sb.toString();
+  }
 
   static List<NamespaceName> listFromDTO(List<_NamespaceNameDTO> json) =>
       json == null
           ? null
-          : json.map((value) => NamespaceName.fromDTO(value)).toList();
+          : json.map((value) => NamespaceName._fromDTO(value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['parentId'] = parentId.toHex();
+    if (parentId != null) {
+      data['parentId'] = parentId.toHex();
+    }
     data['namespaceId'] = namespaceId.toHex();
     data['name'] = name;
 
@@ -74,7 +95,7 @@ class NamespaceName {
 class NamespaceInfo {
   NamespaceInfo();
 
-  NamespaceInfo.fromDTO(_NamespaceInfoDTO value)
+  NamespaceInfo._fromDTO(_NamespaceInfoDTO value)
       : assert(json != null, 'json must not be null') {
     metaId = value._meta.id;
     active = value._meta.active;
@@ -90,7 +111,11 @@ class NamespaceInfo {
     depth = value._namespace._depth;
     levels = extractLevels(value);
     typeSpace = value._namespace._type;
-    alias = Alias.fromDTO(value._namespace._alias);
+
+    alias = value._namespace._alias._address != null
+        ? Alias._(
+            address: Address.fromEncoded(value._namespace._alias._address))
+        : null;
     if (value._namespace._parentId.toBigInt().toInt() != 0) {
       namespaceId = NamespaceId._(levels[0]);
       parent = NamespaceInfo()
@@ -144,7 +169,7 @@ class NamespaceInfo {
 
   static List<NamespaceInfo> listFromDTO(List<dynamic> json) => json == null
       ? null
-      : json.map((value) => NamespaceInfo.fromDTO(value)).toList();
+      : json.map((value) => NamespaceInfo._fromDTO(value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -167,18 +192,24 @@ class NamespaceInfo {
 }
 
 class NamespaceIds {
-  List<NamespaceId> namespaceIds = [];
+
+  NamespaceIds.fromList(List<NamespaceId> list)
+      : assert(list != null, 'list must not be null') {
+    _list = list.map((item) => item).toList();
+  }
+
+  List<NamespaceId> _list = [];
 
   @override
-  String toString() => '{"namespaceIds":$namespaceIds}';
+  String toString() => '{"namespaceIds":$_list}';
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
 
-    final List<String> nsIds = List(namespaceIds.length);
+    final List<String> nsIds = List(_list.length);
 
-    for (int i = 0; i < namespaceIds.length; i++) {
-      nsIds[i] = bigIntegerToHex(namespaceIds[i].toBigInt());
+    for (int i = 0; i < _list.length; i++) {
+      nsIds[i] = bigIntegerToHex(_list[i].toBigInt());
     }
 
     data['namespaceIds'] = nsIds;
@@ -203,7 +234,8 @@ List<BigInt> generateNamespacePath(String name) {
     if (!regValidNamespace.hasMatch('$i')) {
       throw _errInvalidNamespaceName;
     }
-    namespaceId = _generateId('$i', BigInt.zero);
+    namespaceId = _generateId('$i', namespaceId);
+
     path.add(namespaceId);
   }
 

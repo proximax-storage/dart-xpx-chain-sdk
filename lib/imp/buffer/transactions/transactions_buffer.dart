@@ -26,7 +26,7 @@ class Transactions {
   }
 
   int addVersion(int version) {
-    fbBuilder.addUint16(3, version);
+    fbBuilder.addUint32(3, version);
     return fbBuilder.offset;
   }
 

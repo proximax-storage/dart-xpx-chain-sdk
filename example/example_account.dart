@@ -2,11 +2,9 @@ import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 /// Simple Account API request
 void main() async {
-  const baseUrl = 'http://bctestnet1.xpxsirius.io:3000';
+  const baseUrl = 'http://bctestnet2.brimstone.xpxsirius.io:3000';
 
   const networkType = publicTest;
-
-  final config = Config(baseUrl, networkType);
 
   /// Creating a client instance
   /// xpx_chain_sdk uses the Dart's native HttpClient.
@@ -15,36 +13,39 @@ void main() async {
   /// example:
   /// 1- import 'package:http/browser_client.dart';
   /// 2- var client = newClient(config,  BrowserClient());
-  final client = ApiClient.fromConf(config, null);
+  final client = SiriusClient.fromUrl(baseUrl, null);
 
   /// Create an Address from a given public key.
-  final addressOne = Address.fromPublicKey(
-      '52BFDA0BDC6456ECAF78B8D2046A8ECB1D951B5BB95EE37165627959DD7C029E',
+  final addressOne = Account.fromPrivateKey(
+      '3B7560B5CB19C893694FC49B461CE489BF9588BE16DBE8DC29CF06338133DEE6',
       networkType);
 
-  final addressTwo = Address.fromPublicKey(
-      'B4F12E7C9F6946091E2CB8B6D3A12B50D17CCBBF646386EA27CE2946A7423DCF',
+  final addressTwo = PublicAccount.fromPublicKey(
+      '29CF06338133DEE64FC49BCB19C8936916DBE8DC461CE489BF9588BE3B9670B5',
+      networkType);
+
+  final addressThree = Address.fromPublicKey(
+      '3B49BF0A08BB7528E54BB803BEEE0D935B2C800364917B6EFF331368A4232FD5',
       networkType);
 
   try {
     /// Get AccountInfo for an account.
     /// Param address - A Address object.
-    final result = await client.account.getAccountInfo(addressTwo);
+    final result = await client.account.transactions(addressOne.publicAccount);
     print(result);
+
   } on Exception catch (e) {
     print('Exception when calling Account->GetAccountInfo: $e\n');
   }
 
-  final List<String> addresses = [];
-  addresses.add(addressOne.address);
-  addresses.add(addressTwo.address);
 
-  try {
-    /// Get accounts information.
-    /// Param addresses - A List of Address string.
-    final result = await client.account.getAccountsInfo(addresses);
-    print(result);
-  } on Exception catch (e) {
-    print('Exception when calling Account->GetAccountsInfo: $e\n');
-  }
+
+//  try {
+//    /// Get accounts information.
+//    /// Param addresses - A List of Address string.
+//    final result = await client.account.getAccountsInfo([addressOne.address, addressTwo]);
+//    print(result);
+//  } on Exception catch (e) {
+//    print('Exception when calling Account->GetAccountsInfo: $e\n');
+//  }
 }

@@ -10,40 +10,16 @@ class BlockchainRoutesApi {
   ///
   /// Returns the current height of the blockchain.
   Future<Height> getBlockchainHeight() async {
-    Object postBody;
-
-    // verify required params are set
-
     // create path and map variables
     final String path = '/chain/height'.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = apiClient.deserialize(response.body, 'HeightDTO');
-      return Height.fromDTO(resp);
+      return Height._fromDTO(resp);
     } else {
       return null;
     }
@@ -53,8 +29,6 @@ class BlockchainRoutesApi {
   ///
   /// Gets a [BlockInfo] from the chain that has the given height.
   Future<BlockInfo> getBlockByHeight(BigInt height) async {
-    Object postBody;
-
     // verify required params are set
     if (height == null) {
       throw ApiException(400, 'Missing required param: height');
@@ -65,33 +39,13 @@ class BlockchainRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{height}', height.toString());
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = apiClient.deserialize(response.body, '_BlockInfoDTO');
-      return BlockInfo.fromDTO(resp);
+      return BlockInfo._fromDTO(resp);
     } else {
       return null;
     }
@@ -108,40 +62,16 @@ class BlockchainRoutesApi {
   /// that has elapsed since the last block:
   /// block score &#x3D; difficulty − time elasped since last block
   Future<BlockchainScore> getBlockchainScore() async {
-    Object postBody;
-
-    // verify required params are set
-
     // create path and map variables
     final String path = '/chain/score'.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = apiClient.deserialize(response.body, '_BlockchainScoreDTO');
-      return BlockchainScore.fromDTO(resp);
+      return BlockchainScore._fromDTO(resp);
     } else {
       return null;
     }
@@ -152,34 +82,10 @@ class BlockchainRoutesApi {
   /// Returns a [BlockchainStorageInfo] statistical information about
   /// the blockchain.
   Future<BlockchainStorageInfo> getDiagnosticStorage() async {
-    Object postBody;
-
-    // verify required params are set
-
     // create path and map variables
     final String path = '/diagnostic/storage'.replaceAll('{format}', 'json');
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -196,8 +102,6 @@ class BlockchainRoutesApi {
   /// block height.
   Future<List<Transaction>> getBlockTransactions(BigInt height,
       {int pageSize, String id}) async {
-    Object postBody;
-
     // verify required params are set
     if (height == null) {
       throw ApiException(400, 'Missing required param: height');
@@ -210,8 +114,6 @@ class BlockchainRoutesApi {
 
     // query params
     final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
     if (pageSize != null) {
       queryParams.addAll(
           _convertParametersForCollectionFormat('', 'pageSize', pageSize));
@@ -220,22 +122,7 @@ class BlockchainRoutesApi {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
 
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
@@ -255,8 +142,6 @@ class BlockchainRoutesApi {
   /// Gets up to limit number of blocks after given block height.
   Future<List<BlockInfo>> getBlocksByHeightWithLimit(
       BigInt height, int limit) async {
-    Object postBody;
-
     // verify required params are set
     if (height == null) {
       throw _errNullOrZeroHeight;
@@ -271,27 +156,7 @@ class BlockchainRoutesApi {
         .replaceAll('{height}', height.toString())
         .replaceAll('{limit}', limit.toString());
 
-    // query params
-    final List<QueryParam> queryParams = [];
-    final Map<String, String> headerParams = {};
-    final Map<String, String> formParams = {};
-
-    final List<String> contentTypes = [];
-
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
-    if (contentType.startsWith('multipart/form-data')) {
-      const bool hasFields = false;
-      final http.MultipartRequest mp = http.MultipartRequest(null, null);
-
-      if (hasFields) {
-        postBody = mp;
-      }
-    } else {}
-
-    final response = await apiClient.invokeAPI(path, 'GET', queryParams,
-        postBody, headerParams, formParams, contentType);
+    final response = await apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
