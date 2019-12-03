@@ -1,3 +1,8 @@
+## 0.0.4+1
+
+### New Features
+[UPDATE] Update Sirius chain 0.5.0
+
 ## 0.0.3+5
 
 ### New Features
