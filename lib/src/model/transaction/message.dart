@@ -32,17 +32,17 @@ class Message {
 class PlainMessage extends Message {
   factory PlainMessage({final Uint8List bytes, final String payload}) {
     if (payload == null && bytes == null) {
-      throw new ArgumentError('The message payload must not be null');
+      throw ArgumentError('The message payload must not be null');
     }
 
     if (bytes != null && bytes.isNotEmpty) {
-      return new PlainMessage._(bytes);
+      return PlainMessage._(bytes);
     }
 
     if (_hexadecimal.hasMatch(payload)) {
-      return new PlainMessage._(Uint8List.fromList(payload.codeUnits));
+      return PlainMessage._(Uint8List.fromList(payload.codeUnits));
     }
-    return new PlainMessage._(Uint8List.fromList(payload.codeUnits));
+    return PlainMessage._(Uint8List.fromList(payload.codeUnits));
   }
 
   PlainMessage._(Uint8List payload) : super(MessageType.unencrypted, payload);
@@ -70,7 +70,7 @@ class MessageType {
       }
     }
 
-    throw new ArgumentError(invalidType);
+    throw ArgumentError(invalidType);
   }
 
   @override

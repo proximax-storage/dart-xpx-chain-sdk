@@ -90,11 +90,11 @@ class MosaicId extends Id {
 
   static MosaicId fromHex(final String hex) {
     if (hex.isEmpty) {
-      throw new ArgumentError('The hexString must not be null or empty');
+      throw ArgumentError('The hexString must not be null or empty');
     }
 
     if (0 != (hex.length % 2)) {
-      throw new ArgumentError('invalid hex');
+      throw ArgumentError('invalid hex');
     }
     final BigInt bigInt = BigInt.parse(hex, radix: 16);
     return MosaicId._(bigInt);
@@ -213,7 +213,7 @@ class MosaicProperty {
   static List<MosaicProperty> listFromDTO(List<_MosaicPropertyDTO> json) =>
       json == null
           ? <MosaicProperty>[]
-          : json.map((value) => new MosaicProperty._fromDTO(value)).toList();
+          : json.map((value) => MosaicProperty._fromDTO(value)).toList();
 
   @override
   String toString() => 'id: $id, value: $value';

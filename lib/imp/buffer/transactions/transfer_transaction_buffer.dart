@@ -2,7 +2,7 @@ part of xpx_chain_sdk.buffer;
 
 class MessageBuffer {
   factory MessageBuffer(List<int> bytes) {
-    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
@@ -26,7 +26,7 @@ class _MessageBufferReader extends fb.TableReader<MessageBuffer> {
 
   @override
   MessageBuffer createObject(fb.BufferContext bc, int offset) =>
-      new MessageBuffer._(bc, offset);
+      MessageBuffer._(bc, offset);
 }
 
 class MessageBufferBuilder {
@@ -80,7 +80,7 @@ class MessageBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    final fb.Builder fbBuilder = new fb.Builder();
+    final fb.Builder fbBuilder = fb.Builder();
     final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -88,7 +88,7 @@ class MessageBufferObjectBuilder extends fb.ObjectBuilder {
 
 class MosaicBuffer {
   factory MosaicBuffer(List<int> bytes) {
-    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
@@ -113,7 +113,7 @@ class _MosaicBufferReader extends fb.TableReader<MosaicBuffer> {
 
   @override
   MosaicBuffer createObject(fb.BufferContext bc, int offset) =>
-      new MosaicBuffer._(bc, offset);
+      MosaicBuffer._(bc, offset);
 }
 
 class MosaicBufferBuilder {
@@ -170,7 +170,7 @@ class MosaicBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    final fb.Builder fbBuilder = new fb.Builder();
+    final fb.Builder fbBuilder = fb.Builder();
     final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -178,7 +178,7 @@ class MosaicBufferObjectBuilder extends fb.ObjectBuilder {
 
 class TransferTransactionBuffer {
   factory TransferTransactionBuffer(List<int> bytes) {
-    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
@@ -223,7 +223,7 @@ class _TransferTransactionBufferReader
 
   @override
   TransferTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-      new TransferTransactionBuffer._(bc, offset);
+      TransferTransactionBuffer._(bc, offset);
 }
 
 class TransferTransactionBufferBuilder {
@@ -394,7 +394,7 @@ class TransferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    final fb.Builder fbBuilder = new fb.Builder();
+    final fb.Builder fbBuilder = fb.Builder();
     final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }

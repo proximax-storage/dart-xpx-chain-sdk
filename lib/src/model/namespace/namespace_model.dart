@@ -23,11 +23,11 @@ class NamespaceId extends Id {
 
   static NamespaceId fromHex(final String hex) {
     if (hex.isEmpty) {
-      throw new ArgumentError('The hexString must not be null or empty');
+      throw ArgumentError('The hexString must not be null or empty');
     }
 
     if (0 != (hex.length % 2)) {
-      throw new ArgumentError('invalid hex');
+      throw ArgumentError('invalid hex');
     }
     final BigInt bigInt = BigInt.parse(hex, radix: 16);
     return NamespaceId._(bigInt);

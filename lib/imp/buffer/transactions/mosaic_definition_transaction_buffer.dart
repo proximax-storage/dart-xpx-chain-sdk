@@ -2,7 +2,7 @@ part of xpx_chain_sdk.buffer;
 
 class MosaicProperty {
   factory MosaicProperty(List<int> bytes) {
-    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
@@ -28,7 +28,7 @@ class _MosaicPropertyReader extends fb.TableReader<MosaicProperty> {
 
   @override
   MosaicProperty createObject(fb.BufferContext bc, int offset) =>
-      new MosaicProperty._(bc, offset);
+      MosaicProperty._(bc, offset);
 }
 
 class MosaicPropertyBuilder {
@@ -81,7 +81,7 @@ class MosaicPropertyObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    final fb.Builder fbBuilder = new fb.Builder();
+    final fb.Builder fbBuilder = fb.Builder();
     final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -89,7 +89,7 @@ class MosaicPropertyObjectBuilder extends fb.ObjectBuilder {
 
 class MosaicDefinitionTransactionBuffer {
   factory MosaicDefinitionTransactionBuffer(List<int> bytes) {
-    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
@@ -137,7 +137,7 @@ class _MosaicDefinitionTransactionBufferReader
   @override
   MosaicDefinitionTransactionBuffer createObject(
           fb.BufferContext bc, int offset) =>
-      new MosaicDefinitionTransactionBuffer._(bc, offset);
+      MosaicDefinitionTransactionBuffer._(bc, offset);
 }
 
 class MosaicDefinitionTransactionBufferBuilder {
@@ -316,7 +316,7 @@ class MosaicDefinitionTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    final fb.Builder fbBuilder = new fb.Builder();
+    final fb.Builder fbBuilder = fb.Builder();
     final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
