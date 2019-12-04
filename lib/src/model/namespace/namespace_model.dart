@@ -1,7 +1,5 @@
 part of xpx_chain_sdk;
 
-
-
 class NamespaceId extends Id {
   factory NamespaceId({final BigInt id}) {
     if (id == null) {
@@ -192,7 +190,6 @@ class NamespaceInfo {
 }
 
 class NamespaceIds {
-
   NamespaceIds.fromList(List<NamespaceId> list)
       : assert(list != null, 'list must not be null') {
     _list = list.map((item) => item).toList();

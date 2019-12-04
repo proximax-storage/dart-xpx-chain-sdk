@@ -395,7 +395,8 @@ class AccountRoutesApi {
     }
   }
 
-  Future<List<AccountNames>> getAccountsProperties(List<Address> addresses) async {
+  Future<List<AccountNames>> getAccountsProperties(
+      List<Address> addresses) async {
     final Object postBody = Addresses.fromList(addresses);
 
     // verify required params are set
@@ -411,8 +412,8 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = List<_AccountNames>.from(
-          _apiClient.deserialize(response.body, 'List<_AccountPropertiesDTO>'))
+      final resp = List<_AccountNames>.from(_apiClient.deserialize(
+              response.body, 'List<_AccountPropertiesDTO>'))
           .map((item) => item)
           .toList();
       return AccountNames.listFromJson(resp);

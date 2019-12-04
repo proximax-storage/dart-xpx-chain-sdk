@@ -54,10 +54,11 @@ class _AccountNames {
   _AccountNames.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     _address = json['address'];
-    _names = (json['names'] == null) ?
-    null :
-    // ignore: avoid_as
-    (json['names'] as List).cast<String>();
+    _names = (json['names'] == null)
+        ? null
+        :
+        // ignore: avoid_as
+        (json['names'] as List).cast<String>();
   }
 
   /* The address of the account in hexadecimal. */

@@ -8,13 +8,13 @@ class MessageBuffer {
 
   MessageBuffer._(this._bc, this._bcOffset);
 
-  static const fb.Reader<MessageBuffer> reader = const _MessageBufferReader();
+  static const fb.Reader<MessageBuffer> reader = _MessageBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get payload => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get payload => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
 
   @override

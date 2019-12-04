@@ -81,8 +81,7 @@ class TransactionRoutesApi {
   ///
   /// Returns a List of [Transaction] information for a given
   /// List of transactionIds.
-  Future<List<Transaction>> getTransactions(
-      List<String> transactionIds) async {
+  Future<List<Transaction>> getTransactions(List<String> transactionIds) async {
     final Object postBody = TransactionIds.fromList(transactionIds);
 
     // verify required params are set

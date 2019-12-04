@@ -8,14 +8,14 @@ class MosaicProperty {
 
   MosaicProperty._(this._bc, this._bcOffset);
 
-  static const fb.Reader<MosaicProperty> reader = const _MosaicPropertyReader();
+  static const fb.Reader<MosaicProperty> reader = _MosaicPropertyReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get mosaicPropertyId =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get value => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get value => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
 
   @override

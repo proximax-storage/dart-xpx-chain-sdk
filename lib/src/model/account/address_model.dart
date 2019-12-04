@@ -80,7 +80,8 @@ class Addresses {
   @override
   String toString() => 'addresses:$addresses';
 
-  Map<String, dynamic> toJson() => {'addresses':addresses.map((a) => a._address).toList()};
+  Map<String, dynamic> toJson() =>
+      {'addresses': addresses.map((a) => a._address).toList()};
 }
 
 String _generateEncodedAddress(String pKey, int version) {
@@ -94,14 +95,14 @@ String _generateEncodedAddress(String pKey, int version) {
 
   // step 3: add version byte in front of (2)
   final versionPrefixedRipemd160Hash =
-  addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
+      addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
 
   // step 4: get the checksum of (3)
   final stepThreeChecksum = _generateChecksum(versionPrefixedRipemd160Hash);
 
   // step 5: concatenate (3) and (4)
   final concatStepThreeAndStepSix =
-  addUint8List(versionPrefixedRipemd160Hash, stepThreeChecksum);
+      addUint8List(versionPrefixedRipemd160Hash, stepThreeChecksum);
 
   // step 6: base32 encode (5)
   return base32.encode(concatStepThreeAndStepSix);

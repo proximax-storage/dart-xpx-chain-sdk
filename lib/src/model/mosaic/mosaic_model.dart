@@ -225,7 +225,10 @@ class MosaicProperty {
 class MosaicProperties {
   MosaicProperties(
       // ignore: avoid_positional_boolean_parameters
-      this.supplyMutable, this.transferable, this.divisibility, BigInt duration,
+      this.supplyMutable,
+      this.transferable,
+      this.divisibility,
+      BigInt duration,
       [this.optionalProperties]) {
     optionalProperties = duration.toInt() != 0
         ? List<MosaicProperty>.from([

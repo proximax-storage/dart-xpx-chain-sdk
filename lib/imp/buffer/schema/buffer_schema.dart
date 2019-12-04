@@ -72,12 +72,16 @@ abstract class AbstractSchemaAttribute {
   }
 
   int readUint16(int offset, Uint8List buffer) {
-    final b = buffer.getRange(offset.toUnsigned(32), 2 + offset.toUnsigned(32)).toList();
+    final b = buffer
+        .getRange(offset.toUnsigned(32), 2 + offset.toUnsigned(32))
+        .toList();
     return (b[0]) | (b[1]) << 8;
   }
 
   int readUint32(int offset, Uint8List buffer) {
-    final b = buffer.getRange(offset.toUnsigned(32), offset.toUnsigned(32) + 4).toList();
+    final b = buffer
+        .getRange(offset.toUnsigned(32), offset.toUnsigned(32) + 4)
+        .toList();
     return (b[0]) | (b[1]) << 8 | (b[2]) << 16 | (b[3]) << 24;
   }
 
@@ -113,7 +117,7 @@ abstract class AbstractSchemaAttribute {
       offset + readUint32(offset, buffer);
 
   @override
-  String toString() =>'$name';
+  String toString() => '$name';
 }
 
 class ArrayAttribute extends AbstractSchemaAttribute
@@ -128,7 +132,7 @@ class ArrayAttribute extends AbstractSchemaAttribute
       findVector(innerObjectPosition, position, buffer, size);
 
   @override
-  String toString() =>'$name, $size';
+  String toString() => '$name, $size';
 }
 
 class ScalarAttribute extends AbstractSchemaAttribute
@@ -143,7 +147,7 @@ class ScalarAttribute extends AbstractSchemaAttribute
       findParam(innerObjectPosition, position, buffer, size);
 
   @override
-  String toString() =>'$name, $size';
+  String toString() => '$name, $size';
 }
 
 class TableArrayAttribute extends AbstractSchemaAttribute

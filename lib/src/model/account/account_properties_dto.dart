@@ -46,15 +46,15 @@ class _AccountPropertiesInfoDTO {
       json == null
           ? null
           : json
-          .map((value) => _AccountPropertiesInfoDTO.fromJson(value))
-          .toList();
+              .map((value) => _AccountPropertiesInfoDTO.fromJson(value))
+              .toList();
 
   static Map<String, _AccountPropertiesInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
     final Map<String, _AccountPropertiesInfoDTO> map = {};
     if (json != null && json.isNotEmpty) {
       json.forEach(
-              (key, value) => map[key] = _AccountPropertiesInfoDTO.fromJson(value));
+          (key, value) => map[key] = _AccountPropertiesInfoDTO.fromJson(value));
     }
     return map;
   }
@@ -77,15 +77,15 @@ class _AccountPropertiesMetaDTO {
       json == null
           ? null
           : json
-          .map((value) => _AccountPropertiesMetaDTO.fromJson(value))
-          .toList();
+              .map((value) => _AccountPropertiesMetaDTO.fromJson(value))
+              .toList();
 
   static Map<String, _AccountPropertiesMetaDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
     final Map<String, _AccountPropertiesMetaDTO> map = {};
     if (json != null && json.isNotEmpty) {
       json.forEach(
-              (key, value) => map[key] = _AccountPropertiesMetaDTO.fromJson(value));
+          (key, value) => map[key] = _AccountPropertiesMetaDTO.fromJson(value));
     }
     return map;
   }
