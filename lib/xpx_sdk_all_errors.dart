@@ -39,3 +39,8 @@ final _errInvalidPublicKey = Exception('not a valid public key');
 final _errNullSignature = Exception('signature must not be null');
 final _errInvalidSignature = Exception('signature length is incorrect');
 final _errInvalidHexadecimal = Exception('must be hexadecimal');
+
+/// Various
+final _errorInvalidMosaicsOffer =
+    Exception("you can't get more mosaics when in offer");
+final _errorUnknownOfferType = Exception('unknown offer type');

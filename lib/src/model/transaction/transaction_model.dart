@@ -19,6 +19,9 @@ var _transactionTypes = <_TransactionTypeClass>{
   _TransactionTypeClass(TransactionType.lock, 16712, 0x4148),
   _TransactionTypeClass(TransactionType.secretLock, 16722, 0x4152),
   _TransactionTypeClass(TransactionType.secretProof, 16978, 0x4252),
+  _TransactionTypeClass(TransactionType.addExchangeOffer, 16733, 0x415D),
+  _TransactionTypeClass(TransactionType.exchangeOffer, 16989, 0x425D),
+  _TransactionTypeClass(TransactionType.removeExchangeOffer, 17245, 0x435D),
 };
 
 // TransactionVersion enums
@@ -27,6 +30,9 @@ const _aggregateCompletedVersion = 2,
     _addressAliasVersion = 1,
     _registerNamespaceVersion = 2,
     _transferVersion = 3,
+    _addExchangeOfferVersion = 1,
+    _exchangeOfferVersion = 1,
+    _removeExchangeOfferVersion = 1,
     _mosaicAliasVersion = 1,
     _mosaicDefinitionVersion = 3,
     _mosaicSupplyChangeVersion = 2,
@@ -57,7 +63,10 @@ enum TransactionType {
   lock,
   secretLock,
   secretProof,
-  mosaicAlias
+  mosaicAlias,
+  addExchangeOffer,
+  exchangeOffer,
+  removeExchangeOffer
 }
 
 var _timestampNemesisBlock = DateTime.fromMillisecondsSinceEpoch(1459468800000);

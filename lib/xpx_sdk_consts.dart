@@ -123,4 +123,9 @@ const numChecksumBytes = 4,
     transferHeaderSize = transactionHeaderSize +
         addressDecodeSize +
         mosaicsSizeSize +
-        messageSizeSize;
+        messageSizeSize,
+    offerTypeSize = 1,
+    offersCountSize = 1,
+    addExchangeOfferSize =
+        mosaicIdSize + durationSize + 2 * amountSize + offerTypeSize,
+    addExchangeOfferHeaderSize = transactionHeaderSize + offersCountSize;

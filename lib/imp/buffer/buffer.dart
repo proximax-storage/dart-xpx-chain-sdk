@@ -13,9 +13,11 @@ part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_aggregate.dart';
 part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_multisig.dart';
 part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_lockFunds.dart';
 part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_alias.dart';
+part 'package:xpx_chain_sdk/imp/buffer/schema/buffer_schema_exchange.dart';
 
 part 'transactions/aggregate_transaction_buffer.dart';
 part 'transactions/alias_transaction_buffer.dart';
+part 'transactions/exchange_transaction_buffer.dart';
 part 'transactions/lock_funds_transaction_buffer.dart';
 part 'transactions/modify_contract_transaction_buffer.dart';
 part 'transactions/modify_metadata_transaction_buffer.dart';
@@ -28,3 +30,5 @@ part 'transactions/secret_lock_transaction_buffer.dart';
 part 'transactions/secret_proof_transaction_buffer.dart';
 part 'transactions/transfer_transaction_buffer.dart';
 part 'transactions/transactions_buffer.dart';
+
+

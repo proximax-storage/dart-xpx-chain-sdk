@@ -47,6 +47,8 @@ part 'src/model/blockchain/height_dto.dart';
 part 'src/model/blockchain/merkle_path_item.dart';
 part 'src/model/blockchain/merkle_proof_info_dto.dart';
 part 'src/model/blockchain/merkle_proof_info_payload.dart';
+part 'src/model/exchange/exchange_model.dart';
+part 'src/model/exchange/exchange_transaction.dart';
 part 'src/model/mosaic/mosaic_dto.dart';
 part 'src/model/mosaic/mosaic_model.dart';
 part 'src/model/varius/multisig.dart';
