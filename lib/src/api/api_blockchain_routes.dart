@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.api;
 
 class BlockchainRoutesApi {
   BlockchainRoutesApi([_ApiClient apiClient])
@@ -19,7 +19,7 @@ class BlockchainRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final resp = apiClient.deserialize(response.body, 'HeightDTO');
-      return Height._fromDTO(resp);
+      return Height.fromDTO(resp);
     } else {
       return null;
     }
@@ -44,8 +44,8 @@ class BlockchainRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, '_BlockInfoDTO');
-      return BlockInfo._fromDTO(resp);
+      final resp = apiClient.deserialize(response.body, 'BlockInfoDTO');
+      return BlockInfo.fromDTO(resp);
     } else {
       return null;
     }
@@ -70,8 +70,8 @@ class BlockchainRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, '_BlockchainScoreDTO');
-      return BlockchainScore._fromDTO(resp);
+      final resp = apiClient.deserialize(response.body, 'BlockchainScoreDTO');
+      return BlockchainScore.fromDTO(resp);
     } else {
       return null;
     }
@@ -131,7 +131,7 @@ class BlockchainRoutesApi {
           .deserialize(response.body, 'List<Transaction>')
           .map((item) => item)
           .toList();
-      return resp.map(_deserializeDTO).toList();
+      return resp.map(deserializeDTO).toList();
     } else {
       return null;
     }
@@ -144,10 +144,10 @@ class BlockchainRoutesApi {
       BigInt height, int limit) async {
     // verify required params are set
     if (height == null) {
-      throw _errNullOrZeroHeight;
+      throw errNullOrZeroHeight;
     }
     if (limit == null) {
-      throw _errNullOrZeroLimit;
+      throw errNullOrZeroLimit;
     }
 
     // create path and map variables
@@ -164,9 +164,9 @@ class BlockchainRoutesApi {
       // ignore: avoid_as
       final resp =
           // ignore: avoid_as
-          (apiClient.deserialize(response.body, 'List<_BlockInfoDTO>') as List)
+          (apiClient.deserialize(response.body, 'List<BlockInfoDTO>') as List)
               // ignore: avoid_as
-              .map((item) => item as _BlockInfoDTO)
+              .map((item) => item as BlockInfoDTO)
               .toList();
       return BlockInfo.listFromDTO(resp);
     } else {

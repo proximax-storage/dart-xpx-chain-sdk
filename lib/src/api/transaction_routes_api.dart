@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.api;
 
 // routes for TransactionApi
 const _transactionsRoute = '/transaction',
@@ -70,7 +70,7 @@ class TransactionRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return _deserializeDTO(
+      return deserializeDTO(
           apiClient.deserialize(response.body, 'Transaction'));
     } else {
       return null;
@@ -101,7 +101,7 @@ class TransactionRoutesApi {
           .deserialize(response.body, 'List<Transaction>')
           .map((item) => item)
           .toList();
-      return resp.map(_deserializeDTO).toList();
+      return resp.map(deserializeDTO).toList();
     } else {
       return null;
     }

@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.account;
 
 class Account {
   Account._(this._publicAccount, this._account);
@@ -25,7 +25,7 @@ class Account {
 
   crypto.KeyPair get account => _account;
 
-  String get publicKey => _publicAccount._publicKey;
+  String get publicKey => _publicAccount.publicKey;
 
   Address get address => _publicAccount.address;
 
@@ -36,52 +36,48 @@ class Account {
       {'publicAccount': publicAccount, 'account': account};
 
   SignedTransaction sign(Transaction tx, String generationHash) =>
-      _signTransactionWith(tx, this, generationHash);
+      signTransactionWith(tx, this, generationHash);
 
   SignedTransaction signWithCosignatures(
           Transaction tx, List<Account> cosignatories, String generationHash) =>
-      _signTransactionWithCosignatures(tx, this, cosignatories, generationHash);
+      signTransactionWithCosignatures(tx, this, cosignatories, generationHash);
 
   CosignatureSignedTransaction signCosignatureTransaction(
           CosignatureTransaction tx) =>
-      _signCosignatureTransaction(tx, this);
+      signCosignatureTransactionRwa(tx, this);
 }
 
 class PublicAccount {
-  PublicAccount._(this._publicKey, this._address);
+  PublicAccount._(this.publicKey, this.address);
 
   /// Create an Account from a given publicKey hex string.
-  PublicAccount.fromPublicKey(String pKey, int networkType) {
-    if (pKey == null || (publicKeySize != pKey.length && 66 != pKey.length)) {
-      throw _errInvalidPublicKey;
+  PublicAccount.fromPublicKey(this.publicKey, int networkType) {
+    if (publicKey == null ||
+        (publicKeySize != publicKey.length && 66 != publicKey.length)) {
+      throw errInvalidPublicKey;
     }
-    _address = Address.fromPublicKey(pKey, networkType);
-    _publicKey = pKey;
+    address = Address.fromPublicKey(publicKey, networkType);
   }
 
-  String _publicKey;
-  Address _address;
-
-  String get publicKey => _publicKey;
-
-  Address get address => _address;
+  String publicKey;
+  Address address;
 
   @override
   String toString() => '${toJson()}';
 
   bool verify(String data, String signature) {
     if (signature == null) {
-      throw _errNullSignature;
+      throw errNullSignature;
     }
     if (64 != (signature.length / 2)) {
-      throw _errInvalidSignature;
+      throw errInvalidSignature;
     }
     if (signature.length % 2 != 0) {
-      throw _errInvalidHexadecimal;
+      throw errInvalidHexadecimal;
     }
 
     final kp = crypto.KeyPair();
-    kp.publicKey.raw = Uint8List.fromList(hex.decode(_publicKey));
+    kp.publicKey.raw = Uint8List.fromList(hex.decode(publicKey));
 
     return kp.verify(Uint8List.fromList(hex.decode(data)),
         Uint8List.fromList(hex.decode(signature)));
@@ -93,9 +89,9 @@ class PublicAccount {
 class AccountNames {
   AccountNames._();
 
-  AccountNames._fromDto(_AccountNames value) {
-    if (json == null) return;
-    address = Address.fromEncoded(value._address);
+  AccountNames.fromDto(AccountNamesDTO value) {
+    if (value == null) return;
+    address = Address.fromEncoded(value.address);
     names = (value._names == null) ? null : value._names.cast<String>();
   }
 
@@ -104,10 +100,10 @@ class AccountNames {
   /* The mosaic linked namespace names. */
   List<String> names;
 
-  static List<AccountNames> listFromJson(List<_AccountNames> json) =>
+  static List<AccountNames> listFromJson(List<AccountNamesDTO> json) =>
       json == null
           ? <AccountNames>[]
-          : json.map((value) => AccountNames._fromDto(value)).toList();
+          : json.map((value) => AccountNames.fromDto(value)).toList();
 
   @override
   String toString() => '{\n'
@@ -117,14 +113,14 @@ class AccountNames {
 }
 
 class AccountInfo {
-  AccountInfo._fromDTO(_AccountInfoDTO v) {
+  AccountInfo.fromDTO(AccountInfoDTO v) {
     final List<Mosaic> mList = List(v._account._mosaics.length);
     for (var i = 0; i < v._account._mosaics.length; i++) {
-      mList[i] = Mosaic._fromDTO(v._account._mosaics[i]);
+      mList[i] = Mosaic.fromDTO(v._account._mosaics[i]);
     }
 
-    address = Address.fromEncoded(v._account._address);
-    addressHeight = v._account._addressHeight.toBigInt();
+    address = Address.fromEncoded(v._account.address);
+    addressHeight = v._account.addressHeight.toBigInt();
     publicKey = v._account._publicKey;
     publicKeyHeight = v._account._publicKeyHeight.toBigInt();
     accountType = v._account._accountType;

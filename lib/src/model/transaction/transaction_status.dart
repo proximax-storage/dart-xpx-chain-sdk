@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.transaction;
 
 class TransactionStatus {
   TransactionStatus.fromJson(Map<String, dynamic> json)

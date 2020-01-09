@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.blockchain;
 
 class MerklePathItem {
   MerklePathItem.fromJson(Map<String, dynamic> json)

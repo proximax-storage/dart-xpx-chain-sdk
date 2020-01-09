@@ -1,14 +1,14 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.exchange;
 
 class AddExchangeOfferTransaction extends AbstractTransaction
     implements Transaction {
   AddExchangeOfferTransaction(
       Deadline deadline, List<AddOffer> addOffers, int networkType)
-      : super._() {
+      : super() {
     if (addOffers == null) {
-      throw _errNullRecipient;
+      throw errNullRecipient;
     } else {
-      version = _addExchangeOfferVersion;
+      version = addExchangeOfferVersion;
       this.deadline = deadline;
       type = transactionTypeFromRaw(16733);
       this.networkType = networkType;
@@ -19,65 +19,44 @@ class AddExchangeOfferTransaction extends AbstractTransaction
   List<AddOffer> offers;
 
   @override
-  AbstractTransaction getAbstractTransaction() => _getAbstractTransaction();
+  AbstractTransaction getAbstractTransaction() => getAbstractTransaction();
 
   @override
   String toString() => '{\n'
-      '\t"abstractTransaction": ${_abstractTransactionToString()}\n'
+      '\t"abstractTransaction": ${abstractTransactionToString()}\n'
       '\t"offers": $offers,\n'
       '}\n';
 
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['abstractTransaction'] = _abstractTransactionToJson();
+    data['abstractTransaction'] = abstractTransactionToJson();
     data['mosaic'] = offers;
     return data;
   }
 
   @override
-  int _size() =>
+  int size() =>
       addExchangeOfferHeaderSize + offers.length * addExchangeOfferSize;
 
   @override
-  Uint8List _generateBytes() {
+  Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final vectors = _generateVector(builder);
+    final vectors = generateVector(builder);
 
     final offersV = addExchangeOfferToArrayToBuffer(builder, offers);
 
     final txnBuilder = ExchangeOfferTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size())
+      ..addSize(size())
       ..addOffersCount(offers.length)
       ..addOffersOffset(offersV);
-    _buildVector(builder, vectors);
+    buildVector(builder, vectors);
 
     final codedTransfer = txnBuilder.finish();
 
     return addExchangeOfferTransactionSchema()
         .serialize(builder.finish(codedTransfer));
   }
-}
-
-int addExchangeOfferToArrayToBuffer(fb.Builder builder, List<AddOffer> offers) {
-  final msb = <int>[];
-  for (final offer in offers) {
-    final mV = builder.writeListUint32(offer.mosaic.assetId.toArray());
-    final maV = builder.writeListUint32(bigIntToArray(offer.mosaic.amount));
-    final dV = builder.writeListUint32(bigIntToArray(offer.duration));
-    final cV = builder.writeListUint32(bigIntToArray(offer.cost));
-
-    final txnBuilder = AddExchangeOfferBufferBuilder(builder)
-      ..begin()
-      ..addMosaicIdOffset(mV)
-      ..addMosaicAmountOffset(maV)
-      ..addCostOffset(cV)
-      ..addDurationOffset(dV)
-      ..addType(offer.type.value);
-
-    msb.add(txnBuilder.finish());
-  }
-  return builder.writeList(msb);
 }

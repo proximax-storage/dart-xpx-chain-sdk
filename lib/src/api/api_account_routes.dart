@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.api;
 
 class AccountRoutesApi {
   AccountRoutesApi([_ApiClient _apiClient])
@@ -25,8 +25,8 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient.deserialize(response.body, '_AccountInfoDTO');
-      return AccountInfo._fromDTO(resp);
+      final resp = _apiClient.deserialize(response.body, 'AccountInfoDTO');
+      return AccountInfo.fromDTO(resp);
     } else {
       return null;
     }
@@ -52,10 +52,10 @@ class AccountRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final List resp = _apiClient
-          .deserialize(response.body, 'List<_AccountInfoDTO>')
+          .deserialize(response.body, 'List<AccountInfoDTO>')
           .map((item) => item)
           .toList();
-      return resp.map((t) => AccountInfo._fromDTO(t)).toList();
+      return resp.map((t) => AccountInfo.fromDTO(t)).toList();
     } else {
       return null;
     }
@@ -154,7 +154,7 @@ class AccountRoutesApi {
           (_apiClient.deserialize(response.body, 'List<Transaction>'))
               .map((item) => item)
               .toList();
-      return resp.map(_deserializeDTO).toList();
+      return resp.map(deserializeDTO).toList();
     } else {
       return null;
     }
@@ -200,7 +200,7 @@ class AccountRoutesApi {
           (_apiClient.deserialize(response.body, 'List<Transaction>'))
               .map((item) => item)
               .toList();
-      return resp.map(_deserializeDTO).toList();
+      return resp.map(deserializeDTO).toList();
     } else {
       return null;
     }
@@ -245,7 +245,7 @@ class AccountRoutesApi {
           (_apiClient.deserialize(response.body, 'List<Transaction>'))
               .map((item) => item)
               .toList();
-      return resp.map(_deserializeDTO).toList();
+      return resp.map(deserializeDTO).toList();
     } else {
       return null;
     }
@@ -290,7 +290,7 @@ class AccountRoutesApi {
           (_apiClient.deserialize(response.body, 'List<Transaction>'))
               .map((item) => item)
               .toList();
-      return resp.map(_deserializeDTO).toList();
+      return resp.map(deserializeDTO).toList();
     } else {
       return null;
     }
@@ -335,7 +335,7 @@ class AccountRoutesApi {
           (_apiClient.deserialize(response.body, 'List<Transaction>'))
               .map((item) => item)
               .toList();
-      return resp.map(_deserializeDTO).toList();
+      return resp.map(deserializeDTO).toList();
     } else {
       return null;
     }
@@ -359,8 +359,8 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = List<_AccountNames>.from(
-              _apiClient.deserialize(response.body, 'List<_AccountNames>'))
+      final resp = List<AccountNamesDTO>.from(
+              _apiClient.deserialize(response.body, 'List<AccountNames>'))
           .map((item) => item)
           .toList();
       return AccountNames.listFromJson(resp);
@@ -385,8 +385,8 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = List<_AccountNames>.from(
-              _apiClient.deserialize(response.body, '_AccountPropertiesDTO'))
+      final resp = List<AccountNamesDTO>.from(
+              _apiClient.deserialize(response.body, 'AccountPropertiesDTO'))
           .map((item) => item)
           .toList();
       return AccountNames.listFromJson(resp);
@@ -412,8 +412,8 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = List<_AccountNames>.from(_apiClient.deserialize(
-              response.body, 'List<_AccountPropertiesDTO>'))
+      final resp = List<AccountNamesDTO>.from(_apiClient.deserialize(
+              response.body, 'List<AccountPropertiesDTO>'))
           .map((item) => item)
           .toList();
       return AccountNames.listFromJson(resp);

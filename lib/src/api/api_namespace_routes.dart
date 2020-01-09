@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.api;
 
 class NamespaceRoutesApi {
   NamespaceRoutesApi([_ApiClient apiClient])
@@ -40,8 +40,8 @@ class NamespaceRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, '_NamespaceInfoDTO');
-      final ns = NamespaceInfo._fromDTO(resp);
+      final resp = apiClient.deserialize(response.body, 'NamespaceInfoDTO');
+      final ns = NamespaceInfo.fromDTO(resp);
 
       if (ns.parent != null) {
         ns.parent = await buildNamespaceHierarchy(ns);
@@ -83,7 +83,7 @@ class NamespaceRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final List resp = apiClient
-          .deserialize(response.body, 'List<_NamespaceInfoDTO>')
+          .deserialize(response.body, 'List<NamespaceInfoDTO>')
           .map((item) => item)
           .toList();
       final nss = NamespaceInfo.listFromDTO(resp);
@@ -125,7 +125,7 @@ class NamespaceRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final List resp = apiClient
-          .deserialize(response.body, 'List<_NamespaceInfoDTO>')
+          .deserialize(response.body, 'List<NamespaceInfoDTO>')
           .map((item) => item)
           .toList();
 
@@ -150,7 +150,7 @@ class NamespaceRoutesApi {
     }
 
     if (nsIds.isEmpty) {
-      throw _errEmptyNamespaceIds;
+      throw errEmptyNamespaceIds;
     }
     // create path and map variables
     final String path = '/namespace/names'.replaceAll('{format}', 'json');
@@ -160,8 +160,8 @@ class NamespaceRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = List<_NamespaceNameDTO>.from(apiClient
-          .deserialize(response.body, 'List<_NamespaceNameDTO>')
+      final resp = List<NamespaceNameDTO>.from(apiClient
+          .deserialize(response.body, 'List<NamespaceNameDTO>')
           .map((item) => item)
           .toList());
 

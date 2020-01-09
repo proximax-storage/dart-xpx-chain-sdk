@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.node;
 
 class NodeTime {
   NodeTime.fromJson(Map<String, dynamic> json)

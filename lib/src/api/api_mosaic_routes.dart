@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.api;
 
 class MosaicRoutesApi {
   MosaicRoutesApi([_ApiClient apiClient])
@@ -25,8 +25,8 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, '_MosaicInfoDTO');
-      return MosaicInfo._fromDTO(resp);
+      final resp = apiClient.deserialize(response.body, 'MosaicInfoDTO');
+      return MosaicInfo.fromDTO(resp);
     } else {
       return null;
     }
@@ -53,9 +53,9 @@ class MosaicRoutesApi {
     } else if (response.body != null) {
       final resp =
           // ignore: avoid_as
-          (apiClient.deserialize(response.body, 'List<_MosaicInfoDTO>') as List)
+          (apiClient.deserialize(response.body, 'List<MosaicInfoDTO>') as List)
               // ignore: avoid_as
-              .map((item) => item as _MosaicInfoDTO)
+              .map((item) => item as MosaicInfoDTO)
               .toList();
       return MosaicInfo.listFromDTO(resp);
     } else {
@@ -85,9 +85,9 @@ class MosaicRoutesApi {
       // ignore: avoid_as
       final resp =
           // ignore: avoid_as
-          (apiClient.deserialize(response.body, 'List<_MosaicNameDTO>') as List)
+          (apiClient.deserialize(response.body, 'List<MosaicNameDTO>') as List)
               // ignore: avoid_as
-              .map((item) => item as _MosaicNameDTO)
+              .map((item) => item as MosaicNameDTO)
               .toList();
       return MosaicName.listFromDTO(resp);
     } else {

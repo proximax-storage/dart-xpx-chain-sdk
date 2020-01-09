@@ -1,4 +1,4 @@
-part of xpx_chain_sdk.buffer;
+part of xpx_chain_sdk.buffer.schema;
 
 const _byteSize = 1, _shortSize = 2, _intSize = 4;
 
@@ -20,6 +20,7 @@ class Schema {
       if (v.isNotEmpty) {
         resultBytes.addAll(v);
       }
+
       ++i;
     }
     return Uint8List.fromList(resultBytes);

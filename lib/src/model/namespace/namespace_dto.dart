@@ -1,101 +1,99 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.namespace;
 
-class _NamespaceDTO {
-  _NamespaceDTO.fromJson(Map<String, dynamic> json)
+class NamespaceDTO {
+  NamespaceDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    _owner = json['owner'];
-    _ownerAddress = json['ownerAddress'];
-    _startHeight = UInt64DTO.fromJson(json['startHeight']);
-    _endHeight = UInt64DTO.fromJson(json['endHeight']);
-    _depth = json['depth'];
-    _level0 = UInt64DTO.fromJson(json['level0']);
-    _level1 = UInt64DTO.fromJson(json['level1']);
-    _level2 = UInt64DTO.fromJson(json['level2']);
-    _type = json['type'];
-    _alias = _AliasDTO.fromJson(json['alias']);
-    _parentId = UInt64DTO.fromJson(json['parentId']);
+    owner = json['owner'];
+    ownerAddress = json['ownerAddress'];
+    startHeight = UInt64DTO.fromJson(json['startHeight']);
+    endHeight = UInt64DTO.fromJson(json['endHeight']);
+    depth = json['depth'];
+    level0 = UInt64DTO.fromJson(json['level0']);
+    level1 = UInt64DTO.fromJson(json['level1']);
+    level2 = UInt64DTO.fromJson(json['level2']);
+    type = json['type'];
+    alias = AliasDTO.fromJson(json['alias']);
+    parentId = UInt64DTO.fromJson(json['parentId']);
   }
 
-  String _owner;
-  String _ownerAddress;
-  UInt64DTO _startHeight;
-  UInt64DTO _endHeight;
-  int _depth;
-  UInt64DTO _level0;
-  UInt64DTO _level1;
-  UInt64DTO _level2;
-  int _type;
-  _AliasDTO _alias;
-  UInt64DTO _parentId;
+  String owner;
+  String ownerAddress;
+  UInt64DTO startHeight;
+  UInt64DTO endHeight;
+  int depth;
+  UInt64DTO level0;
+  UInt64DTO level1;
+  UInt64DTO level2;
+  int type;
+  AliasDTO alias;
+  UInt64DTO parentId;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['owner'] = _owner;
-    data['ownerAddress'] = _ownerAddress;
-    data['startHeight'] = _startHeight;
-    data['endHeight'] = _endHeight;
-    data['depth'] = _depth;
-    data['level0'] = _level0;
-    data['level1'] = _level1;
-    data['level2'] = _level2;
-    data['type'] = _type;
-    data['alias'] = _alias;
-    data['parentId'] = _parentId;
+    data['owner'] = owner;
+    data['ownerAddress'] = ownerAddress;
+    data['startHeight'] = startHeight;
+    data['endHeight'] = endHeight;
+    data['depth'] = depth;
+    data['level0'] = level0;
+    data['level1'] = level1;
+    data['level2'] = level2;
+    data['type'] = type;
+    data['alias'] = alias;
+    data['parentId'] = parentId;
 
     return data;
   }
 
-  static List<_NamespaceDTO> listFromJson(List<dynamic> json) => json == null
+  static List<NamespaceDTO> listFromJson(List<dynamic> json) => json == null
       ? null
-      : json.map((value) => _NamespaceDTO.fromJson(value)).toList();
+      : json.map((value) => NamespaceDTO.fromJson(value)).toList();
 
-  static Map<String, _NamespaceDTO> mapFromJson(
+  static Map<String, NamespaceDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    final map = <String, _NamespaceDTO>{};
+    final map = <String, NamespaceDTO>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _NamespaceDTO.fromJson(value));
+      json.forEach((key, value) => map[key] = NamespaceDTO.fromJson(value));
     }
     return map;
   }
 }
 
-class _NamespaceInfoDTO {
-  _NamespaceInfoDTO.fromJson(Map<String, dynamic> json)
+class NamespaceInfoDTO {
+  NamespaceInfoDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    _meta = _NamespaceMetaDTO.fromJson(json['meta']);
-    _namespace = _NamespaceDTO.fromJson(json['namespace']);
+    meta = NamespaceMetaDTO.fromJson(json['meta']);
+    _namespace = NamespaceDTO.fromJson(json['namespace']);
   }
 
-  _NamespaceMetaDTO _meta;
+  NamespaceMetaDTO meta;
 
-  _NamespaceDTO _namespace;
+  NamespaceDTO _namespace;
 
-  static List<_NamespaceInfoDTO> listFromJson(List<dynamic> json) =>
-      json == null
-          ? null
-          : json.map((value) => _NamespaceInfoDTO.fromJson(value)).toList();
+  static List<NamespaceInfoDTO> listFromJson(List<dynamic> json) => json == null
+      ? null
+      : json.map((value) => NamespaceInfoDTO.fromJson(value)).toList();
 
-  static Map<String, _NamespaceInfoDTO> mapFromJson(
+  static Map<String, NamespaceInfoDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    final map = <String, _NamespaceInfoDTO>{};
+    final map = <String, NamespaceInfoDTO>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = _NamespaceInfoDTO.fromJson(value));
+      json.forEach((key, value) => map[key] = NamespaceInfoDTO.fromJson(value));
     }
     return map;
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['meta'] = _meta;
+    data['meta'] = meta;
     data['namespace'] = _namespace;
 
     return data;
   }
 }
 
-class _NamespaceMetaDTO {
-  _NamespaceMetaDTO.fromJson(Map<String, dynamic> json)
+class NamespaceMetaDTO {
+  NamespaceMetaDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
     id = json['id'];
     active = json['active'];
@@ -108,17 +106,15 @@ class _NamespaceMetaDTO {
 
   int index;
 
-  static List<_NamespaceMetaDTO> listFromJson(List<dynamic> json) =>
-      json == null
-          ? null
-          : json.map((value) => _NamespaceMetaDTO.fromJson(value)).toList();
+  static List<NamespaceMetaDTO> listFromJson(List<dynamic> json) => json == null
+      ? null
+      : json.map((value) => NamespaceMetaDTO.fromJson(value)).toList();
 
-  static Map<String, _NamespaceMetaDTO> mapFromJson(
+  static Map<String, NamespaceMetaDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    final map = <String, _NamespaceMetaDTO>{};
+    final map = <String, NamespaceMetaDTO>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = _NamespaceMetaDTO.fromJson(value));
+      json.forEach((key, value) => map[key] = NamespaceMetaDTO.fromJson(value));
     }
     return map;
   }
@@ -133,8 +129,8 @@ class _NamespaceMetaDTO {
   }
 }
 
-class _NamespaceNameDTO {
-  _NamespaceNameDTO.fromJson(Map<String, dynamic> json)
+class NamespaceNameDTO {
+  NamespaceNameDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
     parentId = UInt64DTO.fromJson(json['parentId']);
     namespaceId = UInt64DTO.fromJson(json['namespaceId']);
@@ -147,17 +143,15 @@ class _NamespaceNameDTO {
 
   String name;
 
-  static List<_NamespaceNameDTO> listFromJson(List<dynamic> json) =>
-      json == null
-          ? null
-          : json.map((value) => _NamespaceNameDTO.fromJson(value)).toList();
+  static List<NamespaceNameDTO> listFromJson(List<dynamic> json) => json == null
+      ? null
+      : json.map((value) => NamespaceNameDTO.fromJson(value)).toList();
 
-  static Map<String, _NamespaceNameDTO> mapFromJson(
+  static Map<String, NamespaceNameDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    final map = <String, _NamespaceNameDTO>{};
+    final map = <String, NamespaceNameDTO>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = _NamespaceNameDTO.fromJson(value));
+      json.forEach((key, value) => map[key] = NamespaceNameDTO.fromJson(value));
     }
     return map;
   }
@@ -172,23 +166,22 @@ class _NamespaceNameDTO {
   }
 }
 
-class _RegisterNamespaceTransactionInfoDTO {
-  _RegisterNamespaceTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    _meta = json['meta'] != null
-        ? _MetaTransactionDTO.fromJson(json['meta'])
-        : null;
+class RegisterNamespaceTransactionInfoDTO {
+  RegisterNamespaceTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
+    meta =
+        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
     _transaction = json['transaction'] != null
         ? _RegisterNamespaceTransactionDTO.fromJson(json['transaction'])
         : null;
   }
 
-  _MetaTransactionDTO _meta;
+  MetaTransactionDTO meta;
   _RegisterNamespaceTransactionDTO _transaction;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    if (_meta != null) {
-      data['meta'] = _meta.toJson();
+    if (meta != null) {
+      data['meta'] = meta.toJson();
     }
     if (_transaction != null) {
       data['transaction'] = _transaction.toJson();
@@ -197,7 +190,7 @@ class _RegisterNamespaceTransactionInfoDTO {
   }
 }
 
-class _RegisterNamespaceTransactionDTO extends _AbstractTransactionDTO {
+class _RegisterNamespaceTransactionDTO extends AbstractTransactionDTO {
   _RegisterNamespaceTransactionDTO(
       {String signature,
       String signer,
@@ -210,13 +203,13 @@ class _RegisterNamespaceTransactionDTO extends _AbstractTransactionDTO {
       String name,
       UInt64DTO parenId,
       UInt64DTO duration}) {
-    _signature = signature;
-    _signer = signer;
-    _version = version;
-    _type = type;
-    _deadline = UInt64DTO.fromJson(deadline);
-    _fee = UInt64DTO.fromJson(maxFee);
-    _namespaceId = namespaceId;
+    this.signature = signature;
+    this.signer = signer;
+    this.version = version;
+    this.type = type;
+    this.deadline = UInt64DTO.fromJson(deadline);
+    fee = UInt64DTO.fromJson(maxFee);
+    namespaceId = namespaceId;
     _namespaceType = namespaceType;
     _name = name;
     _duration = duration;
@@ -224,14 +217,14 @@ class _RegisterNamespaceTransactionDTO extends _AbstractTransactionDTO {
   }
 
   _RegisterNamespaceTransactionDTO.fromJson(Map<String, dynamic> json) {
-    _signature = json['signature'];
-    _signer = json['signer'];
-    _version = json['version'];
-    _type = json['type'];
-    _fee = UInt64DTO.fromJson(json['maxFee']);
-    _deadline = UInt64DTO.fromJson(json['deadline']);
+    signature = json['signature'];
+    signer = json['signer'];
+    version = json['version'];
+    type = json['type'];
+    fee = UInt64DTO.fromJson(json['maxFee']);
+    deadline = UInt64DTO.fromJson(json['deadline']);
 
-    _namespaceId = UInt64DTO.fromJson(json['namespaceId']);
+    namespaceId = UInt64DTO.fromJson(json['namespaceId']);
     _namespaceType = json['namespaceType'];
     _name = json['name'];
     _parentId =
@@ -241,7 +234,7 @@ class _RegisterNamespaceTransactionDTO extends _AbstractTransactionDTO {
         json['duration'] != null ? UInt64DTO.fromJson(json['duration']) : null;
   }
 
-  UInt64DTO _namespaceId;
+  UInt64DTO namespaceId;
   int _namespaceType;
   String _name;
   UInt64DTO _duration;
@@ -250,13 +243,13 @@ class _RegisterNamespaceTransactionDTO extends _AbstractTransactionDTO {
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['signature'] = _signature;
-    data['signer'] = _signer;
-    data['version'] = _version;
-    data['type'] = _type;
-    data['maxFee'] = _fee;
-    data['deadline'] = _deadline;
-    data['namespaceId'] = _namespaceId;
+    data['signature'] = signature;
+    data['signer'] = signer;
+    data['version'] = version;
+    data['type'] = type;
+    data['maxFee'] = fee;
+    data['deadline'] = deadline;
+    data['namespaceId'] = namespaceId;
     data['namespaceType'] = _namespaceType;
     data['name'] = _name;
     data['duration'] = _duration;

@@ -1,4 +1,6 @@
-part of xpx_chain_sdk;
+library xpx_chain_sdk.endian;
+
+import 'dart:typed_data';
 
 /// Buffer wraps a fixed size Uint8List and writes values into it using
 /// big-endian byte order.
@@ -141,4 +143,14 @@ class _WriterForBEHost extends Buffer {
     out[position + 3] = _convU8[3];
     position += 4;
   }
+}
+
+int endianLittleUint32(List<int> v) {
+  final z = Uint8List(4);
+  for (int i = 0; i < 4; i++) {
+    z[i] = v[i];
+  }
+
+  final bufferData = ByteData.view(z.buffer);
+  return bufferData.getUint32(0, Endian.little);
 }

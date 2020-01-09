@@ -1,9 +1,9 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.namespace;
 
 class NamespaceId extends Id {
   factory NamespaceId({final BigInt id}) {
     if (id == null) {
-      throw _errNullId;
+      throw errNullId;
     }
 
     return NamespaceId._(id);
@@ -46,8 +46,8 @@ class NamespaceId extends Id {
 }
 
 class NamespaceName {
-  NamespaceName._fromDTO(_NamespaceNameDTO value)
-      : assert(json != null, 'json must not be null') {
+  NamespaceName.fromDTO(NamespaceNameDTO value)
+      : assert(value != null, 'json must not be null') {
     parentId = value.parentId == null
         ? NamespaceId._(value.parentId.toBigInt())
         : null;
@@ -73,10 +73,10 @@ class NamespaceName {
     return sb.toString();
   }
 
-  static List<NamespaceName> listFromDTO(List<_NamespaceNameDTO> json) =>
+  static List<NamespaceName> listFromDTO(List<NamespaceNameDTO> json) =>
       json == null
           ? null
-          : json.map((value) => NamespaceName._fromDTO(value)).toList();
+          : json.map((value) => NamespaceName.fromDTO(value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -93,31 +93,30 @@ class NamespaceName {
 class NamespaceInfo {
   NamespaceInfo();
 
-  NamespaceInfo._fromDTO(_NamespaceInfoDTO value)
-      : assert(json != null, 'json must not be null') {
-    metaId = value._meta.id;
-    active = value._meta.active;
-    index = value._meta.index;
+  NamespaceInfo.fromDTO(NamespaceInfoDTO value)
+      : assert(value != null, 'json must not be null') {
+    metaId = value.meta.id;
+    active = value.meta.active;
+    index = value.meta.index;
 
-    final _ownerAddress = Address.fromEncoded(value._namespace._ownerAddress);
+    final _ownerAddress = Address.fromEncoded(value._namespace.ownerAddress);
 
     owner = PublicAccount.fromPublicKey(
-        value._namespace._owner, _ownerAddress.networkType);
+        value._namespace.owner, _ownerAddress.networkType);
 
-    startHeight = value._namespace._startHeight.toBigInt();
-    endHeight = value._namespace._endHeight.toBigInt();
-    depth = value._namespace._depth;
+    startHeight = value._namespace.startHeight.toBigInt();
+    endHeight = value._namespace.endHeight.toBigInt();
+    depth = value._namespace.depth;
     levels = extractLevels(value);
-    typeSpace = value._namespace._type;
+    typeSpace = value._namespace.type;
 
-    alias = value._namespace._alias._address != null
-        ? Alias._(
-            address: Address.fromEncoded(value._namespace._alias._address))
+    alias = value._namespace.alias.address != null
+        ? Alias(address: Address.fromEncoded(value._namespace.alias.address))
         : null;
-    if (value._namespace._parentId.toBigInt().toInt() != 0) {
+    if (value._namespace.parentId.toBigInt().toInt() != 0) {
       namespaceId = NamespaceId._(levels[0]);
       parent = NamespaceInfo()
-        ..namespaceId = NamespaceId._(value._namespace._parentId.toBigInt());
+        ..namespaceId = NamespaceId._(value._namespace.parentId.toBigInt());
     } else {
       namespaceId = NamespaceId._(levels[0]);
     }
@@ -167,7 +166,7 @@ class NamespaceInfo {
 
   static List<NamespaceInfo> listFromDTO(List<dynamic> json) => json == null
       ? null
-      : json.map((value) => NamespaceInfo._fromDTO(value)).toList();
+      : json.map((value) => NamespaceInfo.fromDTO(value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -206,88 +205,10 @@ class NamespaceIds {
     final List<String> nsIds = List(_list.length);
 
     for (int i = 0; i < _list.length; i++) {
-      nsIds[i] = bigIntegerToHex(_list[i].toBigInt());
+      nsIds[i] = _list[i].toHex();
     }
 
     data['namespaceIds'] = nsIds;
     return data;
   }
-}
-
-/// GenerateNamespacePath create list NamespaceId from string
-List<BigInt> generateNamespacePath(String name) {
-  final parts = name.split('.');
-  if (parts.isEmpty) {
-    throw _errInvalidNamespaceName;
-  }
-  if (parts.length > 3) {
-    throw _errInvalidNamespaceName;
-  }
-
-  var namespaceId = BigInt.zero;
-  final List<BigInt> path = [];
-
-  for (final i in parts) {
-    if (!regValidNamespace.hasMatch('$i')) {
-      throw _errInvalidNamespaceName;
-    }
-    namespaceId = _generateId('$i', namespaceId);
-
-    path.add(namespaceId);
-  }
-
-  return path;
-}
-
-List<BigInt> extractLevels(_NamespaceInfoDTO ref) {
-  final List<BigInt> levels = [];
-
-  if (ref._namespace._level0._higher != null) {
-    final nsName = ref._namespace._level0.toBigInt();
-    levels.add(nsName);
-  }
-
-  if (ref._namespace._level1._higher != null) {
-    final nsName = ref._namespace._level1.toBigInt();
-    levels.add(nsName);
-  }
-
-  if (ref._namespace._level2._higher != null) {
-    final nsName = ref._namespace._level2.toBigInt();
-    levels.add(nsName);
-  }
-
-  return levels;
-}
-
-BigInt _generateId(String name, BigInt parentId) {
-  var b = Uint8List(8);
-  if (parentId.toInt() != 0) {
-    b = crypto.encodeBigInt(parentId);
-  }
-
-  b = Uint8List.fromList(b.reversed.toList());
-
-  final result = sha3.New256()..update(b, 0, b.length);
-
-  final p = Uint8List(name.length);
-  for (int i = 0; i < name.length; i++) {
-    p[i] = name.codeUnits[i];
-  }
-
-  final t = result.process(p);
-
-  List<dynamic> raw() => <dynamic>[
-        endianLittleUint32(t.getRange(0, 4).toList()),
-        endianLittleUint32(t.getRange(4, 8).toList()) | 0x80000000
-      ];
-
-  return UInt64DTO.fromJson(raw()).toBigInt();
-}
-
-/// generateNamespaceId create NamespaceId from namespace string name
-/// (ex: prx or domain.subdom.subdome)
-BigInt _generateNamespaceId(String namespaceName) {
-  final list = generateNamespacePath(namespaceName);
-  return list[list.length - 1];
 }

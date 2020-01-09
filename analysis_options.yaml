@@ -23,7 +23,7 @@
 ## https://www.dartlang.org/guides/language/analysis-options#excluding-lines-within-a-file
 linter:
   rules:
-    - always_declare_return_types
+    - always_declare_returntypes
 
     # Separate the control structure expression from its statement.
     # recommendation: optional
@@ -43,7 +43,7 @@ linter:
     # Specify type annotations.
     # recommendation: recommended
     # FIXME: 83 lint(s)
-    # - always_specify_types
+    # - always_specifytypes
 
     # Annotate overridden members.
     # recommendation: required
@@ -109,7 +109,7 @@ linter:
     # Avoid private typedef functions.
     # recommendation: optional
     # 0 issues
-    - avoid_private_typedef_functions
+    - avoid_privatetypedef_functions
 
     # Avoid relative imports for files in `lib/`.
     # recommendation: recommended
@@ -125,7 +125,7 @@ linter:
     # Avoid return types on setters.
     # recommendation: required
     # 0 issues
-    - avoid_return_types_on_setters
+    - avoid_returntypes_on_setters
 
     # Avoid returning null from members whose return type is bool, double, int, or num.
     # recommendation: optional
@@ -155,12 +155,12 @@ linter:
     # Avoid types as parameter names.
     # recommendation: optional
     # 0 issues
-    - avoid_types_as_parameter_names
+    - avoidtypes_as_parameter_names
 
     # Avoid annotating types for function expression parameters.
     # recommendation: optional
     # 0 issues
-    - avoid_types_on_closure_parameters
+    - avoidtypes_on_closure_parameters
 
     # Avoid defining unused paramters in constructors.
     # recommendation: recommended
@@ -175,7 +175,7 @@ linter:
     # Name types using UpperCamelCase.
     # recommendation: optional
     # 0 issues
-    - camel_case_types
+    - camel_casetypes
 
     # Cancel instances of dart.async.StreamSubscription.
     # recommendation: required
@@ -245,7 +245,7 @@ linter:
     # Invocation of Iterable<E>.contains with references of unrelated types.
     # recommendation: required
     # 0 issues
-    - iterable_contains_unrelated_type
+    - iterable_contains_unrelatedtype
 
     # Join return statement with assignment when possible.
     # recommendation: optional
@@ -265,7 +265,7 @@ linter:
     # Invocation of `remove` with references of unrelated types.
     # recommendation: required
     # 0 issues
-    - list_remove_unrelated_type
+    - list_remove_unrelatedtype
 
     # Boolean expression composed only with literals.
     # recommendation: required
@@ -289,9 +289,9 @@ linter:
 
     # Omit type annotations for local variables.
     # recommendation: avoid
-    # reason: Conflicts with always_specify_types. Recommend commenting this one out.
+    # reason: Conflicts with always_specifytypes. Recommend commenting this one out.
     # 0 issues
-    # - omit_local_variable_types
+    # - omit_local_variabletypes
 
     # Avoid defining a one-member abstract class when a simple function will do.
     # recommendation: optional
@@ -463,7 +463,7 @@ linter:
     # Test type arguments in operator ==(Object other).
     # recommendation: required
     # 0 issues
-    - test_types_in_equals
+    - testtypes_in_equals
 
     # Avoid `throw` in finally block.
     # recommendation: required
@@ -535,7 +535,7 @@ linter:
     # recommendation: required
     # reason: Comparing references of a type where neither is a subtype of the other most likely will return false and might not reflect programmer's intent.
     # 0 issues
-    - unrelated_type_equality_checks
+    - unrelatedtype_equality_checks
 
     # Use rethrow to rethrow a caught exception.
     # recommendation: optional

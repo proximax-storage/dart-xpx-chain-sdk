@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.api;
 
 class ApiException implements Exception {
   ApiException(this.code, this.message);

@@ -29,7 +29,7 @@
 
 [UPDATE] refactor AggregateTransaction class.
 
-[UPDATE] rename AccountPropertyDTO to _AccountPropertyDTO.
+[UPDATE] rename AccountPropertyDTO to AccountPropertyDTO.
 
 [UPDATE] xpx_crypto to 0.0.2+2.
 
@@ -59,15 +59,15 @@
 
 [FIXED] fixed bug in duration namespace
 
-[FIXED] fixed bug in _MessageDTO null
+[FIXED] fixed bug in MessageDTO null
 
 [FIXED] fixed bug in parentId null
 
-[FIXED] fixed bug in List _MosaicNameDTO
+[FIXED] fixed bug in List MosaicNameDTO
 
-[FIXED] fixed bug in List _MosaicInfoDTO
+[FIXED] fixed bug in List MosaicInfoDTO
 
-[FIXED] fixed bug in List _BlockInfoDTO
+[FIXED] fixed bug in List BlockInfoDTO
 
 [FIXED] fixed bug in BlockInfoDTO
 

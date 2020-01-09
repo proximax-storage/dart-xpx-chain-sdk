@@ -1,4 +1,8 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.exchange;
+
+final OfferType sellOffer = _SellOffer();
+
+final OfferType buyOffer = _BuyOffer();
 
 abstract class OfferType implements Comparable<OfferType> {
   const OfferType(this.value);
@@ -60,37 +64,31 @@ class Offer implements Comparable<Offer> {
   }
 }
 
-class SellOffer extends OfferType {
-  factory SellOffer(final int value) {
-    ArgumentError.checkNotNull(value);
-    return const SellOffer._();
-  }
+class _SellOffer extends OfferType {
+  factory _SellOffer() => const _SellOffer._();
 
-  const SellOffer._() : super(0);
+  const _SellOffer._() : super(0);
 
   @override
   int get hashCode => 'SellOffer'.hashCode ^ value.hashCode;
 
   @override
-  bool operator ==(final other) => other is SellOffer && value == other.value;
+  bool operator ==(final other) => other is _SellOffer && value == other.value;
 
   @override
   String toString() => 'sell';
 }
 
-class BuyOffer extends OfferType {
-  factory BuyOffer(final int value) {
-    ArgumentError.checkNotNull(value);
-    return const BuyOffer._();
-  }
+class _BuyOffer extends OfferType {
+  factory _BuyOffer() => const _BuyOffer._();
 
-  const BuyOffer._() : super(1);
+  const _BuyOffer._() : super(1);
 
   @override
   int get hashCode => 'SellOffer'.hashCode ^ value.hashCode;
 
   @override
-  bool operator ==(final other) => other is SellOffer && value == other.value;
+  bool operator ==(final other) => other is _SellOffer && value == other.value;
 
   @override
   String toString() => 'sell';
@@ -117,18 +115,18 @@ class OfferInfo {
 
   BigInt cost(BigInt amount) {
     if (mosaic.amount < amount) {
-      throw _errorInvalidMosaicsOffer;
+      throw errorInvalidMosaicsOffer;
     }
 
     switch (type.runtimeType) {
-      case SellOffer:
+      case _SellOffer:
         return BigInt.from((priceNumerator * amount).toInt().ceilToDouble() /
             priceDenominator.toDouble());
-      case BuyOffer:
+      case _BuyOffer:
         return BigInt.from((priceNumerator * amount).toInt().floorToDouble() /
             priceDenominator.toDouble());
       default:
-        throw _errorUnknownOfferType;
+        throw errorUnknownOfferType;
     }
   }
 
@@ -136,7 +134,7 @@ class OfferInfo {
     try {
       final BigInt _cost = cost(amount);
 
-      final Offer _offer = Offer(type, Mosaic._(mosaic.assetId, amount), _cost);
+      final Offer _offer = Offer(type, Mosaic(mosaic.assetId, amount), _cost);
 
       return ExchangeConfirmation(owner: owner, offer: _offer);
     } on Exception catch (e) {
@@ -165,7 +163,7 @@ class AddOffer extends Offer {
 
   BigInt duration;
 
-  Offer get offer => super;
+//  Offer get offer => super;
 
   @override
   String toString() {
@@ -198,7 +196,7 @@ class ExchangeConfirmation extends Offer {
 
   PublicAccount owner;
 
-  Offer get offer => super;
+//  Offer get offer => super;
 
   @override
   String toString() {

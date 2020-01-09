@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.node;
 
 class NodeInfo {
   NodeInfo.fromJson(Map<String, dynamic> json)
