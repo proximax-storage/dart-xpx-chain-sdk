@@ -82,7 +82,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
     signature = value.transaction.signature;
     networkType = extractNetworkType(value.transaction.version);
     version = extractVersion(value.transaction.version);
-    maxFee = value.transaction.fee.toBigInt();
+    maxFee = value.transaction.fee.toUint64();
     signer = PublicAccount.fromPublicKey(value.transaction.signer, networkType);
 
     minApprovalDelta = value.transaction.minApprovalDelta;
@@ -92,10 +92,11 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
   }
 
   int minApprovalDelta;
-
   int minRemovalDelta;
-
   List<MultisigCosignatoryModification> modifications;
+
+  int get size => _size();
+  AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   static List<ModifyMultisigAccountTransaction> listFromDTO(
           List<ModifyMultisigAccountTransactionInfoDTO> json) =>
@@ -109,7 +110,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
   String toString() {
     final sb = StringBuffer()
       ..writeln('{')
-      ..writeln('\t"abstractTransaction": ${abstractTransactionToString()}')
+      ..writeln('\t"abstractTransaction": ${_absToString()}')
       ..writeln('\t"minApproval": $minApprovalDelta,')
       ..writeln('\t"minRemoval": $minRemovalDelta,')
       ..writeln('\t"modifications": $modifications')
@@ -120,7 +121,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['abstractTransaction'] = abstractTransactionToJson();
+    data['abstractTransaction'] = _absToJson();
     data['minApproval'] = minApprovalDelta;
     data['minRemoval'] = minRemovalDelta;
     data['modifications'] = modifications;
@@ -129,13 +130,13 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
   }
 
   @override
-  int size() =>
+  int _size() =>
       modifyMultisigHeaderSize +
       ((keySize + 1 /* MultisigModificationType size */) *
           modifications.length);
 
   @override
-  AbstractTransaction getAbstractTransaction() => abstractTransaction();
+  AbstractTransaction _abstractTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {
@@ -143,16 +144,16 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
 
     final mV = cosignatoryModificationArrayToBuffer(builder, modifications);
 
-    final vectors = generateVector(builder);
+    final vectors = _generateVector(builder);
 
     final txnBuilder = ModifyMultisigAccountTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(size())
+      ..addSize(_size())
       ..addMinRemovalDelta(minRemovalDelta)
       ..addMinApprovalDelta(minApprovalDelta)
       ..addNumModifications(modifications.length)
       ..addModificationsOffset(mV);
-    buildVector(builder, vectors);
+    _buildVector(builder, vectors);
 
     final codedModifyMultisigAccount = txnBuilder.finish();
     return modifyMultisigAccountTransactionSchema()

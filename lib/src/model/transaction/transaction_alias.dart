@@ -18,7 +18,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
         ? actionType = AliasActionType.aliasLink
         : AliasActionType.aliasUnlink;
     namespaceId = value.transaction.namespaceId != null
-        ? NamespaceId.fromId(value.transaction.namespaceId.toBigInt())
+        ? NamespaceId.fromId(value.transaction.namespaceId.toUint64())
         : null;
   }
 
@@ -29,17 +29,20 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
         ? actionType = AliasActionType.aliasLink
         : AliasActionType.aliasUnlink;
     namespaceId = value.transaction.namespaceId != null
-        ? NamespaceId.fromId(value.transaction.namespaceId.toBigInt())
+        ? NamespaceId.fromId(value.transaction.namespaceId.toUint64())
         : null;
   }
 
   AliasActionType actionType;
   NamespaceId namespaceId;
 
+  int get size => _size();
+  AbstractTransaction get abstractTransaction => _abstractTransaction();
+
   String _aliasTransactionToString() {
     final String _actionType = actionType.index == 0 ? 'link' : 'unlink';
     return '{\n'
-        '\t"abstractTransaction": ${abstractTransactionToString()}\n'
+        '\t"abstractTransaction": ${_absToString()}\n'
         '\t"aliasActionType": $_actionType,\n'
         '\t"namespaceId": ${namespaceId.toHex()},\n';
   }
@@ -52,7 +55,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
 
   Map<String, dynamic> _aliasTransactionToJson() {
     final data = <String, dynamic>{};
-    data['abstractTransaction'] = abstractTransactionToJson();
+    data['abstractTransaction'] = _absToJson();
     if (actionType != null) {
       data['aliasActionType'] = actionType.index;
     }
@@ -61,26 +64,26 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
   }
 
   @override
-  int size() => aliasTransactionHeader;
+  int _size() => aliasTransactionHeader;
 
   @override
-  AbstractTransaction getAbstractTransaction() => abstractTransaction();
+  AbstractTransaction _abstractTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() => null;
 
   Uint8List _generateAbstractBytes(fb.Builder builder, int aliasV) {
-    final nV = builder.writeListUint32(namespaceId.toArray());
+    final nV = builder.writeListUint32(namespaceId.toIntArray());
 
-    final vectors = generateVector(builder);
+    final vectors = _generateVector(builder);
 
     final txnBuilder = AliasTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(size())
+      ..addSize(_size())
       ..addActionType(actionType.index)
       ..addNamespaceIdOffset(nV)
       ..addAliasIdOffset(aliasV);
-    buildVector(builder, vectors);
+    _buildVector(builder, vectors);
 
     final codedAlias = txnBuilder.finish();
 
@@ -122,10 +125,10 @@ class AddressAliasTransaction extends AliasTransaction {
   }
 
   @override
-  int size() => super.size() + mosaicIdSize;
+  int _size() => super._size() + mosaicIdSize;
 
   @override
-  AbstractTransaction getAbstractTransaction() => abstractTransaction();
+  AbstractTransaction _abstractTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {
@@ -148,7 +151,7 @@ class MosaicAliasTransaction extends AliasTransaction {
     MosaicAliasTransactionInfoDTO value,
   )   : assert(value != null, 'value must not be null'),
         super._fromMosaicAliasDTO(value) {
-    mosaicId = MosaicId.fromBigInt(value.transaction.mosaicId.toBigInt());
+    mosaicId = MosaicId.fromUint64(value.transaction.mosaicId.toUint64());
   }
 
   MosaicId mosaicId;
@@ -173,10 +176,10 @@ class MosaicAliasTransaction extends AliasTransaction {
   }
 
   @override
-  int size() => super.size() + mosaicIdSize;
+  int _size() => super._size() + mosaicIdSize;
 
   @override
-  AbstractTransaction getAbstractTransaction() => abstractTransaction();
+  AbstractTransaction _abstractTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {

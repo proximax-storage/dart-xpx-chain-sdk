@@ -21,7 +21,7 @@ import 'package:xpx_chain_sdk/src/model/multisig.dart';
 import 'package:xpx_chain_sdk/src/model/message.dart';
 import 'package:xpx_chain_sdk/src/model/namespace.dart';
 import 'package:xpx_chain_sdk/src/api/api.dart';
-import 'package:xpx_chain_sdk/src/model/utils.dart';
+import 'package:xpx_chain_sdk/src/model/uint64.dart';
 import 'package:xpx_chain_sdk/xpx_sdk_all_errors.dart';
 import 'package:xpx_chain_sdk/imp/buffer.dart';
 

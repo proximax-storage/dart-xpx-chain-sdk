@@ -1,132 +1,5 @@
 part of xpx_chain_sdk.transaction;
 
-class _TransactionTypeClass {
-  _TransactionTypeClass([this._transactionType, this._raw, this._hex]);
-
-  final TransactionType _transactionType;
-  final int _raw;
-  final int _hex;
-
-  TransactionType get transactionType => _transactionType;
-  int get raw => _raw;
-  int get hex => _hex;
-}
-
-abstract class Id {
-  const Id(this.id);
-
-  final BigInt id;
-
-  @override
-  String toString() => toHex();
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Id && runtimeType == other.runtimeType && id == other.id;
-
-  @override
-  int get hashCode => 'Id'.hashCode ^ id.hashCode;
-
-  String toHex() {
-    if (id == null) {
-      return null;
-    }
-
-    var s = id.toRadixString(16).toUpperCase();
-    if (s.length % 2 != 0) {
-      s = '0$s';
-    }
-    return s;
-  }
-
-  int toIn() => id.toInt();
-
-  BigInt toBigInt() => id;
-
-  List<int> toArray() {
-    if (id == null) {
-      return [0, 0];
-    }
-    final l = id.toUnsigned(32);
-    final r = (id >> 32).toUnsigned(32);
-
-    return List<int>.from([l.toInt(), r.toInt()]);
-  }
-}
-
-class Deadline {
-  Deadline(
-      {int days = 0,
-      int hours = 0,
-      int minutes = 0,
-      int seconds = 0,
-      int milliseconds = 0,
-      int microseconds = 0}) {
-    final d = Duration(
-        days: days,
-        hours: hours,
-        minutes: minutes,
-        seconds: seconds,
-        milliseconds: milliseconds,
-        microseconds: microseconds);
-    value = DateTime.now().add(d);
-  }
-
-  Deadline.fromUInt64DTO(UInt64DTO data)
-      : assert(data.lower != null || data.higher == null,
-            'lower or higher must not be null') {
-    value = data.toBigInt() != null
-        ? DateTime.fromMillisecondsSinceEpoch(data.toBigInt().toInt() +
-            timestampNemesisBlock.toUtc().millisecondsSinceEpoch)
-        : null;
-  }
-
-  DateTime value;
-
-  @override
-  String toString() {
-    if (value != null) {
-      return '$value ${value.timeZoneName}';
-    } else {
-      return 'null';
-    }
-  }
-
-  int toBlockchainTimestamp() =>
-      value.millisecondsSinceEpoch -
-      timestampNemesisBlock.millisecondsSinceEpoch;
-}
-
-class SignedTransaction {
-  SignedTransaction([this.transactionType, this.payload, this.hash]);
-
-  SignedTransaction.fromJson(Map<String, dynamic> json) {
-    transactionType = json['transactionType'];
-    payload = json['payload'];
-    hash = json['hash'];
-  }
-
-  int transactionType;
-  String payload;
-  String hash;
-
-  @override
-  String toString() => '{\n'
-      '\t"transactionType": $transactionType\n'
-      '\t"payload": $payload\n'
-      '\t"hash": $hash\n'
-      '}\n';
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['transactionType'] = transactionType;
-    data['payload'] = payload;
-    data['hash'] = hash;
-    return data;
-  }
-}
-
 // CosignatureSignedTransaction
 class CosignatureSignedTransaction {
   CosignatureSignedTransaction(this._parentHash, this.signature, this.signer);
@@ -153,16 +26,49 @@ class CosignatureSignedTransaction {
   }
 }
 
+abstract class Id {
+  const Id(this.id);
+
+  final Uint64 id;
+
+  @override
+  String toString() => toHex();
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Id && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => 'Id'.hashCode ^ id.hashCode;
+
+  String toHex() {
+    if (id == null) {
+      return null;
+    }
+
+    var s = id.toHex().toUpperCase();
+    if (s.length % 2 != 0) {
+      s = '0$s';
+    }
+    return s;
+  }
+
+  List<int> toIntArray() => id.toIntArray();
+
+  Uint64 toUint64() => id;
+}
+
 abstract class Transaction {
-  AbstractTransaction getAbstractTransaction();
+  AbstractTransaction _abstractTransaction();
   Map<String, dynamic> toJson();
   Uint8List generateBytes();
-  int size();
+  int _size();
 }
 
 // Transaction Info
 mixin TransactionInfo {
-  BigInt height;
+  Uint64 height;
   int index;
   String id;
   String transactionHash;
@@ -213,6 +119,90 @@ mixin TransactionInfo {
   }
 }
 
+class _TransactionTypeClass {
+  _TransactionTypeClass([this._transactionType, this._raw, this._hex]);
+
+  final TransactionType _transactionType;
+  final int _raw;
+  final int _hex;
+
+  TransactionType get transactionType => _transactionType;
+  int get raw => _raw;
+  int get hex => _hex;
+}
+
+class Deadline {
+  Deadline(
+      {int days = 0,
+      int hours = 0,
+      int minutes = 0,
+      int seconds = 0,
+      int milliseconds = 0,
+      int microseconds = 0}) {
+    final d = Duration(
+        days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        milliseconds: milliseconds,
+        microseconds: microseconds);
+    value = DateTime.now().add(d);
+  }
+
+  Deadline.fromUInt64DTO(UInt64DTO data)
+      : assert(data.lower != null || data.higher == null,
+            'lower or higher must not be null') {
+    value = data.toUint64() != null
+        ? DateTime.fromMillisecondsSinceEpoch(data.toUint64().toInt() +
+            timestampNemesisBlock.toUtc().millisecondsSinceEpoch)
+        : null;
+  }
+
+  DateTime value;
+
+  @override
+  String toString() {
+    if (value != null) {
+      return '$value ${value.timeZoneName}';
+    } else {
+      return 'null';
+    }
+  }
+
+  int toBlockchainTimestamp() =>
+      value.millisecondsSinceEpoch -
+      timestampNemesisBlock.millisecondsSinceEpoch;
+}
+
+class SignedTransaction {
+  SignedTransaction([this.transactionType, this.payload, this.hash]);
+
+  SignedTransaction.fromJson(Map<String, dynamic> json) {
+    transactionType = json['transactionType'];
+    payload = json['payload'];
+    hash = json['hash'];
+  }
+
+  int transactionType;
+  String payload;
+  String hash;
+
+  @override
+  String toString() => '{\n'
+      '\t"transactionType": $transactionType\n'
+      '\t"payload": $payload\n'
+      '\t"hash": $hash\n'
+      '}\n';
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['transactionType'] = transactionType;
+    data['payload'] = payload;
+    data['hash'] = hash;
+    return data;
+  }
+}
+
 class AbstractTransaction with TransactionInfo {
   AbstractTransaction(
       [this.networkType,
@@ -229,7 +219,7 @@ class AbstractTransaction with TransactionInfo {
     deadline = Deadline.fromUInt64DTO(absValue.deadline);
     type = transactionTypeFromRaw(absValue.type);
     version = extractVersion(absValue.version);
-    maxFee = absValue.fee.toBigInt();
+    maxFee = absValue.fee.toUint64();
     signature = absValue.signature;
     signer = PublicAccount.fromPublicKey(absValue.signer, networkType);
     _generateMeta(metaValue);
@@ -239,7 +229,7 @@ class AbstractTransaction with TransactionInfo {
   Deadline deadline;
   _TransactionTypeClass type;
   int version;
-  BigInt maxFee;
+  Uint64 maxFee;
   String signature;
   PublicAccount signer;
 
@@ -247,7 +237,7 @@ class AbstractTransaction with TransactionInfo {
   set toAggregate(PublicAccount signer) => this.signer = signer;
 
   void _generateMeta(MetaTransactionDTO value) {
-    height = value._height.toBigInt();
+    height = value._height.toUint64();
     index = value._index;
     id = value._id;
     transactionHash = value._hash;
@@ -256,18 +246,18 @@ class AbstractTransaction with TransactionInfo {
     aggregateId = value._aggregateId;
   }
 
-  Map<String, int> generateVector(fb.Builder builder) {
+  Map<String, int> _generateVector(fb.Builder builder) {
     final Map<String, int> data = {};
     data['versionV'] = (networkType << 24) + version;
     data['signatureV'] = builder.writeListUint8(Uint8List(signatureSize));
     data['signerV'] = builder.writeListUint8(Uint8List(signerSize));
-    data['deadlineV'] = builder.writeListUint32(
-        bigIntToArray(BigInt.from(deadline.toBlockchainTimestamp())));
-    data['feeV'] = builder.writeListUint32(bigIntToArray(maxFee));
+    data['deadlineV'] = builder
+        .writeListUint32(Uint64(deadline.toBlockchainTimestamp()).toIntArray());
+    data['feeV'] = builder.writeListUint32(maxFee.toIntArray());
     return data;
   }
 
-  void buildVector(fb.Builder builder, Map<String, int> vector) {
+  void _buildVector(fb.Builder builder, Map<String, int> vector) {
     Transactions(builder)
       ..addSignatureOffset(vector['signatureV'])
       ..addSignerOffset(vector['signerV'])
@@ -277,7 +267,7 @@ class AbstractTransaction with TransactionInfo {
       ..addDeadlineOffset(vector['deadlineV']);
   }
 
-  AbstractTransaction abstractTransaction() => this;
+  AbstractTransaction _absTransaction() => this;
 
   bool isUnconfirmed() =>
       height.toInt() == 0 && transactionHash == merkleComponentHash;
@@ -290,9 +280,9 @@ class AbstractTransaction with TransactionInfo {
   bool isUnannounced() => this == null;
 
   @override
-  String toString() => abstractTransactionToString();
+  String toString() => _absToString();
 
-  String abstractTransactionToString() {
+  String _absToString() {
     final sb = StringBuffer()
       ..writeln('{')
       ..writeln('\t\t"transactionInfo": ${_transactionInfoToString()},')
@@ -314,9 +304,9 @@ class AbstractTransaction with TransactionInfo {
   }
 
   @override
-  Map<String, dynamic> toJson() => abstractTransactionToJson();
+  Map<String, dynamic> toJson() => _absToJson();
 
-  Map<String, dynamic> abstractTransactionToJson() {
+  Map<String, dynamic> _absToJson() {
     final Map<String, dynamic> data = {}..addAll(_transactionInfoToJson());
     data['networkType'] = networkType;
     data['type'] = _transactionTypes.lookup(type)._raw;

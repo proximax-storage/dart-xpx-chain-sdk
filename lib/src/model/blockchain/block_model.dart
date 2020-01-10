@@ -5,17 +5,17 @@ class BlockInfo {
     networkType = extractNetworkType(v._block.version);
     blockHash = v.meta._hash;
     generationHash = v.meta._generationHash;
-    totalFee = v.meta._totalFee.toBigInt();
+    totalFee = v.meta._totalFee.toUint64();
     numTransactions = v.meta._numTransactions;
     signature = v._block.signature;
     signer = PublicAccount.fromPublicKey(v._block.signer, networkType);
     version = v._block.version;
     type = v._block.type;
-    height = v._block._height.toBigInt();
+    height = v._block._height.toUint64();
     timestamp = DateTime.fromMillisecondsSinceEpoch(
-        v._block._timestamp.toBigInt().toInt() +
+        v._block._timestamp.toUint64().toInt() +
             timestampNemesisBlock.toUtc().millisecondsSinceEpoch);
-    difficulty = v._block._difficulty.toBigInt();
+    difficulty = v._block._difficulty.toUint64();
     feeMultiplier = v._block.feeMultiplier;
     previousBlockHash = v._block._previousBlockHash;
     blockTransactionsHash = v._block._blockTransactionsHash;
@@ -32,15 +32,15 @@ class BlockInfo {
   int networkType;
   String blockHash;
   String generationHash;
-  BigInt totalFee;
+  Uint64 totalFee;
   int numTransactions;
   String signature;
   PublicAccount signer;
   int version;
   int type;
-  BigInt height;
+  Uint64 height;
   DateTime timestamp;
-  BigInt difficulty;
+  Uint64 difficulty;
   int feeMultiplier;
   String previousBlockHash;
   String blockTransactionsHash;
@@ -110,18 +110,17 @@ class BlockInfo {
 
 class Height {
   Height.fromDTO(HeightDTO v) {
-    height = v._height.toBigInt();
+    height = v._height.toUint64();
   }
 
-  BigInt height;
+  Uint64 height;
 
   @override
   String toString() => '$height';
 
   Map<String, dynamic> toJson() {
-    final dto = UInt64DTO.fromBigInt(height);
     final data = <String, dynamic>{};
-    data['height'] = dto.toBigInt();
+    data['height'] = height;
     return data;
   }
 }
@@ -129,16 +128,11 @@ class Height {
 class BlockchainScore {
   BlockchainScore.fromDTO(BlockchainScoreDTO value)
       : assert(value != null, 'json must not be null') {
-    List<dynamic> raw() => <dynamic>[
-          value._scoreLow.toBigInt().toInt(),
-          value._scoreHigh.toBigInt().toInt()
-        ];
-
-    final t = UInt64DTO.fromJson(raw()).toBigInt();
-    score = t;
+    score = Uint64.fromInts(value._scoreLow.toUint64().toInt(),
+        value._scoreHigh.toUint64().toInt());
   }
 
-  BigInt score;
+  Uint64 score;
 
   @override
   String toString() => '$score';

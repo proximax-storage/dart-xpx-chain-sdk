@@ -1,7 +1,7 @@
 library xpx_chain_sdk.blockchain;
 
 import 'package:xpx_chain_sdk/src/model/account.dart';
-import 'package:xpx_chain_sdk/src/model/utils.dart';
+import 'package:xpx_chain_sdk/src/model/uint64.dart';
 import 'package:xpx_chain_sdk/src/model/transaction.dart';
 
 part 'blockchain/block_dto.dart';

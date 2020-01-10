@@ -206,7 +206,7 @@ SignedTransaction signTransactionWith(
   final hash = _createTransactionHash(pHex, generationHash);
 
   return SignedTransaction(
-      tx.getAbstractTransaction().type.raw, pHex.toUpperCase(), hash);
+      tx._abstractTransaction().type.raw, pHex.toUpperCase(), hash);
 }
 
 SignedTransaction signTransactionWithCosignatures(Transaction tx, Account a,
@@ -228,7 +228,7 @@ SignedTransaction signTransactionWithCosignatures(Transaction tx, Account a,
 
   i.replaceRange(0, s.out.length, s.out);
 
-  return SignedTransaction(tx.getAbstractTransaction().type.raw,
+  return SignedTransaction(tx._abstractTransaction().type.raw,
       hex.encode(i).toUpperCase(), stx.hash);
 }
 
@@ -269,11 +269,11 @@ String _createTransactionHash(String pHex, String generationHash) {
 }
 
 Uint8List toAggregateTransactionBytes(Transaction tx) {
-  if (tx.getAbstractTransaction().signer == null) {
+  if (tx._abstractTransaction().signer == null) {
     throw errTransactionSigner;
   }
 
-  final sb = hex.decode(tx.getAbstractTransaction().signer.publicKey);
+  final sb = hex.decode(tx._abstractTransaction().signer.publicKey);
 
   final b = tx.generateBytes();
 
@@ -342,14 +342,4 @@ Uint8List hexDecodeStringOdd(final String s) {
     data = '0$s';
   }
   return Uint8List.fromList(hex.decode(data));
-}
-
-List<int> bigIntToArray(BigInt v) {
-  if (v == null) {
-    return [0, 0];
-  }
-  final l = v.toUnsigned(32);
-  final r = (v >> 32).toUnsigned(32);
-
-  return List<int>.from([l.toInt(), r.toInt()]);
 }

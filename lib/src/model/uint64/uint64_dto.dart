@@ -1,4 +1,4 @@
-part of xpx_chain_sdk.utils;
+part of xpx_chain_sdk.uint64;
 
 class UInt64DTO {
   UInt64DTO([this.higher, this.lower]);
@@ -33,15 +33,11 @@ class UInt64DTO {
     return map;
   }
 
-  BigInt toBigInt() {
+  Uint64 toUint64() {
     if (lower == null || higher == null) {
       return null;
     }
-    final buffer = Buffer.bigEndian(8)
-      ..writeInt32(lower.toInt())
-      ..writeInt32(higher.toInt());
-
-    return buffer.toBigInt();
+    return Uint64.fromDto(this);
   }
 
   int toInt() {

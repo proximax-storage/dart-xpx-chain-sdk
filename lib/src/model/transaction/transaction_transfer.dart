@@ -48,7 +48,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
   String toString() {
     final sb = StringBuffer()
       ..writeln('\n{')
-      ..writeln('\t"abstractTransaction": ${abstractTransactionToString()}')
+      ..writeln('\t"abstractTransaction": ${_absToString()}')
       ..writeln('\t"recipient": $recipient')
       ..writeln('\t"mosaics": ${mosaics.map((v) => v.toJson()).toList()},');
     if (message != null) {
@@ -61,7 +61,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['abstractTransaction'] = abstractTransactionToJson();
+    data['abstractTransaction'] = _absToJson();
     if (mosaics != null) {
       data['mosaics'] = mosaics.map((v) => v.toJson()).toList();
     }
@@ -73,13 +73,13 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
   int messageSize() => message.payload.length + 1;
 
   @override
-  int size() =>
+  int _size() =>
       transferHeaderSize +
       (mosaicIdSize + amountSize) * mosaics.length +
       messageSize();
 
   @override
-  AbstractTransaction getAbstractTransaction() => abstractTransaction();
+  AbstractTransaction _abstractTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {
@@ -89,7 +89,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     final List<int> mb = List(mosaics.length);
     int i = 0;
     for (final mosaic in mosaics) {
-      final id = builder.writeListUint32(mosaic.assetId.toArray());
+      final id = builder.writeListUint32(mosaic.assetId.toIntArray());
       final amount = builder.writeListUint32(mosaic.amount.toIntArray());
 
       final ms = MosaicBufferBuilder(builder)
@@ -114,17 +114,17 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
     final mV = builder.writeList(mb);
 
-    final vectors = generateVector(builder);
+    final vectors = _generateVector(builder);
 
     final txnBuilder = TransferTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(size())
+      ..addSize(_size())
       ..addRecipientOffset(rV)
       ..addNumMosaics(mosaics.length)
       ..addMessageSize(this.message.payload.length + 1)
       ..addMessageOffset(m)
       ..addMosaicsOffset(mV);
-    buildVector(builder, vectors);
+    _buildVector(builder, vectors);
 
     final codedTransfer = txnBuilder.finish();
 

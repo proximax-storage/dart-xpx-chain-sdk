@@ -14,7 +14,7 @@ import 'package:xpx_chain_sdk/src/model/multisig.dart';
 import 'package:xpx_chain_sdk/src/model/network.dart';
 import 'package:xpx_chain_sdk/src/model/node.dart';
 import 'package:xpx_chain_sdk/src/model/transaction.dart';
-import 'package:xpx_chain_sdk/src/model/utils.dart';
+import 'package:xpx_chain_sdk/src/model/uint64.dart';
 
 part 'api_conf.dart';
 part 'api_client.dart';

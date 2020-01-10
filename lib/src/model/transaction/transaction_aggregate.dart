@@ -40,6 +40,9 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   List<Transaction> innerTransactions;
   List<AggregateTransactionCosignature> cosignatures;
 
+  int get size => _size();
+  AbstractTransaction get abstractTransaction => _abstractTransaction();
+
   static List<AggregateTransaction> listFromDTO(
           List<_AggregateTransactionInfoDTO> json) =>
       json == null
@@ -50,7 +53,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   String toString() {
     final sb = StringBuffer()
       ..writeln('{')
-      ..writeln('\t"abstractTransaction": ${abstractTransactionToString()}')
+      ..writeln('\t"abstractTransaction": ${_absToString()}')
       ..writeln('\t"innerTransactions": $innerTransactions,')
       ..writeln('\t"cosignatures": $cosignatures')
       ..write('}');
@@ -60,24 +63,24 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['abstractTransaction'] = abstractTransactionToJson();
+    data['abstractTransaction'] = _absToJson();
     data['innerTransactions'] = innerTransactions;
     data['cosignatures'] = cosignatures;
     return data;
   }
 
   @override
-  int size() {
+  int _size() {
     int sizeOfInnerTransactions = 0;
     for (final itx in innerTransactions) {
       sizeOfInnerTransactions +=
-          itx.size() - signatureSize - maxFeeSize - deadLineSize;
+          itx._size() - signatureSize - maxFeeSize - deadLineSize;
     }
     return aggregateBondedHeader + sizeOfInnerTransactions;
   }
 
   @override
-  AbstractTransaction getAbstractTransaction() => abstractTransaction();
+  AbstractTransaction _abstractTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {
@@ -92,14 +95,14 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
     final tV = builder.writeListUint8(Uint8List.fromList(txsBytes));
 
-    final vector = generateVector(builder);
+    final vector = _generateVector(builder);
 
     final txnBuilder = AggregateTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(size())
+      ..addSize(_size())
       ..addTransactionsSize(txsBytes.length)
       ..addTransactionsOffset(tV);
-    buildVector(builder, vector);
+    _buildVector(builder, vector);
 
     final codedAggregate = txnBuilder.finish();
 

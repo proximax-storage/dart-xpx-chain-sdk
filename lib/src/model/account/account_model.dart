@@ -120,18 +120,18 @@ class AccountInfo {
     }
 
     address = Address.fromEncoded(v._account.address);
-    addressHeight = v._account.addressHeight.toBigInt();
+    addressHeight = v._account.addressHeight.toUint64();
     publicKey = v._account._publicKey;
-    publicKeyHeight = v._account._publicKeyHeight.toBigInt();
+    publicKeyHeight = v._account._publicKeyHeight.toUint64();
     accountType = v._account._accountType;
     linkedAccountKey = v._account._linkedAccountKey;
     mosaics = mList;
   }
 
   Address address;
-  BigInt addressHeight;
+  Uint64 addressHeight;
   String publicKey;
-  BigInt publicKeyHeight;
+  Uint64 publicKeyHeight;
   List<Mosaic> mosaics;
   int accountType;
   String linkedAccountKey;

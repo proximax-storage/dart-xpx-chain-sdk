@@ -21,8 +21,8 @@ class Mosaic {
   }
 
   Mosaic.fromDTO(MosaicDTO v) {
-    assetId = MosaicId.fromId(v._id.toBigInt());
-    amount = Uint64.fromBigInt(v._amount.toBigInt());
+    assetId = MosaicId.fromId(v._id.toUint64());
+    amount = v._amount.toUint64();
   }
 
   Id assetId;
@@ -47,7 +47,7 @@ class Mosaic {
 }
 
 class MosaicId extends Id {
-  factory MosaicId({final BigInt id}) {
+  factory MosaicId({final Uint64 id}) {
     if (id == null) {
       throw errNullId;
     }
@@ -55,11 +55,11 @@ class MosaicId extends Id {
     return MosaicId._(id);
   }
 
-  const MosaicId._(final BigInt id) : super(id);
+  const MosaicId._(final Uint64 id) : super(id);
 
-  MosaicId.fromId(final BigInt id) : super(id);
+  MosaicId.fromId(final Uint64 id) : super(id);
 
-  MosaicId.fromBigInt(final BigInt bigInt) : super(bigInt);
+  MosaicId.fromUint64(final Uint64 bigInt) : super(bigInt);
 
   static MosaicId fromHex(final String hex) {
     if (hex.isEmpty) {
@@ -69,7 +69,7 @@ class MosaicId extends Id {
     if (0 != (hex.length % 2)) {
       throw ArgumentError('invalid hex');
     }
-    final BigInt bigInt = BigInt.parse(hex, radix: 16);
+    final Uint64 bigInt = Uint64.fromHex(hex);
     return MosaicId._(bigInt);
   }
 
@@ -116,17 +116,17 @@ class MosaicIds {
 class MosaicInfo {
   MosaicInfo.fromDTO(MosaicInfoDTO value)
       : assert(value != null, 'json must not be null') {
-    mosaicId = MosaicId(id: value._mosaic.mosaicId.toBigInt());
-    supply = value._mosaic._supply.toBigInt();
-    height = value._mosaic._height.toBigInt();
+    mosaicId = MosaicId(id: value._mosaic.mosaicId.toUint64());
+    supply = value._mosaic._supply.toUint64();
+    height = value._mosaic._height.toUint64();
     owner = value._mosaic._owner;
     revision = value._mosaic._revision;
     properties = MosaicProperties.fromDTO(value._mosaic._properties);
   }
 
   MosaicId mosaicId;
-  BigInt supply;
-  BigInt height;
+  Uint64 supply;
+  Uint64 height;
   String owner;
   int revision;
   MosaicProperties properties;
@@ -153,7 +153,7 @@ class MosaicInfo {
 class MosaicName {
   MosaicName.fromDTO(MosaicNameDTO value)
       : assert(value != null, 'json must not be null') {
-    mosaicId = MosaicId.fromId(value.mosaicId.toBigInt());
+    mosaicId = MosaicId.fromId(value.mosaicId.toUint64());
     names = value._names != null ? List.from(value._names) : null;
   }
 
@@ -176,12 +176,12 @@ class MosaicProperty {
   MosaicProperty.fromDTO(_MosaicPropertyDTO value) {
     if (value == null) return;
     id = getPropertyId(value._id);
-    this.value = value._value.toBigInt();
+    this.value = value._value.toUint64();
   }
 
   MosaicPropertyId id;
 
-  BigInt value;
+  Uint64 value;
 
   static List<MosaicProperty> listFromDTO(List<_MosaicPropertyDTO> json) =>
       json == null
@@ -201,7 +201,7 @@ class MosaicProperties {
       this.supplyMutable,
       this.transferable,
       this.divisibility,
-      BigInt duration,
+      Uint64 duration,
       [this.optionalProperties]) {
     optionalProperties = duration.toInt() != 0
         ? List<MosaicProperty>.from([
@@ -216,17 +216,17 @@ class MosaicProperties {
 //      throw errInvalidMosaicProperties;
 //    }
 
-    var flags = BigInt.zero;
+    var flags = Uint64.zero;
 
     divisibility = 0;
 
     for (_MosaicPropertyDTO property in value) {
       switch (property._id) {
         case 0:
-          flags = property._value.toBigInt();
+          flags = property._value.toUint64();
           break;
         case 1:
-          divisibility = property._value.toBigInt().toInt();
+          divisibility = property._value.toUint64().toInt();
           break;
         case 2:
           optionalProperties = <MosaicProperty>[];

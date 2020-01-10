@@ -1,4 +1,4 @@
-part of xpx_chain_sdk.utils;
+part of xpx_chain_sdk.uint64;
 
 /// Represents a 64-bit unsigned integer.
 ///
@@ -133,11 +133,26 @@ class Uint64 implements Comparable<Uint64> {
   /// Relational greater than or equal operator.
   bool operator >=(other) => _value >= other._value;
 
+  /// Bit-wise and operator.
+  Uint64 operator &(other) {
+    final Uint64 o = _promote(other);
+    return Uint64.fromBigInt(_value & o._value);
+  }
+
+  /// Bit-wise or operator.
+  Uint64 operator |(other) {
+    final Uint64 o = _promote(other);
+    return Uint64.fromBigInt(_value | o._value);
+  }
+
   @override
   int compareTo(final Uint64 other) => _value.compareTo(other._value);
 
   /// Returns this [Uint64] as a [double].
   double toDouble() => _value.toDouble();
+
+  /// Returns this [Uint64] as a [BigInt].
+  BigInt toBigInt() => _value;
 
   /// Returns this [Uint64] as a [int].
   int toInt() => _value.toInt();
@@ -179,5 +194,16 @@ class Uint64 implements Comparable<Uint64> {
     if (value < _minValueUnsigned || value > _maxValueUnsigned) {
       throw ArgumentError('Value out of range');
     }
+  }
+
+  // Returns the [Int64] representation of the specified value. Throws
+  // [ArgumentError] for non-integer arguments.
+  static Uint64 _promote(value) {
+    if (value is Uint64) {
+      return value;
+    } else if (value is int) {
+      return Uint64(value);
+    }
+    throw ArgumentError.value(value);
   }
 }

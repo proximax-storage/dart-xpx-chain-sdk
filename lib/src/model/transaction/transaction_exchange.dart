@@ -18,41 +18,44 @@ class AddExchangeOfferTransaction extends AbstractTransaction
 
   List<AddOffer> offers;
 
+  int get size => _size();
+  AbstractTransaction get abstractTransaction => _abstractTransaction();
+
   @override
-  AbstractTransaction getAbstractTransaction() => abstractTransaction();
+  AbstractTransaction _abstractTransaction() => _absTransaction();
 
   @override
   String toString() => '{\n'
-      '\t"abstractTransaction": ${abstractTransactionToString()}\n'
+      '\t"abstractTransaction": ${_absToString()}\n'
       '\t"offers": $offers,\n'
       '}\n';
 
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['abstractTransaction'] = abstractTransactionToJson();
+    data['abstractTransaction'] = _absToJson();
     data['mosaic'] = offers;
     return data;
   }
 
   @override
-  int size() =>
+  int _size() =>
       addExchangeOfferHeaderSize + offers.length * addExchangeOfferSize;
 
   @override
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final vectors = generateVector(builder);
+    final vectors = _generateVector(builder);
 
     final offersV = addExchangeOfferToArrayToBuffer(builder, offers);
 
     final txnBuilder = ExchangeOfferTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(size())
+      ..addSize(_size())
       ..addOffersCount(offers.length)
       ..addOffersOffset(offersV);
-    buildVector(builder, vectors);
+    _buildVector(builder, vectors);
 
     final codedTransfer = txnBuilder.finish();
 

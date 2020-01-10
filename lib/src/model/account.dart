@@ -12,7 +12,7 @@ import 'package:xpx_chain_sdk/xpx_sdk_all_errors.dart';
 import 'package:xpx_chain_sdk/src/model/mosaic.dart';
 import 'package:xpx_chain_sdk/src/model/network.dart';
 import 'package:xpx_chain_sdk/src/model/transaction.dart';
-import 'package:xpx_chain_sdk/src/model/utils.dart';
+import 'package:xpx_chain_sdk/src/model/uint64.dart';
 
 part 'account/account_dto.dart';
 part 'account/account_model.dart';

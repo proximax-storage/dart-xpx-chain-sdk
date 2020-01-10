@@ -1,7 +1,7 @@
 part of xpx_chain_sdk.namespace;
 
 class NamespaceId extends Id {
-  factory NamespaceId({final BigInt id}) {
+  factory NamespaceId({final Uint64 id}) {
     if (id == null) {
       throw errNullId;
     }
@@ -9,15 +9,15 @@ class NamespaceId extends Id {
     return NamespaceId._(id);
   }
 
-  const NamespaceId._(final BigInt id) : super(id);
+  const NamespaceId._(final Uint64 id) : super(id);
 
   /// NewNamespaceIdFromName generate Id from namespaceName
   NamespaceId.fromName(String namespaceName)
       : super(_generateNamespaceId(namespaceName));
 
-  NamespaceId.fromId(final BigInt id) : super(id);
+  NamespaceId.fromId(final Uint64 id) : super(id);
 
-  NamespaceId.fromBigInt(final BigInt bigInt) : super(bigInt);
+  NamespaceId.fromBigInt(final Uint64 bigInt) : super(bigInt);
 
   static NamespaceId fromHex(final String hex) {
     if (hex.isEmpty) {
@@ -27,7 +27,7 @@ class NamespaceId extends Id {
     if (0 != (hex.length % 2)) {
       throw ArgumentError('invalid hex');
     }
-    final BigInt bigInt = BigInt.parse(hex, radix: 16);
+    final Uint64 bigInt = Uint64.fromHex(hex);
     return NamespaceId._(bigInt);
   }
 
@@ -49,9 +49,9 @@ class NamespaceName {
   NamespaceName.fromDTO(NamespaceNameDTO value)
       : assert(value != null, 'json must not be null') {
     parentId = value.parentId == null
-        ? NamespaceId._(value.parentId.toBigInt())
+        ? NamespaceId._(value.parentId.toUint64())
         : null;
-    namespaceId = NamespaceId._(value.namespaceId.toBigInt());
+    namespaceId = NamespaceId._(value.namespaceId.toUint64());
     name = value.name;
   }
 
@@ -104,8 +104,8 @@ class NamespaceInfo {
     owner = PublicAccount.fromPublicKey(
         value._namespace.owner, _ownerAddress.networkType);
 
-    startHeight = value._namespace.startHeight.toBigInt();
-    endHeight = value._namespace.endHeight.toBigInt();
+    startHeight = value._namespace.startHeight.toUint64();
+    endHeight = value._namespace.endHeight.toUint64();
     depth = value._namespace.depth;
     levels = extractLevels(value);
     typeSpace = value._namespace.type;
@@ -113,10 +113,10 @@ class NamespaceInfo {
     alias = value._namespace.alias.address != null
         ? Alias(address: Address.fromEncoded(value._namespace.alias.address))
         : null;
-    if (value._namespace.parentId.toBigInt().toInt() != 0) {
+    if (value._namespace.parentId.toUint64().toInt() != 0) {
       namespaceId = NamespaceId._(levels[0]);
       parent = NamespaceInfo()
-        ..namespaceId = NamespaceId._(value._namespace.parentId.toBigInt());
+        ..namespaceId = NamespaceId._(value._namespace.parentId.toUint64());
     } else {
       namespaceId = NamespaceId._(levels[0]);
     }
@@ -136,15 +136,15 @@ class NamespaceInfo {
 
   int depth;
 
-  List<BigInt> levels;
+  List<Uint64> levels;
 
   NamespaceInfo parent;
 
   PublicAccount owner;
 
-  BigInt startHeight;
+  Uint64 startHeight;
 
-  BigInt endHeight;
+  Uint64 endHeight;
 
   Alias alias;
 

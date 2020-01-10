@@ -6,7 +6,7 @@ part of xpx_chain_sdk.transaction;
 class RegisterNamespaceTransaction extends AbstractTransaction
     implements Transaction {
   RegisterNamespaceTransaction.createRoot(Deadline deadline,
-      String rootNamespaceName, BigInt duration, int networkType)
+      String rootNamespaceName, Uint64 duration, int networkType)
       : super() {
     if (rootNamespaceName == null) {
       throw errInvalidNamespaceName;
@@ -37,7 +37,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       type = transactionTypeFromRaw(16718);
       parentId = NamespaceId.fromName(rootNamespaceName);
       namespaceId =
-          NamespaceId(id: generateId(subNamespaceName, parentId.toBigInt()));
+          NamespaceId(id: generateId(subNamespaceName, parentId.toUint64()));
       this.networkType = networkType;
       namespaceName = subNamespaceName;
       namespaceType = NamespaceType.sub;
@@ -48,23 +48,26 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       RegisterNamespaceTransactionInfoDTO value)
       : assert(value != null, 'value must not be null'),
         super.fromDto(value.transaction, value.meta) {
-    namespaceId = NamespaceId(id: value.transaction.namespaceId.toBigInt());
+    namespaceId = NamespaceId(id: value.transaction.namespaceId.toUint64());
     namespaceType = value.transaction.namespaceType == 0
         ? NamespaceType.root
         : NamespaceType.sub;
     namespaceName = value.transaction.name;
     if (namespaceType == NamespaceType.root) {
-      duration = value.transaction.duration.toBigInt();
+      duration = value.transaction.duration.toUint64();
     } else {
-      parentId = NamespaceId(id: value.transaction.parentId.toBigInt());
+      parentId = NamespaceId(id: value.transaction.parentId.toUint64());
     }
   }
 
   NamespaceId namespaceId;
   NamespaceType namespaceType;
   String namespaceName;
-  BigInt duration;
+  Uint64 duration;
   NamespaceId parentId;
+
+  int get size => _size();
+  AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   static List<RegisterNamespaceTransaction> listFromDTO(
           List<RegisterNamespaceTransactionInfoDTO> data) =>
@@ -78,7 +81,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   String toString() {
     final sb = StringBuffer()
       ..writeln('\n{')
-      ..writeln('\t"abstractTransaction": ${abstractTransactionToString()}')
+      ..writeln('\t"abstractTransaction": ${_absToString()}')
       ..writeln('\t"namespaceType": ${namespaceType.toString().split('.')[1]},')
       ..writeln('\t"namespaceName": $namespaceName,')
       ..writeln('\t"namespaceId": $namespaceId,');
@@ -95,7 +98,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['abstractTransaction'] = abstractTransactionToJson();
+    data['abstractTransaction'] = _absToJson();
     data['namespaceId'] = namespaceId.toHex();
     data['namespaceType'] = namespaceType;
     data['namespaceName'] = namespaceName;
@@ -109,33 +112,33 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   }
 
   @override
-  AbstractTransaction getAbstractTransaction() => abstractTransaction();
+  AbstractTransaction _abstractTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final nV = builder.writeListUint32(bigIntToArray(namespaceId.toBigInt()));
+    final nV = builder.writeListUint32(namespaceId.toIntArray());
     int dV;
     if (namespaceType == NamespaceType.root) {
-      dV = builder.writeListUint32(bigIntToArray(duration));
+      dV = builder.writeListUint32(duration.toIntArray());
     } else {
-      dV = builder.writeListUint32(bigIntToArray(parentId.toBigInt()));
+      dV = builder.writeListUint32(parentId.toIntArray());
     }
 
     final n = builder.writeString(namespaceName);
 
-    final vector = generateVector(builder);
+    final vector = _generateVector(builder);
 
     final txnBuilder = RegisterNamespaceTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(size())
+      ..addSize(_size())
       ..addNamespaceType(namespaceType.index)
       ..addDurationParentIdOffset(dV)
       ..addNamespaceIdOffset(nV)
       ..addNamespaceNameSize(namespaceName.length)
       ..addNamespaceNameOffset(n);
-    buildVector(builder, vector);
+    _buildVector(builder, vector);
 
     final codedRegisterNamespace = txnBuilder.finish();
     return registerNamespaceTransactionSchema()
@@ -143,5 +146,5 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   }
 
   @override
-  int size() => registerNamespaceHeaderSize + namespaceName.length;
+  int _size() => registerNamespaceHeaderSize + namespaceName.length;
 }

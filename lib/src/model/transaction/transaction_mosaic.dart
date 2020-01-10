@@ -29,12 +29,15 @@ class MosaicDefinitionTransaction extends AbstractTransaction
         super.fromDto(value.transaction, value.meta) {
     mosaicProperties = MosaicProperties.fromDTO(value.transaction.properties);
     mosaicNonce = value.transaction.mosaicNonce.toUnsigned(32);
-    mosaicId = MosaicId.fromId(value.transaction.mosaicId.toBigInt());
+    mosaicId = MosaicId.fromId(value.transaction.mosaicId.toUint64());
   }
 
   MosaicProperties mosaicProperties;
   int mosaicNonce;
   MosaicId mosaicId;
+
+  int get size => _size();
+  AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   static List<MosaicDefinitionTransaction> listFromDTO(
           List<MosaicDefinitionTransactionInfoDTO> json) =>
@@ -48,7 +51,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   String toString() {
     final sb = StringBuffer()
       ..writeln('{')
-      ..writeln('\t"abstractTransaction": ${abstractTransactionToString()}')
+      ..writeln('\t"abstractTransaction": ${_absToString()}')
       ..writeln('\t"mosaicProperties": $mosaicProperties')
       ..writeln('\t"mosaicNonce": ${mosaicNonce.toSigned(64)},')
       ..writeln('\t"assetId": $mosaicId,')
@@ -59,7 +62,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['abstractTransaction'] = abstractTransactionToJson();
+    data['abstractTransaction'] = _absToJson();
     data['mosaicProperties'] = mosaicProperties;
     data['mosaicNonce'] = mosaicNonce;
     data['mosaicId'] = mosaicId;
@@ -67,10 +70,10 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   }
 
   @override
-  int size() => mosaicDefinitionTransactionHeaderSize;
+  int _size() => mosaicDefinitionTransactionHeaderSize;
 
   @override
-  AbstractTransaction getAbstractTransaction() => abstractTransaction();
+  AbstractTransaction _abstractTransaction() => _absTransaction();
 
   int _buildMosaicPropertyBuffer(
       fb.Builder builder, List<MosaicProperty> properties) {
@@ -79,7 +82,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
     int i = 0;
     for (final p in properties) {
-      final valueV = builder.writeListUint32(bigIntToArray(p.value));
+      final valueV = builder.writeListUint32(p.value.toIntArray());
 
       final mosaicBuilder = MosaicPropertyBuilder(builder)
         ..begin()
@@ -103,16 +106,16 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       f += getTransferable;
     }
 
-    final mV = builder.writeListUint32(mosaicId.toArray());
+    final mV = builder.writeListUint32(mosaicId.toIntArray());
 
     final pV = _buildMosaicPropertyBuffer(
         builder, mosaicProperties.optionalProperties);
 
-    final vector = generateVector(builder);
+    final vector = _generateVector(builder);
 
     final txnBuilder = MosaicDefinitionTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(size())
+      ..addSize(_size())
       ..addMosaicNonce(mosaicNonce)
       ..addMosaicIdOffset(mV)
       ..addFlags(f)
@@ -120,7 +123,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       ..addNumOptionalProperties(mosaicProperties.optionalProperties.length)
       ..addOptionalPropertiesOffset(pV);
 
-    buildVector(builder, vector);
+    _buildVector(builder, vector);
 
     final codedMosaicDefinition = txnBuilder.finish();
 
@@ -135,7 +138,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 class MosaicSupplyChangeTransaction extends AbstractTransaction
     implements Transaction {
   MosaicSupplyChangeTransaction(Deadline deadline, MosaicSupplyType supplyType,
-      MosaicId mosaicId, BigInt delta, int networkType)
+      MosaicId mosaicId, Uint64 delta, int networkType)
       : super() {
     if (mosaicId == null) {
       throw errNullMosaicId;
@@ -157,13 +160,16 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
       : assert(value != null, 'value must not be null'),
         super.fromDto(value.transaction, value.meta) {
     mosaicSupplyType = value.transaction.direction == 0 ? decrease : increase;
-    mosaicId = MosaicId.fromId(value.transaction.mosaicId.toBigInt());
-    delta = value.transaction.delta.toBigInt();
+    mosaicId = MosaicId.fromId(value.transaction.mosaicId.toUint64());
+    delta = value.transaction.delta.toUint64();
   }
 
   MosaicSupplyType mosaicSupplyType;
-  BigInt delta;
+  Uint64 delta;
   MosaicId mosaicId;
+
+  int get size => _size();
+  AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   static List<MosaicSupplyChangeTransaction> listFromDTO(
           List<MosaicSupplyChangeTransactionInfoDTO> json) =>
@@ -179,7 +185,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
         mosaicSupplyType.index == 0 ? 'decrease' : 'increase';
     final sb = StringBuffer()
       ..writeln('{')
-      ..writeln('\t"abstractTransaction": ${abstractTransactionToString()}')
+      ..writeln('\t"abstractTransaction": ${_absToString()}')
       ..writeln('\t"assetId": $mosaicId')
       ..writeln('\t"mosaicSupplyType": $_supplyType,')
       ..writeln('\t"delta": $delta')
@@ -190,7 +196,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['abstractTransaction'] = abstractTransactionToJson();
+    data['abstractTransaction'] = _absToJson();
     data['mosaicId'] = mosaicId;
     data['mosaicSupplyType'] = mosaicSupplyType.index;
     data['delta'] = delta;
@@ -198,28 +204,28 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   }
 
   @override
-  int size() => mosaicSupplyChangeTransactionSize;
+  int _size() => mosaicSupplyChangeTransactionSize;
 
   @override
-  AbstractTransaction getAbstractTransaction() => abstractTransaction();
+  AbstractTransaction _abstractTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final mV = builder.writeListUint32(mosaicId.toArray());
+    final mV = builder.writeListUint32(mosaicId.toIntArray());
 
-    final dV = builder.writeListUint32(bigIntToArray(delta));
+    final dV = builder.writeListUint32(delta.toIntArray());
 
-    final vector = generateVector(builder);
+    final vector = _generateVector(builder);
 
     final txnBuilder = MosaicSupplyChangeTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(size())
+      ..addSize(_size())
       ..addMosaicIdOffset(mV)
       ..addDirection(mosaicSupplyType.index)
       ..addDeltaOffset(dV);
-    buildVector(builder, vector);
+    _buildVector(builder, vector);
 
     final codedMosaicSupply = txnBuilder.finish();
 

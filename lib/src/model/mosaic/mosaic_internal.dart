@@ -1,7 +1,6 @@
 part of xpx_chain_sdk.mosaic;
 
-final xpxMosaicId = MosaicId.fromBigInt(
-    UInt64DTO(Int32(481110499), Int32(231112638)).toBigInt());
+final xpxMosaicId = MosaicId(id: Uint64(481110499, 231112638));
 
 enum MosaicSupplyType { decrease, increase }
 
@@ -18,7 +17,7 @@ const xpxMaxValue = xpxMaxRelativeValue * xpxDivisibility;
 
 const xpxMaxRelativeValue = 9000000000;
 
-bool hasBits(BigInt number, int bits) => number.toInt() & bits == bits;
+bool hasBits(Uint64 number, int bits) => number.toInt() & bits == bits;
 
 // Create xpx with using xpx as unit
 Mosaic xpx(int amount) {
@@ -30,7 +29,8 @@ Mosaic xpx(int amount) {
 
 Mosaic xpxRelative(int amount) {
   if (amount > xpxMaxRelativeValue) {
-    throw new ArgumentError('Maximum xpx relative value must be $xpxMaxRelativeValue');
+    throw new ArgumentError(
+        'Maximum xpx relative value must be $xpxMaxRelativeValue');
   }
   return xpx(amount * xpxDivisibility);
 }
@@ -48,7 +48,7 @@ MosaicPropertyId getPropertyId(int value) {
   }
 }
 
-BigInt _generateMosaicId(int nonce, String ownerPublicKey) {
+Uint64 _generateMosaicId(int nonce, String ownerPublicKey) {
   final nonceB = Buffer.littleEndian(4)..writeInt32(nonce);
 
   final result = sha3.New256()..update(nonceB.out, 0, nonceB.out.length);
@@ -57,12 +57,7 @@ BigInt _generateMosaicId(int nonce, String ownerPublicKey) {
 
   final t = result.process(Uint8List.fromList(ownerBytes));
 
-  List<dynamic> raw() => <dynamic>[
-        endianLittleUint32(t.getRange(0, 4).toList()),
-        endianLittleUint32(t.getRange(4, 8).toList()) & 0x7FFFFFFF
-      ];
-
-  return UInt64DTO.fromJson(raw()).toBigInt();
+  return Uint64.fromBytes(t) & 0x7FFFFFFFFFFFFFFF;
 }
 
 int mosaicNonce() {
