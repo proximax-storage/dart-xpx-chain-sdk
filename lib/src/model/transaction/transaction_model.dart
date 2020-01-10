@@ -253,7 +253,8 @@ class AbstractTransaction with TransactionInfo {
     data['signerV'] = builder.writeListUint8(Uint8List(signerSize));
     data['deadlineV'] = builder
         .writeListUint32(Uint64(deadline.toBlockchainTimestamp()).toIntArray());
-    data['feeV'] = builder.writeListUint32(maxFee.toIntArray());
+    data['feeV'] =
+        builder.writeListUint32(maxFee != null ? maxFee.toIntArray() : [0, 0]);
     return data;
   }
 

@@ -184,11 +184,8 @@ class MosaicAliasTransaction extends AliasTransaction {
   @override
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
-    final buffer = Uint8List(mosaicIdSize).buffer;
-    final bufferData = ByteData.view(buffer)
-      ..setUint64(0, mosaicId.toIn(), Endian.little);
 
-    final mV = builder.writeListUint8(bufferData.buffer.asUint8List());
+    final mV = builder.writeListUint8(mosaicId.toIntArray());
 
     return _generateAbstractBytes(builder, mV);
   }
