@@ -46,21 +46,21 @@ class AddressAliasTransactionInfoDTO {
     meta =
         json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
-    _transaction = json['transaction'] != null
+    transaction = json['transaction'] != null
         ? AddressAliasDTO.fromJson(json['transaction'])
         : null;
   }
 
   MetaTransactionDTO meta;
-  AddressAliasDTO _transaction;
+  AddressAliasDTO transaction;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     if (meta != null) {
       data['meta'] = meta.toJson();
     }
-    if (_transaction != null) {
-      data['transaction'] = _transaction.toJson();
+    if (transaction != null) {
+      data['transaction'] = transaction.toJson();
     }
     return data;
   }

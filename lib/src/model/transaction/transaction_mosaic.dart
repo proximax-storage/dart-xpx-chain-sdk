@@ -1,4 +1,4 @@
-part of xpx_chain_sdk.mosaic;
+part of xpx_chain_sdk.transaction;
 
 /// Register a new mosaic.
 /// Announce a [MosaicDefinitionTransaction] to create a new [Mosaic].
@@ -26,10 +26,10 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
   MosaicDefinitionTransaction.fromDTO(MosaicDefinitionTransactionInfoDTO value)
       : assert(value != null, 'value must not be null'),
-        super.fromDto(value._transaction, value.meta) {
-    mosaicProperties = MosaicProperties.fromDTO(value._transaction._properties);
-    mosaicNonce = value._transaction._mosaicNonce.toUnsigned(32);
-    mosaicId = MosaicId.fromId(value._transaction._mosaicId.toBigInt());
+        super.fromDto(value.transaction, value.meta) {
+    mosaicProperties = MosaicProperties.fromDTO(value.transaction.properties);
+    mosaicNonce = value.transaction.mosaicNonce.toUnsigned(32);
+    mosaicId = MosaicId.fromId(value.transaction.mosaicId.toBigInt());
   }
 
   MosaicProperties mosaicProperties;
@@ -70,7 +70,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   int size() => mosaicDefinitionTransactionHeaderSize;
 
   @override
-  AbstractTransaction getAbstractTransaction() => getAbstractTransaction();
+  AbstractTransaction getAbstractTransaction() => abstractTransaction();
 
   int _buildMosaicPropertyBuffer(
       fb.Builder builder, List<MosaicProperty> properties) {
@@ -97,10 +97,10 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
     int f = 0;
     if (mosaicProperties.supplyMutable) {
-      f += _supplyMutable;
+      f += getSupplyMutable;
     }
     if (mosaicProperties.transferable) {
-      f += _transferable;
+      f += getTransferable;
     }
 
     final mV = builder.writeListUint32(mosaicId.toArray());
@@ -155,10 +155,10 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   MosaicSupplyChangeTransaction.fromDTO(
       MosaicSupplyChangeTransactionInfoDTO value)
       : assert(value != null, 'value must not be null'),
-        super.fromDto(value._transaction, value.meta) {
-    mosaicSupplyType = value._transaction._direction == 0 ? decrease : increase;
-    mosaicId = MosaicId.fromId(value._transaction._mosaicId.toBigInt());
-    delta = value._transaction._delta.toBigInt();
+        super.fromDto(value.transaction, value.meta) {
+    mosaicSupplyType = value.transaction.direction == 0 ? decrease : increase;
+    mosaicId = MosaicId.fromId(value.transaction.mosaicId.toBigInt());
+    delta = value.transaction.delta.toBigInt();
   }
 
   MosaicSupplyType mosaicSupplyType;
@@ -201,7 +201,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   int size() => mosaicSupplyChangeTransactionSize;
 
   @override
-  AbstractTransaction getAbstractTransaction() => getAbstractTransaction();
+  AbstractTransaction getAbstractTransaction() => abstractTransaction();
 
   @override
   Uint8List generateBytes() {

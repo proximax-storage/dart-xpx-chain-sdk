@@ -5,9 +5,9 @@ int addExchangeOfferToArrayToBuffer(fb.Builder builder, List<AddOffer> offers) {
   int i = 0;
   for (final offer in offers) {
     final mV = builder.writeListUint32(offer.mosaic.assetId.toArray());
-    final maV = builder.writeListUint32(bigIntToArray(offer.mosaic.amount));
-    final dV = builder.writeListUint32(bigIntToArray(offer.duration));
-    final cV = builder.writeListUint32(bigIntToArray(offer.cost));
+    final maV = builder.writeListUint32(offer.mosaic.amount.toIntArray());
+    final dV = builder.writeListUint32(offer.duration.toIntArray());
+    final cV = builder.writeListUint32(offer.cost.toIntArray());
 
     final txnBuilder = AddExchangeOfferBufferBuilder(builder)
       ..begin()

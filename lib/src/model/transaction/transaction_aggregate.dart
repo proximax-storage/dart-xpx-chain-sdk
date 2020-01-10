@@ -77,7 +77,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   }
 
   @override
-  AbstractTransaction getAbstractTransaction() => getAbstractTransaction();
+  AbstractTransaction getAbstractTransaction() => abstractTransaction();
 
   @override
   Uint8List generateBytes() {

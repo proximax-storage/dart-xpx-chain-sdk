@@ -1,14 +1,14 @@
 part of xpx_chain_sdk.buffer.model;
 
-class MosaicProperty {
-  factory MosaicProperty(List<int> bytes) {
+class MosaicPropertyB {
+  factory MosaicPropertyB(List<int> bytes) {
     final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
-  MosaicProperty._(this._bc, this._bcOffset);
+  MosaicPropertyB._(this._bc, this._bcOffset);
 
-  static const fb.Reader<MosaicProperty> reader = _MosaicPropertyReader();
+  static const fb.Reader<MosaicPropertyB> reader = _MosaicPropertyReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
@@ -23,12 +23,12 @@ class MosaicProperty {
       'MosaicProperty{mosaicPropertyId: $mosaicPropertyId, value: $value}';
 }
 
-class _MosaicPropertyReader extends fb.TableReader<MosaicProperty> {
+class _MosaicPropertyReader extends fb.TableReader<MosaicPropertyB> {
   const _MosaicPropertyReader();
 
   @override
-  MosaicProperty createObject(fb.BufferContext bc, int offset) =>
-      MosaicProperty._(bc, offset);
+  MosaicPropertyB createObject(fb.BufferContext bc, int offset) =>
+      MosaicPropertyB._(bc, offset);
 }
 
 class MosaicPropertyBuilder {
@@ -121,8 +121,8 @@ class MosaicDefinitionTransactionBuffer {
   int get flags => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 24, 0);
   int get divisibility =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 26, 0);
-  List<MosaicProperty> get optionalProperties =>
-      const fb.ListReader<MosaicProperty>(MosaicProperty.reader)
+  List<MosaicPropertyB> get optionalProperties =>
+      const fb.ListReader<MosaicPropertyB>(MosaicPropertyB.reader)
           .vTableGet(_bc, _bcOffset, 28, null);
 
   @override

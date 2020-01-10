@@ -10,6 +10,7 @@ import 'package:xpx_chain_sdk/src/model/alias.dart';
 import 'package:xpx_chain_sdk/src/model/blockchain.dart';
 import 'package:xpx_chain_sdk/src/model/namespace.dart';
 import 'package:xpx_chain_sdk/src/model/mosaic.dart';
+import 'package:xpx_chain_sdk/src/model/multisig.dart';
 import 'package:xpx_chain_sdk/src/model/network.dart';
 import 'package:xpx_chain_sdk/src/model/node.dart';
 import 'package:xpx_chain_sdk/src/model/transaction.dart';

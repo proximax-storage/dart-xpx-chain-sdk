@@ -8,17 +8,32 @@ enum MosaicSupplyType { decrease, increase }
 const decrease = MosaicSupplyType.decrease,
     increase = MosaicSupplyType.increase;
 
-const _supplyMutable = 0x01;
+const getSupplyMutable = 0x01;
 
-const _transferable = 0x02;
+const getTransferable = 0x02;
+
+const xpxDivisibility = 1000000;
+
+const xpxMaxValue = xpxMaxRelativeValue * xpxDivisibility;
+
+const xpxMaxRelativeValue = 9000000000;
 
 bool hasBits(BigInt number, int bits) => number.toInt() & bits == bits;
 
 // Create xpx with using xpx as unit
-Mosaic xpx(int amount) => Mosaic(xpxNamespaceId, BigInt.from(amount));
+Mosaic xpx(int amount) {
+  if (amount > xpxMaxValue) {
+    throw new ArgumentError('Maximum xpx value must be $xpxMaxValue');
+  }
+  return Mosaic(xpxNamespaceId, Uint64(amount));
+}
 
-Mosaic xpxRelative(int amount) =>
-    xpx((BigInt.from(1000000) * BigInt.from(amount)).toInt());
+Mosaic xpxRelative(int amount) {
+  if (amount > xpxMaxRelativeValue) {
+    throw new ArgumentError('Maximum xpx relative value must be $xpxMaxRelativeValue');
+  }
+  return xpx(amount * xpxDivisibility);
+}
 
 MosaicPropertyId getPropertyId(int value) {
   switch (value) {

@@ -22,7 +22,7 @@ List<BigInt> generateNamespacePath(String name) {
     if (!regValidNamespace.hasMatch('$i')) {
       throw errInvalidNamespaceName;
     }
-    namespaceId = _generateId('$i', namespaceId);
+    namespaceId = generateId('$i', namespaceId);
 
     path.add(namespaceId);
   }
@@ -51,7 +51,7 @@ List<BigInt> extractLevels(NamespaceInfoDTO ref) {
   return levels;
 }
 
-BigInt _generateId(String name, BigInt parentId) {
+BigInt generateId(String name, BigInt parentId) {
   var b = Uint8List(8);
   if (parentId.toInt() != 0) {
     b = crypto.encodeBigInt(parentId);

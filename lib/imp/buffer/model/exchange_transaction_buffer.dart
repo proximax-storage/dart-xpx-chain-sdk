@@ -659,8 +659,7 @@ class AddExchangeOfferBufferObjectBuilder extends fb.ObjectBuilder {
   @override
   int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null);
-    final int mosaicIdOffset =
-    _mosaicId?.isNotEmpty == true
+    final int mosaicIdOffset = _mosaicId?.isNotEmpty == true
         ? fbBuilder.writeListUint32(_mosaicId)
         : null;
     final int mosaicAmountOffset = _mosaicAmount?.isNotEmpty == true

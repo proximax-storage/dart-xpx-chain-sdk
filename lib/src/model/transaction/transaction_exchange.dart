@@ -1,4 +1,4 @@
-part of xpx_chain_sdk.exchange;
+part of xpx_chain_sdk.transaction;
 
 class AddExchangeOfferTransaction extends AbstractTransaction
     implements Transaction {
@@ -19,7 +19,7 @@ class AddExchangeOfferTransaction extends AbstractTransaction
   List<AddOffer> offers;
 
   @override
-  AbstractTransaction getAbstractTransaction() => getAbstractTransaction();
+  AbstractTransaction getAbstractTransaction() => abstractTransaction();
 
   @override
   String toString() => '{\n'

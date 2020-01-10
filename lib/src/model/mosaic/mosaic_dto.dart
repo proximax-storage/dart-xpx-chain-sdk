@@ -133,21 +133,21 @@ class MosaicDefinitionTransactionInfoDTO {
   MosaicDefinitionTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
     meta =
         json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
-    _transaction = json['transaction'] != null
+    transaction = json['transaction'] != null
         ? MosaicDefinitionTransactionDTO.fromJson(json['transaction'])
         : null;
   }
 
   MetaTransactionDTO meta;
-  MosaicDefinitionTransactionDTO _transaction;
+  MosaicDefinitionTransactionDTO transaction;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     if (meta != null) {
       data['meta'] = meta.toJson();
     }
-    if (_transaction != null) {
-      data['transaction'] = _transaction.toJson();
+    if (transaction != null) {
+      data['transaction'] = transaction.toJson();
     }
     return data;
   }
@@ -161,20 +161,16 @@ class MosaicDefinitionTransactionDTO extends AbstractTransactionDTO {
       int type,
       List<int> maxFee,
       List<int> deadline,
-      UInt64DTO mosaicId,
-      int mosaicNonce,
-      List<_MosaicPropertyDTO> properties,
-      UInt64DTO duration}) {
+      this.mosaicId,
+      this.mosaicNonce,
+      this.properties,
+      this.duration}) {
     this.signature = signature;
     this.signer = signer;
     this.version = version;
     this.type = type;
     this.deadline = UInt64DTO.fromJson(deadline);
     fee = UInt64DTO.fromJson(maxFee);
-    _mosaicId = mosaicId;
-    _mosaicNonce = mosaicNonce;
-    _properties = properties;
-    _duration = duration;
   }
 
   MosaicDefinitionTransactionDTO.fromJson(Map<String, dynamic> json) {
@@ -184,16 +180,16 @@ class MosaicDefinitionTransactionDTO extends AbstractTransactionDTO {
     type = json['type'];
     fee = UInt64DTO.fromJson(json['maxFee']);
     deadline = UInt64DTO.fromJson(json['deadline']);
-    _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
-    _mosaicNonce = json['mosaicNonce'];
-    _properties = _MosaicPropertyDTO.listFromJson(json['properties']);
-    _duration = UInt64DTO.fromJson(json['duration']);
+    mosaicId = UInt64DTO.fromJson(json['mosaicId']);
+    mosaicNonce = json['mosaicNonce'];
+    properties = _MosaicPropertyDTO.listFromJson(json['properties']);
+    duration = UInt64DTO.fromJson(json['duration']);
   }
 
-  UInt64DTO _mosaicId;
-  int _mosaicNonce;
-  List<_MosaicPropertyDTO> _properties;
-  UInt64DTO _duration;
+  UInt64DTO mosaicId;
+  int mosaicNonce;
+  List<_MosaicPropertyDTO> properties;
+  UInt64DTO duration;
 
   @override
   Map<String, dynamic> toJson() {
@@ -204,7 +200,7 @@ class MosaicDefinitionTransactionDTO extends AbstractTransactionDTO {
     data['type'] = type;
     data['maxFee'] = fee;
     data['deadline'] = deadline;
-    data['duration'] = _duration;
+    data['duration'] = duration;
     return data;
   }
 }
@@ -214,13 +210,13 @@ class MosaicSupplyChangeTransactionInfoDTO {
     meta =
         json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
-    _transaction = json['transaction'] != null
+    transaction = json['transaction'] != null
         ? _MosaicSupplyChangeTransactionDTO.fromJson(json['transaction'])
         : null;
   }
 
   MetaTransactionDTO meta;
-  _MosaicSupplyChangeTransactionDTO _transaction;
+  _MosaicSupplyChangeTransactionDTO transaction;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -228,8 +224,8 @@ class MosaicSupplyChangeTransactionInfoDTO {
     if (meta != null) {
       data['meta'] = meta.toJson();
     }
-    if (_transaction != null) {
-      data['transaction'] = _transaction.toJson();
+    if (transaction != null) {
+      data['transaction'] = transaction.toJson();
     }
     return data;
   }
@@ -243,18 +239,15 @@ class _MosaicSupplyChangeTransactionDTO extends AbstractTransactionDTO {
       int type,
       List<int> maxFee,
       List<int> deadline,
-      UInt64DTO mosaicId,
-      int direction,
-      UInt64DTO delta}) {
+      this.mosaicId,
+      this.direction,
+      this.delta}) {
     this.signature = signature;
     this.signer = signer;
     this.version = version;
     this.type = type;
     this.deadline = UInt64DTO.fromJson(deadline);
     fee = UInt64DTO.fromJson(maxFee);
-    _mosaicId = mosaicId;
-    _direction = direction;
-    _delta = delta;
   }
 
   _MosaicSupplyChangeTransactionDTO.fromJson(Map<String, dynamic> json) {
@@ -264,14 +257,14 @@ class _MosaicSupplyChangeTransactionDTO extends AbstractTransactionDTO {
     type = json['type'];
     fee = UInt64DTO.fromJson(json['maxFee']);
     deadline = UInt64DTO.fromJson(json['deadline']);
-    _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
-    _direction = json['direction'];
-    _delta = UInt64DTO.fromJson(json['delta']);
+    mosaicId = UInt64DTO.fromJson(json['mosaicId']);
+    direction = json['direction'];
+    delta = UInt64DTO.fromJson(json['delta']);
   }
 
-  UInt64DTO _mosaicId;
-  int _direction;
-  UInt64DTO _delta;
+  UInt64DTO mosaicId;
+  int direction;
+  UInt64DTO delta;
 
   @override
   Map<String, dynamic> toJson() {
@@ -282,9 +275,9 @@ class _MosaicSupplyChangeTransactionDTO extends AbstractTransactionDTO {
     data['type'] = type;
     data['maxFee'] = fee;
     data['deadline'] = deadline;
-    data['mosaicId'] = _mosaicId;
-    data['direction'] = _direction;
-    data['delta'] = _delta;
+    data['mosaicId'] = mosaicId;
+    data['direction'] = direction;
+    data['delta'] = delta;
     return data;
   }
 }

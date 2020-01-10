@@ -12,4 +12,3 @@ part 'schema/buffer_schema_multisig.dart';
 part 'schema/buffer_schema_lockFunds.dart';
 part 'schema/buffer_schema_alias.dart';
 part 'schema/buffer_schema_exchange.dart';
-

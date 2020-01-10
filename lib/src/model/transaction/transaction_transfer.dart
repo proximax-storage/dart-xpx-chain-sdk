@@ -52,7 +52,6 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
       ..writeln('\t"recipient": $recipient')
       ..writeln('\t"mosaics": ${mosaics.map((v) => v.toJson()).toList()},');
     if (message != null) {
-      print(message);
       sb.writeln('\t"message": $message,');
     }
     sb.write('}\n');
@@ -80,7 +79,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
       messageSize();
 
   @override
-  AbstractTransaction getAbstractTransaction() => getAbstractTransaction();
+  AbstractTransaction getAbstractTransaction() => abstractTransaction();
 
   @override
   Uint8List generateBytes() {
@@ -91,7 +90,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     int i = 0;
     for (final mosaic in mosaics) {
       final id = builder.writeListUint32(mosaic.assetId.toArray());
-      final amount = builder.writeListUint32(bigIntToArray(mosaic.amount));
+      final amount = builder.writeListUint32(mosaic.amount.toIntArray());
 
       final ms = MosaicBufferBuilder(builder)
         ..begin()

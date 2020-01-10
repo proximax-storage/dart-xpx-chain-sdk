@@ -1,4 +1,4 @@
-part of xpx_chain_sdk.namespace;
+part of xpx_chain_sdk.transaction;
 
 /// Register a namespace to organize your assets.
 /// Announce a [RegisterNamespaceTransaction] to register and re-rent a namespace.
@@ -37,7 +37,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       type = transactionTypeFromRaw(16718);
       parentId = NamespaceId.fromName(rootNamespaceName);
       namespaceId =
-          NamespaceId._(_generateId(subNamespaceName, parentId.toBigInt()));
+          NamespaceId(id: generateId(subNamespaceName, parentId.toBigInt()));
       this.networkType = networkType;
       namespaceName = subNamespaceName;
       namespaceType = NamespaceType.sub;
@@ -47,16 +47,16 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   RegisterNamespaceTransaction.fromDTO(
       RegisterNamespaceTransactionInfoDTO value)
       : assert(value != null, 'value must not be null'),
-        super.fromDto(value._transaction, value.meta) {
-    namespaceId = NamespaceId._(value._transaction.namespaceId.toBigInt());
-    namespaceType = value._transaction._namespaceType == 0
+        super.fromDto(value.transaction, value.meta) {
+    namespaceId = NamespaceId(id: value.transaction.namespaceId.toBigInt());
+    namespaceType = value.transaction.namespaceType == 0
         ? NamespaceType.root
         : NamespaceType.sub;
-    namespaceName = value._transaction._name;
+    namespaceName = value.transaction.name;
     if (namespaceType == NamespaceType.root) {
-      duration = value._transaction._duration.toBigInt();
+      duration = value.transaction.duration.toBigInt();
     } else {
-      parentId = NamespaceId._(value._transaction._parentId.toBigInt());
+      parentId = NamespaceId(id: value.transaction.parentId.toBigInt());
     }
   }
 
@@ -109,7 +109,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   }
 
   @override
-  AbstractTransaction getAbstractTransaction() => getAbstractTransaction();
+  AbstractTransaction getAbstractTransaction() => abstractTransaction();
 
   @override
   Uint8List generateBytes() {

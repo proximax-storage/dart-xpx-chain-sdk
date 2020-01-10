@@ -7,12 +7,12 @@ enum MosaicPropertyId {
 }
 
 class Mosaic {
-  Mosaic(Id mosaicId, BigInt amount) {
+  Mosaic(Id mosaicId, Uint64 amount) {
     if (mosaicId == null) {
       throw errNullMosaicId;
     } else if (amount == null) {
       throw errNullMosaicAmount;
-    } else if (equalsBigInts(amount, BigInt.zero)) {
+    } else if (amount.isZero) {
       throw errNullMosaicAmount;
     } else {
       assetId = mosaicId;
@@ -20,16 +20,13 @@ class Mosaic {
     }
   }
 
-  Mosaic._(this.assetId, this.amount);
-
   Mosaic.fromDTO(MosaicDTO v) {
     assetId = MosaicId.fromId(v._id.toBigInt());
-    amount = v._amount.toBigInt();
+    amount = Uint64.fromBigInt(v._amount.toBigInt());
   }
 
   Id assetId;
-
-  BigInt amount;
+  Uint64 amount;
 
   @override
   String toString() => '\n\t{\n'
@@ -215,9 +212,7 @@ class MosaicProperties {
 
   MosaicProperties.fromDTO(List<_MosaicPropertyDTO> value)
       : assert(value != null, 'mosaic Properties is not valid') {
-//    if (value.length < 3) {
-//      print(value.length);
-//
+//    if (value.length < 3) {//
 //      throw errInvalidMosaicProperties;
 //    }
 
@@ -241,8 +236,8 @@ class MosaicProperties {
       }
     }
 
-    supplyMutable = hasBits(flags, _supplyMutable);
-    transferable = hasBits(flags, _transferable);
+    supplyMutable = hasBits(flags, getSupplyMutable);
+    transferable = hasBits(flags, getTransferable);
   }
 
   bool supplyMutable;

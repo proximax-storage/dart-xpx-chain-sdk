@@ -1,4 +1,4 @@
-part of xpx_chain_sdk.alias;
+part of xpx_chain_sdk.transaction;
 
 // AliasTransaction
 class AliasTransaction extends AbstractTransaction implements Transaction {
@@ -13,12 +13,12 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
 
   AliasTransaction._fromAddressAliasDTO(AddressAliasTransactionInfoDTO value)
       : assert(value != null, 'value must not be null'),
-        super.fromDto(value._transaction, value.meta) {
-    actionType = value._transaction.aliasAction == 0
+        super.fromDto(value.transaction, value.meta) {
+    actionType = value.transaction.aliasAction == 0
         ? actionType = AliasActionType.aliasLink
         : AliasActionType.aliasUnlink;
-    namespaceId = value._transaction.namespaceId != null
-        ? NamespaceId.fromId(value._transaction.namespaceId.toBigInt())
+    namespaceId = value.transaction.namespaceId != null
+        ? NamespaceId.fromId(value.transaction.namespaceId.toBigInt())
         : null;
   }
 
@@ -64,7 +64,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
   int size() => aliasTransactionHeader;
 
   @override
-  AbstractTransaction getAbstractTransaction() => getAbstractTransaction();
+  AbstractTransaction getAbstractTransaction() => abstractTransaction();
 
   @override
   Uint8List generateBytes() => null;
@@ -97,7 +97,7 @@ class AddressAliasTransaction extends AliasTransaction {
   AddressAliasTransaction.fromDTO(AddressAliasTransactionInfoDTO value)
       : assert(value != null, 'value must not be null'),
         super._fromAddressAliasDTO(value) {
-    address = Address.fromEncoded(value._transaction.address);
+    address = Address.fromEncoded(value.transaction.address);
   }
 
   Address address;
@@ -125,7 +125,7 @@ class AddressAliasTransaction extends AliasTransaction {
   int size() => super.size() + mosaicIdSize;
 
   @override
-  AbstractTransaction getAbstractTransaction() => getAbstractTransaction();
+  AbstractTransaction getAbstractTransaction() => abstractTransaction();
 
   @override
   Uint8List generateBytes() {
@@ -176,7 +176,7 @@ class MosaicAliasTransaction extends AliasTransaction {
   int size() => super.size() + mosaicIdSize;
 
   @override
-  AbstractTransaction getAbstractTransaction() => getAbstractTransaction();
+  AbstractTransaction getAbstractTransaction() => abstractTransaction();
 
   @override
   Uint8List generateBytes() {

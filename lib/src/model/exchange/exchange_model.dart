@@ -36,7 +36,7 @@ class Offer implements Comparable<Offer> {
 
   OfferType type;
   Mosaic mosaic;
-  BigInt cost;
+  Uint64 cost;
 
   @override
   int get hashCode => type.hashCode ^ mosaic.hashCode ^ cost.hashCode;
@@ -109,30 +109,30 @@ class OfferInfo {
   OfferType type;
   PublicAccount owner;
   Mosaic mosaic;
-  BigInt priceNumerator;
-  BigInt priceDenominator;
-  BigInt deadline;
+  Uint64 priceNumerator;
+  Uint64 priceDenominator;
+  Uint64 deadline;
 
-  BigInt cost(BigInt amount) {
+  Uint64 cost(Uint64 amount) {
     if (mosaic.amount < amount) {
       throw errorInvalidMosaicsOffer;
     }
 
     switch (type.runtimeType) {
       case _SellOffer:
-        return BigInt.from((priceNumerator * amount).toInt().ceilToDouble() /
+        return Uint64((priceNumerator * amount).toInt().ceilToDouble() /
             priceDenominator.toDouble());
       case _BuyOffer:
-        return BigInt.from((priceNumerator * amount).toInt().floorToDouble() /
+        return Uint64((priceNumerator * amount).toInt().floorToDouble() /
             priceDenominator.toDouble());
       default:
         throw errorUnknownOfferType;
     }
   }
 
-  ExchangeConfirmation confirmOffer(BigInt amount) {
+  ExchangeConfirmation confirmOffer(Uint64 amount) {
     try {
-      final BigInt _cost = cost(amount);
+      final Uint64 _cost = cost(amount);
 
       final Offer _offer = Offer(type, Mosaic(mosaic.assetId, amount), _cost);
 
@@ -158,10 +158,10 @@ class OfferInfo {
 }
 
 class AddOffer extends Offer {
-  AddOffer({this.duration, OfferType type, Mosaic mosaic, BigInt cost})
+  AddOffer({this.duration, OfferType type, Mosaic mosaic, Uint64 cost})
       : super(type, mosaic, cost);
 
-  BigInt duration;
+  Uint64 duration;
 
 //  Offer get offer => super;
 

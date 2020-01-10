@@ -14,11 +14,13 @@ import 'package:xpx_chain_sdk/xpx_sdk_endian.dart';
 
 import 'package:xpx_chain_sdk/src/model/account.dart';
 import 'package:xpx_chain_sdk/src/model/alias.dart';
+import 'package:xpx_chain_sdk/src/model/exchange.dart';
+
 import 'package:xpx_chain_sdk/src/model/mosaic.dart';
+import 'package:xpx_chain_sdk/src/model/multisig.dart';
 import 'package:xpx_chain_sdk/src/model/message.dart';
 import 'package:xpx_chain_sdk/src/model/namespace.dart';
 import 'package:xpx_chain_sdk/src/api/api.dart';
-
 import 'package:xpx_chain_sdk/src/model/utils.dart';
 import 'package:xpx_chain_sdk/xpx_sdk_all_errors.dart';
 import 'package:xpx_chain_sdk/imp/buffer.dart';
@@ -28,7 +30,13 @@ part 'transaction/transaction_hashes.dart';
 part 'transaction/transaction_ids.dart';
 part 'transaction/transaction_internal.dart';
 part 'transaction/transaction_model.dart';
+part 'transaction/transaction_mosaic.dart';
 part 'transaction/transaction_status.dart';
 part 'transaction/announce_transaction_info_dto.dart';
 part 'transaction/transaction_transfer.dart';
 part 'transaction/transaction_aggregate.dart';
+part 'transaction/transaction_lockfund.dart';
+part 'transaction/transaction_alias.dart';
+part 'transaction/transaction_exchange.dart';
+part 'transaction/transaction_multisig.dart';
+part 'transaction/transaction_namespace.dart';

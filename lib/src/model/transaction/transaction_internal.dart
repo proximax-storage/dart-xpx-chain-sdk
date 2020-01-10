@@ -163,7 +163,7 @@ dynamic txnDeserialize(value, String targetType) {
       case 'AddressAlias':
         return AddressAliasTransactionInfoDTO.fromJson(value);
       case 'ModifyMultisig':
-        return _ModifyMultisigAccountTransactionInfoDTO.fromJson(value);
+        return ModifyMultisigAccountTransactionInfoDTO.fromJson(value);
       case 'Lock':
         return _LockFundsTransactionInfoDTO.fromJson(value);
       default:
@@ -189,7 +189,6 @@ SignedTransaction signTransactionWith(
     Transaction tx, Account a, String generationHash) {
   final s = a.account;
   final b = tx.generateBytes();
-  print(b);
   var sb = Uint8List.fromList(b.skip(100).take(b.length).toList());
 
   sb = Uint8List.fromList(hex.decode(generationHash) + sb);
@@ -324,7 +323,7 @@ Transaction deserializeDTO(value) {
       return AggregateTransaction.fromDTO(value);
     case AddressAliasTransactionInfoDTO:
       return AddressAliasTransaction.fromDTO(value);
-    case _ModifyMultisigAccountTransactionInfoDTO:
+    case ModifyMultisigAccountTransactionInfoDTO:
       return ModifyMultisigAccountTransaction.fromDTO(value);
     case _LockFundsTransactionInfoDTO:
       return LockFundsTransaction.fromDTO(value);

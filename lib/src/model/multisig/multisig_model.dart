@@ -1,4 +1,4 @@
-part of xpx_chain_sdk.utils;
+part of xpx_chain_sdk.multisig;
 
 class Multisig {
   Multisig.fromJson(Map<String, dynamic> json)
