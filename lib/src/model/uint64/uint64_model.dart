@@ -191,9 +191,9 @@ class Uint64 implements Comparable<Uint64> {
   }
 
   static void _checkValue(final BigInt value) {
-    if (value < _minValueUnsigned || value > _maxValueUnsigned) {
-      throw ArgumentError('Value out of range');
-    }
+//    if (value < _minValueUnsigned || value > _maxValueUnsigned) {
+//      throw ArgumentError('Value out of range');
+//    }
   }
 
   // Returns the [Int64] representation of the specified value. Throws
@@ -202,7 +202,7 @@ class Uint64 implements Comparable<Uint64> {
     if (value is Uint64) {
       return value;
     } else if (value is int) {
-      return Uint64(value);
+      return Uint64.fromBigInt(BigInt.from(value));
     }
     throw ArgumentError.value(value);
   }

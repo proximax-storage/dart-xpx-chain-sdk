@@ -37,7 +37,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       type = transactionTypeFromRaw(16718);
       parentId = NamespaceId.fromName(rootNamespaceName);
       namespaceId =
-          NamespaceId(id: generateId(subNamespaceName, parentId.toUint64()));
+          NamespaceId(id: generateNamespaceId(subNamespaceName, parentId.toUint64()));
       this.networkType = networkType;
       namespaceName = subNamespaceName;
       namespaceType = NamespaceType.sub;

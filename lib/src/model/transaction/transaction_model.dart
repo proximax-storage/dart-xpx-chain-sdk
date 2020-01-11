@@ -57,6 +57,8 @@ abstract class Id {
   List<int> toIntArray() => id.toIntArray();
 
   Uint64 toUint64() => id;
+
+  Uint8List toBytes() => id.toBytes();
 }
 
 abstract class Transaction {

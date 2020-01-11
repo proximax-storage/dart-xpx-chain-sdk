@@ -1,5 +1,7 @@
 part of xpx_chain_sdk.namespace;
 
+const int namespaceBit = 1 << 63;
+
 enum NamespaceType { root, sub }
 
 // namespace id for XPX mosaic
@@ -14,8 +16,9 @@ final NamespaceId streamingNamespaceId = NamespaceId.fromName('prx.streaming');
 final prxNamespaceId =
     UInt64DTO(Int32(2339353534), Int32(2976741373)).toUint64();
 
-/// GenerateNamespacePath create list NamespaceId from string
-List<Uint64> generateNamespacePath(String name) {
+/// generateNamespaceId create NamespaceId from namespace string name
+/// (ex: prx or domain.subdom.subdome)
+Uint64 generateNamespacePath(String name) {
   final parts = name.split('.');
   if (parts.isEmpty) {
     throw errInvalidNamespaceName;
@@ -27,16 +30,16 @@ List<Uint64> generateNamespacePath(String name) {
   var namespaceId = Uint64.zero;
   final List<Uint64> path = [];
 
-  for (final i in parts) {
-    if (!regValidNamespace.hasMatch('$i')) {
+  for (final part in parts) {
+    if (!regValidNamespace.hasMatch(part)) {
       throw errInvalidNamespaceName;
     }
-    namespaceId = generateId('$i', namespaceId);
+
+    namespaceId = generateNamespaceId(part, namespaceId);
 
     path.add(namespaceId);
   }
-
-  return path;
+  return path[path.length - 1];
 }
 
 List<Uint64> extractLevels(NamespaceInfoDTO ref) {
@@ -60,31 +63,22 @@ List<Uint64> extractLevels(NamespaceInfoDTO ref) {
   return levels;
 }
 
-Uint64 generateId(String name, Uint64 parentId) {
-  var b = Uint8List(8);
-  if (parentId.toInt() != 0) {
-    b = crypto.encodeBigInt(parentId.toBigInt());
-  }
+Uint64 generateNamespaceId(String name, Uint64 parentId) {
+  final Uint8List parentIdBytes = parentId.toBytes();
 
-  b = Uint8List.fromList(b.reversed.toList());
+  final result = sha3.New256()..update(parentIdBytes, 0, parentIdBytes.length);
 
-  final result = sha3.New256()..update(b, 0, b.length);
-
-  final p = Uint8List(name.length);
+  final nameBytes = Uint8List(name.length);
   for (int i = 0; i < name.length; i++) {
-    p[i] = name.codeUnits[i];
+    nameBytes[i] = name.codeUnits[i];
   }
 
-  final t = result.process(p);
+  final t = result.process(nameBytes);
+  final g = Int64.fromBytes(t);
 
-  return Uint64.fromBytes(t) | 0x80000000;
-}
+  final p = g | namespaceBit;
 
-/// generateNamespaceId create NamespaceId from namespace string name
-/// (ex: prx or domain.subdom.subdome)
-Uint64 _generateNamespaceId(String namespaceName) {
-  final list = generateNamespacePath(namespaceName);
-  return list[list.length - 1];
+  return Uint64.fromHex(p.toHexString());
 }
 
 final RegExp regValidNamespace = RegExp(

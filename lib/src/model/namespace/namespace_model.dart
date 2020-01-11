@@ -13,7 +13,7 @@ class NamespaceId extends Id {
 
   /// NewNamespaceIdFromName generate Id from namespaceName
   NamespaceId.fromName(String namespaceName)
-      : super(_generateNamespaceId(namespaceName));
+      : super(generateNamespacePath(namespaceName));
 
   NamespaceId.fromId(final Uint64 id) : super(id);
 
