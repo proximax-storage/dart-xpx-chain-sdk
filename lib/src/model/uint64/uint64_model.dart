@@ -160,7 +160,7 @@ class Uint64 implements Comparable<Uint64> {
   Uint64 abs() => this;
 
   @override
-  String toString() => _value.toString();
+  String toString() => toHex();
 
   /// Converts to hex string representation. Fills with leading 0 to reach 16 characters length.
   String toHex() {

@@ -85,12 +85,14 @@ class MosaicId extends Id {
   String toString() => '${toHex()}';
 
   @override
-  int get hashCode => 'MosaicId'.hashCode ^ id.hashCode;
+  int get hashCode => 'MosaicId'.hashCode ^ super.hashCode;
 
   @override
   bool operator ==(final other) =>
       identical(this, other) ||
-      other is MosaicId && runtimeType == other.runtimeType && id == other.id;
+      other is MosaicId &&
+          runtimeType == other.runtimeType &&
+          toBytes() == other.toBytes();
 }
 
 class MosaicIds {

@@ -16,7 +16,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     } else {
       version = transferVersion;
       this.deadline = deadline;
-      type = transactionTypeFromRaw(16724);
+      type = TransactionType.transfer;
       this.recipient = recipient;
       this.mosaics = mosaics;
       this.message = message;

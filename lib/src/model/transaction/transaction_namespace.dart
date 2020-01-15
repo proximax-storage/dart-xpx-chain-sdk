@@ -15,7 +15,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     } else {
       version = registerNamespaceVersion;
       this.deadline = deadline;
-      type = transactionTypeFromRaw(16718);
+      type = TransactionType.registerNamespace;
       namespaceId = NamespaceId.fromName(rootNamespaceName);
       this.networkType = networkType;
       namespaceName = rootNamespaceName;
@@ -34,10 +34,10 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     } else {
       version = registerNamespaceVersion;
       this.deadline = deadline;
-      type = transactionTypeFromRaw(16718);
+      type = TransactionType.registerNamespace;
       parentId = NamespaceId.fromName(rootNamespaceName);
-      namespaceId =
-          NamespaceId(id: generateNamespaceId(subNamespaceName, parentId.toUint64()));
+      namespaceId = NamespaceId(
+          id: generateNamespaceId(subNamespaceName, parentId.toUint64()));
       this.networkType = networkType;
       namespaceName = subNamespaceName;
       namespaceType = NamespaceType.sub;
@@ -67,6 +67,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   NamespaceId parentId;
 
   int get size => _size();
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   static List<RegisterNamespaceTransaction> listFromDTO(

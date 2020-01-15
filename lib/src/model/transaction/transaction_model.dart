@@ -27,9 +27,9 @@ class CosignatureSignedTransaction {
 }
 
 abstract class Id {
-  const Id(this.id);
+  const Id(this._id);
 
-  final Uint64 id;
+  final Uint64 _id;
 
   @override
   String toString() => toHex();
@@ -37,28 +37,28 @@ abstract class Id {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Id && runtimeType == other.runtimeType && id == other.id;
+      other is Id && runtimeType == other.runtimeType && _id == other._id;
 
   @override
-  int get hashCode => 'Id'.hashCode ^ id.hashCode;
+  int get hashCode => 'Id'.hashCode ^ _id.hashCode;
 
   String toHex() {
-    if (id == null) {
+    if (_id == null) {
       return null;
     }
 
-    var s = id.toHex().toUpperCase();
+    var s = _id.toHex().toUpperCase();
     if (s.length % 2 != 0) {
       s = '0$s';
     }
     return s;
   }
 
-  List<int> toIntArray() => id.toIntArray();
+  List<int> toIntArray() => _id.toIntArray();
 
-  Uint64 toUint64() => id;
+  Uint64 toUint64() => _id;
 
-  Uint8List toBytes() => id.toBytes();
+  Uint8List toBytes() => _id.toBytes();
 }
 
 abstract class Transaction {
@@ -121,16 +121,102 @@ mixin TransactionInfo {
   }
 }
 
-class _TransactionTypeClass {
-  _TransactionTypeClass([this._transactionType, this._raw, this._hex]);
+class TransactionType {
+  const TransactionType._internal(this._value);
 
-  final TransactionType _transactionType;
-  final int _raw;
-  final int _hex;
+  static const TransactionType aggregateCompleted =
+      TransactionType._internal(0x4141);
 
-  TransactionType get transactionType => _transactionType;
-  int get raw => _raw;
-  int get hex => _hex;
+  static const TransactionType aggregateBonded =
+      TransactionType._internal(0x4241);
+
+  static const TransactionType addressAlias = TransactionType._internal(0x424E);
+
+  static const TransactionType metadataAddress =
+      TransactionType._internal(0x413d);
+
+  static const TransactionType metadataMosaic =
+      TransactionType._internal(0x423d);
+
+  static const TransactionType metadataNamespace =
+      TransactionType._internal(0x433d);
+
+  static const TransactionType mosaicDefinition =
+      TransactionType._internal(0x414d);
+
+  static const TransactionType mosaicAlias = TransactionType._internal(0x434e);
+
+  static const TransactionType mosaicSupplyChange =
+      TransactionType._internal(0x424d);
+
+  static const TransactionType modifyMultisig =
+      TransactionType._internal(0x4155);
+
+  static const TransactionType modifyContract =
+      TransactionType._internal(0x4157);
+
+  static const TransactionType registerNamespace =
+      TransactionType._internal(0x414e);
+
+  static const TransactionType transfer = TransactionType._internal(0x4154);
+
+  static const TransactionType lock = TransactionType._internal(0x4148);
+
+  static const TransactionType secretLock = TransactionType._internal(0x4152);
+
+  static const TransactionType secretProof = TransactionType._internal(0x4252);
+
+  static const TransactionType addExchangeOffer =
+      TransactionType._internal(0x415D);
+
+  static const TransactionType exchangeOffer =
+      TransactionType._internal(0x425D);
+
+  static const TransactionType removeExchangeOffer =
+      TransactionType._internal(0x435D);
+
+  final int _value;
+
+  static final List<TransactionType> list = <TransactionType>[
+    aggregateCompleted,
+    aggregateBonded,
+    addressAlias,
+    metadataAddress,
+    metadataMosaic,
+    metadataNamespace,
+    mosaicDefinition,
+    mosaicAlias,
+    mosaicSupplyChange,
+    modifyMultisig,
+    modifyContract,
+    registerNamespace,
+    transfer,
+    lock,
+    secretLock,
+    secretProof,
+    addExchangeOffer,
+    exchangeOffer,
+    removeExchangeOffer
+  ];
+
+  static TransactionType fromInt(int value) {
+    for (var type in list) {
+      if (type._value == value) {
+        return type;
+      }
+    }
+
+    throw errorUnknownTransactionType;
+  }
+
+  @override
+  String toString() => _value.toString();
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['value'] = _value;
+    return data;
+  }
 }
 
 class Deadline {
@@ -219,7 +305,7 @@ class AbstractTransaction with TransactionInfo {
       AbstractTransactionDTO absValue, MetaTransactionDTO metaValue) {
     networkType = extractNetworkType(absValue.version);
     deadline = Deadline.fromUInt64DTO(absValue.deadline);
-    type = transactionTypeFromRaw(absValue.type);
+    type = TransactionType.fromInt(absValue.type);
     version = extractVersion(absValue.version);
     maxFee = absValue.fee.toUint64();
     signature = absValue.signature;
@@ -229,7 +315,7 @@ class AbstractTransaction with TransactionInfo {
 
   int networkType;
   Deadline deadline;
-  _TransactionTypeClass type;
+  TransactionType type;
   int version;
   Uint64 maxFee;
   String signature;
@@ -265,7 +351,7 @@ class AbstractTransaction with TransactionInfo {
       ..addSignatureOffset(vector['signatureV'])
       ..addSignerOffset(vector['signerV'])
       ..addVersion(vector['versionV'])
-      ..addType(type._hex)
+      ..addType(type._value)
       ..addFeeOffset(vector['feeV'])
       ..addDeadlineOffset(vector['deadlineV']);
   }
@@ -290,7 +376,7 @@ class AbstractTransaction with TransactionInfo {
       ..writeln('{')
       ..writeln('\t\t"transactionInfo": ${_transactionInfoToString()},')
       ..writeln('\t\t"networkType": $networkType,')
-      ..writeln('\t\t"type": ${_transactionTypes.lookup(type)?._raw},')
+      ..writeln('\t\t"type": $type')
       ..writeln('\t\t"version": $version,');
     if (maxFee != null) {
       sb.writeln('\t\t"maxFee": $maxFee,');
@@ -312,7 +398,7 @@ class AbstractTransaction with TransactionInfo {
   Map<String, dynamic> _absToJson() {
     final Map<String, dynamic> data = {}..addAll(_transactionInfoToJson());
     data['networkType'] = networkType;
-    data['type'] = _transactionTypes.lookup(type)._raw;
+    data['type'] = type;
     data['version'] = version;
     data['maxFee'] = maxFee;
     data['deadline'] = deadline;

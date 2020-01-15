@@ -49,9 +49,13 @@ MosaicPropertyId getPropertyId(int value) {
 }
 
 Uint64 _generateMosaicId(int nonce, String ownerPublicKey) {
-  final nonceB = Buffer.littleEndian(4)..writeInt32(nonce);
+  final buffer = Uint8List(4).buffer;
+  final nonceB = ByteData.view(buffer);
 
-  final result = sha3.New256()..update(nonceB.out, 0, nonceB.out.length);
+  nonceB.setUint32(0, nonce, Endian.little);
+
+  final result = sha3.New256()
+    ..update(nonceB.buffer.asUint8List(), 0, nonceB.lengthInBytes);
 
   final ownerBytes = hex.decode(ownerPublicKey);
 

@@ -65,7 +65,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
     } else {
       version = modifyMultisigVersion;
       this.deadline = deadline;
-      type = transactionTypeFromRaw(16725);
+      type = TransactionType.modifyMultisig;
       this.networkType = networkType;
       minApprovalDelta = minApproval;
       minRemovalDelta = minRemoval;
@@ -77,7 +77,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
       ModifyMultisigAccountTransactionInfoDTO value)
       : assert(value != null, 'value must not be null'),
         super.fromDto(value.transaction, value.meta) {
-    type = transactionTypeFromRaw(value.transaction.type);
+    type = TransactionType.fromInt(value.transaction.type);
     deadline = Deadline.fromUInt64DTO(value.transaction.deadline);
     signature = value.transaction.signature;
     networkType = extractNetworkType(value.transaction.version);

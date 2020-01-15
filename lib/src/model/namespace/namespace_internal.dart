@@ -4,6 +4,9 @@ const int namespaceBit = 1 << 63;
 
 enum NamespaceType { root, sub }
 
+// namespace id for PRX mosaic
+final NamespaceId prxNamespaceId = NamespaceId.fromName('prx');
+
 // namespace id for XPX mosaic
 final NamespaceId xpxNamespaceId = NamespaceId.fromName('prx.xpx');
 
@@ -12,9 +15,6 @@ final NamespaceId storageNamespaceId = NamespaceId.fromName('prx.storage');
 
 // namespace id for streaming mosaic
 final NamespaceId streamingNamespaceId = NamespaceId.fromName('prx.streaming');
-
-final prxNamespaceId =
-    UInt64DTO(Int32(2339353534), Int32(2976741373)).toUint64();
 
 /// generateNamespaceId create NamespaceId from namespace string name
 /// (ex: prx or domain.subdom.subdome)

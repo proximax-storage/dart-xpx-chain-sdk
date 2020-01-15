@@ -10,12 +10,12 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
         assert(duration != null, 'duration must not be null'),
         assert(signedTx != null, 'signedTx must not be null'),
         super() {
-    if (signedTx.transactionType != transactionTypeFromRaw(16961)._hex) {
+    if (signedTx.transactionType != TransactionType.aggregateBonded._value) {
       throw errEmptyModifications;
     } else {
       version = lockVersion;
       this.deadline = deadline;
-      type = transactionTypeFromRaw(16712);
+      type = TransactionType.lock;
       this.networkType = networkType;
       this.mosaic = mosaic;
       this.duration = duration;

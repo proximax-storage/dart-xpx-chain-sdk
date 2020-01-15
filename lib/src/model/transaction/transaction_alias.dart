@@ -3,11 +3,11 @@ part of xpx_chain_sdk.transaction;
 // AliasTransaction
 class AliasTransaction extends AbstractTransaction implements Transaction {
   AliasTransaction._(int version, Deadline deadline, this.actionType,
-      this.namespaceId, int networkType)
+      this.namespaceId, TransactionType transactionType, int networkType)
       : super() {
     this.version = version;
     this.deadline = deadline;
-    type = transactionTypeFromRaw(17230);
+    type = transactionType;
     this.networkType = networkType;
   }
 
@@ -95,7 +95,7 @@ class AddressAliasTransaction extends AliasTransaction {
   AddressAliasTransaction._(Deadline deadline, this.address,
       NamespaceId namespaceId, AliasActionType actionType, int networkType)
       : super._(addressAliasVersion, deadline, actionType, namespaceId,
-            networkType);
+            TransactionType.addressAlias, networkType);
 
   AddressAliasTransaction.fromDTO(AddressAliasTransactionInfoDTO value)
       : assert(value != null, 'value must not be null'),
@@ -144,8 +144,8 @@ class AddressAliasTransaction extends AliasTransaction {
 class MosaicAliasTransaction extends AliasTransaction {
   MosaicAliasTransaction(Deadline deadline, this.mosaicId,
       NamespaceId namespaceId, AliasActionType actionType, int networkType)
-      : super._(
-            mosaicAliasVersion, deadline, actionType, namespaceId, networkType);
+      : super._(mosaicAliasVersion, deadline, actionType, namespaceId,
+            TransactionType.mosaicAlias, networkType);
 
   MosaicAliasTransaction.fromDTO(
     MosaicAliasTransactionInfoDTO value,

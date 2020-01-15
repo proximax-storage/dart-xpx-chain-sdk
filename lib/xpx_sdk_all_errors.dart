@@ -43,3 +43,4 @@ final errInvalidHexadecimal = Exception('must be hexadecimal');
 final errorInvalidMosaicsOffer =
     Exception("you can't get more mosaics when in offer");
 final errorUnknownOfferType = Exception('unknown offer type');
+final errorUnknownTransactionType = Exception('unknown transaction type');

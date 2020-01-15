@@ -32,17 +32,14 @@ class NamespaceId extends Id {
   }
 
   @override
-  String toString() => '${toHex()}';
-
-  @override
-  int get hashCode => 'NamespaceId'.hashCode ^ id.hashCode;
+  int get hashCode => 'NamespaceId'.hashCode ^ super.hashCode;
 
   @override
   bool operator ==(final other) =>
       identical(this, other) ||
       other is NamespaceId &&
           runtimeType == other.runtimeType &&
-          id == other.id;
+          toBytes() == other.toBytes();
 }
 
 class NamespaceName {

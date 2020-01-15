@@ -4,28 +4,6 @@ final regList = RegExp(r'^List<(.*)>$');
 
 final regMap = RegExp(r'^Map<String,(.*)>$');
 
-var _transactionTypes = <_TransactionTypeClass>{
-  _TransactionTypeClass(TransactionType.aggregateCompleted, 16705, 0x4141),
-  _TransactionTypeClass(TransactionType.aggregateBonded, 16961, 0x4241),
-  _TransactionTypeClass(TransactionType.addressAlias, 16974, 0x424E),
-  _TransactionTypeClass(TransactionType.metadataAddress, 16701, 0x413d),
-  _TransactionTypeClass(TransactionType.metadataMosaic, 16957, 0x423d),
-  _TransactionTypeClass(TransactionType.metadataNamespace, 17213, 0x433d),
-  _TransactionTypeClass(TransactionType.mosaicDefinition, 16717, 0x414d),
-  _TransactionTypeClass(TransactionType.mosaicAlias, 17230, 0x434e),
-  _TransactionTypeClass(TransactionType.mosaicSupplyChange, 16973, 0x424d),
-  _TransactionTypeClass(TransactionType.modifyMultisig, 16725, 0x4155),
-  _TransactionTypeClass(TransactionType.modifyContract, 16727, 0x4157),
-  _TransactionTypeClass(TransactionType.registerNamespace, 16718, 0x414e),
-  _TransactionTypeClass(TransactionType.transfer, 16724, 0x4154),
-  _TransactionTypeClass(TransactionType.lock, 16712, 0x4148),
-  _TransactionTypeClass(TransactionType.secretLock, 16722, 0x4152),
-  _TransactionTypeClass(TransactionType.secretProof, 16978, 0x4252),
-  _TransactionTypeClass(TransactionType.addExchangeOffer, 16733, 0x415D),
-  _TransactionTypeClass(TransactionType.exchangeOffer, 16989, 0x425D),
-  _TransactionTypeClass(TransactionType.removeExchangeOffer, 17245, 0x435D)
-};
-
 // TransactionVersion enums
 const aggregateCompletedVersion = 2,
     aggregateBondedVersion = 2,
@@ -47,44 +25,12 @@ const aggregateCompletedVersion = 2,
     secretLockVersion = 1,
     secretProofVersion = 1;
 
-// TransactionType enums
-enum TransactionType {
-  aggregateCompleted,
-  aggregateBonded,
-  addressAlias,
-  metadataAddress,
-  metadataMosaic,
-  metadataNamespace,
-  mosaicDefinition,
-  mosaicSupplyChange,
-  modifyMultisig,
-  modifyContract,
-  registerNamespace,
-  transfer,
-  lock,
-  secretLock,
-  secretProof,
-  mosaicAlias,
-  addExchangeOffer,
-  exchangeOffer,
-  removeExchangeOffer
-}
-
 var timestampNemesisBlock = DateTime.fromMillisecondsSinceEpoch(1459468800000);
-
-_TransactionTypeClass transactionTypeFromRaw(int value) {
-  for (final t in _transactionTypes) {
-    if (t.raw == value) {
-      return t;
-    }
-  }
-  return null;
-}
 
 String _mapTransaction(decodedJson) {
   final rawT = decodedJson['transaction']['type'];
 
-  final t = transactionTypeFromRaw(rawT).transactionType;
+  final t = TransactionType.fromInt(rawT);
 
   switch (t) {
     case TransactionType.aggregateCompleted:
@@ -206,7 +152,7 @@ SignedTransaction signTransactionWith(
   final hash = _createTransactionHash(pHex, generationHash);
 
   return SignedTransaction(
-      tx._abstractTransaction().type.raw, pHex.toUpperCase(), hash);
+      tx._abstractTransaction().type._value, pHex.toUpperCase(), hash);
 }
 
 SignedTransaction signTransactionWithCosignatures(Transaction tx, Account a,
@@ -224,11 +170,14 @@ SignedTransaction signTransactionWithCosignatures(Transaction tx, Account a,
   final List<int> i = <int>[];
   i.addAll(hex.decode(p.toString()));
 
-  final s = Buffer.littleEndian(4)..writeInt32(i.length);
+  final buffer = Uint8List(4).buffer;
+  final s = ByteData.view(buffer);
 
-  i.replaceRange(0, s.out.length, s.out);
+  s.setInt32(0, i.length, Endian.little);
 
-  return SignedTransaction(tx._abstractTransaction().type.raw,
+  i.replaceRange(0, s.lengthInBytes, s.buffer.asUint8List());
+
+  return SignedTransaction(tx._abstractTransaction().type._value,
       hex.encode(i).toUpperCase(), stx.hash);
 }
 
@@ -284,9 +233,13 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
 
   rB.insertAll(signerSize + sizeSize + versionSize + typeSize,
       b.skip(transactionHeaderSize));
-  final s = Buffer.littleEndian(4)..writeInt32(b.length - 64 - 16);
 
-  rB.replaceRange(0, s.out.length, s.out);
+  final buffer = Uint8List(4).buffer;
+  final s = ByteData.view(buffer);
+
+  s.setInt32(0, b.length - 64 - 16, Endian.little);
+
+  rB.replaceRange(0, s.lengthInBytes, s.buffer.asUint8List());
 
   return Uint8List.fromList(rB);
 }

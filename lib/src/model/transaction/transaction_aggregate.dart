@@ -7,15 +7,15 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   factory AggregateTransaction.bonded(
           Deadline deadline, List<Transaction> innerTxs, int networkType) =>
       AggregateTransaction._(deadline, innerTxs, networkType,
-          aggregateBondedVersion, transactionTypeFromRaw(16961));
+          aggregateBondedVersion, TransactionType.aggregateBonded);
 
   factory AggregateTransaction.complete(
           Deadline deadline, List<Transaction> innerTxs, int networkType) =>
       AggregateTransaction._(deadline, innerTxs, networkType,
-          aggregateCompletedVersion, transactionTypeFromRaw(16705));
+          aggregateCompletedVersion, TransactionType.aggregateCompleted);
 
   AggregateTransaction._(Deadline deadline, List<Transaction> innerTxs,
-      int networkType, int version, _TransactionTypeClass type)
+      int networkType, int version, TransactionType type)
       : super() {
     if (innerTxs.isEmpty == null) {
       throw errNullInnerTransactions;

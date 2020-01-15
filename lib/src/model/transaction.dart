@@ -10,7 +10,6 @@ import 'package:flat_buffers/flat_buffers.dart' as fb;
 import 'package:xpx_crypto/xpx_crypto.dart' as crypto;
 
 import 'package:xpx_chain_sdk/xpx_sdk_consts.dart';
-import 'package:xpx_chain_sdk/xpx_sdk_endian.dart';
 
 import 'package:xpx_chain_sdk/src/model/account.dart';
 import 'package:xpx_chain_sdk/src/model/alias.dart';

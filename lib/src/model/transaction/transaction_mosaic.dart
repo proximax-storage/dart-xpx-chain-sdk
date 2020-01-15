@@ -15,7 +15,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     } else {
       version = mosaicDefinitionVersion;
       this.deadline = deadline;
-      type = transactionTypeFromRaw(16717);
+      type = TransactionType.mosaicDefinition;
       this.networkType = networkType;
       mosaicNonce = nonce;
       mosaicProperties = mosaicProps;
@@ -147,7 +147,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
     } else {
       version = mosaicSupplyChangeVersion;
       this.deadline = deadline;
-      type = transactionTypeFromRaw(16973);
+      type = TransactionType.mosaicSupplyChange;
       this.networkType = networkType;
       this.mosaicId = mosaicId;
       mosaicSupplyType = supplyType;
