@@ -40,7 +40,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   String _aliasTransactionToString() {
-    final String _actionType = actionType.index == 0 ? 'link' : 'unlink';
+    final String _actionType = actionType.toInt == 0 ? 'link' : 'unlink';
     return '{\n'
         '\t"abstractTransaction": ${_absToString()}\n'
         '\t"aliasActionType": $_actionType,\n'
@@ -57,7 +57,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
     final data = <String, dynamic>{};
     data['abstractTransaction'] = _absToJson();
     if (actionType != null) {
-      data['aliasActionType'] = actionType.index;
+      data['aliasActionType'] = actionType.toInt;
     }
     data['namespaceId'] = namespaceId.toHex();
     return data;
@@ -72,7 +72,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
   @override
   Uint8List generateBytes() => null;
 
-  Uint8List _generateAbstractBytes(fb.Builder builder, int aliasV) {
+  Uint8List _generateAliasAbsBytes(fb.Builder builder, int aliasV) {
     final nV = builder.writeListUint32(namespaceId.toIntArray());
 
     final vectors = _generateVector(builder);
@@ -80,7 +80,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
     final txnBuilder = AliasTransactionBufferBuilder(builder)
       ..begin()
       ..addSize(_size())
-      ..addActionType(actionType.index)
+      ..addActionType(actionType.toInt)
       ..addNamespaceIdOffset(nV)
       ..addAliasIdOffset(aliasV);
     _buildVector(builder, vectors);
@@ -92,7 +92,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
 }
 
 class AddressAliasTransaction extends AliasTransaction {
-  AddressAliasTransaction._(Deadline deadline, this.address,
+  AddressAliasTransaction(Deadline deadline, this.address,
       NamespaceId namespaceId, AliasActionType actionType, int networkType)
       : super._(addressAliasVersion, deadline, actionType, namespaceId,
             TransactionType.addressAlias, networkType);
@@ -125,7 +125,7 @@ class AddressAliasTransaction extends AliasTransaction {
   }
 
   @override
-  int _size() => super._size() + mosaicIdSize;
+  int _size() => super._size() + addressSize;
 
   @override
   AbstractTransaction _abstractTransaction() => _absTransaction();
@@ -137,7 +137,7 @@ class AddressAliasTransaction extends AliasTransaction {
 
     final aV = builder.writeListUint8(a);
 
-    return _generateAbstractBytes(builder, aV);
+    return _generateAliasAbsBytes(builder, aV);
   }
 }
 
@@ -185,8 +185,8 @@ class MosaicAliasTransaction extends AliasTransaction {
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final mV = builder.writeListUint8(mosaicId.toIntArray());
+    final mV = builder.writeListUint8(mosaicId.toBytes());
 
-    return _generateAbstractBytes(builder, mV);
+    return _generateAliasAbsBytes(builder, mV);
   }
 }

@@ -5,10 +5,11 @@ enum MultisigCosignatoryModificationType { add, remove }
 const add = MultisigCosignatoryModificationType.add,
     remove = MultisigCosignatoryModificationType.remove;
 
-const numChecksumBytes = 4,
-    addressDecodeSize = 25,
+const addressSize = 25,
+    numChecksumBytes = 4,
     addressEncodeSize = 40,
     amountSize = 8,
+    addressDecodeSize = 25,
     keySize = 32,
     privateKeySize = 64,
     publicKeySize = 64,

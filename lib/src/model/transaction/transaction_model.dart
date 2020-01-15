@@ -32,7 +32,7 @@ abstract class Id {
   final Uint64 _id;
 
   @override
-  String toString() => toHex();
+  String toString() => _id.toString();
 
   @override
   bool operator ==(Object other) =>

@@ -9,6 +9,14 @@ enum AliasType {
 
 enum AliasActionType { aliasLink, aliasUnlink }
 
+extension AliasTypeToInt on AliasType {
+  int get toInt => index;
+}
+
+extension AliasActionTypeToInt on AliasActionType {
+  int get toInt => index;
+}
+
 class Alias {
   Alias({this.type, this.address, this.mosaicId});
 
@@ -24,7 +32,7 @@ class Alias {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['type'] = type;
+    data['type'] = type.toInt;
     data['mosaicId'] = mosaicId;
     data['address'] = address;
     return data;
@@ -43,7 +51,7 @@ class AddressAlias implements Alias {
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['aliasAction'] = type;
+    data['aliasAction'] = type.toInt;
     data['address'] = address;
     return data;
   }
