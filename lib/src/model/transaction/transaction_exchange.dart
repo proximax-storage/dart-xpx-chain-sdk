@@ -10,7 +10,7 @@ class AddExchangeOfferTransaction extends AbstractTransaction
     } else {
       version = addExchangeOfferVersion;
       this.deadline = deadline;
-      type = TransactionType.exchangeOffer;
+      type = TransactionType.addExchangeOffer;
       this.networkType = networkType;
       offers = addOffers;
     }

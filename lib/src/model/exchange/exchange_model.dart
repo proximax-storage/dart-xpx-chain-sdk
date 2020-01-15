@@ -158,8 +158,8 @@ class OfferInfo {
 }
 
 class AddOffer extends Offer {
-  AddOffer({this.duration, OfferType type, Mosaic mosaic, Uint64 cost})
-      : super(type, mosaic, cost);
+  AddOffer({Offer offer, this.duration})
+      : super(offer.type, offer.mosaic, offer.cost);
 
   Uint64 duration;
 
