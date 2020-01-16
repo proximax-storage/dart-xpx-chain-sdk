@@ -6,7 +6,7 @@ class AddExchangeOfferTransaction extends AbstractTransaction
       Deadline deadline, List<AddOffer> addOffers, int networkType)
       : super() {
     if (addOffers == null) {
-      throw errNullRecipient;
+      throw errNullAddOffers;
     } else {
       version = addExchangeOfferVersion;
       this.deadline = deadline;
@@ -19,6 +19,7 @@ class AddExchangeOfferTransaction extends AbstractTransaction
   List<AddOffer> offers;
 
   int get size => _size();
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   @override
@@ -34,7 +35,7 @@ class AddExchangeOfferTransaction extends AbstractTransaction
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['abstractTransaction'] = _absToJson();
-    data['mosaic'] = offers;
+    data['offers'] = offers;
     return data;
   }
 
@@ -60,6 +61,71 @@ class AddExchangeOfferTransaction extends AbstractTransaction
     final codedTransfer = txnBuilder.finish();
 
     return addExchangeOfferTransactionSchema()
+        .serialize(builder.finish(codedTransfer));
+  }
+}
+
+class ExchangeOfferTransaction extends AbstractTransaction
+    implements Transaction {
+  ExchangeOfferTransaction(
+      Deadline deadline, List<ExchangeConfirmation> confirmations, int networkType)
+      : super() {
+    if (confirmations == null) {
+      throw errNullConfirmations;
+    } else {
+      version = exchangeOfferVersion;
+      this.deadline = deadline;
+      type = TransactionType.exchangeOffer;
+      this.networkType = networkType;
+      this.confirmations = confirmations;
+    }
+  }
+
+  List<ExchangeConfirmation> confirmations;
+
+  int get size => _size();
+  
+  AbstractTransaction get abstractTransaction => _abstractTransaction();
+
+  @override
+  AbstractTransaction _abstractTransaction() => _absTransaction();
+
+  @override
+  String toString() => '{\n'
+      '\t"abstractTransaction": ${_absToString()}\n'
+      '\t"confirmations": $confirmations,\n'
+      '}\n';
+
+  @override
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['abstractTransaction'] = _absToJson();
+    data['confirmations'] = confirmations;
+    return data;
+  }
+
+  @override
+  int _size() =>
+      addExchangeOfferHeaderSize + confirmations.length * addExchangeOfferSize;
+
+  @override
+  Uint8List generateBytes() {
+    final builder = fb.Builder(initialSize: 0);
+
+    final vectors = _generateVector(builder);
+
+    final offersV = exchangeOfferToArrayToBuffer(builder, confirmations);
+
+    final txnBuilder = ExchangeOfferTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(_size())
+      ..addOffersCount(confirmations.length)
+      ..addOffersOffset(offersV);
+    _buildVector(builder, vectors);
+
+    final codedTransfer = txnBuilder.finish();
+
+    return exchangeOfferTransactionSchema()
         .serialize(builder.finish(codedTransfer));
   }
 }
