@@ -126,7 +126,7 @@ class OfferInfo {
         return Uint64((priceNumerator * amount).toInt().floorToDouble() /
             priceDenominator.toDouble());
       default:
-        throw errorUnknownOfferType;
+        throw errUnknownOfferType;
     }
   }
 

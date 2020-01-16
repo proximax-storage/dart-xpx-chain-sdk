@@ -206,7 +206,7 @@ class TransactionType {
       }
     }
 
-    throw errorUnknownTransactionType;
+    throw errUnknownTransactionType;
   }
 
   @override

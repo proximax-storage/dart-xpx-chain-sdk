@@ -42,7 +42,9 @@ final errInvalidHexadecimal = Exception('must be hexadecimal');
 /// Various
 final errorInvalidMosaicsOffer =
     Exception("you can't get more mosaics when in offer");
-final errorUnknownOfferType = Exception('unknown offer type');
-final errorUnknownTransactionType = Exception('unknown transaction type');
+final errUnknownOfferType = Exception('unknown offer type');
+final errUnknownTransactionType = Exception('unknown transaction type');
 final errNullConfirmations = Exception('confirmations must not be null');
 final errNullAddOffers = Exception('addOffers must not be null');
+final errNullRemoveOffers = Exception('removeOffers must not be null');
+

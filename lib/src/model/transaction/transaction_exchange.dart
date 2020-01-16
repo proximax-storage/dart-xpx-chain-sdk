@@ -136,7 +136,7 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction
       Deadline deadline, List<RemoveOffer> removeOffer, int networkType)
       : super() {
     if (removeOffer == null) {
-      throw errNullAddOffers;
+      throw errNullRemoveOffers;
     } else {
       version = removeExchangeOfferVersion;
       this.deadline = deadline;
@@ -171,7 +171,7 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction
 
   @override
   int _size() =>
-      addExchangeOfferHeaderSize + offers.length * addExchangeOfferSize;
+      removeExchangeOfferHeaderSize + offers.length * removeExchangeOfferSize;
 
   @override
   Uint8List generateBytes() {
