@@ -48,3 +48,20 @@ int exchangeOfferToArrayToBuffer(fb.Builder builder, List<ExchangeConfirmation> 
   }
   return builder.writeList(msb);
 }
+
+int removeExchangeOfferToArrayToBuffer(fb.Builder builder, List<RemoveOffer> offers) {
+  final List<int> msb = List(offers.length);
+  int i = 0;
+  for (final offer in offers) {
+    final mV = builder.writeListUint32(offer.assetId.toIntArray());
+
+    final txnBuilder = RemoveExchangeOfferBufferBuilder(builder)
+      ..begin()
+      ..addMosaicIdOffset(mV)
+      ..addType(offer.type.value);
+
+    msb[i] = txnBuilder.finish();
+    i++;
+  }
+  return builder.writeList(msb);
+}

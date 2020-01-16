@@ -67,8 +67,8 @@ class AddExchangeOfferTransaction extends AbstractTransaction
 
 class ExchangeOfferTransaction extends AbstractTransaction
     implements Transaction {
-  ExchangeOfferTransaction(
-      Deadline deadline, List<ExchangeConfirmation> confirmations, int networkType)
+  ExchangeOfferTransaction(Deadline deadline,
+      List<ExchangeConfirmation> confirmations, int networkType)
       : super() {
     if (confirmations == null) {
       throw errNullConfirmations;
@@ -84,7 +84,7 @@ class ExchangeOfferTransaction extends AbstractTransaction
   List<ExchangeConfirmation> confirmations;
 
   int get size => _size();
-  
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   @override
@@ -106,7 +106,7 @@ class ExchangeOfferTransaction extends AbstractTransaction
 
   @override
   int _size() =>
-      addExchangeOfferHeaderSize + confirmations.length * addExchangeOfferSize;
+      exchangeOfferHeaderSize + confirmations.length * exchangeOfferSize;
 
   @override
   Uint8List generateBytes() {
@@ -126,6 +126,71 @@ class ExchangeOfferTransaction extends AbstractTransaction
     final codedTransfer = txnBuilder.finish();
 
     return exchangeOfferTransactionSchema()
+        .serialize(builder.finish(codedTransfer));
+  }
+}
+
+class RemoveExchangeOfferTransaction extends AbstractTransaction
+    implements Transaction {
+  RemoveExchangeOfferTransaction(
+      Deadline deadline, List<RemoveOffer> removeOffer, int networkType)
+      : super() {
+    if (removeOffer == null) {
+      throw errNullAddOffers;
+    } else {
+      version = removeExchangeOfferVersion;
+      this.deadline = deadline;
+      type = TransactionType.removeExchangeOffer;
+      this.networkType = networkType;
+      offers = removeOffer;
+    }
+  }
+
+  List<RemoveOffer> offers;
+
+  int get size => _size();
+
+  AbstractTransaction get abstractTransaction => _abstractTransaction();
+
+  @override
+  AbstractTransaction _abstractTransaction() => _absTransaction();
+
+  @override
+  String toString() => '{\n'
+      '\t"abstractTransaction": ${_absToString()}\n'
+      '\t"offers": $offers,\n'
+      '}\n';
+
+  @override
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['abstractTransaction'] = _absToJson();
+    data['offers'] = offers;
+    return data;
+  }
+
+  @override
+  int _size() =>
+      addExchangeOfferHeaderSize + offers.length * addExchangeOfferSize;
+
+  @override
+  Uint8List generateBytes() {
+    final builder = fb.Builder(initialSize: 0);
+
+    final vectors = _generateVector(builder);
+
+    final offersV = removeExchangeOfferToArrayToBuffer(builder, offers);
+
+    final txnBuilder = RemoveExchangeOfferTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(_size())
+      ..addOffersCount(offers.length)
+      ..addOffersOffset(offersV);
+    _buildVector(builder, vectors);
+
+    final codedTransfer = txnBuilder.finish();
+
+    return removeExchangeOfferTransactionSchema()
         .serialize(builder.finish(codedTransfer));
   }
 }

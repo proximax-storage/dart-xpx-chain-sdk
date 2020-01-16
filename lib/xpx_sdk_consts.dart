@@ -107,4 +107,8 @@ const addressSize = 25,
     offersCountSize = 1,
     addExchangeOfferSize =
         mosaicIdSize + durationSize + 2 * amountSize + offerTypeSize,
-    addExchangeOfferHeaderSize = transactionHeaderSize + offersCountSize;
+    addExchangeOfferHeaderSize = transactionHeaderSize + offersCountSize,
+    exchangeOfferSize = durationSize + 2 * amountSize + offerTypeSize + keySize,
+    exchangeOfferHeaderSize = transactionHeaderSize + offersCountSize,
+    removeExchangeOfferSize = offerTypeSize + mosaicIdSize,
+    removeExchangeOfferHeaderSize = transactionHeaderSize + offersCountSize;
