@@ -1,33 +1,29 @@
 part of xpx_chain_sdk.account;
 
 class Account {
-  Account._(this._publicAccount, this._account);
+  Account._(this.publicAccount, this.account);
 
   /// Create an Account from a given hex private key.
   Account.fromPrivateKey(String shex, int networkType) {
-    _account = crypto.KeyPair.fromHexString(shex);
-    _publicAccount =
-        PublicAccount.fromPublicKey(_account.publicKey.toString(), networkType);
+    account = crypto.KeyPair.fromHexString(shex);
+    publicAccount =
+        PublicAccount.fromPublicKey(account.publicKey.toString(), networkType);
   }
 
   /// Create an Account from a given networkType.
   Account.random(int networkType) {
     final kp = crypto.KeyPair.fromRandomKeyPair();
     final acc = Account.fromPrivateKey(kp.privateKey.toString(), networkType);
-    _publicAccount = acc._publicAccount;
-    _account = acc._account;
+    publicAccount = acc.publicAccount;
+    account = acc.account;
   }
 
-  PublicAccount _publicAccount;
-  crypto.KeyPair _account;
+  PublicAccount publicAccount;
+  crypto.KeyPair account;
 
-  PublicAccount get publicAccount => _publicAccount;
+  String get publicKey => publicAccount.publicKey;
 
-  crypto.KeyPair get account => _account;
-
-  String get publicKey => _publicAccount.publicKey;
-
-  Address get address => _publicAccount.address;
+  Address get address => publicAccount.address;
 
   @override
   String toString() => publicAccount.toString();
