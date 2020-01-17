@@ -127,9 +127,8 @@ class BlockchainRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient
-          .deserialize(response.body, 'List<Transaction>')
-          .cast<Transaction>();
+      final List resp =
+          _apiClient.deserialize(response.body, 'List<Transaction>');
       return resp.map(deserializeDTO).toList();
     } else {
       return null;

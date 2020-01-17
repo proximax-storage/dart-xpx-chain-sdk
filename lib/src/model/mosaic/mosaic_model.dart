@@ -253,7 +253,7 @@ class MosaicProperties {
       ..writeln('{')
       ..writeln('\t\t"supplyMutable": $supplyMutable,')
       ..writeln('\t\t"transferable": $transferable,');
-    if (optionalProperties.isNotEmpty) {
+    if (optionalProperties != null) {
       sb.writeln('\t\t"optionalProperties": $optionalProperties,');
     }
     sb.writeln('\t\t"divisibility": $divisibility');
