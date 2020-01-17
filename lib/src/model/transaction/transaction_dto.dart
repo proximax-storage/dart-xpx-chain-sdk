@@ -1,54 +1,39 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.transaction;
 
-class _AbstractTransactionDTO {
-  int _type;
-  int _version;
-  UInt64DTO _fee;
-  UInt64DTO _deadline;
-  String _signature;
-  String _signer;
+class AbstractTransactionDTO {
+  int type;
+  int version;
+  UInt64DTO fee;
+  UInt64DTO deadline;
+  String signature;
+  String signer;
 
   Map<String, dynamic> toJson() => {
-        'signature': _signature,
-        'signer': _signer,
-        'version': _version,
-        'type': _type,
-        'maxFee': _fee,
-        'deadline': _deadline,
+        'signature': signature,
+        'signer': signer,
+        'version': version,
+        'type': type,
+        'maxFee': fee,
+        'deadline': deadline,
       };
 }
 
-// Message
-class _MessageDTO {
-  _MessageDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
-    _type = json['type'];
-    _payload = json['payload'];
-  }
-
-  int _type;
-  String _payload;
-
-  Map<String, dynamic> toJson() => {'type': _type, 'tayload': _payload};
-}
-
-class _TransferTransactionInfoDTO {
-  _TransferTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    _meta = json['meta'] != null
-        ? _MetaTransactionDTO.fromJson(json['meta'])
-        : null;
+class TransferTransactionInfoDTO {
+  TransferTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
+    meta =
+        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
     _transaction = json['transaction'] != null
         ? _TransferTransactionDTO.fromJson(json['transaction'])
         : null;
   }
 
-  _MetaTransactionDTO _meta;
+  MetaTransactionDTO meta;
   _TransferTransactionDTO _transaction;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    if (_meta != null) {
-      data['meta'] = _meta.toJson();
+    if (meta != null) {
+      data['meta'] = meta.toJson();
     }
     if (_transaction != null) {
       data['transaction'] = _transaction.toJson();
@@ -57,24 +42,23 @@ class _TransferTransactionInfoDTO {
   }
 }
 
-class _AggregateTransactionInfoDTO {
-  _AggregateTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    _meta = json['meta'] != null
-        ? _MetaTransactionDTO.fromJson(json['meta'])
-        : null;
+class AggregateTransactionInfoDTO {
+  AggregateTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
+    meta =
+        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
     _transaction = json['transaction'] != null
         ? _AggregateTransactionDTO.fromJson(json['transaction'])
         : null;
   }
 
-  _MetaTransactionDTO _meta;
+  MetaTransactionDTO meta;
   _AggregateTransactionDTO _transaction;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    if (_meta != null) {
-      data['meta'] = _meta.toJson();
+    if (meta != null) {
+      data['meta'] = meta.toJson();
     }
     if (_transaction != null) {
       data['transaction'] = _transaction.toJson();
@@ -83,8 +67,8 @@ class _AggregateTransactionInfoDTO {
   }
 }
 
-class _MetaTransactionDTO {
-  _MetaTransactionDTO(
+class MetaTransactionDTO {
+  MetaTransactionDTO(
       {List<int> height,
       String hash,
       String merkleComponentHash,
@@ -101,7 +85,7 @@ class _MetaTransactionDTO {
     _aggregateId = aggregateId;
   }
 
-  _MetaTransactionDTO.fromJson(Map<String, dynamic> json) {
+  MetaTransactionDTO.fromJson(Map<String, dynamic> json) {
     _height = UInt64DTO.fromJson(json['height']);
     _hash = json['hash'];
     _merkleComponentHash = json['merkleComponentHash'];
@@ -132,17 +116,17 @@ class _MetaTransactionDTO {
 
 class _AggregateTransactionCosignatureDTO {
   _AggregateTransactionCosignatureDTO({String signature, String signer}) {
-    _signature = signature;
-    _signer = signer;
+    signature = signature;
+    signer = signer;
   }
 
   _AggregateTransactionCosignatureDTO.fromJson(Map<String, dynamic> json) {
-    _signature = json['signature'];
-    _signer = json['signer'];
+    signature = json['signature'];
+    signer = json['signer'];
   }
 
-  String _signature;
-  String _signer;
+  String signature;
+  String signer;
 
   static List<_AggregateTransactionCosignatureDTO> listFromJson(
           List<dynamic> json) =>
@@ -155,58 +139,29 @@ class _AggregateTransactionCosignatureDTO {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['signature'] = _signature;
-    data['signer'] = _signer;
+    data['signature'] = signature;
+    data['signer'] = signer;
     return data;
   }
 }
 
-class _MultisigCosignatoryModificationDTO {
-  _MultisigCosignatoryModificationDTO(this._type, this._cosignatoryPublicKey);
-
-  _MultisigCosignatoryModificationDTO.fromJson(Map<String, dynamic> json) {
-    _type = json['type'];
-    _cosignatoryPublicKey = json['cosignatoryPublicKey'];
-  }
-
-  int _type;
-  String _cosignatoryPublicKey;
-
-  static List<_MultisigCosignatoryModificationDTO> listFromJson(
-          List<dynamic> json) =>
-      json == null
-          ? null
-          : json
-              .map((value) =>
-                  _MultisigCosignatoryModificationDTO.fromJson(value))
-              .toList();
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['type'] = _type;
-    data['cosignatoryPublicKey'] = _cosignatoryPublicKey;
-    return data;
-  }
-}
-
-class _ModifyMultisigAccountTransactionInfoDTO {
-  _ModifyMultisigAccountTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    _meta = json['meta'] != null
-        ? _MetaTransactionDTO.fromJson(json['meta'])
-        : null;
+class LockFundsTransactionInfoDTO {
+  LockFundsTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
+    meta =
+        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
     _transaction = json['transaction'] != null
-        ? _ModifyMultisigAccountTransactionDTO.fromJson(json['transaction'])
+        ? LockFundsTransactionDTO.fromJson(json['transaction'])
         : null;
   }
 
-  _MetaTransactionDTO _meta;
-  _ModifyMultisigAccountTransactionDTO _transaction;
+  MetaTransactionDTO meta;
+  LockFundsTransactionDTO _transaction;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    if (_meta != null) {
-      data['meta'] = _meta.toJson();
+    if (meta != null) {
+      data['meta'] = meta.toJson();
     }
     if (_transaction != null) {
       data['transaction'] = _transaction.toJson();
@@ -215,94 +170,7 @@ class _ModifyMultisigAccountTransactionInfoDTO {
   }
 }
 
-class _LockFundsTransactionInfoDTO {
-  _LockFundsTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    _meta = json['meta'] != null
-        ? _MetaTransactionDTO.fromJson(json['meta'])
-        : null;
-
-    _transaction = json['transaction'] != null
-        ? _LockFundsTransactionDTO.fromJson(json['transaction'])
-        : null;
-  }
-
-  _MetaTransactionDTO _meta;
-  _LockFundsTransactionDTO _transaction;
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    if (_meta != null) {
-      data['meta'] = _meta.toJson();
-    }
-    if (_transaction != null) {
-      data['transaction'] = _transaction.toJson();
-    }
-    return data;
-  }
-}
-
-class _AddressAliasTransactionInfoDTO {
-  _AddressAliasTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    _meta = json['meta'] != null
-        ? _MetaTransactionDTO.fromJson(json['meta'])
-        : null;
-
-    _transaction = json['transaction'] != null
-        ? _AddressAliasDTO.fromJson(json['transaction'])
-        : null;
-  }
-
-  _MetaTransactionDTO _meta;
-  _AddressAliasDTO _transaction;
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    if (_meta != null) {
-      data['meta'] = _meta.toJson();
-    }
-    if (_transaction != null) {
-      data['transaction'] = _transaction.toJson();
-    }
-    return data;
-  }
-}
-
-class _AliasDTO {
-  _AliasDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
-    _aliasAction = json['aliasAction'];
-    _mosaicId = UInt64DTO.fromJson(json['mosaicId']);
-    _address = json['address'];
-  }
-
-  int _aliasAction;
-  UInt64DTO _mosaicId;
-  String _address;
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['aliasAction'] = _aliasAction;
-    data['mosaicId'] = _mosaicId;
-    data['address'] = _address;
-
-    return data;
-  }
-
-  static List<_AliasDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => _AliasDTO.fromJson(value)).toList();
-
-  static Map<String, _AliasDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
-    final map = <String, _AliasDTO>{};
-    if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = _AliasDTO.fromJson(value));
-    }
-    return map;
-  }
-}
-
-class _TransferTransactionDTO extends _AbstractTransactionDTO {
+class _TransferTransactionDTO extends AbstractTransactionDTO {
   _TransferTransactionDTO(
       {String signature,
       String signer,
@@ -311,52 +179,52 @@ class _TransferTransactionDTO extends _AbstractTransactionDTO {
       List<int> maxFee,
       List<int> deadline,
       String recipient,
-      List<_MosaicDTO> mosaics,
-      _MessageDTO message}) {
-    _signature = signature;
-    _signer = signer;
-    _version = version;
-    _type = type;
-    _fee = UInt64DTO.fromJson(maxFee);
-    _deadline = UInt64DTO.fromJson(deadline);
+      List<MosaicDTO> mosaics,
+      MessageDTO message}) {
+    this.signature = signature;
+    this.signer = signer;
+    this.version = version;
+    this.type = type;
+    fee = UInt64DTO.fromJson(maxFee);
+    this.deadline = UInt64DTO.fromJson(deadline);
     _recipient = recipient;
     _mosaics = mosaics;
     _message = message;
   }
 
   _TransferTransactionDTO.fromJson(Map<String, dynamic> json) {
-    _signature = json['signature'];
-    _signer = json['signer'];
-    _version = json['version'];
-    _type = json['type'];
-    _fee = UInt64DTO.fromJson(json['maxFee']);
-    _deadline = UInt64DTO.fromJson(json['deadline']);
+    signature = json['signature'];
+    signer = json['signer'];
+    version = json['version'];
+    type = json['type'];
+    fee = UInt64DTO.fromJson(json['maxFee']);
+    deadline = UInt64DTO.fromJson(json['deadline']);
     _recipient = json['recipient'];
 
     if (json['mosaics'] != null) {
-      final List<_MosaicDTO> mosaics = [];
+      final List<MosaicDTO> mosaics = [];
       json['mosaics'].forEach((value) {
-        mosaics.add(_MosaicDTO.fromJson(value));
+        mosaics.add(MosaicDTO.fromJson(value));
       });
       _mosaics = mosaics;
     }
     _message =
-        json['message'] != null ? _MessageDTO.fromJson(json['message']) : null;
+        json['message'] != null ? MessageDTO.fromJson(json['message']) : null;
   }
 
   String _recipient;
-  List<_MosaicDTO> _mosaics;
-  _MessageDTO _message;
+  List<MosaicDTO> _mosaics;
+  MessageDTO _message;
 
   @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['signature'] = _signature;
-    data['signer'] = _signer;
-    data['version'] = _version;
-    data['type'] = _type;
-    data['maxFee'] = _fee;
-    data['deadline'] = _deadline;
+    data['signature'] = signature;
+    data['signer'] = signer;
+    data['version'] = version;
+    data['type'] = type;
+    data['maxFee'] = fee;
+    data['deadline'] = deadline;
     data['recipient'] = _recipient;
     if (_mosaics != null) {
       data['mosaics'] = _mosaics.map((v) => v.toJson()).toList();
@@ -366,7 +234,7 @@ class _TransferTransactionDTO extends _AbstractTransactionDTO {
   }
 }
 
-class _AggregateTransactionDTO extends _AbstractTransactionDTO {
+class _AggregateTransactionDTO extends AbstractTransactionDTO {
   _AggregateTransactionDTO(
       {String signature,
       String signer,
@@ -376,26 +244,26 @@ class _AggregateTransactionDTO extends _AbstractTransactionDTO {
       List<int> deadline,
       List<_AggregateTransactionCosignatureDTO> cosignatures,
       List<dynamic> transactions}) {
-    _signature = signature;
-    _signer = signer;
-    _version = version;
-    _type = type;
-    _fee = UInt64DTO.fromJson(maxFee);
-    _deadline = UInt64DTO.fromJson(deadline);
+    this.signature = signature;
+    this.signer = signer;
+    this.version = version;
+    this.type = type;
+    fee = UInt64DTO.fromJson(maxFee);
+    this.deadline = UInt64DTO.fromJson(deadline);
     _cosignatures = cosignatures;
     _transactions = transactions;
   }
 
   _AggregateTransactionDTO.fromJson(Map<String, dynamic> json) {
-    _signature = json['signature'];
-    _signer = json['signer'];
-    _version = json['version'];
-    _type = json['type'];
-    _fee = UInt64DTO.fromJson(json['maxFee']);
-    _deadline = UInt64DTO.fromJson(json['deadline']);
+    signature = json['signature'];
+    signer = json['signer'];
+    version = json['version'];
+    type = json['type'];
+    fee = UInt64DTO.fromJson(json['maxFee']);
+    deadline = UInt64DTO.fromJson(json['deadline']);
     _cosignatures =
         _AggregateTransactionCosignatureDTO.listFromJson(json['cosignatures']);
-    _transactions = _txnDeserialize(json['transactions'], 'List<Transaction>');
+    _transactions = txnDeserialize(json['transactions'], 'List<Transaction>');
   }
 
   List<_AggregateTransactionCosignatureDTO> _cosignatures;
@@ -403,59 +271,25 @@ class _AggregateTransactionDTO extends _AbstractTransactionDTO {
 
   @override
   Map<String, dynamic> toJson() => {
-        'signature': _signature,
-        'signer': _signer,
-        'version': _version,
-        'type': _type,
-        'maxFee': _fee,
-        'deadline': _deadline,
+        'signature': signature,
+        'signer': signer,
+        'version': version,
+        'type': type,
+        'maxFee': fee,
+        'deadline': deadline,
         'cosignatures': _cosignatures,
         'transactions': _transactions,
       };
 }
 
-class _ModifyMultisigAccountTransactionDTO extends _AbstractTransactionDTO {
-  _ModifyMultisigAccountTransactionDTO.fromJson(Map<String, dynamic> json) {
-    _signature = json['signature'];
-    _signer = json['signer'];
-    _version = json['version'];
-    _type = json['type'];
-    _fee = UInt64DTO.fromJson(json['maxFee']);
-    _deadline = UInt64DTO.fromJson(json['deadline']);
-    _modifications =
-        _MultisigCosignatoryModificationDTO.listFromJson(json['modifications']);
-    _minApprovalDelta = json['minApprovalDelta'];
-    _minRemovalDelta = json['minRemovalDelta'];
-  }
-
-  int _minApprovalDelta;
-  int _minRemovalDelta;
-  List<_MultisigCosignatoryModificationDTO> _modifications;
-
-  List<dynamic> _transactions;
-
-  @override
-  Map<String, dynamic> toJson() => {
-        'signature': _signature,
-        'signer': _signer,
-        'version': _version,
-        'type': _type,
-        'maxFee': _fee,
-        'deadline': _deadline,
-        'minApprovalDelta': _minApprovalDelta,
-        'minRemovalDelta': _minRemovalDelta,
-        'modifications': _modifications,
-      };
-}
-
-class _LockFundsTransactionDTO extends _AbstractTransactionDTO {
-  _LockFundsTransactionDTO.fromJson(Map<String, dynamic> json) {
-    _signature = json['signature'];
-    _signer = json['signer'];
-    _version = json['version'];
-    _type = json['type'];
-    _fee = UInt64DTO.fromJson(json['maxFee']);
-    _deadline = UInt64DTO.fromJson(json['deadline']);
+class LockFundsTransactionDTO extends AbstractTransactionDTO {
+  LockFundsTransactionDTO.fromJson(Map<String, dynamic> json) {
+    signature = json['signature'];
+    signer = json['signer'];
+    version = json['version'];
+    type = json['type'];
+    fee = UInt64DTO.fromJson(json['maxFee']);
+    deadline = UInt64DTO.fromJson(json['deadline']);
     _assetId = UInt64DTO.fromJson(json['mosaicId']);
     _amount = UInt64DTO.fromJson(json['amount']);
     _duration = UInt64DTO.fromJson(json['duration']);
@@ -467,16 +301,14 @@ class _LockFundsTransactionDTO extends _AbstractTransactionDTO {
   UInt64DTO _duration;
   String _hash;
 
-  List<dynamic> _transactions;
-
   @override
   Map<String, dynamic> toJson() => {
-        'signature': _signature,
-        'signer': _signer,
-        'version': _version,
-        'type': _type,
-        'maxFee': _fee,
-        'deadline': _deadline,
+        'signature': signature,
+        'signer': signer,
+        'version': version,
+        'type': type,
+        'maxFee': fee,
+        'deadline': deadline,
         'mosaicId': _assetId,
         'amount': _amount,
         'duration': _duration,

@@ -1,10 +1,10 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.api;
 
 class MosaicRoutesApi {
   MosaicRoutesApi([_ApiClient apiClient])
-      : apiClient = apiClient ?? defaultApiClient;
+      : _apiClient = apiClient ?? defaultApiClient;
 
-  final _ApiClient apiClient;
+  final _ApiClient _apiClient;
 
   /// Get mosaic information
   ///
@@ -20,13 +20,13 @@ class MosaicRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{mosaicId}', nsId);
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, '_MosaicInfoDTO');
-      return MosaicInfo._fromDTO(resp);
+      final resp = _apiClient.deserialize(response.body, 'MosaicInfoDTO');
+      return MosaicInfo.fromDTO(resp);
     } else {
       return null;
     }
@@ -46,17 +46,14 @@ class MosaicRoutesApi {
     // create path and map variables
     final String path = '/mosaic'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.post(path, postBody);
+    final response = await _apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp =
-          // ignore: avoid_as
-          (apiClient.deserialize(response.body, 'List<_MosaicInfoDTO>') as List)
-              // ignore: avoid_as
-              .map((item) => item as _MosaicInfoDTO)
-              .toList();
+      final resp = _apiClient
+          .deserialize(response.body, 'List<MosaicInfoDTO>')
+          .cast<MosaicInfoDTO>();
       return MosaicInfo.listFromDTO(resp);
     } else {
       return null;
@@ -77,18 +74,14 @@ class MosaicRoutesApi {
     // create path and map variables
     final String path = '/mosaic/names'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.post(path, postBody);
+    final response = await _apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      // ignore: avoid_as
-      final resp =
-          // ignore: avoid_as
-          (apiClient.deserialize(response.body, 'List<_MosaicNameDTO>') as List)
-              // ignore: avoid_as
-              .map((item) => item as _MosaicNameDTO)
-              .toList();
+      final resp = _apiClient
+          .deserialize(response.body, 'List<MosaicNameDTO>')
+          .cast<MosaicNameDTO>();
       return MosaicName.listFromDTO(resp);
     } else {
       return null;

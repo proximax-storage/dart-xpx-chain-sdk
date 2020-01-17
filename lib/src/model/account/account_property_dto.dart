@@ -1,7 +1,7 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.account;
 
-class _AccountPropertyDTO {
-  _AccountPropertyDTO.fromJson(Map<String, dynamic> json)
+class AccountPropertyDTO {
+  AccountPropertyDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
     _propertyType = json['propertyType'];
     _values = json['values'];
@@ -19,17 +19,17 @@ class _AccountPropertyDTO {
     return data;
   }
 
-  static List<_AccountPropertyDTO> listFromJson(List<dynamic> json) =>
+  static List<AccountPropertyDTO> listFromJson(List<dynamic> json) =>
       json == null
           ? null
-          : json.map((value) => _AccountPropertyDTO.fromJson(value)).toList();
+          : json.map((value) => AccountPropertyDTO.fromJson(value)).toList();
 
-  static Map<String, _AccountPropertyDTO> mapFromJson(
+  static Map<String, AccountPropertyDTO> mapFromJson(
       Map<String, Map<String, dynamic>> json) {
-    final map = <String, _AccountPropertyDTO>{};
+    final map = <String, AccountPropertyDTO>{};
     if (json != null && json.isNotEmpty) {
       json.forEach(
-          (key, value) => map[key] = _AccountPropertyDTO.fromJson(value));
+          (key, value) => map[key] = AccountPropertyDTO.fromJson(value));
     }
     return map;
   }

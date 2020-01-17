@@ -1,4 +1,4 @@
-part of xpx_chain_sdk.buffer;
+part of xpx_chain_sdk.buffer.schema;
 
 Schema aliasTransactionSchema() {
   final List<SchemaAttribute> schemaDefinition = [

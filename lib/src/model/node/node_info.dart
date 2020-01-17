@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.node;
 
 class NodeInfo {
   NodeInfo.fromJson(Map<String, dynamic> json)
@@ -69,13 +69,13 @@ class CommunicationTimestamps {
       : assert(json != null, 'json must not be null') {
     final sRaw = UInt64DTO.fromJson(json['sendTimestamp']);
     final rRaw = UInt64DTO.fromJson(json['receiveTimestamp']);
-    sendTimestamp = sRaw.toBigInt();
-    receiveTimestamp = rRaw.toBigInt();
+    sendTimestamp = sRaw.toUint64();
+    receiveTimestamp = rRaw.toUint64();
   }
 
-  BigInt sendTimestamp;
+  Uint64 sendTimestamp;
 
-  BigInt receiveTimestamp;
+  Uint64 receiveTimestamp;
 
   @override
   String toString() => '{\n'

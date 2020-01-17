@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.transaction;
 
 class AnnounceTransactionInfoDTO {
   AnnounceTransactionInfoDTO.fromJson(Map<String, dynamic> json)

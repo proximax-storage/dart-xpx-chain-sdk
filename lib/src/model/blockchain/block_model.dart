@@ -1,22 +1,22 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.blockchain;
 
 class BlockInfo {
-  BlockInfo._fromDTO(_BlockInfoDTO v) {
-    networkType = extractNetworkType(v._block._version);
-    blockHash = v._meta._hash;
-    generationHash = v._meta._generationHash;
-    totalFee = v._meta._totalFee.toBigInt();
-    numTransactions = v._meta._numTransactions;
-    signature = v._block._signature;
-    signer = PublicAccount.fromPublicKey(v._block._signer, networkType);
-    version = v._block._version;
-    type = v._block._type;
-    height = v._block._height.toBigInt();
+  BlockInfo.fromDTO(BlockInfoDTO v) {
+    networkType = extractNetworkType(v._block.version);
+    blockHash = v.meta._hash;
+    generationHash = v.meta._generationHash;
+    totalFee = v.meta._totalFee.toUint64();
+    numTransactions = v.meta._numTransactions;
+    signature = v._block.signature;
+    signer = PublicAccount.fromPublicKey(v._block.signer, networkType);
+    version = v._block.version;
+    type = v._block.type;
+    height = v._block._height.toUint64();
     timestamp = DateTime.fromMillisecondsSinceEpoch(
-        v._block._timestamp.toBigInt().toInt() +
-            _timestampNemesisBlock.toUtc().millisecondsSinceEpoch);
-    difficulty = v._block._difficulty.toBigInt();
-    feeMultiplier = v._block._feeMultiplier;
+        v._block._timestamp.toUint64().toInt() +
+            timestampNemesisBlock.toUtc().millisecondsSinceEpoch);
+    difficulty = v._block._difficulty.toUint64();
+    feeMultiplier = v._block.feeMultiplier;
     previousBlockHash = v._block._previousBlockHash;
     blockTransactionsHash = v._block._blockTransactionsHash;
     blockReceiptsHash = v._block._blockReceiptsHash;
@@ -25,22 +25,22 @@ class BlockInfo {
         ? PublicAccount.fromPublicKey(
             v._block._beneficiaryPublicKey, networkType)
         : null;
-    feeInterest = v._block._feeInterest;
-    feeInterestDenominator = v._block._feeInterestDenominator;
+    feeInterest = v._block.feeInterest;
+    feeInterestDenominator = v._block.feeInterestDenominator;
   }
 
   int networkType;
   String blockHash;
   String generationHash;
-  BigInt totalFee;
+  Uint64 totalFee;
   int numTransactions;
   String signature;
   PublicAccount signer;
   int version;
   int type;
-  BigInt height;
+  Uint64 height;
   DateTime timestamp;
-  BigInt difficulty;
+  Uint64 difficulty;
   int feeMultiplier;
   String previousBlockHash;
   String blockTransactionsHash;
@@ -103,42 +103,36 @@ class BlockInfo {
     return data;
   }
 
-  static List<BlockInfo> listFromDTO(List<_BlockInfoDTO> json) => json == null
+  static List<BlockInfo> listFromDTO(List<BlockInfoDTO> json) => json == null
       ? null
-      : json.map((value) => BlockInfo._fromDTO(value)).toList();
+      : json.map((value) => BlockInfo.fromDTO(value)).toList();
 }
 
 class Height {
-  Height._fromDTO(_HeightDTO v) {
-    height = v._height.toBigInt();
+  Height.fromDTO(HeightDTO v) {
+    height = v._height.toUint64();
   }
 
-  BigInt height;
+  Uint64 height;
 
   @override
   String toString() => '$height';
 
   Map<String, dynamic> toJson() {
-    final dto = UInt64DTO.fromBigInt(height);
     final data = <String, dynamic>{};
-    data['height'] = dto.toBigInt();
+    data['height'] = height;
     return data;
   }
 }
 
 class BlockchainScore {
-  BlockchainScore._fromDTO(_BlockchainScoreDTO value)
-      : assert(json != null, 'json must not be null') {
-    List<dynamic> raw() => <dynamic>[
-          value._scoreLow.toBigInt().toInt(),
-          value._scoreHigh.toBigInt().toInt()
-        ];
-
-    final t = UInt64DTO.fromJson(raw()).toBigInt();
-    score = t;
+  BlockchainScore.fromDTO(BlockchainScoreDTO dto)
+      : assert(dto != null, 'dto must not be null') {
+    score = Uint64.fromInts(
+        dto._scoreLow.toUint64().toInt(), dto._scoreHigh.toUint64().toInt());
   }
 
-  BigInt score;
+  Uint64 score;
 
   @override
   String toString() => '$score';

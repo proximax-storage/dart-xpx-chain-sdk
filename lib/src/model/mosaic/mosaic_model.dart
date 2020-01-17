@@ -1,10 +1,4 @@
-part of xpx_chain_sdk;
-
-// Create xpx with using xpx as unit
-Mosaic xpx(int amount) => Mosaic(xpxNamespaceId, BigInt.from(amount));
-
-Mosaic xpxRelative(int amount) =>
-    xpx((BigInt.from(1000000) * BigInt.from(amount)).toInt());
+part of xpx_chain_sdk.mosaic;
 
 enum MosaicPropertyId {
   mosaicPropertyFlagsId,
@@ -12,48 +6,27 @@ enum MosaicPropertyId {
   mosaicPropertyDurationId,
 }
 
-MosaicPropertyId getPropertyId(int value) {
-  switch (value) {
-    case 1:
-      return MosaicPropertyId.mosaicPropertyFlagsId;
-    case 2:
-      return MosaicPropertyId.mosaicPropertyDivisibilityId;
-    case 3:
-      return MosaicPropertyId.mosaicPropertyDurationId;
-    default:
-      return null;
-  }
-}
-
-// ignore: constant_identifier_names
-const _supplyMutable = 0x01;
-
-const _transferable = 0x02;
-
 class Mosaic {
-  Mosaic(Id mosaicId, BigInt amount) {
+  Mosaic(Id mosaicId, Uint64 amount) {
     if (mosaicId == null) {
-      throw _errNullMosaicId;
+      throw errNullMosaicId;
     } else if (amount == null) {
-      throw _errNullMosaicAmount;
-    } else if (equalsBigInts(amount, BigInt.zero)) {
-      throw _errNullMosaicAmount;
+      throw errNullMosaicAmount;
+    } else if (amount.isZero) {
+      throw errNullMosaicAmount;
     } else {
       assetId = mosaicId;
       this.amount = amount;
     }
   }
 
-  Mosaic._(this.assetId, this.amount);
-
-  Mosaic._fromDTO(_MosaicDTO v) {
-    assetId = MosaicId.fromId(v._id.toBigInt());
-    amount = v._amount.toBigInt();
+  Mosaic.fromDTO(MosaicDTO v) {
+    assetId = MosaicId.fromId(v._id.toUint64());
+    amount = v._amount.toUint64();
   }
 
   Id assetId;
-
-  BigInt amount;
+  Uint64 amount;
 
   @override
   String toString() => '\n\t{\n'
@@ -68,41 +41,41 @@ class Mosaic {
     return data;
   }
 
-  static List<Mosaic> listFromDTO(List<_MosaicDTO> json) => json == null
+  static List<Mosaic> listFromDTO(List<MosaicDTO> json) => json == null
       ? <Mosaic>[]
-      : json.map((value) => Mosaic._fromDTO(value)).toList();
+      : json.map((value) => Mosaic.fromDTO(value)).toList();
 }
 
 class MosaicId extends Id {
-  factory MosaicId({final BigInt id}) {
+  factory MosaicId({final Uint64 id}) {
     if (id == null) {
-      throw _errNullId;
+      throw errNullId;
     }
 
     return MosaicId._(id);
   }
 
-  const MosaicId._(final BigInt id) : super(id);
+  const MosaicId._(final Uint64 id) : super(id);
 
-  MosaicId.fromId(final BigInt id) : super(id);
+  MosaicId.fromId(final Uint64 id) : super(id);
 
-  MosaicId.fromBigInt(final BigInt bigInt) : super(bigInt);
+  MosaicId.fromUint64(final Uint64 bigInt) : super(bigInt);
 
   static MosaicId fromHex(final String hex) {
     if (hex.isEmpty) {
-      throw new ArgumentError('The hexString must not be null or empty');
+      throw ArgumentError('The hexString must not be null or empty');
     }
 
     if (0 != (hex.length % 2)) {
-      throw new ArgumentError('invalid hex');
+      throw ArgumentError('invalid hex');
     }
-    final BigInt bigInt = BigInt.parse(hex, radix: 16);
+    final Uint64 bigInt = Uint64.fromHex(hex);
     return MosaicId._(bigInt);
   }
 
   static MosaicId fromNonceAndOwner(int nonce, String ownerPublicKey) {
     if (ownerPublicKey.length != 64) {
-      throw _errInvalidOwnerPublicKey;
+      throw errInvalidOwnerPublicKey;
     }
 
     return MosaicId._(_generateMosaicId(nonce, ownerPublicKey));
@@ -112,12 +85,14 @@ class MosaicId extends Id {
   String toString() => '${toHex()}';
 
   @override
-  int get hashCode => 'MosaicId'.hashCode ^ id.hashCode;
+  int get hashCode => 'MosaicId'.hashCode ^ super.hashCode;
 
   @override
   bool operator ==(final other) =>
       identical(this, other) ||
-      other is MosaicId && runtimeType == other.runtimeType && id == other.id;
+      other is MosaicId &&
+          runtimeType == other.runtimeType &&
+          toBytes() == other.toBytes();
 }
 
 class MosaicIds {
@@ -141,19 +116,19 @@ class MosaicIds {
 }
 
 class MosaicInfo {
-  MosaicInfo._fromDTO(_MosaicInfoDTO value)
-      : assert(json != null, 'json must not be null') {
-    mosaicId = MosaicId(id: value._mosaic._mosaicId.toBigInt());
-    supply = value._mosaic._supply.toBigInt();
-    height = value._mosaic._height.toBigInt();
-    owner = value._mosaic._owner;
-    revision = value._mosaic._revision;
-    properties = MosaicProperties._fromDTO(value._mosaic._properties);
+  MosaicInfo.fromDTO(MosaicInfoDTO dto)
+      : assert(dto != null, 'dto must not be null') {
+    mosaicId = MosaicId(id: dto._mosaic.mosaicId.toUint64());
+    supply = dto._mosaic._supply.toUint64();
+    height = dto._mosaic._height.toUint64();
+    owner = dto._mosaic._owner;
+    revision = dto._mosaic._revision;
+    properties = MosaicProperties.fromDTO(dto._mosaic._properties);
   }
 
   MosaicId mosaicId;
-  BigInt supply;
-  BigInt height;
+  Uint64 supply;
+  Uint64 height;
   String owner;
   int revision;
   MosaicProperties properties;
@@ -172,16 +147,16 @@ class MosaicInfo {
     return sb.toString();
   }
 
-  static List<MosaicInfo> listFromDTO(List<_MosaicInfoDTO> json) => json == null
+  static List<MosaicInfo> listFromDTO(List<MosaicInfoDTO> json) => json == null
       ? null
-      : json.map((value) => MosaicInfo._fromDTO(value)).toList();
+      : json.map((value) => MosaicInfo.fromDTO(value)).toList();
 }
 
 class MosaicName {
-  MosaicName._fromDTO(_MosaicNameDTO value)
-      : assert(json != null, 'json must not be null') {
-    mosaicId = MosaicId.fromId(value._mosaicId.toBigInt());
-    names = value._names != null ? List.from(value._names) : null;
+  MosaicName.fromDTO(MosaicNameDTO dto)
+      : assert(dto != null, 'dto must not be null') {
+    mosaicId = MosaicId.fromId(dto.mosaicId.toUint64());
+    names = dto._names != null ? List.from(dto._names) : null;
   }
 
   MosaicId mosaicId;
@@ -192,28 +167,28 @@ class MosaicName {
   String toString() => '"assetId":${mosaicId.toHex()},'
       ' "names":$names}';
 
-  static List<MosaicName> listFromDTO(List<_MosaicNameDTO> json) => json == null
+  static List<MosaicName> listFromDTO(List<MosaicNameDTO> json) => json == null
       ? null
-      : json.map((value) => MosaicName._fromDTO(value)).toList();
+      : json.map((value) => MosaicName.fromDTO(value)).toList();
 }
 
 class MosaicProperty {
   MosaicProperty(this.id, this.value);
 
-  MosaicProperty._fromDTO(_MosaicPropertyDTO value) {
-    if (value == null) return;
-    id = getPropertyId(value._id);
-    this.value = value._value.toBigInt();
+  MosaicProperty.fromDTO(_MosaicPropertyDTO dto) {
+    if (dto == null) return;
+    id = getPropertyId(dto._id);
+    value = dto._value.toUint64();
   }
 
   MosaicPropertyId id;
 
-  BigInt value;
+  Uint64 value;
 
   static List<MosaicProperty> listFromDTO(List<_MosaicPropertyDTO> json) =>
       json == null
           ? <MosaicProperty>[]
-          : json.map((value) => new MosaicProperty._fromDTO(value)).toList();
+          : json.map((value) => MosaicProperty.fromDTO(value)).toList();
 
   @override
   String toString() => 'id: $id, value: $value';
@@ -225,7 +200,10 @@ class MosaicProperty {
 class MosaicProperties {
   MosaicProperties(
       // ignore: avoid_positional_boolean_parameters
-      this.supplyMutable, this.transferable, this.divisibility, BigInt duration,
+      this.supplyMutable,
+      this.transferable,
+      this.divisibility,
+      Uint64 duration,
       [this.optionalProperties]) {
     optionalProperties = duration.toInt() != 0
         ? List<MosaicProperty>.from([
@@ -234,36 +212,34 @@ class MosaicProperties {
         : List(0);
   }
 
-  MosaicProperties._fromDTO(List<_MosaicPropertyDTO> value)
-      : assert(json != null, 'mosaic Properties is not valid') {
-//    if (value.length < 3) {
-//      print(value.length);
-//
-//      throw _errInvalidMosaicProperties;
+  MosaicProperties.fromDTO(List<_MosaicPropertyDTO> value)
+      : assert(value != null, 'mosaic Properties is not valid') {
+//    if (value.length < 3) {//
+//      throw errInvalidMosaicProperties;
 //    }
 
-    var flags = BigInt.zero;
+    var flags = Uint64.zero;
 
     divisibility = 0;
 
     for (_MosaicPropertyDTO property in value) {
       switch (property._id) {
         case 0:
-          flags = property._value.toBigInt();
+          flags = property._value.toUint64();
           break;
         case 1:
-          divisibility = property._value.toBigInt().toInt();
+          divisibility = property._value.toUint64().toInt();
           break;
         case 2:
           optionalProperties = <MosaicProperty>[];
           break;
         default:
-          throw _errPropertyId;
+          throw errPropertyId;
       }
     }
 
-    supplyMutable = hasBits(flags, _supplyMutable);
-    transferable = hasBits(flags, _transferable);
+    supplyMutable = hasBits(flags, getSupplyMutable);
+    transferable = hasBits(flags, getTransferable);
   }
 
   bool supplyMutable;
@@ -277,33 +253,11 @@ class MosaicProperties {
       ..writeln('{')
       ..writeln('\t\t"supplyMutable": $supplyMutable,')
       ..writeln('\t\t"transferable": $transferable,');
-    if (optionalProperties.isNotEmpty) {
+    if (optionalProperties != null) {
       sb.writeln('\t\t"optionalProperties": $optionalProperties,');
     }
     sb.writeln('\t\t"divisibility": $divisibility');
     sb.write('\t}');
     return sb.toString();
   }
-}
-
-BigInt _generateMosaicId(int nonce, String ownerPublicKey) {
-  final nonceB = Buffer.littleEndian(4)..writeInt32(nonce);
-
-  final result = sha3.New256()..update(nonceB.out, 0, nonceB.out.length);
-
-  final ownerBytes = hex.decode(ownerPublicKey);
-
-  final t = result.process(Uint8List.fromList(ownerBytes));
-
-  List<dynamic> raw() => <dynamic>[
-        endianLittleUint32(t.getRange(0, 4).toList()),
-        endianLittleUint32(t.getRange(4, 8).toList()) & 0x7FFFFFFF
-      ];
-
-  return UInt64DTO.fromJson(raw()).toBigInt();
-}
-
-int mosaicNonce() {
-  final random = Random.secure();
-  return random.nextInt(1000000000);
 }

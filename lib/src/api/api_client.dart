@@ -1,7 +1,4 @@
-part of xpx_chain_sdk;
-
-final _regList = RegExp(r'^List<(.*)>$');
-final _regMap = RegExp(r'^Map<String,(.*)>$');
+part of xpx_chain_sdk.api;
 
 class QueryParam {
   QueryParam(this.name, this.value);
@@ -15,6 +12,7 @@ class SiriusClient {
     blockChain = BlockchainRoutesApi(_apiClient);
     node = NodeRoutesApi(_apiClient);
     account = AccountRoutesApi(_apiClient);
+    exchange = ExchangeRoutesApi(_apiClient);
     mosaic = MosaicRoutesApi(_apiClient);
     namespace = NamespaceRoutesApi(_apiClient);
     network = NetworkRoutesApi(_apiClient);
@@ -24,6 +22,7 @@ class SiriusClient {
   final _ApiClient _apiClient;
   BlockchainRoutesApi blockChain;
   AccountRoutesApi account;
+  ExchangeRoutesApi exchange;
   MosaicRoutesApi mosaic;
   NamespaceRoutesApi namespace;
   NetworkRoutesApi network;
@@ -81,70 +80,74 @@ class _ApiClient {
           return value is bool ? value : '$value'.toLowerCase() == 'true';
         case 'double':
           return value is double ? value : double.parse('$value');
-        case '_AccountDTO':
-          return _AccountDTO.fromJson(value);
-        case '_AccountInfoDTO':
-          return _AccountInfoDTO.fromJson(value);
-        case '_AccountNames':
-          return _AccountNames.fromJson(value);
-        case '_AccountPropertiesDTO':
-          return _AccountPropertiesDTO.fromJson(value);
-        case '_AccountPropertiesInfoDTO':
-          return _AccountPropertiesInfoDTO.fromJson(value);
-        case '_AccountPropertiesMetaDTO':
-          return _AccountPropertiesMetaDTO.fromJson(value);
-        case '_AccountPropertyDTO':
-          return _AccountPropertyDTO.fromJson(value);
+        case 'AccountDTO':
+          return AccountDTO.fromJson(value);
+        case 'AccountInfoDTO':
+          return AccountInfoDTO.fromJson(value);
+        case 'AccountNames':
+          return AccountNamesDTO.fromJson(value);
+        case 'AccountPropertiesDTO':
+          return AccountPropertiesDTO.fromJson(value);
+        case 'AccountPropertiesInfoDTO':
+          return AccountPropertiesInfoDTO.fromJson(value);
+        case 'AccountPropertiesMetaDTO':
+          return AccountPropertiesMetaDTO.fromJson(value);
+        case 'AccountPropertyDTO':
+          return AccountPropertyDTO.fromJson(value);
         case 'Addresses':
           return Addresses.fromJson(value);
-        case '_AddressAliasDTO':
-          return _AddressAliasTransactionInfoDTO.fromJson(value);
+        case 'AddressAliasDTO':
+          return AddressAliasTransactionInfoDTO.fromJson(value);
         case 'AnnounceTransactionInfoDTO':
           return AnnounceTransactionInfoDTO.fromJson(value);
         case 'BlockDTO':
-          return _BlockDTO.fromJson(value);
-        case '_BlockInfoDTO':
-          return _BlockInfoDTO.fromJson(value);
+          return BlockDTO.fromJson(value);
+        case 'BlockInfoDTO':
+          return BlockInfoDTO.fromJson(value);
         case 'BlockMetaDTO':
-          return _BlockMetaDTO.fromJson(value);
-        case '_BlockchainScoreDTO':
-          return _BlockchainScoreDTO.fromJson(value);
+          return BlockMetaDTO.fromJson(value);
+        case 'BlockchainScoreDTO':
+          return BlockchainScoreDTO.fromJson(value);
         case 'BlockchainStorageInfo':
           return BlockchainStorageInfo.fromJson(value);
         case 'CommunicationTimestamps':
           return CommunicationTimestamps.fromJson(value);
+        case 'ExchangeDTO':
+          return ExchangeDTO.fromJson(value);
+        case 'OfferInfoDTO':
+          return OfferInfoDTO.fromJson(value);
         case 'HeightDTO':
-          return _HeightDTO.fromJson(value);
+          return HeightDTO.fromJson(value);
         case 'MerklePathItem':
           return MerklePathItem.fromJson(value);
-        case '_MerkleProofInfoDTO':
-          return _MerkleProofInfoDTO.fromJson(value);
+        case 'MerkleProofInfoDTO':
+          return MerkleProofInfoDTO.fromJson(value);
         case 'MerkleProofInfoPayload':
           return MerkleProofInfoPayload.fromJson(value);
-        case '_MosaicDTO':
-          return _MosaicDTO.fromJson(value);
-        case '_MosaicDefinitionDTO':
-          return _MosaicDefinitionDTO.fromJson(value);
-        case '_MosaicInfoDTO':
-          return _MosaicInfoDTO.fromJson(value);
-        case '_MosaicMetaDTO':
-          return _MosaicMetaDTO.fromJson(value);
-        case '_MosaicNameDTO':
-          return _MosaicNameDTO.fromJson(value);
+        case 'MosaicDTO':
+          return MosaicDTO.fromJson(value);
+        case 'MosaicDefinitionDTO':
+          return MosaicDefinitionDTO.fromJson(value);
+        case 'MosaicInfoDTO':
+          return MosaicInfoDTO.fromJson(value);
+        case 'MosaicMetaDTO':
+          return MosaicMetaDTO.fromJson(value);
+        case 'MosaicNameDTO':
+          return MosaicNameDTO.fromJson(value);
         case 'MultisigAccountGraphInfo':
           return MultisigAccountGraphInfo.fromJson(value);
         case 'MultisigAccountInfo':
           return MultisigAccountInfo.fromJson(value);
         case 'Multisig':
           return Multisig.fromJson(value);
-        case '_NamespaceDTO':
-          return _NamespaceDTO.fromJson(value);
-        case '_NamespaceInfoDTO':
-          return _NamespaceInfoDTO.fromJson(value);
-        case '_NamespaceMetaDTO':
-          return _NamespaceMetaDTO.fromJson(value);
-        case '_NamespaceNameDTO':
-          return _NamespaceNameDTO.fromJson(value);
+        case 'NamespaceDTO':
+          return NamespaceDTO.fromJson(value);
+        case 'NamespaceInfoDTO':
+          return NamespaceInfoDTO.fromJson(value);
+        case 'NamespaceMetaDTO':
+          return NamespaceMetaDTO.fromJson(value);
+        case 'NamespaceNameDTO':
+          return NamespaceNameDTO.fromJson(value);
         case 'NetworkTypeDTO':
           return NetworkType.fromJson(value);
         case 'NodeInfo':
@@ -163,11 +166,11 @@ class _ApiClient {
           {
             Match match;
             if (value is List &&
-                (match = _regList.firstMatch(targetType)) != null) {
+                (match = regList.firstMatch(targetType)) != null) {
               final newTargetType = match[1];
               return value.map((v) => _deserialize(v, newTargetType)).toList();
             } else if (value is Map &&
-                (match = _regMap.firstMatch(targetType)) != null) {
+                (match = regMap.firstMatch(targetType)) != null) {
               final newTargetType = match[1];
               return Map.fromIterables(value.keys,
                   value.values.map((v) => _deserialize(v, newTargetType)));
@@ -189,7 +192,7 @@ class _ApiClient {
     final dynamic decodedJson = json.decode(jsonVal);
 
     if (targetType == 'Transaction' || targetType == 'List<Transaction>') {
-      return _txnDeserialize(decodedJson, targetType);
+      return txnDeserialize(decodedJson, targetType);
     }
 
     return _deserialize(decodedJson, targetType);
@@ -291,56 +294,5 @@ class _ApiClient {
 
     return await _invokeAPI(path, method, queryParams, postBody, headerParams,
         formParams, contentType);
-  }
-}
-
-dynamic _txnDeserialize(value, String targetType) {
-  if (targetType == 'List<Transaction>') {
-    {
-      Match match;
-      if (value is List && (match = _regList.firstMatch(targetType)) != null) {
-        final newTargetType = match[1];
-
-        return value.map((v) => _txnDeserialize(v, newTargetType)).toList();
-      } else if (value is Map &&
-          (match = _regMap.firstMatch(targetType)) != null) {
-        final newTargetType = match[1];
-        return Map.fromIterables(value.keys,
-            value.values.map((v) => _txnDeserialize(v, newTargetType)));
-      }
-    }
-  }
-
-  // ignore: parameter_assignments
-  targetType = _mapTransaction(value);
-
-  try {
-    switch (targetType) {
-      case 'Transfer':
-        return _TransferTransactionInfoDTO.fromJson(value);
-      case 'RegisterNamespace':
-        return _RegisterNamespaceTransactionInfoDTO.fromJson(value);
-      case 'MosaicDefinition':
-        return _MosaicDefinitionTransactionInfoDTO.fromJson(value);
-      case 'MosaicSupplyChange':
-        return _MosaicSupplyChangeTransactionInfoDTO.fromJson(value);
-      case 'MosaicAlias':
-        return _MosaicAliasTransactionInfoDTO.fromJson(value);
-      case 'AggregateCompleted':
-        return _AggregateTransactionInfoDTO.fromJson(value);
-      case 'AggregateBonded':
-        return _AggregateTransactionInfoDTO.fromJson(value);
-      case 'AddressAlias':
-        return _AddressAliasTransactionInfoDTO.fromJson(value);
-      case 'ModifyMultisig':
-        return _ModifyMultisigAccountTransactionInfoDTO.fromJson(value);
-      case 'Lock':
-        return _LockFundsTransactionInfoDTO.fromJson(value);
-      default:
-        return null;
-    }
-  } on Exception catch (e, stack) {
-    throw ApiException.withInner(
-        500, 'Exception during deserialization.', e, stack);
   }
 }

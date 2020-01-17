@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.transaction;
 
 class TransactionHashes {
   TransactionHashes.fromJson(Map<String, dynamic> json)
@@ -7,7 +7,7 @@ class TransactionHashes {
   }
 
   TransactionHashes.fromList(List<String> list)
-      : assert(json != null, 'json must not be null') {
+      : assert(list != null, 'json must not be null') {
     hashes = list.map((item) => item).toList();
   }
 

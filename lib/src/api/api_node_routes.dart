@@ -1,10 +1,10 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.api;
 
 class NodeRoutesApi {
-  NodeRoutesApi([_ApiClient apiClient])
-      : apiClient = apiClient ?? defaultApiClient;
+  NodeRoutesApi([_ApiClient _apiClient])
+      : _apiClient = _apiClient ?? defaultApiClient;
 
-  final _ApiClient apiClient;
+  final _ApiClient _apiClient;
 
   /// Get the node information
   ///
@@ -13,12 +13,12 @@ class NodeRoutesApi {
     // create path and map variables
     final String path = '/node/info'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'NodeInfo');
+      return _apiClient.deserialize(response.body, 'NodeInfo');
     } else {
       return null;
     }
@@ -31,12 +31,12 @@ class NodeRoutesApi {
     // create path and map variables
     final String path = '/node/time'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'NodeTime');
+      return _apiClient.deserialize(response.body, 'NodeTime');
     } else {
       return null;
     }

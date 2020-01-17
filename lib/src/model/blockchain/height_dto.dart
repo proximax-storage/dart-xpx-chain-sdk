@@ -1,9 +1,9 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.blockchain;
 
-class _HeightDTO {
-  _HeightDTO(this._height);
+class HeightDTO {
+  HeightDTO(this._height);
 
-  _HeightDTO.fromJson(Map<String, dynamic> json)
+  HeightDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
     _height = UInt64DTO.fromJson(json['height']);
   }

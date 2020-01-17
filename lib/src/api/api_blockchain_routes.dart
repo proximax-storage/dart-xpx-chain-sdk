@@ -1,10 +1,10 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.api;
 
 class BlockchainRoutesApi {
   BlockchainRoutesApi([_ApiClient apiClient])
-      : apiClient = apiClient ?? defaultApiClient;
+      : _apiClient = apiClient ?? defaultApiClient;
 
-  _ApiClient apiClient;
+  final _ApiClient _apiClient;
 
   /// Get the current height of the chain
   ///
@@ -13,13 +13,13 @@ class BlockchainRoutesApi {
     // create path and map variables
     final String path = '/chain/height'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, 'HeightDTO');
-      return Height._fromDTO(resp);
+      final resp = _apiClient.deserialize(response.body, 'HeightDTO');
+      return Height.fromDTO(resp);
     } else {
       return null;
     }
@@ -39,13 +39,13 @@ class BlockchainRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{height}', height.toString());
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, '_BlockInfoDTO');
-      return BlockInfo._fromDTO(resp);
+      final resp = _apiClient.deserialize(response.body, 'BlockInfoDTO');
+      return BlockInfo.fromDTO(resp);
     } else {
       return null;
     }
@@ -65,13 +65,13 @@ class BlockchainRoutesApi {
     // create path and map variables
     final String path = '/chain/score'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, '_BlockchainScoreDTO');
-      return BlockchainScore._fromDTO(resp);
+      final resp = _apiClient.deserialize(response.body, 'BlockchainScoreDTO');
+      return BlockchainScore.fromDTO(resp);
     } else {
       return null;
     }
@@ -85,12 +85,12 @@ class BlockchainRoutesApi {
     // create path and map variables
     final String path = '/diagnostic/storage'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'BlockchainStorageInfo');
+      return _apiClient.deserialize(response.body, 'BlockchainStorageInfo');
     } else {
       return null;
     }
@@ -122,16 +122,14 @@ class BlockchainRoutesApi {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
 
-    final response = await apiClient.get(path, queryParams);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp = apiClient
-          .deserialize(response.body, 'List<Transaction>')
-          .map((item) => item)
-          .toList();
-      return resp.map(_deserializeDTO).toList();
+      final List resp =
+          _apiClient.deserialize(response.body, 'List<Transaction>');
+      return resp.map(deserializeDTO).toList();
     } else {
       return null;
     }
@@ -144,10 +142,10 @@ class BlockchainRoutesApi {
       BigInt height, int limit) async {
     // verify required params are set
     if (height == null) {
-      throw _errNullOrZeroHeight;
+      throw errNullOrZeroHeight;
     }
     if (limit == null) {
-      throw _errNullOrZeroLimit;
+      throw errNullOrZeroLimit;
     }
 
     // create path and map variables
@@ -156,18 +154,14 @@ class BlockchainRoutesApi {
         .replaceAll('{height}', height.toString())
         .replaceAll('{limit}', limit.toString());
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      // ignore: avoid_as
-      final resp =
-          // ignore: avoid_as
-          (apiClient.deserialize(response.body, 'List<_BlockInfoDTO>') as List)
-              // ignore: avoid_as
-              .map((item) => item as _BlockInfoDTO)
-              .toList();
+      final resp = _apiClient
+          .deserialize(response.body, 'List<BlockInfoDTO>')
+          .cast<BlockInfoDTO>();
       return BlockInfo.listFromDTO(resp);
     } else {
       return null;

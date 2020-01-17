@@ -2,7 +2,7 @@ import 'package:xpx_chain_sdk/xpx_sdk.dart';
 
 /// Simple Account API AnnounceTransaction
 void main() async {
-  const baseUrl = 'http://bctestnet2.brimstone.xpxsirius.io:3000';
+  const baseUrl = 'http://bctestnet1.brimstone.xpxsirius.io:3000';
 
   /// Creating a client instance
   /// xpx_chain_sdk uses the Dart's native HttpClient.
@@ -19,7 +19,7 @@ void main() async {
 
   /// Create an Account from a given Private key.
   final account = Account.fromPrivateKey(
-      '5D39DFFB41BB92C5932C29BAB4E1E5AC2C1901784BF008DC937A8A460B925331',
+      'B5E83C52385CF97BBEA9A28C4EC495D95F7A3EF351290B6EEC70E80AA7F87B29',
       networkType);
 
   /// Create an Address from a given Public key.
@@ -33,10 +33,12 @@ void main() async {
       // The Address of the recipient account.
       recipient,
       // The List of mosaic to be sent.
-      [xpx(10)],
+      [xpx(1)],
       // The transaction message of 1024 characters.
       PlainMessage(payload: 'From ProximaX Dart SDK'),
       networkType);
+
+  print(tx.mosaics[0].assetId);
 
   final stx = account.sign(tx, generationHash);
 

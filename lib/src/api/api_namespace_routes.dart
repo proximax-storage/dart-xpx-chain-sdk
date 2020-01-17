@@ -1,10 +1,10 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.api;
 
 class NamespaceRoutesApi {
-  NamespaceRoutesApi([_ApiClient apiClient])
-      : apiClient = apiClient ?? defaultApiClient;
+  NamespaceRoutesApi([_ApiClient _apiClient])
+      : _apiClient = _apiClient ?? defaultApiClient;
 
-  final _ApiClient apiClient;
+  final _ApiClient _apiClient;
 
   Future<List<NamespaceInfo>> buildNamespacesHierarchy(
       List<NamespaceInfo> namespaceIds) async {
@@ -35,13 +35,13 @@ class NamespaceRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{namespaceId}', nsId);
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, '_NamespaceInfoDTO');
-      final ns = NamespaceInfo._fromDTO(resp);
+      final resp = _apiClient.deserialize(response.body, 'NamespaceInfoDTO');
+      final ns = NamespaceInfo.fromDTO(resp);
 
       if (ns.parent != null) {
         ns.parent = await buildNamespaceHierarchy(ns);
@@ -77,15 +77,15 @@ class NamespaceRoutesApi {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
 
-    final response = await apiClient.get(path, queryParams);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp = apiClient
-          .deserialize(response.body, 'List<_NamespaceInfoDTO>')
-          .map((item) => item)
-          .toList();
+      final resp = _apiClient
+          .deserialize(response.body, 'List<NamespaceInfoDTO>')
+          .cast<NamespaceInfoDTO>();
+
       final nss = NamespaceInfo.listFromDTO(resp);
 
       return buildNamespacesHierarchy(nss);
@@ -119,15 +119,14 @@ class NamespaceRoutesApi {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
 
-    final response = await apiClient.post(path, postBody, queryParams);
+    final response = await _apiClient.post(path, postBody, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp = apiClient
-          .deserialize(response.body, 'List<_NamespaceInfoDTO>')
-          .map((item) => item)
-          .toList();
+      final resp = _apiClient
+          .deserialize(response.body, 'List<NamespaceInfoDTO>')
+          .cast<NamespaceInfoDTO>();
 
       final nss = NamespaceInfo.listFromDTO(resp);
 
@@ -150,23 +149,21 @@ class NamespaceRoutesApi {
     }
 
     if (nsIds.isEmpty) {
-      throw _errEmptyNamespaceIds;
+      throw errEmptyNamespaceIds;
     }
     // create path and map variables
     final String path = '/namespace/names'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.post(path, postBody);
+    final response = await _apiClient.post(path, postBody);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = List<_NamespaceNameDTO>.from(apiClient
-          .deserialize(response.body, 'List<_NamespaceNameDTO>')
-          .map((item) => item)
-          .toList());
+      final resp = _apiClient
+          .deserialize(response.body, 'List<NamespaceNameDTO>')
+          .cast<NamespaceNameDTO>();
 
-      final g = NamespaceName.listFromDTO(resp);
-      return g;
+      return NamespaceName.listFromDTO(resp);
     } else {
       return null;
     }

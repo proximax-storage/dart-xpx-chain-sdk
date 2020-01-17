@@ -1,36 +1,15 @@
-part of xpx_chain_sdk;
-
-final prxNamespaceId =
-    UInt64DTO(Int32(2339353534), Int32(2976741373)).toBigInt();
-
-final xpxMosaicId = MosaicId.fromBigInt(
-    UInt64DTO(Int32(481110499), Int32(231112638)).toBigInt());
-
-enum NamespaceType { root, sub }
-
-enum MosaicSupplyType { decrease, increase }
+library xpx_chain_sdk.cons;
 
 enum MultisigCosignatoryModificationType { add, remove }
-
-// AliasType enums
-enum AliasType {
-  noneAliasType,
-  mosaicAliasType,
-  addressAliasType,
-}
-
-enum AliasActionType { aliasLink, aliasUnlink }
-
-const decrease = MosaicSupplyType.decrease,
-    increase = MosaicSupplyType.increase;
 
 const add = MultisigCosignatoryModificationType.add,
     remove = MultisigCosignatoryModificationType.remove;
 
-const numChecksumBytes = 4,
-    addressDecodeSize = 25,
+const addressSize = 25,
+    numChecksumBytes = 4,
     addressEncodeSize = 40,
     amountSize = 8,
+    addressDecodeSize = 25,
     keySize = 32,
     privateKeySize = 64,
     publicKeySize = 64,
@@ -123,4 +102,13 @@ const numChecksumBytes = 4,
     transferHeaderSize = transactionHeaderSize +
         addressDecodeSize +
         mosaicsSizeSize +
-        messageSizeSize;
+        messageSizeSize,
+    offerTypeSize = 1,
+    offersCountSize = 1,
+    addExchangeOfferSize =
+        mosaicIdSize + durationSize + 2 * amountSize + offerTypeSize,
+    addExchangeOfferHeaderSize = transactionHeaderSize + offersCountSize,
+    exchangeOfferSize = durationSize + 2 * amountSize + offerTypeSize + keySize,
+    exchangeOfferHeaderSize = transactionHeaderSize + offersCountSize,
+    removeExchangeOfferSize = offerTypeSize + mosaicIdSize,
+    removeExchangeOfferHeaderSize = transactionHeaderSize + offersCountSize;

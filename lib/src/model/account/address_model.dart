@@ -1,35 +1,29 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.account;
 
 class Address {
-  Address._(this._address, this._networkType);
+  Address._(this.address, this.networkType);
 
   Address.fromEncoded(String encoded) {
     final pH = hex.decode(encoded);
     final parsed = base32.encode(pH);
     final a = Address.fromRawAddress(parsed);
-    _address = a.address;
-    _networkType = a.networkType;
+    address = a.address;
+    networkType = a.networkType;
   }
 
   /// Create an Address from a given public key.
-  Address.fromPublicKey(String pKey, int networkType) {
+  Address.fromPublicKey(String pKey, this.networkType) {
     if (networkType == null || NetworkType.getType(networkType) == 0) {
       throw ArgumentError('Network type unsupported');
     }
-
-    _address = _generateEncodedAddress(pKey, networkType);
-    _networkType = networkType;
+    address = _generateEncodedAddress(pKey, networkType);
   }
 
-  int _networkType;
+  int networkType;
 
-  String _address;
+  String address;
 
-  int get networkType => _networkType;
-
-  String get address => _address;
-
-  String get pretty => _pretty(_address);
+  String get pretty => _pretty(address);
 
   /// Create an [Address] from a given raw address
   static Address fromRawAddress(String address) {
@@ -71,7 +65,7 @@ class Addresses {
   }
 
   Addresses.fromList(List<Address> list)
-      : assert(json != null, 'json must not be null') {
+      : assert(list != null, 'list must not be null') {
     addresses = list.map((item) => item).toList();
   }
 
@@ -80,42 +74,6 @@ class Addresses {
   @override
   String toString() => 'addresses:$addresses';
 
-  Map<String, dynamic> toJson() => {'addresses':addresses.map((a) => a._address).toList()};
-}
-
-String _generateEncodedAddress(String pKey, int version) {
-  // step 1: sha3 hash of the public key
-  final pKeyD = hex.decode(pKey);
-
-  final sha3PublicKeyHash = crypto.HashesSha3_256(Uint8List.fromList(pKeyD));
-
-  // step 2: ripemd160 hash of (1)
-  final ripemd160StepOneHash = crypto.HashesRipemd160(sha3PublicKeyHash);
-
-  // step 3: add version byte in front of (2)
-  final versionPrefixedRipemd160Hash =
-  addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
-
-  // step 4: get the checksum of (3)
-  final stepThreeChecksum = _generateChecksum(versionPrefixedRipemd160Hash);
-
-  // step 5: concatenate (3) and (4)
-  final concatStepThreeAndStepSix =
-  addUint8List(versionPrefixedRipemd160Hash, stepThreeChecksum);
-
-  // step 6: base32 encode (5)
-  return base32.encode(concatStepThreeAndStepSix);
-}
-
-Uint8List _generateChecksum(Uint8List b) {
-  // step 1: sha3 hash of (input
-  final sha3StepThreeHash = crypto.HashesSha3_256(b);
-
-  // step 2: get the first numChecksumBytes bytes of (1)
-  final p = sha3StepThreeHash.getRange(0, numChecksumBytes);
-  final Uint8List hash = Uint8List(numChecksumBytes);
-  for (int i = 0; i < numChecksumBytes; i++) {
-    hash[i] = p.toList()[i];
-  }
-  return hash;
+  Map<String, dynamic> toJson() =>
+      {'addresses': addresses.map((a) => a.address).toList()};
 }

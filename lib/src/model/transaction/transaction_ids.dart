@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.transaction;
 
 class TransactionIds {
   TransactionIds();
@@ -9,7 +9,7 @@ class TransactionIds {
   }
 
   TransactionIds.fromList(List<String> list)
-      : assert(json != null, 'json must not be null') {
+      : assert(list != null, 'list must not be null') {
     transactionIds = list.map((item) => item).toList();
   }
 

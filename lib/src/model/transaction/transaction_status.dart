@@ -1,4 +1,4 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.transaction;
 
 class TransactionStatus {
   TransactionStatus.fromJson(Map<String, dynamic> json)
@@ -7,7 +7,7 @@ class TransactionStatus {
     status = json['status'];
     hash = json['hash'];
     deadline = Deadline.fromUInt64DTO(UInt64DTO.fromJson(json['deadline']));
-    height = UInt64DTO.fromJson(json['height']).toBigInt();
+    height = UInt64DTO.fromJson(json['height']).toUint64();
   }
 
   String group;
@@ -18,7 +18,7 @@ class TransactionStatus {
 
   Deadline deadline;
 
-  BigInt height;
+  Uint64 height;
 
   @override
   String toString() => '{\n'

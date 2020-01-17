@@ -1,33 +1,29 @@
-part of xpx_chain_sdk;
+part of xpx_chain_sdk.account;
 
 class Account {
-  Account._(this._publicAccount, this._account);
+  Account._(this.publicAccount, this.account);
 
   /// Create an Account from a given hex private key.
   Account.fromPrivateKey(String shex, int networkType) {
-    _account = crypto.KeyPair.fromHexString(shex);
-    _publicAccount =
-        PublicAccount.fromPublicKey(_account.publicKey.toString(), networkType);
+    account = crypto.KeyPair.fromHexString(shex);
+    publicAccount =
+        PublicAccount.fromPublicKey(account.publicKey.toString(), networkType);
   }
 
   /// Create an Account from a given networkType.
   Account.random(int networkType) {
     final kp = crypto.KeyPair.fromRandomKeyPair();
     final acc = Account.fromPrivateKey(kp.privateKey.toString(), networkType);
-    _publicAccount = acc._publicAccount;
-    _account = acc._account;
+    publicAccount = acc.publicAccount;
+    account = acc.account;
   }
 
-  PublicAccount _publicAccount;
-  crypto.KeyPair _account;
+  PublicAccount publicAccount;
+  crypto.KeyPair account;
 
-  PublicAccount get publicAccount => _publicAccount;
+  String get publicKey => publicAccount.publicKey;
 
-  crypto.KeyPair get account => _account;
-
-  String get publicKey => _publicAccount._publicKey;
-
-  Address get address => _publicAccount.address;
+  Address get address => publicAccount.address;
 
   @override
   String toString() => publicAccount.toString();
@@ -36,52 +32,48 @@ class Account {
       {'publicAccount': publicAccount, 'account': account};
 
   SignedTransaction sign(Transaction tx, String generationHash) =>
-      _signTransactionWith(tx, this, generationHash);
+      signTransactionWith(tx, this, generationHash);
 
   SignedTransaction signWithCosignatures(
           Transaction tx, List<Account> cosignatories, String generationHash) =>
-      _signTransactionWithCosignatures(tx, this, cosignatories, generationHash);
+      signTransactionWithCosignatures(tx, this, cosignatories, generationHash);
 
   CosignatureSignedTransaction signCosignatureTransaction(
           CosignatureTransaction tx) =>
-      _signCosignatureTransaction(tx, this);
+      signCosignatureTransactionRwa(tx, this);
 }
 
 class PublicAccount {
-  PublicAccount._(this._publicKey, this._address);
+  PublicAccount._(this.publicKey, this.address);
 
   /// Create an Account from a given publicKey hex string.
-  PublicAccount.fromPublicKey(String pKey, int networkType) {
-    if (pKey == null || (publicKeySize != pKey.length && 66 != pKey.length)) {
-      throw _errInvalidPublicKey;
+  PublicAccount.fromPublicKey(this.publicKey, int networkType) {
+    if (publicKey == null ||
+        (publicKeySize != publicKey.length && 66 != publicKey.length)) {
+      throw errInvalidPublicKey;
     }
-    _address = Address.fromPublicKey(pKey, networkType);
-    _publicKey = pKey;
+    address = Address.fromPublicKey(publicKey, networkType);
   }
 
-  String _publicKey;
-  Address _address;
-
-  String get publicKey => _publicKey;
-
-  Address get address => _address;
+  String publicKey;
+  Address address;
 
   @override
   String toString() => '${toJson()}';
 
   bool verify(String data, String signature) {
     if (signature == null) {
-      throw _errNullSignature;
+      throw errNullSignature;
     }
     if (64 != (signature.length / 2)) {
-      throw _errInvalidSignature;
+      throw errInvalidSignature;
     }
     if (signature.length % 2 != 0) {
-      throw _errInvalidHexadecimal;
+      throw errInvalidHexadecimal;
     }
 
     final kp = crypto.KeyPair();
-    kp.publicKey.raw = Uint8List.fromList(hex.decode(_publicKey));
+    kp.publicKey.raw = Uint8List.fromList(hex.decode(publicKey));
 
     return kp.verify(Uint8List.fromList(hex.decode(data)),
         Uint8List.fromList(hex.decode(signature)));
@@ -93,10 +85,10 @@ class PublicAccount {
 class AccountNames {
   AccountNames._();
 
-  AccountNames._fromDto(_AccountNames value) {
-    if (json == null) return;
-    address = Address.fromEncoded(value._address);
-    names = (value._names == null) ? null : value._names.cast<String>();
+  AccountNames.fromDto(AccountNamesDTO dto) {
+    if (dto == null) return;
+    address = Address.fromEncoded(dto.address);
+    names = (dto._names == null) ? null : dto._names.cast<String>();
   }
 
   /* The address of the account in hexadecimal. */
@@ -104,10 +96,10 @@ class AccountNames {
   /* The mosaic linked namespace names. */
   List<String> names;
 
-  static List<AccountNames> listFromJson(List<_AccountNames> json) =>
+  static List<AccountNames> listFromJson(List<AccountNamesDTO> json) =>
       json == null
           ? <AccountNames>[]
-          : json.map((value) => AccountNames._fromDto(value)).toList();
+          : json.map((value) => AccountNames.fromDto(value)).toList();
 
   @override
   String toString() => '{\n'
@@ -117,25 +109,25 @@ class AccountNames {
 }
 
 class AccountInfo {
-  AccountInfo._fromDTO(_AccountInfoDTO v) {
+  AccountInfo.fromDTO(AccountInfoDTO v) {
     final List<Mosaic> mList = List(v._account._mosaics.length);
     for (var i = 0; i < v._account._mosaics.length; i++) {
-      mList[i] = Mosaic._fromDTO(v._account._mosaics[i]);
+      mList[i] = Mosaic.fromDTO(v._account._mosaics[i]);
     }
 
-    address = Address.fromEncoded(v._account._address);
-    addressHeight = v._account._addressHeight.toBigInt();
+    address = Address.fromEncoded(v._account.address);
+    addressHeight = v._account.addressHeight.toUint64();
     publicKey = v._account._publicKey;
-    publicKeyHeight = v._account._publicKeyHeight.toBigInt();
+    publicKeyHeight = v._account._publicKeyHeight.toUint64();
     accountType = v._account._accountType;
     linkedAccountKey = v._account._linkedAccountKey;
     mosaics = mList;
   }
 
   Address address;
-  BigInt addressHeight;
+  Uint64 addressHeight;
   String publicKey;
-  BigInt publicKeyHeight;
+  Uint64 publicKeyHeight;
   List<Mosaic> mosaics;
   int accountType;
   String linkedAccountKey;
@@ -163,4 +155,8 @@ class AccountInfo {
         'mosaics': mosaics,
         'reputation': reputation
       };
+
+  static List<AccountInfo> listFromDTO(List<AccountInfoDTO> dto) => dto == null
+      ? null
+      : dto.map((value) => AccountInfo.fromDTO(value)).toList();
 }
