@@ -1,10 +1,29 @@
-## 0.0.4+1
+## 0.0.5+1
+### New Features
+[ADD] AddExchangeOfferTransaction model.
 
+[ADD] Extension AliasTypeToInt and AliasActionTypeToInt.
+
+[ADD] ExchangeOfferTransaction class.
+
+[ADD] RemoveExchangeOfferTransaction class.
+
+[ADD] RemoveExchangeOfferTransaction class.
+
+[ADD] ExchangeRoutes Api.
+
+### Updates
+[UPDATE] BigInt method.
+
+[UPDATE] Buffer Endian.
+
+[UPDATE] Unnecessary new keyword.
+
+## 0.0.4+1
 ### New Features
 [UPDATE] Update Sirius chain 0.5.0
 
 ## 0.0.3+5
-
 ### New Features
 [ADD] ModifyMultisigAccountTransaction support.
 
@@ -38,17 +57,14 @@
 [UPDATE] fixed bug in TableArrayAttribute.
 
 ## 0.0.3+4
-
 ### Updates
 [UPDATE] latest published versions for http dependency.
 
 ## 0.0.3+3
-
 ### Updates
 [UPDATE] Reformat style.
 
 [UPDATE] Update example.
-
 
 ### Fixed bugs
 [FIXED] fixed bug in Deadline null
@@ -72,7 +88,6 @@
 [FIXED] fixed bug in BlockInfoDTO
 
 ## 0.0.3+2
-
 ### Updates
 [UPDATE] Reformat style.
 
@@ -82,9 +97,7 @@
 
 [UPDATE] examples.
 
-
 ## 0.0.3+1
-
 - Initial version, created by Eleazar Garrido.
 
 ### New Features
