@@ -15,7 +15,7 @@ int addExchangeOfferToArrayToBuffer(fb.Builder builder, List<AddOffer> offers) {
       ..addMosaicAmountOffset(maV)
       ..addCostOffset(cV)
       ..addDurationOffset(dV)
-      ..addType(offer.type.value);
+      ..addType(offer.offerType.value);
 
     msb[i] = txnBuilder.finish();
     i++;
@@ -23,7 +23,8 @@ int addExchangeOfferToArrayToBuffer(fb.Builder builder, List<AddOffer> offers) {
   return builder.writeList(msb);
 }
 
-int exchangeOfferToArrayToBuffer(fb.Builder builder, List<ExchangeConfirmation> offers) {
+int exchangeOfferToArrayToBuffer(
+    fb.Builder builder, List<ExchangeConfirmation> offers) {
   final List<int> msb = List(offers.length);
   int i = 0;
   for (final offer in offers) {
@@ -31,7 +32,7 @@ int exchangeOfferToArrayToBuffer(fb.Builder builder, List<ExchangeConfirmation> 
     final maV = builder.writeListUint32(offer.mosaic.amount.toIntArray());
     final cV = builder.writeListUint32(offer.cost.toIntArray());
 
-    final ob = hexDecodeStringOdd(offer.owner.publicKey);
+    final ob = hexDecodeStringOdd(offer.owner);
 
     final pV = builder.writeListUint8(ob);
 
@@ -41,7 +42,7 @@ int exchangeOfferToArrayToBuffer(fb.Builder builder, List<ExchangeConfirmation> 
       ..addMosaicAmountOffset(maV)
       ..addCostOffset(cV)
       ..addOwnerOffset(pV)
-      ..addType(offer.type.value);
+      ..addType(offer.offerType.value);
 
     msb[i] = txnBuilder.finish();
     i++;
@@ -49,7 +50,8 @@ int exchangeOfferToArrayToBuffer(fb.Builder builder, List<ExchangeConfirmation> 
   return builder.writeList(msb);
 }
 
-int removeExchangeOfferToArrayToBuffer(fb.Builder builder, List<RemoveOffer> offers) {
+int removeExchangeOfferToArrayToBuffer(
+    fb.Builder builder, List<RemoveOffer> offers) {
   final List<int> msb = List(offers.length);
   int i = 0;
   for (final offer in offers) {
@@ -58,7 +60,7 @@ int removeExchangeOfferToArrayToBuffer(fb.Builder builder, List<RemoveOffer> off
     final txnBuilder = RemoveExchangeOfferBufferBuilder(builder)
       ..begin()
       ..addMosaicIdOffset(mV)
-      ..addType(offer.type.value);
+      ..addType(offer.offerType.value);
 
     msb[i] = txnBuilder.finish();
     i++;

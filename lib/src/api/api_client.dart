@@ -12,6 +12,7 @@ class SiriusClient {
     blockChain = BlockchainRoutesApi(_apiClient);
     node = NodeRoutesApi(_apiClient);
     account = AccountRoutesApi(_apiClient);
+    exchange = ExchangeRoutesApi(_apiClient);
     mosaic = MosaicRoutesApi(_apiClient);
     namespace = NamespaceRoutesApi(_apiClient);
     network = NetworkRoutesApi(_apiClient);
@@ -21,6 +22,7 @@ class SiriusClient {
   final _ApiClient _apiClient;
   BlockchainRoutesApi blockChain;
   AccountRoutesApi account;
+  ExchangeRoutesApi exchange;
   MosaicRoutesApi mosaic;
   NamespaceRoutesApi namespace;
   NetworkRoutesApi network;
@@ -110,6 +112,10 @@ class _ApiClient {
           return BlockchainStorageInfo.fromJson(value);
         case 'CommunicationTimestamps':
           return CommunicationTimestamps.fromJson(value);
+        case 'ExchangeDTO':
+          return ExchangeDTO.fromJson(value);
+        case 'OfferInfoDTO':
+          return OfferInfoDTO.fromJson(value);
         case 'HeightDTO':
           return HeightDTO.fromJson(value);
         case 'MerklePathItem':

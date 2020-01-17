@@ -51,8 +51,8 @@ class Uint64 implements Comparable<Uint64> {
   /// Creates a [Uint64] from a pair of [UInt64DTO].
   static Uint64 fromDto(UInt64DTO dto) {
     final higher = dto.higher.toInt();
-    final lower = dto.higher.toInt();
-    final Int64 int64 = Int64.fromInts(higher, lower);
+    final lower = dto.lower.toInt();
+    final Int64 int64 = Int64.fromInts(lower, higher);
     return fromHex(int64.toHexString());
   }
 

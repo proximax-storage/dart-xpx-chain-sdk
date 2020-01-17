@@ -9,5 +9,6 @@ import 'package:xpx_chain_sdk/src/model/mosaic.dart';
 import 'package:xpx_chain_sdk/src/model/account.dart';
 import 'package:xpx_chain_sdk/src/model/transaction.dart';
 
+part 'exchange/exchange_dto.dart';
 part 'exchange/exchange_model.dart';
 part 'exchange/exchange_internal.dart';
