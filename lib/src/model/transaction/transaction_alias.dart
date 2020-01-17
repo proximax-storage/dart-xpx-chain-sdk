@@ -11,25 +11,25 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
     this.networkType = networkType;
   }
 
-  AliasTransaction._fromAddressAliasDTO(AddressAliasTransactionInfoDTO value)
-      : assert(value != null, 'value must not be null'),
-        super.fromDto(value.transaction, value.meta) {
-    actionType = value.transaction.aliasAction == 0
+  AliasTransaction._fromAddressAliasDTO(AddressAliasTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto.transaction, dto.meta) {
+    actionType = dto.transaction.aliasAction == 0
         ? actionType = AliasActionType.aliasLink
         : AliasActionType.aliasUnlink;
-    namespaceId = value.transaction.namespaceId != null
-        ? NamespaceId.fromId(value.transaction.namespaceId.toUint64())
+    namespaceId = dto.transaction.namespaceId != null
+        ? NamespaceId.fromId(dto.transaction.namespaceId.toUint64())
         : null;
   }
 
-  AliasTransaction._fromMosaicAliasDTO(MosaicAliasTransactionInfoDTO value)
-      : assert(value != null, 'value must not be null'),
-        super.fromDto(value.transaction, value.meta) {
-    actionType = value.transaction.aliasAction == 0
+  AliasTransaction._fromMosaicAliasDTO(MosaicAliasTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto.transaction, dto.meta) {
+    actionType = dto.transaction.aliasAction == 0
         ? actionType = AliasActionType.aliasLink
         : AliasActionType.aliasUnlink;
-    namespaceId = value.transaction.namespaceId != null
-        ? NamespaceId.fromId(value.transaction.namespaceId.toUint64())
+    namespaceId = dto.transaction.namespaceId != null
+        ? NamespaceId.fromId(dto.transaction.namespaceId.toUint64())
         : null;
   }
 
@@ -97,10 +97,10 @@ class AddressAliasTransaction extends AliasTransaction {
       : super._(addressAliasVersion, deadline, actionType, namespaceId,
             TransactionType.addressAlias, networkType);
 
-  AddressAliasTransaction.fromDTO(AddressAliasTransactionInfoDTO value)
-      : assert(value != null, 'value must not be null'),
-        super._fromAddressAliasDTO(value) {
-    address = Address.fromEncoded(value.transaction.address);
+  AddressAliasTransaction.fromDTO(AddressAliasTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super._fromAddressAliasDTO(dto) {
+    address = Address.fromEncoded(dto.transaction.address);
   }
 
   Address address;
@@ -149,7 +149,7 @@ class MosaicAliasTransaction extends AliasTransaction {
 
   MosaicAliasTransaction.fromDTO(
     MosaicAliasTransactionInfoDTO value,
-  )   : assert(value != null, 'value must not be null'),
+  )   : assert(value != null, 'dto must not be null'),
         super._fromMosaicAliasDTO(value) {
     mosaicId = MosaicId.fromUint64(value.transaction.mosaicId.toUint64());
   }

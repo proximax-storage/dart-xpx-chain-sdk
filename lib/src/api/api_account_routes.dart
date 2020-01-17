@@ -51,11 +51,10 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp = _apiClient
+      final resp = _apiClient
           .deserialize(response.body, 'List<AccountInfoDTO>')
-          .map((item) => item)
-          .toList();
-      return resp.map((t) => AccountInfo.fromDTO(t)).toList();
+          .cast<AccountInfoDTO>();
+      return AccountInfo.listFromDTO(resp);
     } else {
       return null;
     }
@@ -106,9 +105,52 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return List<MultisigAccountGraphInfo>.from((_apiClient.deserialize(
-              response.body, 'List<MultisigAccountGraphInfo>'))
-          .map((item) => item));
+      return _apiClient
+          .deserialize(response.body, 'List<MultisigAccountGraphInfo>')
+          .cast<MultisigAccountGraphInfo>();
+    } else {
+      return null;
+    }
+  }
+
+  /// Get confirmed transactions
+  ///
+  /// Gets an List of transactions for which an account
+  /// is the sender or receiver.
+  Future<List<Transaction>> transactions(PublicAccount account,
+      {int pageSize, String id, String ordering}) async {
+    // verify required params are set
+    if (account == null) {
+      throw ApiException(400, 'Missing required param: publicKey');
+    }
+
+    // create path and map variables
+    final String path = '/account/{publicKey}/transactions'
+        .replaceAll('{format}', 'json')
+        .replaceAll('{publicKey}', account.publicKey.toString());
+
+    // query params
+    final List<QueryParam> queryParams = [];
+    if (pageSize != null) {
+      queryParams.addAll(
+          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
+    }
+    if (id != null) {
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
+    }
+    if (ordering != null) {
+      queryParams.addAll(
+          _convertParametersForCollectionFormat('', 'ordering', ordering));
+    }
+
+    final response = await _apiClient.get(path, queryParams);
+
+    if (response.statusCode >= 400) {
+      throw ApiException(response.statusCode, response.body);
+    } else if (response.body != null) {
+      final List resp =
+          _apiClient.deserialize(response.body, 'List<Transaction>');
+      return resp.map(deserializeDTO).toList();
     } else {
       return null;
     }
@@ -150,10 +192,7 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp =
-          (_apiClient.deserialize(response.body, 'List<Transaction>'))
-              .map((item) => item)
-              .toList();
+      final resp = _apiClient.deserialize(response.body, 'List<Transaction>');
       return resp.map(deserializeDTO).toList();
     } else {
       return null;
@@ -197,99 +236,7 @@ class AccountRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final List resp =
-          (_apiClient.deserialize(response.body, 'List<Transaction>'))
-              .map((item) => item)
-              .toList();
-      return resp.map(deserializeDTO).toList();
-    } else {
-      return null;
-    }
-  }
-
-  /// Get aggregate bonded transactions information
-  ///
-  /// Gets an List of [aggregate bonded transactions] where the account is
-  /// the sender or requires to cosign the transaction.
-  Future<List<Transaction>> aggregateBondedTransactions(PublicAccount account,
-      {int pageSize, String id, String ordering}) async {
-    // verify required params are set
-    if (account == null) {
-      throw ApiException(400, 'Missing required param: publicKey');
-    }
-
-    // create path and map variables
-    final String path = '/account/{publicKey}/transactions/partial'
-        .replaceAll('{format}', 'json')
-        .replaceAll('{publicKey}', account.publicKey.toString());
-
-    // query params
-    final List<QueryParam> queryParams = [];
-    if (pageSize != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
-    }
-    if (id != null) {
-      queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
-    }
-    if (ordering != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'ordering', ordering));
-    }
-
-    final response = await _apiClient.get(path, queryParams);
-
-    if (response.statusCode >= 400) {
-      throw ApiException(response.statusCode, response.body);
-    } else if (response.body != null) {
-      final List resp =
-          (_apiClient.deserialize(response.body, 'List<Transaction>'))
-              .map((item) => item)
-              .toList();
-      return resp.map(deserializeDTO).toList();
-    } else {
-      return null;
-    }
-  }
-
-  /// Get confirmed transactions
-  ///
-  /// Gets an List of transactions for which an account
-  /// is the sender or receiver.
-  Future<List<Transaction>> transactions(PublicAccount account,
-      {int pageSize, String id, String ordering}) async {
-    // verify required params are set
-    if (account == null) {
-      throw ApiException(400, 'Missing required param: publicKey');
-    }
-
-    // create path and map variables
-    final String path = '/account/{publicKey}/transactions'
-        .replaceAll('{format}', 'json')
-        .replaceAll('{publicKey}', account.publicKey.toString());
-
-    // query params
-    final List<QueryParam> queryParams = [];
-    if (pageSize != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
-    }
-    if (id != null) {
-      queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
-    }
-    if (ordering != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'ordering', ordering));
-    }
-
-    final response = await _apiClient.get(path, queryParams);
-
-    if (response.statusCode >= 400) {
-      throw ApiException(response.statusCode, response.body);
-    } else if (response.body != null) {
-      final List resp =
-          (_apiClient.deserialize(response.body, 'List<Transaction>'))
-              .map((item) => item)
-              .toList();
+          _apiClient.deserialize(response.body, 'List<Transaction>');
       return resp.map(deserializeDTO).toList();
     } else {
       return null;
@@ -332,9 +279,51 @@ class AccountRoutesApi {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
       final List resp =
-          (_apiClient.deserialize(response.body, 'List<Transaction>'))
-              .map((item) => item)
-              .toList();
+          _apiClient.deserialize(response.body, 'List<Transaction>');
+      return resp.map(deserializeDTO).toList();
+    } else {
+      return null;
+    }
+  }
+
+  /// Get aggregate bonded transactions information
+  ///
+  /// Gets an List of [aggregate bonded transactions] where the account is
+  /// the sender or requires to cosign the transaction.
+  Future<List<Transaction>> aggregateBondedTransactions(PublicAccount account,
+      {int pageSize, String id, String ordering}) async {
+    // verify required params are set
+    if (account == null) {
+      throw ApiException(400, 'Missing required param: publicKey');
+    }
+
+    // create path and map variables
+    final String path = '/account/{publicKey}/transactions/partial'
+        .replaceAll('{format}', 'json')
+        .replaceAll('{publicKey}', account.publicKey.toString());
+
+    // query params
+    final List<QueryParam> queryParams = [];
+    if (pageSize != null) {
+      queryParams.addAll(
+          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
+    }
+    if (id != null) {
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
+    }
+    if (ordering != null) {
+      queryParams.addAll(
+          _convertParametersForCollectionFormat('', 'ordering', ordering));
+    }
+
+    final response = await _apiClient.get(path, queryParams);
+
+    if (response.statusCode >= 400) {
+      throw ApiException(response.statusCode, response.body);
+    } else if (response.body != null) {
+      final resp = _apiClient
+          .deserialize(response.body, 'List<Transaction>')
+          .cast<Transaction>();
       return resp.map(deserializeDTO).toList();
     } else {
       return null;
@@ -359,10 +348,9 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = List<AccountNamesDTO>.from(
-              _apiClient.deserialize(response.body, 'List<AccountNames>'))
-          .map((item) => item)
-          .toList();
+      final resp = _apiClient
+          .deserialize(response.body, 'List<AccountNames>')
+          .cast<AccountNamesDTO>();
       return AccountNames.listFromJson(resp);
     } else {
       return null;
@@ -385,10 +373,10 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = List<AccountNamesDTO>.from(
-              _apiClient.deserialize(response.body, 'AccountPropertiesDTO'))
-          .map((item) => item)
-          .toList();
+      final resp = _apiClient
+          .deserialize(response.body, 'AccountPropertiesDTO')
+          .cast<AccountNamesDTO>();
+
       return AccountNames.listFromJson(resp);
     } else {
       return null;
@@ -412,10 +400,10 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = List<AccountNamesDTO>.from(_apiClient.deserialize(
-              response.body, 'List<AccountPropertiesDTO>'))
-          .map((item) => item)
-          .toList();
+      final resp = _apiClient
+          .deserialize(response.body, 'List<AccountPropertiesDTO>')
+          .cast<AccountNamesDTO>();
+
       return AccountNames.listFromJson(resp);
     } else {
       return null;

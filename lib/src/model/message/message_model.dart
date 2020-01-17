@@ -3,16 +3,16 @@ part of xpx_chain_sdk.message;
 class Message {
   Message(this.type, this.payload);
 
-  Message.fromDTO(MessageDTO value) {
-    if (value?._payload == null) {
+  Message.fromDTO(MessageDTO dto) {
+    if (dto?._payload == null) {
       return;
     }
-    if (_hexadecimal.hasMatch(value._payload)) {
-      payload = hex.decode(value._payload);
+    if (_hexadecimal.hasMatch(dto._payload)) {
+      payload = hex.decode(dto._payload);
     } else {
-      payload = Uint8List.fromList(value._payload.codeUnits);
+      payload = Uint8List.fromList(dto._payload.codeUnits);
     }
-    type = MessageType.getType(value.type);
+    type = MessageType.getType(dto.type);
   }
 
   MessageType type;

@@ -1,31 +1,5 @@
 part of xpx_chain_sdk.exchange;
 
-class Exchange {
-  String owner;
-  String ownerAddress;
-  List<_BuyOffer> buyOffers;
-  List<_SellOffer> sellOffers;
-
-  Exchange({this.owner, this.ownerAddress, this.buyOffers, this.sellOffers});
-
-  Exchange.fromJson(Map<String, dynamic> json) {
-    owner = json['owner'];
-    ownerAddress = json['ownerAddress'];
-//    if (json['buyOffers'] != null) {
-//      buyOffers = new List<Null>();
-//      json['buyOffers'].forEach((v) {
-//        buyOffers.add(new Null.fromJson(v));
-//      });
-//    }
-//    if (json['sellOffers'] != null) {
-//      sellOffers = new List<SellOffers>();
-//      json['sellOffers'].forEach((v) {
-//        sellOffers.add(new SellOffers.fromJson(v));
-//      });
-//    }
-  }
-}
-
 final OfferType sellOffer = _SellOffer();
 
 final OfferType buyOffer = _BuyOffer();
@@ -60,6 +34,12 @@ class OfferType implements Comparable<OfferType> {
 class Offer implements Comparable<Offer> {
   Offer(this.offerType, this.mosaic, this.cost);
 
+  Offer.fromDTO(OfferDTO dto) : assert(dto != null, 'dto must not be null') {
+    offerType = dto.type;
+    mosaic = Mosaic(MosaicId(id: dto.mosaicId.toUint64()), dto.cost.toUint64());
+    cost = dto.cost.toUint64();
+  }
+
   OfferType offerType;
   Mosaic mosaic;
   Uint64 cost;
@@ -88,6 +68,9 @@ class Offer implements Comparable<Offer> {
       ..write('}');
     return sb.toString();
   }
+
+  static List<Offer> listFromDto(List<dynamic> dto) =>
+      dto == null ? null : dto.map((value) => Offer.fromDTO(value)).toList();
 }
 
 class _SellOffer extends OfferType {
@@ -130,25 +113,24 @@ class UserExchangeInfo {
     if (dto.sellOffers.isNotEmpty) {
       final sellMap = <MosaicId, OfferInfo>{};
 
-      for (final sell in dto.sellOffers) {
-        final offer = OfferInfo.fromDTO(sell);
+      for (final sellDto in dto.sellOffers) {
+        final offer = OfferInfo.fromDTO(sellDto);
         offer.type = sellOffer;
         offer.owner = owner;
-        sellMap[MosaicId.fromId(sell.mosaicId.toUint64())] = offer;
+        sellMap[MosaicId.fromId(sellDto.mosaicId.toUint64())] = offer;
       }
 
       offers[sellOffer] = sellMap;
     }
 
     if (dto.buyOffers.isNotEmpty) {
-
       final buyMap = <MosaicId, OfferInfo>{};
 
-      for (final buy in dto.buyOffers) {
-        final offer = OfferInfo.fromDTO(buy);
+      for (final buyDto in dto.buyOffers) {
+        final offer = OfferInfo.fromDTO(buyDto);
         offer.type = buyOffer;
         offer.owner = owner;
-        buyMap[MosaicId.fromId(buy.mosaicId.toUint64())] = offer;
+        buyMap[MosaicId.fromId(buyDto.mosaicId.toUint64())] = offer;
       }
 
       offers[buyOffer] = buyMap;
@@ -156,7 +138,6 @@ class UserExchangeInfo {
   }
 
   String owner;
-
   Map<OfferType, Map<MosaicId, OfferInfo>> offers = {};
 
   List<OfferInfo> get sellOffers => _offersToList(offers[sellOffer]);
@@ -177,15 +158,15 @@ class UserExchangeInfo {
 }
 
 class OfferInfo {
-  OfferInfo.fromDTO(OfferInfoDTO value)
-      : assert(value != null, 'json must not be null') {
-    type = OfferType(value.type);
-    owner = value.owner;
-    mosaic = Mosaic(
-        MosaicId.fromId(value.mosaicId.toUint64()), value.amount.toUint64());
-    priceNumerator = value.priceNumerator.toUint64();
-    priceDenominator = value.priceDenominator.toUint64();
-    deadline = Deadline.fromUInt64DTO(value.deadline);
+  OfferInfo.fromDTO(OfferInfoDTO dto)
+      : assert(dto != null, 'dto must not be null') {
+    type = OfferType(dto.type);
+    owner = dto.owner;
+    mosaic =
+        Mosaic(MosaicId.fromId(dto.mosaicId.toUint64()), dto.amount.toUint64());
+    priceNumerator = dto.priceNumerator.toUint64();
+    priceDenominator = dto.priceDenominator.toUint64();
+    deadline = Deadline.fromUInt64DTO(dto.deadline);
   }
 
   OfferType type;
@@ -219,7 +200,7 @@ class OfferInfo {
       final Offer _offer = Offer(type, Mosaic(mosaic.assetId, amount), _cost);
 
       return ExchangeConfirmation(owner: owner, offer: _offer);
-    } on Exception catch (e) {
+    } on Exception {
       rethrow;
     }
   }
@@ -247,9 +228,13 @@ class AddOffer extends Offer {
   AddOffer({Offer offer, this.duration})
       : super(offer.offerType, offer.mosaic, offer.cost);
 
-  Uint64 duration;
+  AddOffer.fromDTO(AddOfferDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDTO(dto) {
+    duration = dto.duration.toUint64();
+  }
 
-//  Offer get offer => super;
+  Uint64 duration;
 
   @override
   String toString() {
@@ -263,26 +248,42 @@ class AddOffer extends Offer {
       ..write('}');
     return sb.toString();
   }
+
+  static List<AddOffer> listFromDto(List<dynamic> dto) =>
+      dto == null ? null : dto.map((value) => AddOffer.fromDTO(value)).toList();
 }
 
 class RemoveOffer {
   RemoveOffer({this.offerType, this.assetId});
 
-  OfferType offerType;
+  RemoveOffer.fromDTO(RemoveOfferDTO dto)
+      : assert(dto != null, 'dto must not be null') {
+    offerType = dto.offerType;
+    assetId = MosaicId.fromId(dto.mosaicId.toUint64());
+  }
 
+  OfferType offerType;
   Id assetId;
 
   @override
   String toString() => 'type: $offerType, assetId: $assetId';
+
+  static List<RemoveOffer> listFromDto(List<dynamic> dto) => dto == null
+      ? null
+      : dto.map((value) => RemoveOffer.fromDTO(value)).toList();
 }
 
 class ExchangeConfirmation extends Offer {
   ExchangeConfirmation({this.owner, Offer offer})
       : super(offer.offerType, offer.mosaic, offer.cost);
 
-  String owner;
+  ExchangeConfirmation.fromDTO(ConfirmationOfferDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDTO(dto) {
+    owner = dto.owner;
+  }
 
-//  Offer get offer => super;
+  String owner;
 
   @override
   String toString() {
@@ -296,4 +297,9 @@ class ExchangeConfirmation extends Offer {
       ..write('}');
     return sb.toString();
   }
+
+  static List<ExchangeConfirmation> listFromDto(List<dynamic> dto) =>
+      dto == null
+          ? null
+          : dto.map((value) => ExchangeConfirmation.fromDTO(value)).toList();
 }

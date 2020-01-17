@@ -126,10 +126,10 @@ class Height {
 }
 
 class BlockchainScore {
-  BlockchainScore.fromDTO(BlockchainScoreDTO value)
-      : assert(value != null, 'json must not be null') {
-    score = Uint64.fromInts(value._scoreLow.toUint64().toInt(),
-        value._scoreHigh.toUint64().toInt());
+  BlockchainScore.fromDTO(BlockchainScoreDTO dto)
+      : assert(dto != null, 'dto must not be null') {
+    score = Uint64.fromInts(
+        dto._scoreLow.toUint64().toInt(), dto._scoreHigh.toUint64().toInt());
   }
 
   Uint64 score;

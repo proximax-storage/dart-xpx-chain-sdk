@@ -85,10 +85,10 @@ class PublicAccount {
 class AccountNames {
   AccountNames._();
 
-  AccountNames.fromDto(AccountNamesDTO value) {
-    if (value == null) return;
-    address = Address.fromEncoded(value.address);
-    names = (value._names == null) ? null : value._names.cast<String>();
+  AccountNames.fromDto(AccountNamesDTO dto) {
+    if (dto == null) return;
+    address = Address.fromEncoded(dto.address);
+    names = (dto._names == null) ? null : dto._names.cast<String>();
   }
 
   /* The address of the account in hexadecimal. */
@@ -155,4 +155,8 @@ class AccountInfo {
         'mosaics': mosaics,
         'reputation': reputation
       };
+
+  static List<AccountInfo> listFromDTO(List<AccountInfoDTO> dto) => dto == null
+      ? null
+      : dto.map((value) => AccountInfo.fromDTO(value)).toList();
 }

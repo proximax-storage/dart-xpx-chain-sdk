@@ -44,19 +44,18 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     }
   }
 
-  RegisterNamespaceTransaction.fromDTO(
-      RegisterNamespaceTransactionInfoDTO value)
-      : assert(value != null, 'value must not be null'),
-        super.fromDto(value.transaction, value.meta) {
-    namespaceId = NamespaceId(id: value.transaction.namespaceId.toUint64());
-    namespaceType = value.transaction.namespaceType == 0
+  RegisterNamespaceTransaction.fromDTO(RegisterNamespaceTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto.transaction, dto.meta) {
+    namespaceId = NamespaceId(id: dto.transaction.namespaceId.toUint64());
+    namespaceType = dto.transaction.namespaceType == 0
         ? NamespaceType.root
         : NamespaceType.sub;
-    namespaceName = value.transaction.name;
+    namespaceName = dto.transaction.name;
     if (namespaceType == NamespaceType.root) {
-      duration = value.transaction.duration.toUint64();
+      duration = dto.transaction.duration.toUint64();
     } else {
-      parentId = NamespaceId(id: value.transaction.parentId.toUint64());
+      parentId = NamespaceId(id: dto.transaction.parentId.toUint64());
     }
   }
 

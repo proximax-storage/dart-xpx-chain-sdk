@@ -65,7 +65,7 @@ class Addresses {
   }
 
   Addresses.fromList(List<Address> list)
-      : assert(list != null, 'json must not be null') {
+      : assert(list != null, 'list must not be null') {
     addresses = list.map((item) => item).toList();
   }
 

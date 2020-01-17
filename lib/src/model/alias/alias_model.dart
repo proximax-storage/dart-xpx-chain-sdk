@@ -27,8 +27,20 @@ class Alias {
   final MosaicId mosaicId;
 
   @override
-  String toString() =>
-      '{aliasAction:$type, mosaicId:$mosaicId, address:$address}';
+  String toString() {
+    final sb = StringBuffer()..write('{');
+    if (type != null) {
+      sb.write('aliasAction: $type,');
+    }
+    if (mosaicId != null) {
+      sb.write('mosaicId: $mosaicId');
+    }
+    if (address != null) {
+      sb.write('address: $address');
+    }
+    sb.write('}');
+    return sb.toString();
+  }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

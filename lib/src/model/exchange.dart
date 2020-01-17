@@ -6,7 +6,6 @@ import 'package:xpx_chain_sdk/src/model/uint64.dart';
 import 'package:xpx_chain_sdk/xpx_sdk_all_errors.dart';
 import 'package:xpx_chain_sdk/imp/buffer.dart';
 import 'package:xpx_chain_sdk/src/model/mosaic.dart';
-import 'package:xpx_chain_sdk/src/model/account.dart';
 import 'package:xpx_chain_sdk/src/model/transaction.dart';
 
 part 'exchange/exchange_dto.dart';

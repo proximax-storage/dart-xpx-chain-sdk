@@ -9,7 +9,7 @@ class TransactionIds {
   }
 
   TransactionIds.fromList(List<String> list)
-      : assert(list != null, 'json must not be null') {
+      : assert(list != null, 'list must not be null') {
     transactionIds = list.map((item) => item).toList();
   }
 

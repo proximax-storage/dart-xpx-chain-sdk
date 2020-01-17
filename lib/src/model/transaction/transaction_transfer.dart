@@ -24,13 +24,13 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     }
   }
 
-  TransferTransaction.fromDTO(_TransferTransactionInfoDTO value)
-      : assert(value != null, 'value must not be null'),
-        super.fromDto(value._transaction, value.meta) {
-    mosaics = Mosaic.listFromDTO(value._transaction._mosaics);
-    recipient = Address.fromEncoded(value._transaction._recipient);
-    message = value._transaction._message != null
-        ? Message.fromDTO(value._transaction._message)
+  TransferTransaction.fromDTO(TransferTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto._transaction, dto.meta) {
+    mosaics = Mosaic.listFromDTO(dto._transaction._mosaics);
+    recipient = Address.fromEncoded(dto._transaction._recipient);
+    message = dto._transaction._message != null
+        ? Message.fromDTO(dto._transaction._message)
         : null;
   }
 
@@ -39,7 +39,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
   Message message;
 
   static List<TransferTransaction> listFromDTO(
-          List<_TransferTransactionInfoDTO> json) =>
+          List<TransferTransactionInfoDTO> json) =>
       json == null
           ? null
           : json.map((value) => TransferTransaction.fromDTO(value)).toList();

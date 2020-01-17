@@ -16,6 +16,12 @@ class AddExchangeOfferTransaction extends AbstractTransaction
     }
   }
 
+  AddExchangeOfferTransaction.fromDTO(AddExchangeOfferTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto.transaction, dto.meta) {
+    offers = AddOffer.listFromDto(dto.transaction.offers);
+  }
+
   List<AddOffer> offers;
 
   int get size => _size();
@@ -81,6 +87,12 @@ class ExchangeOfferTransaction extends AbstractTransaction
     }
   }
 
+  ExchangeOfferTransaction.fromDTO(ExchangeOfferTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto.transaction, dto.meta) {
+    confirmations = ExchangeConfirmation.listFromDto(dto.transaction.offers);
+  }
+
   List<ExchangeConfirmation> confirmations;
 
   int get size => _size();
@@ -144,6 +156,13 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction
       this.networkType = networkType;
       offers = removeOffer;
     }
+  }
+
+  RemoveExchangeOfferTransaction.fromDTO(
+      RemoveExchangeOfferTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto.transaction, dto.meta) {
+    offers = RemoveOffer.listFromDto(dto.transaction.offers);
   }
 
   List<RemoveOffer> offers;

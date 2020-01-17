@@ -4,14 +4,14 @@ class MultisigCosignatoryModification {
   MultisigCosignatoryModification(this.type, this.publicAccount);
 
   MultisigCosignatoryModification.fromDTO(
-      int networkType, MultisigCosignatoryModificationDTO value) {
-    if (value?.cosignatoryPublicKey == null) {
+      int networkType, MultisigCosignatoryModificationDTO dto) {
+    if (dto?.cosignatoryPublicKey == null) {
       return;
     }
 
-    type = value.type == 0 ? add : remove;
+    type = dto.type == 0 ? add : remove;
     publicAccount =
-        PublicAccount.fromPublicKey(value.cosignatoryPublicKey, networkType);
+        PublicAccount.fromPublicKey(dto.cosignatoryPublicKey, networkType);
   }
 
   MultisigCosignatoryModificationType type;
@@ -28,10 +28,10 @@ class MultisigCosignatoryModification {
   }
 
   static List<MultisigCosignatoryModification> listFromDTO(
-          int networkType, List<MultisigCosignatoryModificationDTO> json) =>
-      json == null
+          int networkType, List<MultisigCosignatoryModificationDTO> dto) =>
+      dto == null
           ? null
-          : json
+          : dto
               .map((value) =>
                   MultisigCosignatoryModification.fromDTO(networkType, value))
               .toList();
@@ -74,21 +74,21 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
   }
 
   ModifyMultisigAccountTransaction.fromDTO(
-      ModifyMultisigAccountTransactionInfoDTO value)
-      : assert(value != null, 'value must not be null'),
-        super.fromDto(value.transaction, value.meta) {
-    type = TransactionType.fromInt(value.transaction.type);
-    deadline = Deadline.fromUInt64DTO(value.transaction.deadline);
-    signature = value.transaction.signature;
-    networkType = extractNetworkType(value.transaction.version);
-    version = extractVersion(value.transaction.version);
-    maxFee = value.transaction.fee.toUint64();
-    signer = PublicAccount.fromPublicKey(value.transaction.signer, networkType);
+      ModifyMultisigAccountTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto.transaction, dto.meta) {
+    type = TransactionType.fromInt(dto.transaction.type);
+    deadline = Deadline.fromUInt64DTO(dto.transaction.deadline);
+    signature = dto.transaction.signature;
+    networkType = extractNetworkType(dto.transaction.version);
+    version = extractVersion(dto.transaction.version);
+    maxFee = dto.transaction.fee.toUint64();
+    signer = PublicAccount.fromPublicKey(dto.transaction.signer, networkType);
 
-    minApprovalDelta = value.transaction.minApprovalDelta;
-    minRemovalDelta = value.transaction.minRemovalDelta;
+    minApprovalDelta = dto.transaction.minApprovalDelta;
+    minRemovalDelta = dto.transaction.minRemovalDelta;
     modifications = MultisigCosignatoryModification.listFromDTO(
-        networkType, value.transaction.modifications);
+        networkType, dto.transaction.modifications);
   }
 
   int minApprovalDelta;
@@ -99,10 +99,10 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   static List<ModifyMultisigAccountTransaction> listFromDTO(
-          List<ModifyMultisigAccountTransactionInfoDTO> json) =>
-      json == null
+          List<ModifyMultisigAccountTransactionInfoDTO> dto) =>
+      dto == null
           ? null
-          : json
+          : dto
               .map((value) => ModifyMultisigAccountTransaction.fromDTO(value))
               .toList();
 

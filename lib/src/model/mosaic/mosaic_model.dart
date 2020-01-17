@@ -116,14 +116,14 @@ class MosaicIds {
 }
 
 class MosaicInfo {
-  MosaicInfo.fromDTO(MosaicInfoDTO value)
-      : assert(value != null, 'json must not be null') {
-    mosaicId = MosaicId(id: value._mosaic.mosaicId.toUint64());
-    supply = value._mosaic._supply.toUint64();
-    height = value._mosaic._height.toUint64();
-    owner = value._mosaic._owner;
-    revision = value._mosaic._revision;
-    properties = MosaicProperties.fromDTO(value._mosaic._properties);
+  MosaicInfo.fromDTO(MosaicInfoDTO dto)
+      : assert(dto != null, 'dto must not be null') {
+    mosaicId = MosaicId(id: dto._mosaic.mosaicId.toUint64());
+    supply = dto._mosaic._supply.toUint64();
+    height = dto._mosaic._height.toUint64();
+    owner = dto._mosaic._owner;
+    revision = dto._mosaic._revision;
+    properties = MosaicProperties.fromDTO(dto._mosaic._properties);
   }
 
   MosaicId mosaicId;
@@ -153,10 +153,10 @@ class MosaicInfo {
 }
 
 class MosaicName {
-  MosaicName.fromDTO(MosaicNameDTO value)
-      : assert(value != null, 'json must not be null') {
-    mosaicId = MosaicId.fromId(value.mosaicId.toUint64());
-    names = value._names != null ? List.from(value._names) : null;
+  MosaicName.fromDTO(MosaicNameDTO dto)
+      : assert(dto != null, 'dto must not be null') {
+    mosaicId = MosaicId.fromId(dto.mosaicId.toUint64());
+    names = dto._names != null ? List.from(dto._names) : null;
   }
 
   MosaicId mosaicId;
@@ -175,10 +175,10 @@ class MosaicName {
 class MosaicProperty {
   MosaicProperty(this.id, this.value);
 
-  MosaicProperty.fromDTO(_MosaicPropertyDTO value) {
-    if (value == null) return;
-    id = getPropertyId(value._id);
-    this.value = value._value.toUint64();
+  MosaicProperty.fromDTO(_MosaicPropertyDTO dto) {
+    if (dto == null) return;
+    id = getPropertyId(dto._id);
+    value = dto._value.toUint64();
   }
 
   MosaicPropertyId id;

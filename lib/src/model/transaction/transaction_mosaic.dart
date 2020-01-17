@@ -24,12 +24,12 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     }
   }
 
-  MosaicDefinitionTransaction.fromDTO(MosaicDefinitionTransactionInfoDTO value)
-      : assert(value != null, 'value must not be null'),
-        super.fromDto(value.transaction, value.meta) {
-    mosaicProperties = MosaicProperties.fromDTO(value.transaction.properties);
-    mosaicNonce = value.transaction.mosaicNonce.toUnsigned(32);
-    mosaicId = MosaicId.fromId(value.transaction.mosaicId.toUint64());
+  MosaicDefinitionTransaction.fromDTO(MosaicDefinitionTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto.transaction, dto.meta) {
+    mosaicProperties = MosaicProperties.fromDTO(dto.transaction.properties);
+    mosaicNonce = dto.transaction.mosaicNonce.toUnsigned(32);
+    mosaicId = MosaicId.fromId(dto.transaction.mosaicId.toUint64());
   }
 
   MosaicProperties mosaicProperties;
@@ -156,12 +156,12 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   }
 
   MosaicSupplyChangeTransaction.fromDTO(
-      MosaicSupplyChangeTransactionInfoDTO value)
-      : assert(value != null, 'value must not be null'),
-        super.fromDto(value.transaction, value.meta) {
-    mosaicSupplyType = value.transaction.direction == 0 ? decrease : increase;
-    mosaicId = MosaicId.fromId(value.transaction.mosaicId.toUint64());
-    delta = value.transaction.delta.toUint64();
+      MosaicSupplyChangeTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto.transaction, dto.meta) {
+    mosaicSupplyType = dto.transaction.direction == 0 ? decrease : increase;
+    mosaicId = MosaicId.fromId(dto.transaction.mosaicId.toUint64());
+    delta = dto.transaction.delta.toUint64();
   }
 
   MosaicSupplyType mosaicSupplyType;

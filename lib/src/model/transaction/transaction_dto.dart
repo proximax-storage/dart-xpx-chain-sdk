@@ -18,8 +18,8 @@ class AbstractTransactionDTO {
       };
 }
 
-class _TransferTransactionInfoDTO {
-  _TransferTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
+class TransferTransactionInfoDTO {
+  TransferTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
     meta =
         json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
     _transaction = json['transaction'] != null
@@ -42,8 +42,8 @@ class _TransferTransactionInfoDTO {
   }
 }
 
-class _AggregateTransactionInfoDTO {
-  _AggregateTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
+class AggregateTransactionInfoDTO {
+  AggregateTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
     meta =
         json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
@@ -145,18 +145,18 @@ class _AggregateTransactionCosignatureDTO {
   }
 }
 
-class _LockFundsTransactionInfoDTO {
-  _LockFundsTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
+class LockFundsTransactionInfoDTO {
+  LockFundsTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
     meta =
         json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
     _transaction = json['transaction'] != null
-        ? _LockFundsTransactionDTO.fromJson(json['transaction'])
+        ? LockFundsTransactionDTO.fromJson(json['transaction'])
         : null;
   }
 
   MetaTransactionDTO meta;
-  _LockFundsTransactionDTO _transaction;
+  LockFundsTransactionDTO _transaction;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -282,8 +282,8 @@ class _AggregateTransactionDTO extends AbstractTransactionDTO {
       };
 }
 
-class _LockFundsTransactionDTO extends AbstractTransactionDTO {
-  _LockFundsTransactionDTO.fromJson(Map<String, dynamic> json) {
+class LockFundsTransactionDTO extends AbstractTransactionDTO {
+  LockFundsTransactionDTO.fromJson(Map<String, dynamic> json) {
     signature = json['signature'];
     signer = json['signer'];
     version = json['version'];
@@ -300,8 +300,6 @@ class _LockFundsTransactionDTO extends AbstractTransactionDTO {
   UInt64DTO _amount;
   UInt64DTO _duration;
   String _hash;
-
-  List<dynamic> _transactions;
 
   @override
   Map<String, dynamic> toJson() => {

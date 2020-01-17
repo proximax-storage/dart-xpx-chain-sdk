@@ -41,6 +41,12 @@ String _mapTransaction(decodedJson) {
       return 'MetadataAddress';
     case TransactionType.addressAlias:
       return 'AddressAlias';
+    case TransactionType.addExchangeOffer:
+      return 'AddExchangeOffer';
+    case TransactionType.exchangeOffer:
+      return 'ExchangeOffer';
+    case TransactionType.removeExchangeOffer:
+      return 'RemoveExchangeOffer';
     case TransactionType.metadataMosaic:
       return 'MetadataMosaic';
     case TransactionType.metadataNamespace:
@@ -93,7 +99,13 @@ dynamic txnDeserialize(value, String targetType) {
   try {
     switch (targetType) {
       case 'Transfer':
-        return _TransferTransactionInfoDTO.fromJson(value);
+        return TransferTransactionInfoDTO.fromJson(value);
+      case 'AddExchangeOffer':
+        return AddExchangeOfferTransactionInfoDTO.fromJson(value);
+      case 'RemoveExchangeOffer':
+        return RemoveExchangeOfferTransactionInfoDTO.fromJson(value);
+      case 'ExchangeOffer':
+        return ExchangeOfferTransactionInfoDTO.fromJson(value);
       case 'RegisterNamespace':
         return RegisterNamespaceTransactionInfoDTO.fromJson(value);
       case 'MosaicDefinition':
@@ -103,15 +115,15 @@ dynamic txnDeserialize(value, String targetType) {
       case 'MosaicAlias':
         return MosaicAliasTransactionInfoDTO.fromJson(value);
       case 'AggregateCompleted':
-        return _AggregateTransactionInfoDTO.fromJson(value);
+        return AggregateTransactionInfoDTO.fromJson(value);
       case 'AggregateBonded':
-        return _AggregateTransactionInfoDTO.fromJson(value);
+        return AggregateTransactionInfoDTO.fromJson(value);
       case 'AddressAlias':
         return AddressAliasTransactionInfoDTO.fromJson(value);
       case 'ModifyMultisig':
         return ModifyMultisigAccountTransactionInfoDTO.fromJson(value);
       case 'Lock':
-        return _LockFundsTransactionInfoDTO.fromJson(value);
+        return LockFundsTransactionInfoDTO.fromJson(value);
       default:
         return null;
     }
@@ -262,23 +274,29 @@ int cosignatoryModificationArrayToBuffer(
 
 Transaction deserializeDTO(value) {
   switch (value.runtimeType) {
-    case _TransferTransactionInfoDTO:
+    case TransferTransactionInfoDTO:
       return TransferTransaction.fromDTO(value);
     case RegisterNamespaceTransactionInfoDTO:
       return RegisterNamespaceTransaction.fromDTO(value);
+    case ExchangeOfferTransactionInfoDTO:
+      return ExchangeOfferTransaction.fromDTO(value);
+    case AddExchangeOfferTransactionInfoDTO:
+      return AddExchangeOfferTransaction.fromDTO(value);
+    case RemoveExchangeOfferTransactionInfoDTO:
+      return RemoveExchangeOfferTransaction.fromDTO(value);
     case MosaicDefinitionTransactionInfoDTO:
       return MosaicDefinitionTransaction.fromDTO(value);
     case MosaicSupplyChangeTransactionInfoDTO:
       return MosaicSupplyChangeTransaction.fromDTO(value);
     case MosaicAliasTransactionInfoDTO:
       return MosaicAliasTransaction.fromDTO(value);
-    case _AggregateTransactionInfoDTO:
+    case AggregateTransactionInfoDTO:
       return AggregateTransaction.fromDTO(value);
     case AddressAliasTransactionInfoDTO:
       return AddressAliasTransaction.fromDTO(value);
     case ModifyMultisigAccountTransactionInfoDTO:
       return ModifyMultisigAccountTransaction.fromDTO(value);
-    case _LockFundsTransactionInfoDTO:
+    case LockFundsTransactionInfoDTO:
       return LockFundsTransaction.fromDTO(value);
     default:
       if (value is List) {

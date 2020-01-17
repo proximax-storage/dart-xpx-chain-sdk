@@ -324,14 +324,14 @@ class AbstractTransaction with TransactionInfo {
   PublicAccount get toAggregate => signer;
   set toAggregate(PublicAccount signer) => this.signer = signer;
 
-  void _generateMeta(MetaTransactionDTO value) {
-    height = value._height.toUint64();
-    index = value._index;
-    id = value._id;
-    transactionHash = value._hash;
-    merkleComponentHash = value._merkleComponentHash;
-    aggregateHash = value._aggregateHash;
-    aggregateId = value._aggregateId;
+  void _generateMeta(MetaTransactionDTO dto) {
+    height = dto._height.toUint64();
+    index = dto._index;
+    id = dto._id;
+    transactionHash = dto._hash;
+    merkleComponentHash = dto._merkleComponentHash;
+    aggregateHash = dto._aggregateHash;
+    aggregateId = dto._aggregateId;
   }
 
   Map<String, int> _generateVector(fb.Builder builder) {

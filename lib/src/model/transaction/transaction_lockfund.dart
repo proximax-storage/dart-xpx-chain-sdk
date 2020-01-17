@@ -23,13 +23,13 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
     }
   }
 
-  LockFundsTransaction.fromDTO(_LockFundsTransactionInfoDTO value)
-      : assert(value != null, 'value must not be null'),
-        super.fromDto(value._transaction, value.meta) {
-    mosaic = Mosaic(MosaicId.fromUint64(value._transaction._assetId.toUint64()),
-        value._transaction._amount.toUint64());
-    duration = value._transaction._duration.toUint64();
-    signedTransaction = SignedTransaction(0x4148, '', value._transaction._hash);
+  LockFundsTransaction.fromDTO(LockFundsTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto._transaction, dto.meta) {
+    mosaic = Mosaic(MosaicId.fromUint64(dto._transaction._assetId.toUint64()),
+        dto._transaction._amount.toUint64());
+    duration = dto._transaction._duration.toUint64();
+    signedTransaction = SignedTransaction(0x4148, '', dto._transaction._hash);
   }
 
   Mosaic mosaic;

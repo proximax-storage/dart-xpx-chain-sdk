@@ -2,9 +2,9 @@ part of xpx_chain_sdk.api;
 
 class BlockchainRoutesApi {
   BlockchainRoutesApi([_ApiClient apiClient])
-      : apiClient = apiClient ?? defaultApiClient;
+      : _apiClient = apiClient ?? defaultApiClient;
 
-  _ApiClient apiClient;
+  final _ApiClient _apiClient;
 
   /// Get the current height of the chain
   ///
@@ -13,12 +13,12 @@ class BlockchainRoutesApi {
     // create path and map variables
     final String path = '/chain/height'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, 'HeightDTO');
+      final resp = _apiClient.deserialize(response.body, 'HeightDTO');
       return Height.fromDTO(resp);
     } else {
       return null;
@@ -39,12 +39,12 @@ class BlockchainRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{height}', height.toString());
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, 'BlockInfoDTO');
+      final resp = _apiClient.deserialize(response.body, 'BlockInfoDTO');
       return BlockInfo.fromDTO(resp);
     } else {
       return null;
@@ -65,12 +65,12 @@ class BlockchainRoutesApi {
     // create path and map variables
     final String path = '/chain/score'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = apiClient.deserialize(response.body, 'BlockchainScoreDTO');
+      final resp = _apiClient.deserialize(response.body, 'BlockchainScoreDTO');
       return BlockchainScore.fromDTO(resp);
     } else {
       return null;
@@ -85,12 +85,12 @@ class BlockchainRoutesApi {
     // create path and map variables
     final String path = '/diagnostic/storage'.replaceAll('{format}', 'json');
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'BlockchainStorageInfo');
+      return _apiClient.deserialize(response.body, 'BlockchainStorageInfo');
     } else {
       return null;
     }
@@ -122,15 +122,14 @@ class BlockchainRoutesApi {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
 
-    final response = await apiClient.get(path, queryParams);
+    final response = await _apiClient.get(path, queryParams);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp = apiClient
+      final resp = _apiClient
           .deserialize(response.body, 'List<Transaction>')
-          .map((item) => item)
-          .toList();
+          .cast<Transaction>();
       return resp.map(deserializeDTO).toList();
     } else {
       return null;
@@ -156,18 +155,14 @@ class BlockchainRoutesApi {
         .replaceAll('{height}', height.toString())
         .replaceAll('{limit}', limit.toString());
 
-    final response = await apiClient.get(path);
+    final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      // ignore: avoid_as
-      final resp =
-          // ignore: avoid_as
-          (apiClient.deserialize(response.body, 'List<BlockInfoDTO>') as List)
-              // ignore: avoid_as
-              .map((item) => item as BlockInfoDTO)
-              .toList();
+      final resp = _apiClient
+          .deserialize(response.body, 'List<BlockInfoDTO>')
+          .cast<BlockInfoDTO>();
       return BlockInfo.listFromDTO(resp);
     } else {
       return null;

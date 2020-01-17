@@ -28,13 +28,13 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
     }
   }
 
-  AggregateTransaction.fromDTO(_AggregateTransactionInfoDTO value)
-      : assert(value != null, 'value must not be null'),
-        super.fromDto(value._transaction, value.meta) {
+  AggregateTransaction.fromDTO(AggregateTransactionInfoDTO dto)
+      : assert(dto != null, 'dto must not be null'),
+        super.fromDto(dto._transaction, dto.meta) {
     innerTransactions =
-        value._transaction._transactions.map(deserializeDTO).toList();
+        dto._transaction._transactions.map(deserializeDTO).toList();
     cosignatures = AggregateTransactionCosignature.listFromDTO(
-        networkType, value._transaction._cosignatures);
+        networkType, dto._transaction._cosignatures);
   }
 
   List<Transaction> innerTransactions;
@@ -44,7 +44,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   static List<AggregateTransaction> listFromDTO(
-          List<_AggregateTransactionInfoDTO> json) =>
+          List<AggregateTransactionInfoDTO> json) =>
       json == null
           ? null
           : json.map((value) => AggregateTransaction.fromDTO(value)).toList();
@@ -116,13 +116,13 @@ class AggregateTransactionCosignature {
   AggregateTransactionCosignature(this.signature, this.signer);
 
   AggregateTransactionCosignature.fromDTO(
-      int networkType, _AggregateTransactionCosignatureDTO value) {
-    if (value?.signer == null) {
+      int networkType, _AggregateTransactionCosignatureDTO dto) {
+    if (dto?.signer == null) {
       return;
     }
 
-    signature = value.signature;
-    signer = PublicAccount.fromPublicKey(value.signer, networkType);
+    signature = dto.signature;
+    signer = PublicAccount.fromPublicKey(dto.signer, networkType);
   }
 
   String signature;

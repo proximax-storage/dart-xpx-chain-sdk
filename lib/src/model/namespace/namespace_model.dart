@@ -43,13 +43,12 @@ class NamespaceId extends Id {
 }
 
 class NamespaceName {
-  NamespaceName.fromDTO(NamespaceNameDTO value)
-      : assert(value != null, 'json must not be null') {
-    parentId = value.parentId == null
-        ? NamespaceId._(value.parentId.toUint64())
-        : null;
-    namespaceId = NamespaceId._(value.namespaceId.toUint64());
-    name = value.name;
+  NamespaceName.fromDTO(NamespaceNameDTO dto)
+      : assert(dto != null, 'dto must not be null') {
+    parentId =
+        dto.parentId == null ? NamespaceId._(dto.parentId.toUint64()) : null;
+    namespaceId = NamespaceId._(dto.namespaceId.toUint64());
+    name = dto.name;
   }
 
   NamespaceId parentId;
@@ -90,30 +89,30 @@ class NamespaceName {
 class NamespaceInfo {
   NamespaceInfo();
 
-  NamespaceInfo.fromDTO(NamespaceInfoDTO value)
-      : assert(value != null, 'json must not be null') {
-    metaId = value.meta.id;
-    active = value.meta.active;
-    index = value.meta.index;
+  NamespaceInfo.fromDTO(NamespaceInfoDTO dto)
+      : assert(dto != null, 'dto must not be null') {
+    metaId = dto.meta.id;
+    active = dto.meta.active;
+    index = dto.meta.index;
 
-    final _ownerAddress = Address.fromEncoded(value._namespace.ownerAddress);
+    final _ownerAddress = Address.fromEncoded(dto._namespace.ownerAddress);
 
     owner = PublicAccount.fromPublicKey(
-        value._namespace.owner, _ownerAddress.networkType);
+        dto._namespace.owner, _ownerAddress.networkType);
 
-    startHeight = value._namespace.startHeight.toUint64();
-    endHeight = value._namespace.endHeight.toUint64();
-    depth = value._namespace.depth;
-    levels = extractLevels(value);
-    typeSpace = value._namespace.type;
+    startHeight = dto._namespace.startHeight.toUint64();
+    endHeight = dto._namespace.endHeight.toUint64();
+    depth = dto._namespace.depth;
+    levels = extractLevels(dto);
+    typeSpace = dto._namespace.type;
 
-    alias = value._namespace.alias.address != null
-        ? Alias(address: Address.fromEncoded(value._namespace.alias.address))
+    alias = dto._namespace.alias.address != null
+        ? Alias(address: Address.fromEncoded(dto._namespace.alias.address))
         : null;
-    if (value._namespace.parentId.toUint64().toInt() != 0) {
+    if (dto._namespace.parentId.toUint64().toInt() != 0) {
       namespaceId = NamespaceId._(levels[0]);
       parent = NamespaceInfo()
-        ..namespaceId = NamespaceId._(value._namespace.parentId.toUint64());
+        ..namespaceId = NamespaceId._(dto._namespace.parentId.toUint64());
     } else {
       namespaceId = NamespaceId._(levels[0]);
     }

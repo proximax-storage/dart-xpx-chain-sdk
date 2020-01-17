@@ -39,8 +39,7 @@ class ExchangeRoutesApi {
   /// Get [UserExchangeInfo] information
   ///
   /// Returns the UserExchange information.
-  Future<UserExchangeInfo> getAccountExchangeInfo(
-      PublicAccount account) async {
+  Future<UserExchangeInfo> getAccountExchangeInfo(PublicAccount account) async {
     // verify required params are set
     if (account.publicKey == '') {
       throw ApiException(400, 'Missing required param: account');
@@ -53,13 +52,10 @@ class ExchangeRoutesApi {
 
     final response = await _apiClient.get(path);
 
-    print(response.body);
-
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient
-          .deserialize(response.body, 'ExchangeDTO');
+      final resp = _apiClient.deserialize(response.body, 'ExchangeDTO');
 
       return UserExchangeInfo.fromDTO(resp);
     } else {
