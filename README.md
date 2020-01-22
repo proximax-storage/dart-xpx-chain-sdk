@@ -1,4 +1,4 @@
-<p align='center'><a href='https://github.com/proximax-storage/dart-xpx-chain-sdk' target='_blank' rel='noopener noreferrer'><img width='150' src='https://user-images.githubusercontent.com/29048783/57000439-a41fa000-6b81-11e9-94f3-6df17de7e41a.png' alt='Vue logo'></a></p>
+<p align='center'><a href='https://github.com/proximax-storage/dart-xpx-chain-sdk' target='_blank' rel='noopener noreferrer'><img width='300' src='https://user-images.githubusercontent.com/29048783/72931620-36795c80-3d2c-11ea-89a4-f0c2bc3affd8.png' alt='Vue logo'></a></p>
 <h1 align='center'>ProximaX Sirius Blockchain Dart SDK</h1>
 
 Official ProximaX Sirius Blockchain SDK Library in Dart.
