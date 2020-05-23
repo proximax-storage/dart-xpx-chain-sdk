@@ -87,7 +87,7 @@ mixin TransactionInfo {
 }
 
 class TransactionType {
-  const TransactionType._internal(this._value);
+  const TransactionType._internal(this.value);
 
   static const TransactionType aggregateCompleted =
       TransactionType._internal(0x4141);
@@ -149,7 +149,7 @@ class TransactionType {
   static const TransactionType accountPropertyEntityType =
       TransactionType._internal(0x4350);
 
-  final int _value;
+  final int value;
 
   static final List<TransactionType> list = <TransactionType>[
     accountPropertyAddress,
@@ -178,7 +178,7 @@ class TransactionType {
 
   static TransactionType fromInt(int value) {
     for (var type in list) {
-      if (type._value == value) {
+      if (type.value == value) {
         return type;
       }
     }
@@ -186,12 +186,20 @@ class TransactionType {
     throw errUnknownTransactionType;
   }
 
+  Uint8List toBytes(){
+    final buffer = Uint8List(2).buffer;
+    final s = ByteData.view(buffer);
+
+    s.setInt16(0, TransactionType.addExchangeOffer.value, Endian.little);
+    return buffer.asUint8List();
+  }
+
   @override
-  String toString() => _value.toString();
+  String toString() => value.toString();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['value'] = _value;
+    data['value'] = value;
     return data;
   }
 }
@@ -328,7 +336,7 @@ class AbstractTransaction with TransactionInfo {
       ..addSignatureOffset(vector['signatureV'])
       ..addSignerOffset(vector['signerV'])
       ..addVersion(vector['versionV'])
-      ..addType(type._value)
+      ..addType(type.value)
       ..addFeeOffset(vector['feeV'])
       ..addDeadlineOffset(vector['deadlineV']);
   }

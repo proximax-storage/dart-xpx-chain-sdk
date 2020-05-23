@@ -113,6 +113,8 @@ dynamic txnDeserialize(value, String targetType) {
         return AccountPropertiesAddressTransactionInfoDTO.fromJson(value);
       case 'AccountPropertiesMosaic':
         return AccountPropertiesMosaicTransactionInfoDTO.fromJson(value);
+      case 'AccountPropertiesEntityType':
+        return AccountPropertiesEntityTypeTransactionInfoDTO.fromJson(value);
       case 'AddExchangeOffer':
         return AddExchangeOfferTransactionInfoDTO.fromJson(value);
       case 'RemoveExchangeOffer':
@@ -177,7 +179,7 @@ SignedTransaction signTransactionWith(
   final hash = _createTransactionHash(pHex, generationHash);
 
   return SignedTransaction(
-      tx._abstractTransaction().type._value, pHex.toUpperCase(), hash);
+      tx._abstractTransaction().type.value, pHex.toUpperCase(), hash);
 }
 
 SignedTransaction signTransactionWithCosignatures(Transaction tx, Account a,
@@ -202,7 +204,7 @@ SignedTransaction signTransactionWithCosignatures(Transaction tx, Account a,
 
   i.replaceRange(0, s.lengthInBytes, s.buffer.asUint8List());
 
-  return SignedTransaction(tx._abstractTransaction().type._value,
+  return SignedTransaction(tx._abstractTransaction().type.value,
       hex.encode(i).toUpperCase(), stx.hash);
 }
 
