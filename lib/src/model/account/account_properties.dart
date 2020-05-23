@@ -94,7 +94,7 @@ class AccountPropertiesMosaicModification {
       AccountPropertiesMosaicModificationDTO dto) {
     if (dto == null) return;
     assetId = MosaicId.fromId(dto.assetId.toUint64());
-    modificationType = dto.modificationType == 1
+    modificationType = dto.modificationType == 0
         ? PropertyModificationType.addProperty
         : PropertyModificationType.removeProperty;
   }
@@ -133,7 +133,7 @@ class AccountPropertiesAddressModification {
       AccountPropertiesAddressModificationDTO dto) {
     if (dto == null) return;
     address = Address.fromEncoded(dto.address);
-    modificationType = dto.modificationType == 1
+    modificationType = dto.modificationType == 0
         ? PropertyModificationType.addProperty
         : PropertyModificationType.removeProperty;
   }
@@ -166,13 +166,13 @@ class AccountPropertiesAddressModification {
 }
 
 class AccountPropertiesEntityTypeModification {
-  AccountPropertiesEntityTypeModification._(
+  AccountPropertiesEntityTypeModification(
       this.modificationType, this.transactionType);
 
   AccountPropertiesEntityTypeModification.fromDto(
       AccountPropertiesEntityTypeModificationDTO dto) {
     transactionType = TransactionType.fromInt(dto.entityType);
-    modificationType = dto.modificationType == 1
+    modificationType = dto.modificationType == 0
         ? PropertyModificationType.addProperty
         : PropertyModificationType.removeProperty;
   }

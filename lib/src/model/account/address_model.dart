@@ -37,6 +37,8 @@ class Address {
 
   String get pretty => _pretty(address);
 
+  Uint8List decode() => base32.decode(address);
+
   @override
   String toString() => '${toJson()}';
 

@@ -2,15 +2,15 @@ part of xpx_chain_sdk.buffer.schema;
 
 Schema addExchangeOfferTransactionSchema() {
   final List<SchemaAttribute> schemaDefinition = [
-    _newScalarAttribute('offersCount', _byteSize),
-    _newTableArrayAttribute(
+    scalarAttribute('offersCount', _byteSize),
+    tableArrayAttribute(
         'offers',
         Schema([
-          _newArrayAttribute('mosaicId', _intSize),
-          _newArrayAttribute('mosaicAmount', _intSize),
-          _newArrayAttribute('cost', _intSize),
-          _newScalarAttribute('type', _byteSize),
-          _newArrayAttribute('duration', _intSize),
+          arrayAttribute('mosaicId', _intSize),
+          arrayAttribute('mosaicAmount', _intSize),
+          arrayAttribute('cost', _intSize),
+          scalarAttribute('type', _byteSize),
+          arrayAttribute('duration', _intSize),
         ]).schemaDefinition)
   ];
 
@@ -21,15 +21,15 @@ Schema addExchangeOfferTransactionSchema() {
 
 Schema exchangeOfferTransactionSchema() {
   final List<SchemaAttribute> schemaDefinition = [
-    _newScalarAttribute('offersCount', _byteSize),
-    _newTableArrayAttribute(
+    scalarAttribute('offersCount', _byteSize),
+    tableArrayAttribute(
         'offers',
         Schema([
-          _newArrayAttribute('mosaicId', _intSize),
-          _newArrayAttribute('mosaicAmount', _intSize),
-          _newArrayAttribute('cost', _intSize),
-          _newScalarAttribute('type', _byteSize),
-          _newArrayAttribute('owner', _byteSize),
+          arrayAttribute('mosaicId', _intSize),
+          arrayAttribute('mosaicAmount', _intSize),
+          arrayAttribute('cost', _intSize),
+          scalarAttribute('type', _byteSize),
+          arrayAttribute('owner', _byteSize),
         ]).schemaDefinition)
   ];
 
@@ -40,12 +40,12 @@ Schema exchangeOfferTransactionSchema() {
 
 Schema removeExchangeOfferTransactionSchema() {
   final List<SchemaAttribute> schemaDefinition = [
-    _newScalarAttribute('offersCount', _byteSize),
-    _newTableArrayAttribute(
+    scalarAttribute('offersCount', _byteSize),
+    tableArrayAttribute(
         'offers',
         Schema([
-          _newArrayAttribute('mosaicId', _intSize),
-          _newScalarAttribute('type', _byteSize),
+          arrayAttribute('mosaicId', _intSize),
+          scalarAttribute('type', _byteSize),
         ]).schemaDefinition)
   ];
 

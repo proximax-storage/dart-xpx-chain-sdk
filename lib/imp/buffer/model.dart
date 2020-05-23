@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 
+part 'model/account_properties_transaction_catapult.dart';
 part 'model/aggregate_transaction_buffer.dart';
 part 'model/alias_transaction_buffer.dart';
 part 'model/exchange_transaction_buffer.dart';
