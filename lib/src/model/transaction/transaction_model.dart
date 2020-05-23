@@ -26,41 +26,6 @@ class CosignatureSignedTransaction {
   }
 }
 
-abstract class Id {
-  const Id(this._id);
-
-  final Uint64 _id;
-
-  @override
-  String toString() => _id.toString();
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Id && runtimeType == other.runtimeType && _id == other._id;
-
-  @override
-  int get hashCode => 'Id'.hashCode ^ _id.hashCode;
-
-  String toHex() {
-    if (_id == null) {
-      return null;
-    }
-
-    var s = _id.toHex().toUpperCase();
-    if (s.length % 2 != 0) {
-      s = '0$s';
-    }
-    return s;
-  }
-
-  List<int> toIntArray() => _id.toIntArray();
-
-  Uint64 toUint64() => _id;
-
-  Uint8List toBytes() => _id.toBytes();
-}
-
 abstract class Transaction {
   AbstractTransaction _abstractTransaction();
   Map<String, dynamic> toJson();
@@ -175,9 +140,21 @@ class TransactionType {
   static const TransactionType removeExchangeOffer =
       TransactionType._internal(0x435D);
 
+  static const TransactionType accountPropertyAddress =
+      TransactionType._internal(0x4150);
+
+  static const TransactionType accountPropertyMosaic =
+      TransactionType._internal(0x4250);
+
+  static const TransactionType accountPropertyEntityType =
+      TransactionType._internal(0x4350);
+
   final int _value;
 
   static final List<TransactionType> list = <TransactionType>[
+    accountPropertyAddress,
+    accountPropertyMosaic,
+    accountPropertyEntityType,
     aggregateCompleted,
     aggregateBonded,
     addressAlias,

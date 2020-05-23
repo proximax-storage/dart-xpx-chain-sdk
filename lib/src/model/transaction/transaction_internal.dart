@@ -5,7 +5,10 @@ final regList = RegExp(r'^List<(.*)>$');
 final regMap = RegExp(r'^Map<String,(.*)>$');
 
 // TransactionVersion enums
-const aggregateCompletedVersion = 2,
+const accountPropertyAddressVersion = 1,
+    accountPropertyMosaicVersion = 1,
+    accountPropertyEntityTypeVersion = 1,
+    aggregateCompletedVersion = 2,
     aggregateBondedVersion = 2,
     addressAliasVersion = 1,
     registerNamespaceVersion = 2,
@@ -33,6 +36,12 @@ String _mapTransaction(decodedJson) {
   final t = TransactionType.fromInt(rawT);
 
   switch (t) {
+    case TransactionType.accountPropertyAddress:
+      return 'AccountPropertiesAddress';
+    case TransactionType.accountPropertyMosaic:
+      return 'AccountPropertiesMosaic';
+    case TransactionType.accountPropertyEntityType:
+      return 'AccountPropertiesEntityType';
     case TransactionType.aggregateCompleted:
       return 'AggregateCompleted';
     case TransactionType.aggregateBonded:
@@ -100,6 +109,10 @@ dynamic txnDeserialize(value, String targetType) {
     switch (targetType) {
       case 'Transfer':
         return TransferTransactionInfoDTO.fromJson(value);
+      case 'AccountPropertiesAddress':
+        return AccountPropertiesAddressTransactionInfoDTO.fromJson(value);
+      case 'AccountPropertiesMosaic':
+        return AccountPropertiesMosaicTransactionInfoDTO.fromJson(value);
       case 'AddExchangeOffer':
         return AddExchangeOfferTransactionInfoDTO.fromJson(value);
       case 'RemoveExchangeOffer':
@@ -274,6 +287,12 @@ int cosignatoryModificationArrayToBuffer(
 
 Transaction deserializeDTO(value) {
   switch (value.runtimeType) {
+    case AccountPropertiesAddressTransactionInfoDTO:
+      return AccountPropertiesAddressTransaction.fromDTO(value);
+    case AccountPropertiesMosaicTransactionInfoDTO:
+      return AccountPropertiesMosaicTransaction.fromDTO(value);
+    case AccountPropertiesEntityTypeTransactionInfoDTO:
+      return AccountPropertiesEntityTypeTransaction.fromDTO(value);
     case TransferTransactionInfoDTO:
       return TransferTransaction.fromDTO(value);
     case RegisterNamespaceTransactionInfoDTO:

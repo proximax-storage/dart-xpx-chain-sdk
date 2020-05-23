@@ -1,6 +1,6 @@
 part of xpx_chain_sdk.namespace;
 
-class NamespaceId extends Id {
+class NamespaceId extends AssetId {
   factory NamespaceId({final Uint64 id}) {
     if (id == null) {
       throw errNullId;

@@ -7,7 +7,7 @@ enum MosaicPropertyId {
 }
 
 class Mosaic {
-  Mosaic(Id mosaicId, Uint64 amount) {
+  Mosaic(AssetId mosaicId, Uint64 amount) {
     if (mosaicId == null) {
       throw errNullMosaicId;
     } else if (amount == null) {
@@ -25,7 +25,7 @@ class Mosaic {
     amount = v._amount.toUint64();
   }
 
-  Id assetId;
+  AssetId assetId;
   Uint64 amount;
 
   @override
@@ -46,7 +46,7 @@ class Mosaic {
       : json.map((value) => Mosaic.fromDTO(value)).toList();
 }
 
-class MosaicId extends Id {
+class MosaicId extends AssetId {
   factory MosaicId({final Uint64 id}) {
     if (id == null) {
       throw errNullId;

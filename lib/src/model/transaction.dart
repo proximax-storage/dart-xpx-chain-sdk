@@ -26,6 +26,7 @@ import 'package:xpx_chain_sdk/imp/buffer.dart';
 
 part 'transaction/transaction_dto.dart';
 part 'transaction/transaction_hashes.dart';
+part 'transaction/asset_id.dart';
 part 'transaction/transaction_ids.dart';
 part 'transaction/transaction_internal.dart';
 part 'transaction/transaction_model.dart';
@@ -39,3 +40,6 @@ part 'transaction/transaction_alias.dart';
 part 'transaction/transaction_exchange.dart';
 part 'transaction/transaction_multisig.dart';
 part 'transaction/transaction_namespace.dart';
+part 'transaction/transaciton_account_properties_address.dart';
+part 'transaction/transaciton_account_properties_mosaic.dart';
+part 'transaction/transaciton_account_properties_entity_type.dart';

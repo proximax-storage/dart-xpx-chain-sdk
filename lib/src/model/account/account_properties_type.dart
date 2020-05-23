@@ -63,5 +63,22 @@ class AccountPropertyType {
   }
 
   @override
-  String toString() => '{value: $value}';
+  String toString() {
+    switch (value) {
+      case 0x01:
+        return 'allowAddress';
+      case 0x02:
+        return 'allowMosaic';
+      case 0x04:
+        return 'allowTransaction';
+      case 0x80 + 0x01:
+        return 'blockAddress';
+      case 0x80 + 0x02:
+        return 'blockMosaic';
+      case 0x80 + 0x04:
+        return 'blockTransaction';
+      default:
+        return 'unknownAccountPropertyType';
+    }
+  }
 }
