@@ -3,10 +3,10 @@ part of xpx_chain_sdk.transaction;
 // AliasTransaction
 class AccountPropertiesEntityTypeTransaction extends AbstractTransaction
     implements Transaction {
-  AccountPropertiesEntityTypeTransaction._(int version, Deadline deadline,
-      this.propertyType, this.modifications, int networkType)
+  AccountPropertiesEntityTypeTransaction(
+      Deadline deadline, this.propertyType, this.modifications, int networkType)
       : super() {
-    this.version = accountPropertyEntityTypeVersion;
+    version = accountPropertyEntityTypeVersion;
     this.deadline = deadline;
     type = TransactionType.accountPropertyEntityType;
     this.networkType = networkType;
@@ -53,5 +53,39 @@ class AccountPropertiesEntityTypeTransaction extends AbstractTransaction
   AbstractTransaction _abstractTransaction() => _absTransaction();
 
   @override
-  Uint8List generateBytes() => null;
+  Uint8List generateBytes() {
+    final builder = fb.Builder(initialSize: 0);
+
+    /// Create mosaics
+    final List<int> msb = List(modifications.length);
+    int i = 0;
+    for (final modification in modifications) {
+      final entity = modification.transactionType;
+      final aV = builder.writeListUint8(entity.toBytes());
+
+      final ms = PropertyModificationBufferBuilder(builder)
+        ..begin()
+        ..addModificationType(modification.modificationType.index)
+        ..addValueOffset(aV);
+      msb[i] = ms.finish();
+      i++;
+    }
+
+    final mV = builder.writeList(msb);
+
+    final vectors = _generateVector(builder);
+
+    final txnBuilder = AccountPropertiesTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(_size())
+      ..addPropertyType(propertyType.value)
+      ..addModificationCount(modifications.length)
+      ..addModificationsOffset(mV);
+    _buildVector(builder, vectors);
+
+    final codedAccountProperty = txnBuilder.finish();
+
+    return accountPropertyTransactionSchema()
+        .serialize(builder.finish(codedAccountProperty));
+  }
 }
