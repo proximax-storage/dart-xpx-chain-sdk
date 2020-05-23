@@ -3,18 +3,30 @@ part of xpx_chain_sdk.account;
 class AccountPropertyDTO {
   AccountPropertyDTO.fromJson(Map<String, dynamic> json)
       : assert(json != null, 'json must not be null') {
-    _propertyType = json['propertyType'];
-    _values = json['values'];
+    propertyType = json['propertyType'];
+
+    if (propertyType & 0x01 != 0) {
+      addresses = List<String>.from(json['values']);
+    } else if (propertyType & 0x02 != 0) {
+      mosaicIds = List<UInt64DTO>.from(json['values']);
+    } else if (propertyType & 0x04 != 0) {
+      entityTypes = List<int>.from(json['values']);
+    } else {
+      throw errUnknownPropertyType;
+    }
   }
 
-  int _propertyType;
-
-  List<Object> _values = [];
+  int propertyType;
+  List<String> addresses;
+  List<UInt64DTO> mosaicIds;
+  List<int> entityTypes;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['propertyType'] = _propertyType;
-    data['values'] = _values;
+    data['propertyType'] = propertyType;
+    data['addresses'] = addresses;
+    data['mosaicIds'] = mosaicIds;
+    data['entityTypes'] = entityTypes;
 
     return data;
   }

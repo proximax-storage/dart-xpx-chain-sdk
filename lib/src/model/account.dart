@@ -17,6 +17,8 @@ import 'package:xpx_chain_sdk/src/model/uint64.dart';
 part 'account/account_dto.dart';
 part 'account/account_model.dart';
 part 'account/account_internal.dart';
+part 'account/account_properties.dart';
+part 'account/account_properties_type.dart';
 part 'account/account_properties_dto.dart';
 part 'account/account_property_dto.dart';
 part 'account/address_model.dart';
