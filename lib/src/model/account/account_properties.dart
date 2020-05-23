@@ -17,24 +17,29 @@ class AccountProperties {
       switch (v.propertyType) {
         case 0x01:
           allowedAddresses.addAll(v.addresses.map(Address.fromEncoded));
-          return;
+          continue;
+
         case 0x02:
           allowedMosaicId
               .addAll(v.mosaicIds.map((m) => MosaicId.fromId(m.toUint64())));
-          return;
+          continue;
+
         case 0x04:
           allowedEntityTypes.addAll(v.entityTypes.map(TransactionType.fromInt));
-          return;
+          continue;
+
         case 0x80 + 0x01:
           blockedAddresses.addAll(v.addresses.map(Address.fromEncoded));
-          return;
+          continue;
+
         case 0x80 + 0x02:
           blockedMosaicId
               .addAll(v.mosaicIds.map((m) => MosaicId.fromId(m.toUint64())));
-          return;
+          continue;
+
         case 0x80 + 0x04:
           blockedEntityTypes.addAll(v.entityTypes.map(TransactionType.fromInt));
-          return;
+          continue;
       }
     }
   }

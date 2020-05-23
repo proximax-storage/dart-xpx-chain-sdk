@@ -8,7 +8,7 @@ class AccountPropertyDTO {
     if (propertyType & 0x01 != 0) {
       addresses = List<String>.from(json['values']);
     } else if (propertyType & 0x02 != 0) {
-      mosaicIds = List<UInt64DTO>.from(json['values']);
+      mosaicIds = UInt64DTO.listFromJson(json['values']);
     } else if (propertyType & 0x04 != 0) {
       entityTypes = List<int>.from(json['values']);
     } else {
