@@ -25,6 +25,7 @@ class AccountPropertiesEntityTypeTransaction extends AbstractTransaction
   List<AccountPropertiesEntityTypeModification> modifications;
 
   int get size => _size();
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   @override

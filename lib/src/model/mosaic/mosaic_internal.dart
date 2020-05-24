@@ -22,14 +22,14 @@ bool hasBits(Uint64 number, int bits) => number.toInt() & bits == bits;
 // Create xpx with using xpx as unit
 Mosaic xpx(int amount) {
   if (amount > xpxMaxValue) {
-    throw new ArgumentError('Maximum xpx value must be $xpxMaxValue');
+    throw ArgumentError('Maximum xpx value must be $xpxMaxValue');
   }
   return Mosaic(xpxNamespaceId, Uint64(amount));
 }
 
 Mosaic xpxRelative(int amount) {
   if (amount > xpxMaxRelativeValue) {
-    throw new ArgumentError(
+    throw ArgumentError(
         'Maximum xpx relative value must be $xpxMaxRelativeValue');
   }
   return xpx(amount * xpxDivisibility);

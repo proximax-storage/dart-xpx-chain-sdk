@@ -1,3 +1,7 @@
+## 0.0.5+3
+### Updates
+[UPDATE] format code.
+
 ## 0.0.5+2
 ### New Features
 [ADD] AccountPropertiesAddressTransaction.

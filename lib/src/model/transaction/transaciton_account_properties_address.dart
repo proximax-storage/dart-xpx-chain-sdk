@@ -25,6 +25,7 @@ class AccountPropertiesAddressTransaction extends AbstractTransaction
   List<AccountPropertiesAddressModification> modifications;
 
   int get size => _size();
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   @override

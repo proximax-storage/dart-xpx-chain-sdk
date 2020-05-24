@@ -63,6 +63,7 @@ class AccountNamesDTO {
 
   /* The address of the account in hexadecimal. */
   String address;
+
   /* The mosaic linked namespace names. */
   List<String> _names;
 }

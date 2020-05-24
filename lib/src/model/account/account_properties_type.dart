@@ -59,7 +59,7 @@ class AccountPropertyType {
       }
     }
 
-    throw new ArgumentError(unknownAccountPropertyType);
+    throw ArgumentError(unknownAccountPropertyType);
   }
 
   @override

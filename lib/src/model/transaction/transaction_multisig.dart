@@ -96,6 +96,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
   List<MultisigCosignatoryModification> modifications;
 
   int get size => _size();
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   static List<ModifyMultisigAccountTransaction> listFromDTO(

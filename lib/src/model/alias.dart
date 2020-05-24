@@ -6,5 +6,5 @@ import 'package:xpx_chain_sdk/src/model/transaction.dart';
 import 'package:xpx_chain_sdk/src/model/uint64.dart';
 
 part 'alias/alias_dto.dart';
-part 'alias/alias_model.dart';
 part 'alias/alias_internal.dart';
+part 'alias/alias_model.dart';

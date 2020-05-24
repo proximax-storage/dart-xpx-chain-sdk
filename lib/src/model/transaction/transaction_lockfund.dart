@@ -37,6 +37,7 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
   SignedTransaction signedTransaction;
 
   int get size => _size();
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   @override

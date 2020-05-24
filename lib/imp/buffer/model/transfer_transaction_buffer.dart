@@ -14,6 +14,7 @@ class MessageBuffer {
   final int _bcOffset;
 
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
+
   List<int> get payload => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
 
@@ -94,14 +95,15 @@ class MosaicBuffer {
 
   MosaicBuffer._(this._bc, this._bcOffset);
 
-  static const fb.Reader<MosaicBuffer> reader = const _MosaicBufferReader();
+  static const fb.Reader<MosaicBuffer> reader = _MosaicBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  List<int> get id => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get id => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 4, null);
-  List<int> get amount => const fb.ListReader<int>(const fb.Uint32Reader())
+
+  List<int> get amount => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
 
   @override
@@ -191,23 +193,34 @@ class TransferTransactionBuffer {
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
+
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
+
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader())
+
+  List<int> get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
-  List<int> get recipient => const fb.ListReader<int>(const fb.Uint8Reader())
+
+  List<int> get recipient => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 18, null);
+
   int get messageSize =>
       const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 20, 0);
+
   int get numMosaics => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
+
   MessageBuffer get message =>
       MessageBuffer.reader.vTableGet(_bc, _bcOffset, 24, null);
+
   List<MosaicBuffer> get mosaics =>
       const fb.ListReader<MosaicBuffer>(MosaicBuffer.reader)
           .vTableGet(_bc, _bcOffset, 26, null);

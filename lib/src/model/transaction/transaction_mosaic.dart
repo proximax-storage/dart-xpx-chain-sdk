@@ -37,6 +37,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   MosaicId mosaicId;
 
   int get size => _size();
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   static List<MosaicDefinitionTransaction> listFromDTO(
@@ -169,6 +170,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   MosaicId mosaicId;
 
   int get size => _size();
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   static List<MosaicSupplyChangeTransaction> listFromDTO(
