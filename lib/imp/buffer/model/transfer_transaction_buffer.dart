@@ -187,7 +187,7 @@ class TransferTransactionBuffer {
   TransferTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<TransferTransactionBuffer> reader =
-      const _TransferTransactionBufferReader();
+      _TransferTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;

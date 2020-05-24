@@ -101,7 +101,7 @@ class AccountPropertiesTransactionBuffer {
   AccountPropertiesTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<AccountPropertiesTransactionBuffer> reader =
-      const _AccountPropertiesTransactionBufferReader();
+      _AccountPropertiesTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;

@@ -97,7 +97,7 @@ class MosaicDefinitionTransactionBuffer {
   MosaicDefinitionTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<MosaicDefinitionTransactionBuffer> reader =
-      const _MosaicDefinitionTransactionBufferReader();
+      _MosaicDefinitionTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
