@@ -32,6 +32,7 @@ class AddOfferDTO extends OfferDTO {
   AddOfferDTO.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     duration = UInt64DTO.fromJson(json['duration']);
   }
+
   UInt64DTO duration;
 
   static List<AddOfferDTO> listFromJson(List<dynamic> json) => json == null
@@ -44,6 +45,7 @@ class ConfirmationOfferDTO extends OfferDTO {
       : super.fromJson(json) {
     owner = json['owner'];
   }
+
   String owner;
 
   static List<ConfirmationOfferDTO> listFromJson(List<dynamic> json) =>

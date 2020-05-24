@@ -2,31 +2,39 @@ part of xpx_chain_sdk.buffer.model;
 
 class AddExchangeOfferTransactionBuffer {
   factory AddExchangeOfferTransactionBuffer(List<int> bytes) {
-    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
   AddExchangeOfferTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<AddExchangeOfferTransactionBuffer> reader =
-      const _AddExchangeOfferTransactionBufferReader();
+      _AddExchangeOfferTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
+
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
+
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader())
+
+  List<int> get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
+
   int get offersCount =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+
   List<AddExchangeOfferBuffer> get offers =>
       const fb.ListReader<AddExchangeOfferBuffer>(AddExchangeOfferBuffer.reader)
           .vTableGet(_bc, _bcOffset, 20, null);
@@ -43,7 +51,7 @@ class _AddExchangeOfferTransactionBufferReader
   @override
   AddExchangeOfferTransactionBuffer createObject(
           fb.BufferContext bc, int offset) =>
-      new AddExchangeOfferTransactionBuffer._(bc, offset);
+      AddExchangeOfferTransactionBuffer._(bc, offset);
 }
 
 class AddExchangeOfferTransactionBufferBuilder {
@@ -180,7 +188,7 @@ class AddExchangeOfferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    final fb.Builder fbBuilder = new fb.Builder();
+    final fb.Builder fbBuilder = fb.Builder();
     final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -188,7 +196,7 @@ class AddExchangeOfferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
 
 class ExchangeOfferTransactionBuffer {
   factory ExchangeOfferTransactionBuffer(List<int> bytes) {
-    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
@@ -201,18 +209,26 @@ class ExchangeOfferTransactionBuffer {
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
+
   List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
+
   List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
+
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
+
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
+
   List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
+
   List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
+
   int get offersCount =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+
   List<ExchangeOfferBuffer> get offers =>
       const fb.ListReader<ExchangeOfferBuffer>(ExchangeOfferBuffer.reader)
           .vTableGet(_bc, _bcOffset, 20, null);
@@ -229,7 +245,7 @@ class _ExchangeOfferTransactionBufferReader
   @override
   ExchangeOfferTransactionBuffer createObject(
           fb.BufferContext bc, int offset) =>
-      new ExchangeOfferTransactionBuffer._(bc, offset);
+      ExchangeOfferTransactionBuffer._(bc, offset);
 }
 
 class ExchangeOfferTransactionBufferBuilder {
@@ -366,7 +382,7 @@ class ExchangeOfferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    final fb.Builder fbBuilder = new fb.Builder();
+    final fb.Builder fbBuilder = fb.Builder();
     final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -374,7 +390,7 @@ class ExchangeOfferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
 
 class RemoveExchangeOfferTransactionBuffer {
   factory RemoveExchangeOfferTransactionBuffer(List<int> bytes) {
-    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
@@ -387,18 +403,26 @@ class RemoveExchangeOfferTransactionBuffer {
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
+
   List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
+
   List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
+
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
+
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
+
   List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
+
   List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
+
   int get offersCount =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+
   List<RemoveExchangeOfferBuffer> get offers =>
       const fb.ListReader<RemoveExchangeOfferBuffer>(
               RemoveExchangeOfferBuffer.reader)
@@ -416,7 +440,7 @@ class _RemoveExchangeOfferTransactionBufferReader
   @override
   RemoveExchangeOfferTransactionBuffer createObject(
           fb.BufferContext bc, int offset) =>
-      new RemoveExchangeOfferTransactionBuffer._(bc, offset);
+      RemoveExchangeOfferTransactionBuffer._(bc, offset);
 }
 
 class RemoveExchangeOfferTransactionBufferBuilder {
@@ -554,7 +578,7 @@ class RemoveExchangeOfferTransactionBufferObjectBuilder
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    final fb.Builder fbBuilder = new fb.Builder();
+    final fb.Builder fbBuilder = fb.Builder();
     final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -562,7 +586,7 @@ class RemoveExchangeOfferTransactionBufferObjectBuilder
 
 class AddExchangeOfferBuffer {
   factory AddExchangeOfferBuffer(List<int> bytes) {
-    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
@@ -576,12 +600,16 @@ class AddExchangeOfferBuffer {
 
   List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 4, null);
+
   List<int> get mosaicAmount =>
       const fb.ListReader<int>(const fb.Uint32Reader())
           .vTableGet(_bc, _bcOffset, 6, null);
+
   List<int> get cost => const fb.ListReader<int>(const fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
+
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 10, 0);
+
   List<int> get duration => const fb.ListReader<int>(const fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 12, null);
 
@@ -596,7 +624,7 @@ class _AddExchangeOfferBufferReader
 
   @override
   AddExchangeOfferBuffer createObject(fb.BufferContext bc, int offset) =>
-      new AddExchangeOfferBuffer._(bc, offset);
+      AddExchangeOfferBuffer._(bc, offset);
 }
 
 class AddExchangeOfferBufferBuilder {
@@ -691,7 +719,7 @@ class AddExchangeOfferBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    final fb.Builder fbBuilder = new fb.Builder();
+    final fb.Builder fbBuilder = fb.Builder();
     final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -699,7 +727,7 @@ class AddExchangeOfferBufferObjectBuilder extends fb.ObjectBuilder {
 
 class ExchangeOfferBuffer {
   factory ExchangeOfferBuffer(List<int> bytes) {
-    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
@@ -713,12 +741,16 @@ class ExchangeOfferBuffer {
 
   List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 4, null);
+
   List<int> get mosaicAmount =>
       const fb.ListReader<int>(const fb.Uint32Reader())
           .vTableGet(_bc, _bcOffset, 6, null);
+
   List<int> get cost => const fb.ListReader<int>(const fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
+
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 10, 0);
+
   List<int> get owner => const fb.ListReader<int>(const fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 12, null);
 
@@ -732,7 +764,7 @@ class _ExchangeOfferBufferReader extends fb.TableReader<ExchangeOfferBuffer> {
 
   @override
   ExchangeOfferBuffer createObject(fb.BufferContext bc, int offset) =>
-      new ExchangeOfferBuffer._(bc, offset);
+      ExchangeOfferBuffer._(bc, offset);
 }
 
 class ExchangeOfferBufferBuilder {
@@ -826,7 +858,7 @@ class ExchangeOfferBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    final fb.Builder fbBuilder = new fb.Builder();
+    final fb.Builder fbBuilder = fb.Builder();
     final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }
@@ -834,7 +866,7 @@ class ExchangeOfferBufferObjectBuilder extends fb.ObjectBuilder {
 
 class RemoveExchangeOfferBuffer {
   factory RemoveExchangeOfferBuffer(List<int> bytes) {
-    final fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    final fb.BufferContext rootRef = fb.BufferContext.fromBytes(bytes);
     return reader.read(rootRef, 0);
   }
 
@@ -848,6 +880,7 @@ class RemoveExchangeOfferBuffer {
 
   List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 4, null);
+
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 6, 0);
 
   @override
@@ -861,7 +894,7 @@ class _RemoveExchangeOfferBufferReader
 
   @override
   RemoveExchangeOfferBuffer createObject(fb.BufferContext bc, int offset) =>
-      new RemoveExchangeOfferBuffer._(bc, offset);
+      RemoveExchangeOfferBuffer._(bc, offset);
 }
 
 class RemoveExchangeOfferBufferBuilder {
@@ -915,7 +948,7 @@ class RemoveExchangeOfferBufferObjectBuilder extends fb.ObjectBuilder {
   /// Convenience method to serialize to byte list.
   @override
   Uint8List toBytes([String fileIdentifier]) {
-    final fb.Builder fbBuilder = new fb.Builder();
+    final fb.Builder fbBuilder = fb.Builder();
     final int offset = finish(fbBuilder);
     return fbBuilder.finish(offset, fileIdentifier);
   }

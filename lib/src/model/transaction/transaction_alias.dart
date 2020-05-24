@@ -37,6 +37,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
   NamespaceId namespaceId;
 
   int get size => _size();
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   String _aliasTransactionToString() {

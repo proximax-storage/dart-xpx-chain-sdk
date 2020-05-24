@@ -28,8 +28,11 @@ class CosignatureSignedTransaction {
 
 abstract class Transaction {
   AbstractTransaction _abstractTransaction();
+
   Map<String, dynamic> toJson();
+
   Uint8List generateBytes();
+
   int _size();
 }
 
@@ -186,7 +189,7 @@ class TransactionType {
     throw errUnknownTransactionType;
   }
 
-  Uint8List toBytes(){
+  Uint8List toBytes() {
     final buffer = Uint8List(2).buffer;
     final s = ByteData.view(buffer);
 
@@ -307,6 +310,7 @@ class AbstractTransaction with TransactionInfo {
   PublicAccount signer;
 
   PublicAccount get toAggregate => signer;
+
   set toAggregate(PublicAccount signer) => this.signer = signer;
 
   void _generateMeta(MetaTransactionDTO dto) {

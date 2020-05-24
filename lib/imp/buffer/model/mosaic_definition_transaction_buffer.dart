@@ -15,6 +15,7 @@ class MosaicPropertyB {
 
   int get mosaicPropertyId =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
+
   List<int> get value => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
 
@@ -102,25 +103,37 @@ class MosaicDefinitionTransactionBuffer {
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
+
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
+
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
-  List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader())
+
+  List<int> get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
+
   int get mosaicNonce =>
       const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 18, 0);
-  List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader())
+
+  List<int> get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 20, null);
+
   int get numOptionalProperties =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
+
   int get flags => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 24, 0);
+
   int get divisibility =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 26, 0);
+
   List<MosaicPropertyB> get optionalProperties =>
       const fb.ListReader<MosaicPropertyB>(MosaicPropertyB.reader)
           .vTableGet(_bc, _bcOffset, 28, null);

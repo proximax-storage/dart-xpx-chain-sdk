@@ -8,7 +8,7 @@ part of xpx_chain_sdk.uint64;
 class Uint64 implements Comparable<Uint64> {
   factory Uint64([final num value = 0, final num value2 = 0]) {
     if (_minValueSigned > value || _minValueSigned > value2) {
-      throw new ArgumentError('Minimum value must be $_minValueUnsigned');
+      throw ArgumentError('Minimum value must be $_minValueUnsigned');
     }
 
     // check if user is trying to create using an array of (32-bit) int

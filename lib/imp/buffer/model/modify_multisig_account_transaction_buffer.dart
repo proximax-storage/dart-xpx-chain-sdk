@@ -15,22 +15,32 @@ class ModifyMultisigAccountTransactionBuffer {
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
+
   List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
+
   List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
+
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
+
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
+
   List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
+
   List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
+
   int get minRemovalDelta =>
       const fb.Int8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+
   int get minApprovalDelta =>
       const fb.Int8Reader().vTableGet(_bc, _bcOffset, 20, 0);
+
   int get numModifications =>
       const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
+
   List<CosignatoryModificationBuffer> get modifications =>
       const fb.ListReader<CosignatoryModificationBuffer>(
               CosignatoryModificationBuffer.reader)

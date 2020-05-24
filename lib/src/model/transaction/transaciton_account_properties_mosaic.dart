@@ -25,6 +25,7 @@ class AccountPropertiesMosaicTransaction extends AbstractTransaction
   List<AccountPropertiesMosaicModification> modifications;
 
   int get size => _size();
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   @override

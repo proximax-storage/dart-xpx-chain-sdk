@@ -41,6 +41,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   List<AggregateTransactionCosignature> cosignatures;
 
   int get size => _size();
+
   AbstractTransaction get abstractTransaction => _abstractTransaction();
 
   static List<AggregateTransaction> listFromDTO(

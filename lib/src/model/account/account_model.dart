@@ -93,6 +93,7 @@ class AccountNames {
 
   /* The address of the account in hexadecimal. */
   Address address;
+
   /* The mosaic linked namespace names. */
   List<String> names;
 
