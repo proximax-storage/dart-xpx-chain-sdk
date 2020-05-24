@@ -10,7 +10,7 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
         assert(duration != null, 'duration must not be null'),
         assert(signedTx != null, 'signedTx must not be null'),
         super() {
-    if (signedTx.transactionType != TransactionType.aggregateBonded._value) {
+    if (signedTx.transactionType != TransactionType.aggregateBonded.value) {
       throw errEmptyModifications;
     } else {
       version = lockVersion;

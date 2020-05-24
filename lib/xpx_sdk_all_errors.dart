@@ -47,3 +47,4 @@ final errUnknownTransactionType = Exception('unknown transaction type');
 final errNullConfirmations = Exception('confirmations must not be null');
 final errNullAddOffers = Exception('addOffers must not be null');
 final errNullRemoveOffers = Exception('removeOffers must not be null');
+final errUnknownPropertyType = Exception('not supported PropertyType');

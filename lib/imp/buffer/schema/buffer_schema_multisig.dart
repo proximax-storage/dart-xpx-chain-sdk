@@ -2,14 +2,14 @@ part of xpx_chain_sdk.buffer.schema;
 
 Schema modifyMultisigAccountTransactionSchema() {
   final List<SchemaAttribute> schemaDefinition = [
-    _newScalarAttribute('minRemovalDelta', _byteSize),
-    _newScalarAttribute('minApprovalDelta', _byteSize),
-    _newScalarAttribute('numModifications', _byteSize),
-    _newTableArrayAttribute(
+    scalarAttribute('minRemovalDelta', _byteSize),
+    scalarAttribute('minApprovalDelta', _byteSize),
+    scalarAttribute('numModifications', _byteSize),
+    tableArrayAttribute(
         'modification',
         Schema([
-          _newScalarAttribute('type', _byteSize),
-          _newArrayAttribute('cosignatoryPublicKey', _byteSize),
+          scalarAttribute('type', _byteSize),
+          arrayAttribute('cosignatoryPublicKey', _byteSize),
         ]).schemaDefinition)
   ];
   schemaDefinition.insertAll(0, commonSchema());

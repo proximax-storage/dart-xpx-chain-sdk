@@ -26,41 +26,6 @@ class CosignatureSignedTransaction {
   }
 }
 
-abstract class Id {
-  const Id(this._id);
-
-  final Uint64 _id;
-
-  @override
-  String toString() => _id.toString();
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Id && runtimeType == other.runtimeType && _id == other._id;
-
-  @override
-  int get hashCode => 'Id'.hashCode ^ _id.hashCode;
-
-  String toHex() {
-    if (_id == null) {
-      return null;
-    }
-
-    var s = _id.toHex().toUpperCase();
-    if (s.length % 2 != 0) {
-      s = '0$s';
-    }
-    return s;
-  }
-
-  List<int> toIntArray() => _id.toIntArray();
-
-  Uint64 toUint64() => _id;
-
-  Uint8List toBytes() => _id.toBytes();
-}
-
 abstract class Transaction {
   AbstractTransaction _abstractTransaction();
   Map<String, dynamic> toJson();
@@ -122,7 +87,7 @@ mixin TransactionInfo {
 }
 
 class TransactionType {
-  const TransactionType._internal(this._value);
+  const TransactionType._internal(this.value);
 
   static const TransactionType aggregateCompleted =
       TransactionType._internal(0x4141);
@@ -175,9 +140,21 @@ class TransactionType {
   static const TransactionType removeExchangeOffer =
       TransactionType._internal(0x435D);
 
-  final int _value;
+  static const TransactionType accountPropertyAddress =
+      TransactionType._internal(0x4150);
+
+  static const TransactionType accountPropertyMosaic =
+      TransactionType._internal(0x4250);
+
+  static const TransactionType accountPropertyEntityType =
+      TransactionType._internal(0x4350);
+
+  final int value;
 
   static final List<TransactionType> list = <TransactionType>[
+    accountPropertyAddress,
+    accountPropertyMosaic,
+    accountPropertyEntityType,
     aggregateCompleted,
     aggregateBonded,
     addressAlias,
@@ -201,7 +178,7 @@ class TransactionType {
 
   static TransactionType fromInt(int value) {
     for (var type in list) {
-      if (type._value == value) {
+      if (type.value == value) {
         return type;
       }
     }
@@ -209,12 +186,20 @@ class TransactionType {
     throw errUnknownTransactionType;
   }
 
+  Uint8List toBytes(){
+    final buffer = Uint8List(2).buffer;
+    final s = ByteData.view(buffer);
+
+    s.setInt16(0, TransactionType.addExchangeOffer.value, Endian.little);
+    return buffer.asUint8List();
+  }
+
   @override
-  String toString() => _value.toString();
+  String toString() => value.toString();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['value'] = _value;
+    data['value'] = value;
     return data;
   }
 }
@@ -351,7 +336,7 @@ class AbstractTransaction with TransactionInfo {
       ..addSignatureOffset(vector['signatureV'])
       ..addSignerOffset(vector['signerV'])
       ..addVersion(vector['versionV'])
-      ..addType(type._value)
+      ..addType(type.value)
       ..addFeeOffset(vector['feeV'])
       ..addDeadlineOffset(vector['deadlineV']);
   }

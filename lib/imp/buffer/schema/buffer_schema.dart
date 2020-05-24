@@ -210,25 +210,25 @@ class TableAttribute extends AbstractSchemaAttribute
   }
 }
 
-ArrayAttribute _newArrayAttribute(String name, int size) =>
+ArrayAttribute arrayAttribute(String name, int size) =>
     ArrayAttribute(name, size);
 
-ScalarAttribute _newScalarAttribute(String name, int size) =>
+ScalarAttribute scalarAttribute(String name, int size) =>
     ScalarAttribute(name, size);
 
-TableArrayAttribute _newTableArrayAttribute(
+TableArrayAttribute tableArrayAttribute(
         String name, List<SchemaAttribute> schema) =>
     TableArrayAttribute(name, schema);
 
-TableAttribute _newTableAttribute(String name, List<SchemaAttribute> schema) =>
+TableAttribute tableAttribute(String name, List<SchemaAttribute> schema) =>
     TableAttribute(name, schema);
 
 List<SchemaAttribute> commonSchema() => [
-      _newScalarAttribute('size', _intSize),
-      _newArrayAttribute('signature', _byteSize),
-      _newArrayAttribute('signer', _byteSize),
-      _newScalarAttribute('version', _intSize),
-      _newScalarAttribute('type', _shortSize),
-      _newArrayAttribute('maxFee', _intSize),
-      _newArrayAttribute('deadline', _intSize),
+      scalarAttribute('size', _intSize),
+      arrayAttribute('signature', _byteSize),
+      arrayAttribute('signer', _byteSize),
+      scalarAttribute('version', _intSize),
+      scalarAttribute('type', _shortSize),
+      arrayAttribute('maxFee', _intSize),
+      arrayAttribute('deadline', _intSize),
     ];

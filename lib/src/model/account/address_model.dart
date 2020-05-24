@@ -3,27 +3,21 @@ part of xpx_chain_sdk.account;
 class Address {
   Address._(this.address, this.networkType);
 
-  Address.fromEncoded(String encoded) {
+  static Address fromEncoded(String encoded) {
     final pH = hex.decode(encoded);
     final parsed = base32.encode(pH);
     final a = Address.fromRawAddress(parsed);
-    address = a.address;
-    networkType = a.networkType;
+    return Address._(a.address, a.networkType);
   }
 
-  /// Create an Address from a given public key.
-  Address.fromPublicKey(String pKey, this.networkType) {
+  /// Create an [Address] from a given public key.
+  static Address fromPublicKey(String pKey, int networkType) {
     if (networkType == null || NetworkType.getType(networkType) == 0) {
       throw ArgumentError('Network type unsupported');
     }
-    address = _generateEncodedAddress(pKey, networkType);
+    final address = _generateEncodedAddress(pKey, networkType);
+    return Address._(address, networkType);
   }
-
-  int networkType;
-
-  String address;
-
-  String get pretty => _pretty(address);
 
   /// Create an [Address] from a given raw address
   static Address fromRawAddress(String address) {
@@ -36,6 +30,14 @@ class Address {
 
     return Address._(addressRaw, addressNet[addressRaw[0]]);
   }
+
+  int networkType;
+
+  String address;
+
+  String get pretty => _pretty(address);
+
+  Uint8List decode() => base32.decode(address);
 
   @override
   String toString() => '${toJson()}';

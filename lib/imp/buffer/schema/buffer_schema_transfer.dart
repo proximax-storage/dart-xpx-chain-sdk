@@ -2,20 +2,20 @@ part of xpx_chain_sdk.buffer.schema;
 
 Schema transferTransactionSchema() {
   final List<SchemaAttribute> schemaDefinition = [
-    _newArrayAttribute('recipient', _byteSize),
-    _newScalarAttribute('messageSize', _shortSize),
-    _newScalarAttribute('numMosaics', _byteSize),
-    _newTableAttribute(
+    arrayAttribute('recipient', _byteSize),
+    scalarAttribute('messageSize', _shortSize),
+    scalarAttribute('numMosaics', _byteSize),
+    tableAttribute(
         'message',
         Schema([
-          _newScalarAttribute('type', _byteSize),
-          _newArrayAttribute('payload', _byteSize)
+          scalarAttribute('type', _byteSize),
+          arrayAttribute('payload', _byteSize)
         ]).schemaDefinition),
-    _newTableArrayAttribute(
+    tableArrayAttribute(
         'mosaics',
         Schema([
-          _newArrayAttribute('id', _intSize),
-          _newArrayAttribute('amount', _intSize),
+          arrayAttribute('id', _intSize),
+          arrayAttribute('amount', _intSize),
         ]).schemaDefinition)
   ];
 

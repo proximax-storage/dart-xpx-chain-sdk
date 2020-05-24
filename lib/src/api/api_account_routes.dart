@@ -357,9 +357,9 @@ class AccountRoutesApi {
     }
   }
 
-  Future<List<AccountNames>> getAccountProperties(Address address) async {
+  Future<AccountProperties> getAccountProperties(Address address) async {
     // verify required params are set
-    if (address != null) {
+    if (address == null) {
       throw ApiException(400, 'Missing required param: address');
     }
 
@@ -373,17 +373,16 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient
-          .deserialize(response.body, 'AccountPropertiesDTO')
-          .cast<AccountNamesDTO>();
+      final resp =
+          _apiClient.deserialize(response.body, 'AccountPropertiesDTO');
 
-      return AccountNames.listFromJson(resp);
+      return AccountProperties.fromDto(resp);
     } else {
       return null;
     }
   }
 
-  Future<List<AccountNames>> getAccountsProperties(
+  Future<List<AccountProperties>> getAccountsProperties(
       List<Address> addresses) async {
     final Object postBody = Addresses.fromList(addresses);
 
@@ -402,9 +401,8 @@ class AccountRoutesApi {
     } else if (response.body != null) {
       final resp = _apiClient
           .deserialize(response.body, 'List<AccountPropertiesDTO>')
-          .cast<AccountNamesDTO>();
-
-      return AccountNames.listFromJson(resp);
+          .cast<AccountPropertiesDTO>();
+      return AccountProperties.listFromJson(resp);
     } else {
       return null;
     }

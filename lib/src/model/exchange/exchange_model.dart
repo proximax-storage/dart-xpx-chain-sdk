@@ -263,7 +263,7 @@ class RemoveOffer {
   }
 
   OfferType offerType;
-  Id assetId;
+  AssetId assetId;
 
   @override
   String toString() => 'type: $offerType, assetId: $assetId';
