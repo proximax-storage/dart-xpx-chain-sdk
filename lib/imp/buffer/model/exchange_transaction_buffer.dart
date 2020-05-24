@@ -210,20 +210,20 @@ class ExchangeOfferTransactionBuffer {
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
 
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
 
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
 
   int get offersCount =>
@@ -414,10 +414,10 @@ class RemoveExchangeOfferTransactionBuffer {
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int> get maxFee => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 14, null);
 
-  List<int> get deadline => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 16, null);
 
   int get offersCount =>
@@ -598,19 +598,18 @@ class AddExchangeOfferBuffer {
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 4, null);
 
-  List<int> get mosaicAmount =>
-      const fb.ListReader<int>(const fb.Uint32Reader())
-          .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get mosaicAmount => const fb.ListReader<int>(fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 6, null);
 
-  List<int> get cost => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get cost => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
 
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
-  List<int> get duration => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get duration => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 12, null);
 
   @override
@@ -739,19 +738,18 @@ class ExchangeOfferBuffer {
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 4, null);
 
-  List<int> get mosaicAmount =>
-      const fb.ListReader<int>(const fb.Uint32Reader())
-          .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get mosaicAmount => const fb.ListReader<int>(fb.Uint32Reader())
+      .vTableGet(_bc, _bcOffset, 6, null);
 
-  List<int> get cost => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get cost => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
 
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
-  List<int> get owner => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get owner => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 12, null);
 
   @override

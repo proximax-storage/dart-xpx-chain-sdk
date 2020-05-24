@@ -7,8 +7,6 @@ enum PropertyModificationType {
 }
 
 class AccountProperties {
-  AccountProperties._();
-
   AccountProperties.fromDto(AccountPropertiesDTO dto) {
     if (dto == null) return;
     address = Address.fromEncoded(dto.address);

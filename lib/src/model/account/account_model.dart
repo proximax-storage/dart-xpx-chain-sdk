@@ -4,18 +4,20 @@ class Account {
   Account._(this.publicAccount, this.account);
 
   /// Create an Account from a given hex private key.
-  Account.fromPrivateKey(String shex, int networkType) {
-    account = crypto.KeyPair.fromHexString(shex);
-    publicAccount =
+  static Account fromPrivateKey(String shex, int networkType) {
+    final account = crypto.KeyPair.fromHexString(shex);
+    final publicAccount =
         PublicAccount.fromPublicKey(account.publicKey.toString(), networkType);
+    return Account._(publicAccount, account);
   }
 
   /// Create an Account from a given networkType.
-  Account.random(int networkType) {
+  static Account random(int networkType) {
     final kp = crypto.KeyPair.fromRandomKeyPair();
     final acc = Account.fromPrivateKey(kp.privateKey.toString(), networkType);
-    publicAccount = acc.publicAccount;
-    account = acc.account;
+    final publicAccount = acc.publicAccount;
+    final account = acc.account;
+    return Account._(publicAccount, account);
   }
 
   PublicAccount publicAccount;
@@ -47,12 +49,13 @@ class PublicAccount {
   PublicAccount._(this.publicKey, this.address);
 
   /// Create an Account from a given publicKey hex string.
-  PublicAccount.fromPublicKey(this.publicKey, int networkType) {
+  static PublicAccount fromPublicKey(String publicKey, int networkType) {
     if (publicKey == null ||
         (publicKeySize != publicKey.length && 66 != publicKey.length)) {
       throw errInvalidPublicKey;
     }
-    address = Address.fromPublicKey(publicKey, networkType);
+    final address = Address.fromPublicKey(publicKey, networkType);
+    return PublicAccount._(publicKey, address);
   }
 
   String publicKey;
@@ -83,12 +86,12 @@ class PublicAccount {
 }
 
 class AccountNames {
-  AccountNames._();
+  AccountNames._(this.address, this.names);
 
-  AccountNames.fromDto(AccountNamesDTO dto) {
-    if (dto == null) return;
-    address = Address.fromEncoded(dto.address);
-    names = (dto._names == null) ? null : dto._names.cast<String>();
+  static AccountNames fromDto(AccountNamesDTO dto) {
+    final address = Address.fromEncoded(dto.address);
+    final names = (dto._names == null) ? null : dto._names.cast<String>();
+    return AccountNames._(address, names);
   }
 
   /* The address of the account in hexadecimal. */
@@ -98,9 +101,7 @@ class AccountNames {
   List<String> names;
 
   static List<AccountNames> listFromJson(List<AccountNamesDTO> json) =>
-      json == null
-          ? <AccountNames>[]
-          : json.map((value) => AccountNames.fromDto(value)).toList();
+      json == null ? <AccountNames>[] : json.map(AccountNames.fromDto).toList();
 
   @override
   String toString() => '{\n'

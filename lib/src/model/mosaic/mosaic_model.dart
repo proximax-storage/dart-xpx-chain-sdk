@@ -7,16 +7,16 @@ enum MosaicPropertyId {
 }
 
 class Mosaic {
-  Mosaic(AssetId mosaicId, Uint64 amount) {
-    if (mosaicId == null) {
+  Mosaic(this.assetId, this.amount) {
+    if (assetId == null) {
       throw errNullMosaicId;
     } else if (amount == null) {
       throw errNullMosaicAmount;
     } else if (amount.isZero) {
       throw errNullMosaicAmount;
     } else {
-      assetId = mosaicId;
-      this.amount = amount;
+      assetId = assetId;
+      amount = amount;
     }
   }
 
@@ -96,8 +96,6 @@ class MosaicId extends AssetId {
 }
 
 class MosaicIds {
-  MosaicIds._();
-
   MosaicIds.fromList(List<MosaicId> list)
       : assert(list != null, 'list must not be null') {
     _list = list.map((item) => item).toList();
@@ -214,10 +212,6 @@ class MosaicProperties {
 
   MosaicProperties.fromDTO(List<_MosaicPropertyDTO> value)
       : assert(value != null, 'mosaic Properties is not valid') {
-//    if (value.length < 3) {//
-//      throw errInvalidMosaicProperties;
-//    }
-
     var flags = Uint64.zero;
 
     divisibility = 0;
