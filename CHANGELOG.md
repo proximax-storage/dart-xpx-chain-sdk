@@ -1,3 +1,11 @@
+## 0.0.5+2
+### New Features
+[ADD] AccountPropertiesAddressTransaction.
+
+[ADD] AccountPropertiesMosaicTransaction.
+
+[ADD] AccountPropertiesEntityTypeTransaction.
+
 ## 0.0.5+1
 ### New Features
 [ADD] AddExchangeOfferTransaction model.
