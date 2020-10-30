@@ -26,7 +26,10 @@ class AccountPropertiesAddressTransaction extends AbstractTransaction
 
   int get size => _size();
 
-  AbstractTransaction get abstractTransaction => _abstractTransaction();
+  @override
+  TransactionType entityType() => type;
+
+  AbstractTransaction get abstractTransaction => absTransaction();
 
   @override
   String toString() => '{\n'
@@ -51,7 +54,7 @@ class AccountPropertiesAddressTransaction extends AbstractTransaction
       (accountPropertiesAddressModificationSize * modifications.length);
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {

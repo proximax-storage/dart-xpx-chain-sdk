@@ -67,7 +67,10 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 
   int get size => _size();
 
-  AbstractTransaction get abstractTransaction => _abstractTransaction();
+  @override
+  TransactionType entityType() => type;
+
+  AbstractTransaction get abstractTransaction => absTransaction();
 
   static List<RegisterNamespaceTransaction> listFromDTO(
           List<RegisterNamespaceTransactionInfoDTO> data) =>
@@ -112,7 +115,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   }
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {

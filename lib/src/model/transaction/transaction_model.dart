@@ -27,7 +27,9 @@ class CosignatureSignedTransaction {
 }
 
 abstract class Transaction {
-  AbstractTransaction _abstractTransaction();
+  AbstractTransaction absTransaction();
+
+  TransactionType entityType();
 
   Map<String, dynamic> toJson();
 
@@ -345,7 +347,7 @@ class AbstractTransaction with TransactionInfo {
       ..addDeadlineOffset(vector['deadlineV']);
   }
 
-  AbstractTransaction _absTransaction() => this;
+  AbstractTransaction _absTransaction()  => this;
 
   bool isUnconfirmed() =>
       height.toInt() == 0 && transactionHash == merkleComponentHash;

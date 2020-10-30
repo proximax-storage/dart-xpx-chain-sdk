@@ -26,7 +26,7 @@ class AccountPropertiesMosaicTransaction extends AbstractTransaction
 
   int get size => _size();
 
-  AbstractTransaction get abstractTransaction => _abstractTransaction();
+  AbstractTransaction get abstractTransaction => absTransaction();
 
   @override
   String toString() => '{\n'
@@ -51,7 +51,10 @@ class AccountPropertiesMosaicTransaction extends AbstractTransaction
       (accountPropertiesMosaicModificationSize * modifications.length);
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  TransactionType entityType() => type;
+
+  @override
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {

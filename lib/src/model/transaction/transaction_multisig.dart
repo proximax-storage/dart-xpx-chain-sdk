@@ -97,7 +97,10 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
 
   int get size => _size();
 
-  AbstractTransaction get abstractTransaction => _abstractTransaction();
+  @override
+  TransactionType entityType() => type;
+
+  AbstractTransaction get abstractTransaction => absTransaction();
 
   static List<ModifyMultisigAccountTransaction> listFromDTO(
           List<ModifyMultisigAccountTransactionInfoDTO> dto) =>
@@ -137,7 +140,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
           modifications.length);
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {
