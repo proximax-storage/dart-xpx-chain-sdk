@@ -79,7 +79,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
       messageSize();
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {
@@ -130,4 +130,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
 
     return transferTransactionSchema().serialize(builder.finish(codedTransfer));
   }
+
+  @override
+  TransactionType entityType() => type;
 }

@@ -203,7 +203,7 @@ class ExchangeOfferTransactionBuffer {
   ExchangeOfferTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<ExchangeOfferTransactionBuffer> reader =
-      const _ExchangeOfferTransactionBufferReader();
+      _ExchangeOfferTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
@@ -397,17 +397,17 @@ class RemoveExchangeOfferTransactionBuffer {
   RemoveExchangeOfferTransactionBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<RemoveExchangeOfferTransactionBuffer> reader =
-      const _RemoveExchangeOfferTransactionBufferReader();
+      _RemoveExchangeOfferTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int> get signature => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 6, null);
 
-  List<int> get signer => const fb.ListReader<int>(const fb.Uint8Reader())
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
       .vTableGet(_bc, _bcOffset, 8, null);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
@@ -593,7 +593,7 @@ class AddExchangeOfferBuffer {
   AddExchangeOfferBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<AddExchangeOfferBuffer> reader =
-      const _AddExchangeOfferBufferReader();
+      _AddExchangeOfferBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
@@ -733,7 +733,7 @@ class ExchangeOfferBuffer {
   ExchangeOfferBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<ExchangeOfferBuffer> reader =
-      const _ExchangeOfferBufferReader();
+      _ExchangeOfferBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
@@ -871,12 +871,12 @@ class RemoveExchangeOfferBuffer {
   RemoveExchangeOfferBuffer._(this._bc, this._bcOffset);
 
   static const fb.Reader<RemoveExchangeOfferBuffer> reader =
-      const _RemoveExchangeOfferBufferReader();
+      _RemoveExchangeOfferBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  List<int> get mosaicId => const fb.ListReader<int>(const fb.Uint32Reader())
+  List<int> get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
       .vTableGet(_bc, _bcOffset, 4, null);
 
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 6, 0);

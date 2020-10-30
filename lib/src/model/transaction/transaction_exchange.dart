@@ -26,10 +26,13 @@ class AddExchangeOfferTransaction extends AbstractTransaction
 
   int get size => _size();
 
-  AbstractTransaction get abstractTransaction => _abstractTransaction();
+  @override
+  TransactionType entityType() => type;
+
+  AbstractTransaction get abstractTransaction => absTransaction();
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   String toString() => '{\n'
@@ -97,10 +100,13 @@ class ExchangeOfferTransaction extends AbstractTransaction
 
   int get size => _size();
 
-  AbstractTransaction get abstractTransaction => _abstractTransaction();
+  @override
+  TransactionType entityType() => type;
+
+  AbstractTransaction get abstractTransaction => absTransaction();
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   String toString() => '{\n'
@@ -169,10 +175,10 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction
 
   int get size => _size();
 
-  AbstractTransaction get abstractTransaction => _abstractTransaction();
+  AbstractTransaction get abstractTransaction => absTransaction();
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   String toString() => '{\n'
@@ -191,6 +197,9 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction
   @override
   int _size() =>
       removeExchangeOfferHeaderSize + offers.length * removeExchangeOfferSize;
+
+  @override
+  TransactionType entityType() => type;
 
   @override
   Uint8List generateBytes() {

@@ -38,7 +38,10 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
   int get size => _size();
 
-  AbstractTransaction get abstractTransaction => _abstractTransaction();
+  @override
+  TransactionType entityType() => type;
+
+  AbstractTransaction get abstractTransaction => absTransaction();
 
   static List<MosaicDefinitionTransaction> listFromDTO(
           List<MosaicDefinitionTransactionInfoDTO> json) =>
@@ -74,7 +77,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   int _size() => mosaicDefinitionTransactionHeaderSize;
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   int _buildMosaicPropertyBuffer(
       fb.Builder builder, List<MosaicProperty> properties) {
@@ -171,7 +174,10 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 
   int get size => _size();
 
-  AbstractTransaction get abstractTransaction => _abstractTransaction();
+  @override
+  TransactionType entityType() => type;
+
+  AbstractTransaction get abstractTransaction => absTransaction();
 
   static List<MosaicSupplyChangeTransaction> listFromDTO(
           List<MosaicSupplyChangeTransactionInfoDTO> json) =>
@@ -209,7 +215,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
   int _size() => mosaicSupplyChangeTransactionSize;
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {

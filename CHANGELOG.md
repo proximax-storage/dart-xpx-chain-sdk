@@ -1,3 +1,6 @@
+## 0.0.5+5
+[ADD] Message toJson method.
+
 ## 0.0.5+4
 ### Updates
 [UPDATE] analysis code.

@@ -179,7 +179,7 @@ SignedTransaction signTransactionWith(
   final hash = _createTransactionHash(pHex, generationHash);
 
   return SignedTransaction(
-      tx._abstractTransaction().type.value, pHex.toUpperCase(), hash);
+      tx.absTransaction().type.value, pHex.toUpperCase(), hash);
 }
 
 SignedTransaction signTransactionWithCosignatures(Transaction tx, Account a,
@@ -204,7 +204,7 @@ SignedTransaction signTransactionWithCosignatures(Transaction tx, Account a,
 
   i.replaceRange(0, s.lengthInBytes, s.buffer.asUint8List());
 
-  return SignedTransaction(tx._abstractTransaction().type.value,
+  return SignedTransaction(tx.absTransaction().type.value,
       hex.encode(i).toUpperCase(), stx.hash);
 }
 
@@ -245,11 +245,11 @@ String _createTransactionHash(String pHex, String generationHash) {
 }
 
 Uint8List toAggregateTransactionBytes(Transaction tx) {
-  if (tx._abstractTransaction().signer == null) {
+  if (tx.absTransaction().signer == null) {
     throw errTransactionSigner;
   }
 
-  final sb = hex.decode(tx._abstractTransaction().signer.publicKey);
+  final sb = hex.decode(tx.absTransaction().signer.publicKey);
 
   final b = tx.generateBytes();
 

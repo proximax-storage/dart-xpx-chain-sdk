@@ -18,13 +18,15 @@ class Message {
   MessageType type;
   Uint8List payload;
 
+  String get payloadAsString => utf8.decode(payload);
+
   @override
   String toString() => '${toJson()}';
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['type'] = type;
-    data['payload'] = utf8.decode(payload);
+    data['payload'] = payloadAsString;
     return data;
   }
 }
@@ -75,4 +77,6 @@ class MessageType {
 
   @override
   String toString() => '$value';
+
+  Map<String, dynamic> toJson() => {'value': value};
 }

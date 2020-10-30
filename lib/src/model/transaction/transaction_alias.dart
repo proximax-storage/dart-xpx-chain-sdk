@@ -38,7 +38,10 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
 
   int get size => _size();
 
-  AbstractTransaction get abstractTransaction => _abstractTransaction();
+  @override
+  TransactionType entityType() => type;
+
+  AbstractTransaction get abstractTransaction => absTransaction();
 
   String _aliasTransactionToString() {
     final String _actionType = actionType.toInt == 0 ? 'link' : 'unlink';
@@ -68,7 +71,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
   int _size() => aliasTransactionHeader;
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() => null;
@@ -129,7 +132,7 @@ class AddressAliasTransaction extends AliasTransaction {
   int _size() => super._size() + addressSize;
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {
@@ -180,7 +183,7 @@ class MosaicAliasTransaction extends AliasTransaction {
   int _size() => super._size() + mosaicIdSize;
 
   @override
-  AbstractTransaction _abstractTransaction() => _absTransaction();
+  AbstractTransaction absTransaction() => _absTransaction();
 
   @override
   Uint8List generateBytes() {
