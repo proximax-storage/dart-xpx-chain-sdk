@@ -6,8 +6,7 @@ class Account {
   /// Create an Account from a given hex private key.
   static Account fromPrivateKey(String shex, int networkType) {
     final account = crypto.KeyPair.fromHexString(shex);
-    final publicAccount =
-        PublicAccount.fromPublicKey(account.publicKey.toString(), networkType);
+    final publicAccount = PublicAccount.fromPublicKey(account.publicKey.toString(), networkType);
     return Account._(publicAccount, account);
   }
 
@@ -20,6 +19,14 @@ class Account {
     return Account._(publicAccount, account);
   }
 
+  /// Creates an encrypted message from this account to the [recipientPublicAccount].
+  EncryptedMessage encryptMessage(String plainTextMessage, PublicAccount recipientPublicAccount) =>
+      EncryptedMessage.create(plainTextMessage, account.privateKey.toString(), recipientPublicAccount.publicKey);
+
+  /// Decrypts an encrypted message received by this account from [senderPublicAccount].
+  PlainMessage decryptMessage(EncryptedMessage encryptedMessage, PublicAccount senderPublicAccount) =>
+      EncryptedMessage.decrypt(encryptedMessage, account.privateKey.toString(), senderPublicAccount.publicKey);
+
   PublicAccount publicAccount;
   crypto.KeyPair account;
 
@@ -30,18 +37,14 @@ class Account {
   @override
   String toString() => publicAccount.toString();
 
-  Map<String, dynamic> toJson() =>
-      {'publicAccount': publicAccount, 'account': account};
+  Map<String, dynamic> toJson() => {'publicAccount': publicAccount, 'account': account};
 
-  SignedTransaction sign(Transaction tx, String generationHash) =>
-      signTransactionWith(tx, this, generationHash);
+  SignedTransaction sign(Transaction tx, String generationHash) => signTransactionWith(tx, this, generationHash);
 
-  SignedTransaction signWithCosignatures(
-          Transaction tx, List<Account> cosignatories, String generationHash) =>
+  SignedTransaction signWithCosignatures(Transaction tx, List<Account> cosignatories, String generationHash) =>
       signTransactionWithCosignatures(tx, this, cosignatories, generationHash);
 
-  CosignatureSignedTransaction signCosignatureTransaction(
-          CosignatureTransaction tx) =>
+  CosignatureSignedTransaction signCosignatureTransaction(CosignatureTransaction tx) =>
       signCosignatureTransactionRwa(tx, this);
 }
 
@@ -50,8 +53,7 @@ class PublicAccount {
 
   /// Create an Account from a given publicKey hex string.
   static PublicAccount fromPublicKey(String publicKey, int networkType) {
-    if (publicKey == null ||
-        (publicKeySize != publicKey.length && 66 != publicKey.length)) {
+    if (publicKey == null || (publicKeySize != publicKey.length && 66 != publicKey.length)) {
       throw errInvalidPublicKey;
     }
     final address = Address.fromPublicKey(publicKey, networkType);
@@ -78,8 +80,7 @@ class PublicAccount {
     final kp = crypto.KeyPair();
     kp.publicKey.raw = Uint8List.fromList(hex.decode(publicKey));
 
-    return kp.verify(Uint8List.fromList(hex.decode(data)),
-        Uint8List.fromList(hex.decode(signature)));
+    return kp.verify(Uint8List.fromList(hex.decode(data)), Uint8List.fromList(hex.decode(signature)));
   }
 
   Map<String, dynamic> toJson() => {'address': address, 'publicKey': publicKey};
@@ -158,7 +159,6 @@ class AccountInfo {
         'reputation': reputation
       };
 
-  static List<AccountInfo> listFromDTO(List<AccountInfoDTO> dto) => dto == null
-      ? null
-      : dto.map((value) => AccountInfo.fromDTO(value)).toList();
+  static List<AccountInfo> listFromDTO(List<AccountInfoDTO> dto) =>
+      dto == null ? null : dto.map((value) => AccountInfo.fromDTO(value)).toList();
 }
