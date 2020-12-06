@@ -8,6 +8,7 @@ import 'package:xpx_chain_sdk/src/model/mosaic.dart';
 import 'package:xpx_chain_sdk/src/model/network.dart';
 import 'package:xpx_chain_sdk/src/model/transaction.dart';
 import 'package:xpx_chain_sdk/src/model/uint64.dart';
+import 'package:xpx_chain_sdk/xpx_sdk.dart';
 import 'package:xpx_chain_sdk/xpx_sdk_all_errors.dart';
 import 'package:xpx_chain_sdk/xpx_sdk_consts.dart';
 import 'package:xpx_crypto/xpx_crypto.dart' as crypto;
