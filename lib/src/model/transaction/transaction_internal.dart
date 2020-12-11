@@ -204,8 +204,8 @@ SignedTransaction signTransactionWithCosignatures(Transaction tx, Account a,
 
   i.replaceRange(0, s.lengthInBytes, s.buffer.asUint8List());
 
-  return SignedTransaction(tx.absTransaction().type.value,
-      hex.encode(i).toUpperCase(), stx.hash);
+  return SignedTransaction(
+      tx.absTransaction().type.value, hex.encode(i).toUpperCase(), stx.hash);
 }
 
 CosignatureSignedTransaction signCosignatureTransactionRwa(
