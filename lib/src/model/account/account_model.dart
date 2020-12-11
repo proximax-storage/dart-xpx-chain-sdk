@@ -47,7 +47,15 @@ class Account {
   Map<String, dynamic> toJson() =>
       {'publicAccount': publicAccount, 'account': account};
 
-  SignedTransaction sign(Transaction tx, String generationHash) =>
+  /// Signs raw data.
+  String signData(String rawData) {
+    final String hex = HexUtils.utf8ToHex(rawData);
+    final Uint8List data = HexUtils.hexToBytes(hex);
+    final Uint8List signedData = account.sign(data);
+    return ByteUtils.bytesToHex(signedData);
+  }
+
+  SignedTransaction signTransaction(Transaction tx, String generationHash) =>
       signTransactionWith(tx, this, generationHash);
 
   SignedTransaction signWithCosignatures(
@@ -78,7 +86,8 @@ class PublicAccount {
   @override
   String toString() => '${toJson()}';
 
-  bool verify(String data, String signature) {
+  /// Verifies a signature.
+  bool verifySignature(String data, String signature) {
     if (signature == null) {
       throw errNullSignature;
     }
@@ -92,7 +101,9 @@ class PublicAccount {
     final kp = crypto.KeyPair();
     kp.publicKey.raw = Uint8List.fromList(hex.decode(publicKey));
 
-    return kp.verify(Uint8List.fromList(hex.decode(data)),
+    final String hexData = HexUtils.utf8ToHex(data);
+
+    return kp.verify(Uint8List.fromList(hex.decode(hexData)),
         Uint8List.fromList(hex.decode(signature)));
   }
 
