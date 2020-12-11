@@ -54,7 +54,7 @@ Uint64 _generateMosaicId(int nonce, String ownerPublicKey) {
 
   nonceB.setUint32(0, nonce, Endian.little);
 
-  final result = sha3.New256()
+  final result = createSha3Digest(length: 32)
     ..update(nonceB.buffer.asUint8List(), 0, nonceB.lengthInBytes);
 
   final ownerBytes = hex.decode(ownerPublicKey);
