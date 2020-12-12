@@ -26,13 +26,14 @@ class Account {
   EncryptedMessage encryptMessage(
           String plainTextMessage, PublicAccount recipientPublicAccount) =>
       EncryptedMessage.create(plainTextMessage, account.privateKey.toString(),
-          recipientPublicAccount.publicKey);
+          recipientPublicAccount.publicKey, HexUtils.isHex(plainTextMessage));
 
   /// Decrypts an encrypted message received by this account from [senderPublicAccount].
-  PlainMessage decryptMessage(EncryptedMessage encryptedMessage,
-          PublicAccount senderPublicAccount) =>
+  PlainMessage decryptMessage(
+          EncryptedMessage encryptedMessage, PublicAccount senderPublicAccount,
+          [isHexMessage = false]) =>
       EncryptedMessage.decrypt(encryptedMessage, account.privateKey.toString(),
-          senderPublicAccount.publicKey);
+          senderPublicAccount.publicKey, isHexMessage);
 
   PublicAccount publicAccount;
   crypto.KeyPair account;
