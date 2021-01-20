@@ -18,20 +18,25 @@ extension AliasActionTypeToInt on AliasActionType {
 }
 
 class Alias {
-  Alias({this.type, this.address, this.mosaicId});
+  Alias.fromDTO(AliasDTO dto) : assert(dto != null, 'dto must not be null') {
+    if (dto.address != null) address = Address.fromEncoded(dto.address);
+    if (dto.mosaicId != null) mosaicId = MosaicId.fromId(dto.mosaicId.toUint64());
+    if (dto.aliasAction == 1)
+      type = AliasType.mosaicAliasType;
+    else
+      type = AliasType.addressAliasType;
+  }
 
-  final AliasType type;
+  AliasType type;
 
-  final Address address;
+  Address address;
 
-  final MosaicId mosaicId;
+  MosaicId mosaicId;
 
   @override
   String toString() {
     final sb = StringBuffer()..write('{');
-    if (type != null) {
-      sb.write('aliasAction: $type,');
-    }
+    sb.write('type: ${type.index}, ');
     if (mosaicId != null) {
       sb.write('mosaicId: $mosaicId');
     }
@@ -49,25 +54,4 @@ class Alias {
     data['address'] = address;
     return data;
   }
-}
-
-class AddressAlias implements Alias {
-  AddressAlias(this.address);
-
-  @override
-  final Address address;
-
-  @override
-  MosaicId get mosaicId => null;
-
-  @override
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['aliasAction'] = type.toInt;
-    data['address'] = address;
-    return data;
-  }
-
-  @override
-  AliasType get type => AliasType.addressAliasType;
 }

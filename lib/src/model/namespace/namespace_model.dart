@@ -37,6 +37,9 @@ class NamespaceId extends AssetId {
   bool operator ==(final other) =>
       identical(this, other) ||
       other is NamespaceId && runtimeType == other.runtimeType && toBytes() == other.toBytes();
+
+  @override
+  String toString() => 'NamespaceId: ${toHex()}';
 }
 
 class NamespaceName {
@@ -58,7 +61,7 @@ class NamespaceName {
     if (parentId != null) {
       sb.writeln('\tparentId: ${parentId.toHex()},');
     }
-    sb.writeln('\tnamespaceId: ${namespaceId.toHex()},');
+    sb.writeln('\tnamespaceId: $namespaceId,');
     sb.writeln('\tname: $name,');
     sb.writeln('\n{');
     return sb.toString();
@@ -97,8 +100,7 @@ class NamespaceInfo {
     levels = extractLevels(dto);
     typeSpace = dto._namespace.type;
 
-    alias =
-        dto._namespace.alias.address != null ? Alias(address: Address.fromEncoded(dto._namespace.alias.address)) : null;
+    alias = Alias.fromDTO(dto._namespace.alias);
     if (dto._namespace.parentId.toUint64().toInt() != 0) {
       namespaceId = NamespaceId._(levels[0]);
       parent = NamespaceInfo()..namespaceId = NamespaceId._(dto._namespace.parentId.toUint64());
@@ -134,20 +136,25 @@ class NamespaceInfo {
   Alias alias;
 
   @override
-  String toString() => '{\n'
-      '\tnamespaceId: $namespaceId,\n'
-      '\tactive: $active,\n'
-      '\tindex: $index,\n'
-      '\tmetaId: $metaId,\n'
-      '\ttypeSpace: $typeSpace,\n'
-      '\tdepth: $depth,\n'
-      '\tlevels: $levels,\n'
-      '\tparent: $parent,\n'
-      '\talias: $alias,\n'
-      '\towner:$owner,\n'
-      '\tstartHeight: $startHeight,\n'
-      '\tendHeight: $endHeight\n'
-      '}\n';
+  String toString() {
+    final sb = StringBuffer()..writeln('\n{');
+    sb.writeln('\tnamespaceId: $namespaceId,');
+    sb.writeln('\tactive: $active,');
+    sb.writeln('\tindex: $index,');
+    if (typeSpace == 0)
+      sb.writeln('\ttypeSpace: "Root",');
+    else
+      sb.writeln('\ttypeSpace: "Sub",');
+    sb.writeln('\tdepth: $depth,');
+    if (alias != null) sb.writeln('\talias: $alias,');
+    sb.writeln('\tlevels: ${levels.map((element) => element.toHex()).toList()},');
+    if (parent != null) sb.writeln('\tparent: $parent,');
+    sb.writeln('\towner: $owner,');
+    sb.writeln('\tstartHeight: $startHeight,');
+    sb.writeln('\tendHeight: $endHeight');
+    sb.writeln('}\n');
+    return sb.toString();
+  }
 
   static List<NamespaceInfo> listFromDTO(List<dynamic> json) =>
       json == null ? null : json.map((value) => NamespaceInfo.fromDTO(value)).toList();
@@ -162,11 +169,11 @@ class NamespaceInfo {
     data['typeSpace'] = typeSpace;
     data['depth'] = depth;
     data['levels'] = levels;
-    data['parent'] = parent;
+    if (parent != null) data['parent'] = parent;
     data['owner'] = owner;
     data['startHeight'] = startHeight;
     data['endHeight'] = endHeight;
-    data['alias'] = alias;
+    if (alias != null) data['alias'] = alias;
 
     return data;
   }

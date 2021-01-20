@@ -3,6 +3,7 @@ library xpx_chain_sdk.namespace;
 import 'dart:typed_data';
 
 import 'package:fixnum/fixnum.dart';
+import 'package:xpx_chain_sdk/src/model.dart';
 import 'package:xpx_chain_sdk/src/model/account.dart';
 import 'package:xpx_chain_sdk/src/model/alias.dart';
 import 'package:xpx_chain_sdk/src/model/transaction.dart';
