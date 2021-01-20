@@ -4,8 +4,7 @@ part of xpx_chain_sdk.transaction;
 /// Announce a [TransferTransaction] to send [Mosaic] or [Message] between two [Account].
 ///
 class TransferTransaction extends AbstractTransaction implements Transaction {
-  TransferTransaction(Deadline deadline, Address recipient,
-      List<Mosaic> mosaics, Message message, int networkType)
+  TransferTransaction(Deadline deadline, Address recipient, List<Mosaic> mosaics, Message message, int networkType)
       : super() {
     if (recipient == null) {
       throw errNullRecipient;
@@ -29,20 +28,15 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
         super.fromDto(dto._transaction, dto.meta) {
     mosaics = Mosaic.listFromDTO(dto._transaction._mosaics);
     recipient = Address.fromEncoded(dto._transaction._recipient);
-    message = dto._transaction._message != null
-        ? Message.fromDTO(dto._transaction._message)
-        : null;
+    message = dto._transaction._message != null ? Message.fromDTO(dto._transaction._message) : null;
   }
 
   List<Mosaic> mosaics;
   Address recipient;
   Message message;
 
-  static List<TransferTransaction> listFromDTO(
-          List<TransferTransactionInfoDTO> json) =>
-      json == null
-          ? null
-          : json.map((value) => TransferTransaction.fromDTO(value)).toList();
+  static List<TransferTransaction> listFromDTO(List<TransferTransactionInfoDTO> json) =>
+      json == null ? null : json.map((value) => TransferTransaction.fromDTO(value)).toList();
 
   @override
   String toString() {
@@ -73,10 +67,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
   int messageSize() => message.payload.length + 1;
 
   @override
-  int _size() =>
-      transferHeaderSize +
-      (mosaicIdSize + amountSize) * mosaics.length +
-      messageSize();
+  int _size() => transferHeaderSize + (mosaicIdSize + amountSize) * mosaics.length + messageSize();
 
   @override
   AbstractTransaction absTransaction() => _absTransaction();

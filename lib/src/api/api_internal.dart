@@ -3,8 +3,7 @@ part of xpx_chain_sdk.api;
 const _delimiters = {'csv': ',', 'ssv': ' ', 'tsv': '\t', 'pipes': '|'};
 
 // port from Java version
-Iterable<QueryParam> _convertParametersForCollectionFormat(
-    String collectionFormat, String name, value) {
+Iterable<QueryParam> _convertParametersForCollectionFormat(String collectionFormat, String name, value) {
   final params = <QueryParam>[];
 
   // preconditions
@@ -21,9 +20,7 @@ Iterable<QueryParam> _convertParametersForCollectionFormat(
 
   // get the collection format
   // ignore: parameter_assignments
-  collectionFormat = (collectionFormat == null || collectionFormat.isEmpty)
-      ? 'csv'
-      : collectionFormat; // default: csv
+  collectionFormat = (collectionFormat == null || collectionFormat.isEmpty) ? 'csv' : collectionFormat; // default: csv
 
   if (collectionFormat == 'multi') {
     return values.map((v) => QueryParam(name, _parameterToString(v)));

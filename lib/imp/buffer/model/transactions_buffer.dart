@@ -1,8 +1,7 @@
 part of xpx_chain_sdk.buffer.model;
 
 class Transactions {
-  Transactions(this.fbBuilder)
-      : assert(fbBuilder != null, 'fbBuilder must not be null');
+  Transactions(this.fbBuilder) : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 

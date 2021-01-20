@@ -8,44 +8,34 @@ class RegisterNamespaceTransactionBuffer {
 
   RegisterNamespaceTransactionBuffer._(this._bc, this._bcOffset);
 
-  static const fb.Reader<RegisterNamespaceTransactionBuffer> reader =
-      _RegisterNamespaceTransactionBufferReader();
+  static const fb.Reader<RegisterNamespaceTransactionBuffer> reader = _RegisterNamespaceTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
 
-  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 8, null);
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 8, null);
 
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 14, null);
 
-  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 16, null);
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 16, null);
 
-  int get namespaceType =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+  int get namespaceType => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
 
-  List<int> get durationParentId => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 20, null);
+  List<int> get durationParentId => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 20, null);
 
-  List<int> get namespaceId => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 22, null);
+  List<int> get namespaceId => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 22, null);
 
-  int get namespaceNameSize =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 24, 0);
+  int get namespaceNameSize => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 24, 0);
 
-  String get namespaceName =>
-      const fb.StringReader().vTableGet(_bc, _bcOffset, 26, null);
+  String get namespaceName => const fb.StringReader().vTableGet(_bc, _bcOffset, 26, null);
 
   @override
   String toString() => 'RegisterNamespaceTransactionBuffer{'
@@ -63,19 +53,16 @@ class RegisterNamespaceTransactionBuffer {
       ' namespaceName: $namespaceName}';
 }
 
-class _RegisterNamespaceTransactionBufferReader
-    extends fb.TableReader<RegisterNamespaceTransactionBuffer> {
+class _RegisterNamespaceTransactionBufferReader extends fb.TableReader<RegisterNamespaceTransactionBuffer> {
   const _RegisterNamespaceTransactionBufferReader();
 
   @override
-  RegisterNamespaceTransactionBuffer createObject(
-          fb.BufferContext bc, int offset) =>
+  RegisterNamespaceTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
       RegisterNamespaceTransactionBuffer._(bc, offset);
 }
 
 class RegisterNamespaceTransactionBufferBuilder {
-  RegisterNamespaceTransactionBufferBuilder(this.fbBuilder)
-      : assert(fbBuilder != null, 'fbBuilder must not be null');
+  RegisterNamespaceTransactionBufferBuilder(this.fbBuilder) : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -190,22 +177,13 @@ class RegisterNamespaceTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   @override
   int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null, 'fbBuilder must not be null');
-    final int signatureOffset = _signature?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_signature)
-        : null;
-    final int signerOffset =
-        _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
-    final int feeOffset =
-        _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
-    final int deadlineOffset = _deadline?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_deadline)
-        : null;
-    final int durationParentIdOffset = _durationParentId?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_durationParentId)
-        : null;
-    final int namespaceIdOffset = _namespaceId?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_namespaceId)
-        : null;
+    final int signatureOffset = _signature?.isNotEmpty == true ? fbBuilder.writeListUint8(_signature) : null;
+    final int signerOffset = _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
+    final int feeOffset = _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
+    final int deadlineOffset = _deadline?.isNotEmpty == true ? fbBuilder.writeListUint32(_deadline) : null;
+    final int durationParentIdOffset =
+        _durationParentId?.isNotEmpty == true ? fbBuilder.writeListUint32(_durationParentId) : null;
+    final int namespaceIdOffset = _namespaceId?.isNotEmpty == true ? fbBuilder.writeListUint32(_namespaceId) : null;
     final int namespaceNameOffset = fbBuilder.writeString(_namespaceName);
 
     fbBuilder.startTable();

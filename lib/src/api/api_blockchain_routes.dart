@@ -1,8 +1,7 @@
 part of xpx_chain_sdk.api;
 
 class BlockchainRoutesApi {
-  BlockchainRoutesApi([_ApiClient apiClient])
-      : _apiClient = apiClient ?? defaultApiClient;
+  BlockchainRoutesApi([_ApiClient apiClient]) : _apiClient = apiClient ?? defaultApiClient;
 
   final _ApiClient _apiClient;
 
@@ -35,9 +34,7 @@ class BlockchainRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/block/{height}'
-        .replaceAll('{format}', 'json')
-        .replaceAll('{height}', height.toString());
+    final String path = '/block/{height}'.replaceAll('{format}', 'json').replaceAll('{height}', height.toString());
 
     final response = await _apiClient.get(path);
 
@@ -100,23 +97,20 @@ class BlockchainRoutesApi {
   ///
   /// Returns an List of [Transaction] included in a block for a given
   /// block height.
-  Future<List<Transaction>> getBlockTransactions(BigInt height,
-      {int pageSize, String id}) async {
+  Future<List<Transaction>> getBlockTransactions(BigInt height, {int pageSize, String id}) async {
     // verify required params are set
     if (height == null) {
       throw ApiException(400, 'Missing required param: height');
     }
 
     // create path and map variables
-    final String path = '/block/{height}/transactions'
-        .replaceAll('{format}', 'json')
-        .replaceAll('{height}', height.toString());
+    final String path =
+        '/block/{height}/transactions'.replaceAll('{format}', 'json').replaceAll('{height}', height.toString());
 
     // query params
     final List<QueryParam> queryParams = [];
     if (pageSize != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'pageSize', pageSize));
     }
     if (id != null) {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
@@ -127,8 +121,7 @@ class BlockchainRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp =
-          _apiClient.deserialize(response.body, 'List<Transaction>');
+      final List resp = _apiClient.deserialize(response.body, 'List<Transaction>');
       return resp.map(deserializeDTO).toList();
     } else {
       return null;
@@ -138,8 +131,7 @@ class BlockchainRoutesApi {
   /// Get blocks information
   ///
   /// Gets up to limit number of blocks after given block height.
-  Future<List<BlockInfo>> getBlocksByHeightWithLimit(
-      BigInt height, int limit) async {
+  Future<List<BlockInfo>> getBlocksByHeightWithLimit(BigInt height, int limit) async {
     // verify required params are set
     if (height == null) {
       throw errNullOrZeroHeight;
@@ -159,9 +151,7 @@ class BlockchainRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient
-          .deserialize(response.body, 'List<BlockInfoDTO>')
-          .cast<BlockInfoDTO>();
+      final resp = _apiClient.deserialize(response.body, 'List<BlockInfoDTO>').cast<BlockInfoDTO>();
       return BlockInfo.listFromDTO(resp);
     } else {
       return null;

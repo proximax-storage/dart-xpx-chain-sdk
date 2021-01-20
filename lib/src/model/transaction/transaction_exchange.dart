@@ -1,10 +1,7 @@
 part of xpx_chain_sdk.transaction;
 
-class AddExchangeOfferTransaction extends AbstractTransaction
-    implements Transaction {
-  AddExchangeOfferTransaction(
-      Deadline deadline, List<AddOffer> addOffers, int networkType)
-      : super() {
+class AddExchangeOfferTransaction extends AbstractTransaction implements Transaction {
+  AddExchangeOfferTransaction(Deadline deadline, List<AddOffer> addOffers, int networkType) : super() {
     if (addOffers == null) {
       throw errNullAddOffers;
     } else {
@@ -49,8 +46,7 @@ class AddExchangeOfferTransaction extends AbstractTransaction
   }
 
   @override
-  int _size() =>
-      addExchangeOfferHeaderSize + offers.length * addExchangeOfferSize;
+  int _size() => addExchangeOfferHeaderSize + offers.length * addExchangeOfferSize;
 
   @override
   Uint8List generateBytes() {
@@ -69,16 +65,12 @@ class AddExchangeOfferTransaction extends AbstractTransaction
 
     final codedTransfer = txnBuilder.finish();
 
-    return addExchangeOfferTransactionSchema()
-        .serialize(builder.finish(codedTransfer));
+    return addExchangeOfferTransactionSchema().serialize(builder.finish(codedTransfer));
   }
 }
 
-class ExchangeOfferTransaction extends AbstractTransaction
-    implements Transaction {
-  ExchangeOfferTransaction(Deadline deadline,
-      List<ExchangeConfirmation> confirmations, int networkType)
-      : super() {
+class ExchangeOfferTransaction extends AbstractTransaction implements Transaction {
+  ExchangeOfferTransaction(Deadline deadline, List<ExchangeConfirmation> confirmations, int networkType) : super() {
     if (confirmations == null) {
       throw errNullConfirmations;
     } else {
@@ -123,8 +115,7 @@ class ExchangeOfferTransaction extends AbstractTransaction
   }
 
   @override
-  int _size() =>
-      exchangeOfferHeaderSize + confirmations.length * exchangeOfferSize;
+  int _size() => exchangeOfferHeaderSize + confirmations.length * exchangeOfferSize;
 
   @override
   Uint8List generateBytes() {
@@ -143,16 +134,12 @@ class ExchangeOfferTransaction extends AbstractTransaction
 
     final codedTransfer = txnBuilder.finish();
 
-    return exchangeOfferTransactionSchema()
-        .serialize(builder.finish(codedTransfer));
+    return exchangeOfferTransactionSchema().serialize(builder.finish(codedTransfer));
   }
 }
 
-class RemoveExchangeOfferTransaction extends AbstractTransaction
-    implements Transaction {
-  RemoveExchangeOfferTransaction(
-      Deadline deadline, List<RemoveOffer> removeOffer, int networkType)
-      : super() {
+class RemoveExchangeOfferTransaction extends AbstractTransaction implements Transaction {
+  RemoveExchangeOfferTransaction(Deadline deadline, List<RemoveOffer> removeOffer, int networkType) : super() {
     if (removeOffer == null) {
       throw errNullRemoveOffers;
     } else {
@@ -164,8 +151,7 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction
     }
   }
 
-  RemoveExchangeOfferTransaction.fromDTO(
-      RemoveExchangeOfferTransactionInfoDTO dto)
+  RemoveExchangeOfferTransaction.fromDTO(RemoveExchangeOfferTransactionInfoDTO dto)
       : assert(dto != null, 'dto must not be null'),
         super.fromDto(dto.transaction, dto.meta) {
     offers = RemoveOffer.listFromDto(dto.transaction.offers);
@@ -195,8 +181,7 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction
   }
 
   @override
-  int _size() =>
-      removeExchangeOfferHeaderSize + offers.length * removeExchangeOfferSize;
+  int _size() => removeExchangeOfferHeaderSize + offers.length * removeExchangeOfferSize;
 
   @override
   TransactionType entityType() => type;
@@ -218,7 +203,6 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction
 
     final codedTransfer = txnBuilder.finish();
 
-    return removeExchangeOfferTransactionSchema()
-        .serialize(builder.finish(codedTransfer));
+    return removeExchangeOfferTransactionSchema().serialize(builder.finish(codedTransfer));
   }
 }

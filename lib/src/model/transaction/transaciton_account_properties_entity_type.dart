@@ -1,10 +1,8 @@
 part of xpx_chain_sdk.transaction;
 
 // AliasTransaction
-class AccountPropertiesEntityTypeTransaction extends AbstractTransaction
-    implements Transaction {
-  AccountPropertiesEntityTypeTransaction(
-      Deadline deadline, this.propertyType, this.modifications, int networkType)
+class AccountPropertiesEntityTypeTransaction extends AbstractTransaction implements Transaction {
+  AccountPropertiesEntityTypeTransaction(Deadline deadline, this.propertyType, this.modifications, int networkType)
       : super() {
     version = accountPropertyEntityTypeVersion;
     this.deadline = deadline;
@@ -12,13 +10,11 @@ class AccountPropertiesEntityTypeTransaction extends AbstractTransaction
     this.networkType = networkType;
   }
 
-  AccountPropertiesEntityTypeTransaction.fromDTO(
-      AccountPropertiesEntityTypeTransactionInfoDTO dto)
+  AccountPropertiesEntityTypeTransaction.fromDTO(AccountPropertiesEntityTypeTransactionInfoDTO dto)
       : assert(dto != null, 'dto must not be null'),
         super.fromDto(dto.transaction, dto.meta) {
     propertyType = AccountPropertyType.fromInt(dto.transaction.propertyType);
-    modifications = AccountPropertiesEntityTypeModification.listFromJson(
-        dto.transaction.modifications);
+    modifications = AccountPropertiesEntityTypeModification.listFromJson(dto.transaction.modifications);
   }
 
   AccountPropertyType propertyType;
@@ -46,9 +42,7 @@ class AccountPropertiesEntityTypeTransaction extends AbstractTransaction
   }
 
   @override
-  int _size() =>
-      accountPropertyEntityTypeHeader +
-      (accountPropertiesEntityModificationSize * modifications.length);
+  int _size() => accountPropertyEntityTypeHeader + (accountPropertiesEntityModificationSize * modifications.length);
 
   @override
   TransactionType entityType() => type;
@@ -89,7 +83,6 @@ class AccountPropertiesEntityTypeTransaction extends AbstractTransaction
 
     final codedAccountProperty = txnBuilder.finish();
 
-    return accountPropertyTransactionSchema()
-        .serialize(builder.finish(codedAccountProperty));
+    return accountPropertyTransactionSchema().serialize(builder.finish(codedAccountProperty));
   }
 }

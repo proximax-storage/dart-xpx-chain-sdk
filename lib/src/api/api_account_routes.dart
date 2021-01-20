@@ -1,8 +1,7 @@
 part of xpx_chain_sdk.api;
 
 class AccountRoutesApi {
-  AccountRoutesApi([_ApiClient _apiClient])
-      : _apiClient = _apiClient ?? defaultApiClient;
+  AccountRoutesApi([_ApiClient _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
 
   final _ApiClient _apiClient;
 
@@ -16,9 +15,8 @@ class AccountRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/account/{accountId}'
-        .replaceAll('{format}', 'json')
-        .replaceAll('{accountId}', address.address);
+    final String path =
+        '/account/{accountId}'.replaceAll('{format}', 'json').replaceAll('{accountId}', address.address);
 
     final response = await _apiClient.get(path);
 
@@ -51,9 +49,7 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient
-          .deserialize(response.body, 'List<AccountInfoDTO>')
-          .cast<AccountInfoDTO>();
+      final resp = _apiClient.deserialize(response.body, 'List<AccountInfoDTO>').cast<AccountInfoDTO>();
       return AccountInfo.listFromDTO(resp);
     } else {
       return null;
@@ -70,9 +66,8 @@ class AccountRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/account/{accountId}/multisig'
-        .replaceAll('{format}', 'json')
-        .replaceAll('{accountId}', address.address);
+    final String path =
+        '/account/{accountId}/multisig'.replaceAll('{format}', 'json').replaceAll('{accountId}', address.address);
 
     final response = await _apiClient.get(path);
 
@@ -88,26 +83,22 @@ class AccountRoutesApi {
   /// Get multisig account graph information
   ///
   /// Returns list [MultisigAccountGraphInfo] graph.
-  Future<List<MultisigAccountGraphInfo>> getAccountMultisigGraph(
-      Address address) async {
+  Future<List<MultisigAccountGraphInfo>> getAccountMultisigGraph(Address address) async {
     // verify required params are set
     if (address == null) {
       throw ApiException(400, 'Missing required param: accountId');
     }
 
     // create path and map variables
-    final String path = '/account/{accountId}/multisig/graph'
-        .replaceAll('{format}', 'json')
-        .replaceAll('{accountId}', address.address);
+    final String path =
+        '/account/{accountId}/multisig/graph'.replaceAll('{format}', 'json').replaceAll('{accountId}', address.address);
 
     final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return _apiClient
-          .deserialize(response.body, 'List<MultisigAccountGraphInfo>')
-          .cast<MultisigAccountGraphInfo>();
+      return _apiClient.deserialize(response.body, 'List<MultisigAccountGraphInfo>').cast<MultisigAccountGraphInfo>();
     } else {
       return null;
     }
@@ -117,8 +108,7 @@ class AccountRoutesApi {
   ///
   /// Gets an List of transactions for which an account
   /// is the sender or receiver.
-  Future<List<Transaction>> transactions(PublicAccount account,
-      {int pageSize, String id, String ordering}) async {
+  Future<List<Transaction>> transactions(PublicAccount account, {int pageSize, String id, String ordering}) async {
     // verify required params are set
     if (account == null) {
       throw ApiException(400, 'Missing required param: publicKey');
@@ -132,15 +122,13 @@ class AccountRoutesApi {
     // query params
     final List<QueryParam> queryParams = [];
     if (pageSize != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'pageSize', pageSize));
     }
     if (id != null) {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
     if (ordering != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'ordering', ordering));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
     final response = await _apiClient.get(path, queryParams);
@@ -148,8 +136,7 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp =
-          _apiClient.deserialize(response.body, 'List<Transaction>');
+      final List resp = _apiClient.deserialize(response.body, 'List<Transaction>');
       return resp.map(deserializeDTO).toList();
     } else {
       return null;
@@ -176,15 +163,13 @@ class AccountRoutesApi {
     // query params
     final List<QueryParam> queryParams = [];
     if (pageSize != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'pageSize', pageSize));
     }
     if (id != null) {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
     if (ordering != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'ordering', ordering));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
     final response = await _apiClient.get(path, queryParams);
@@ -219,15 +204,13 @@ class AccountRoutesApi {
     // query params
     final List<QueryParam> queryParams = [];
     if (pageSize != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'pageSize', pageSize));
     }
     if (id != null) {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
     if (ordering != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'ordering', ordering));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
     final response = await _apiClient.get(path, queryParams);
@@ -235,8 +218,7 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp =
-          _apiClient.deserialize(response.body, 'List<Transaction>');
+      final List resp = _apiClient.deserialize(response.body, 'List<Transaction>');
       return resp.map(deserializeDTO).toList();
     } else {
       return null;
@@ -262,15 +244,13 @@ class AccountRoutesApi {
     // query params
     final List<QueryParam> queryParams = [];
     if (pageSize != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'pageSize', pageSize));
     }
     if (id != null) {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
     if (ordering != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'ordering', ordering));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
     final response = await _apiClient.get(path, queryParams);
@@ -278,8 +258,7 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp =
-          _apiClient.deserialize(response.body, 'List<Transaction>');
+      final List resp = _apiClient.deserialize(response.body, 'List<Transaction>');
       return resp.map(deserializeDTO).toList();
     } else {
       return null;
@@ -305,15 +284,13 @@ class AccountRoutesApi {
     // query params
     final List<QueryParam> queryParams = [];
     if (pageSize != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'pageSize', pageSize));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'pageSize', pageSize));
     }
     if (id != null) {
       queryParams.addAll(_convertParametersForCollectionFormat('', 'id', id));
     }
     if (ordering != null) {
-      queryParams.addAll(
-          _convertParametersForCollectionFormat('', 'ordering', ordering));
+      queryParams.addAll(_convertParametersForCollectionFormat('', 'ordering', ordering));
     }
 
     final response = await _apiClient.get(path, queryParams);
@@ -321,9 +298,7 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient
-          .deserialize(response.body, 'List<Transaction>')
-          .cast<Transaction>();
+      final resp = _apiClient.deserialize(response.body, 'List<Transaction>').cast<Transaction>();
       return resp.map(deserializeDTO).toList();
     } else {
       return null;
@@ -348,9 +323,7 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient
-          .deserialize(response.body, 'List<AccountNames>')
-          .cast<AccountNamesDTO>();
+      final resp = _apiClient.deserialize(response.body, 'List<AccountNames>').cast<AccountNamesDTO>();
       return AccountNames.listFromJson(resp);
     } else {
       return null;
@@ -364,17 +337,15 @@ class AccountRoutesApi {
     }
 
     // create path and map variables
-    final String path = '/account/{address}/properties'
-        .replaceAll('{format}', 'json')
-        .replaceAll('{address}', address.address);
+    final String path =
+        '/account/{address}/properties'.replaceAll('{format}', 'json').replaceAll('{address}', address.address);
 
     final response = await _apiClient.get(path);
 
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp =
-          _apiClient.deserialize(response.body, 'AccountPropertiesDTO');
+      final resp = _apiClient.deserialize(response.body, 'AccountPropertiesDTO');
 
       return AccountProperties.fromDto(resp);
     } else {
@@ -382,8 +353,7 @@ class AccountRoutesApi {
     }
   }
 
-  Future<List<AccountProperties>> getAccountsProperties(
-      List<Address> addresses) async {
+  Future<List<AccountProperties>> getAccountsProperties(List<Address> addresses) async {
     final Object postBody = Addresses.fromList(addresses);
 
     // verify required params are set
@@ -399,9 +369,7 @@ class AccountRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient
-          .deserialize(response.body, 'List<AccountPropertiesDTO>')
-          .cast<AccountPropertiesDTO>();
+      final resp = _apiClient.deserialize(response.body, 'List<AccountPropertiesDTO>').cast<AccountPropertiesDTO>();
       return AccountProperties.listFromJson(resp);
     } else {
       return null;

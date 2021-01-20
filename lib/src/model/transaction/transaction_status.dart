@@ -1,8 +1,7 @@
 part of xpx_chain_sdk.transaction;
 
 class TransactionStatus {
-  TransactionStatus.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  TransactionStatus.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     group = json['group'];
     status = json['status'];
     hash = json['hash'];
@@ -30,16 +29,12 @@ class TransactionStatus {
       '}\n';
 
   static List<TransactionStatus> listFromJson(List<dynamic> json) =>
-      json == null
-          ? null
-          : json.map((value) => TransactionStatus.fromJson(value)).toList();
+      json == null ? null : json.map((value) => TransactionStatus.fromJson(value)).toList();
 
-  static Map<String, TransactionStatus> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, TransactionStatus> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, TransactionStatus>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = TransactionStatus.fromJson(value));
+      json.forEach((key, value) => map[key] = TransactionStatus.fromJson(value));
     }
     return map;
   }

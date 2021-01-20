@@ -6,11 +6,7 @@ Schema transferTransactionSchema() {
     scalarAttribute('messageSize', _shortSize),
     scalarAttribute('numMosaics', _byteSize),
     tableAttribute(
-        'message',
-        Schema([
-          scalarAttribute('type', _byteSize),
-          arrayAttribute('payload', _byteSize)
-        ]).schemaDefinition),
+        'message', Schema([scalarAttribute('type', _byteSize), arrayAttribute('payload', _byteSize)]).schemaDefinition),
     tableArrayAttribute(
         'mosaics',
         Schema([

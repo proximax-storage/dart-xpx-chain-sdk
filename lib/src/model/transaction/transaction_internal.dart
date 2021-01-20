@@ -93,11 +93,9 @@ dynamic txnDeserialize(value, String targetType) {
         final newTargetType = match[1];
 
         return value.map((v) => txnDeserialize(v, newTargetType)).toList();
-      } else if (value is Map &&
-          (match = regMap.firstMatch(targetType)) != null) {
+      } else if (value is Map && (match = regMap.firstMatch(targetType)) != null) {
         final newTargetType = match[1];
-        return Map.fromIterables(value.keys,
-            value.values.map((v) => txnDeserialize(v, newTargetType)));
+        return Map.fromIterables(value.keys, value.values.map((v) => txnDeserialize(v, newTargetType)));
       }
     }
   }
@@ -143,8 +141,7 @@ dynamic txnDeserialize(value, String targetType) {
         return null;
     }
   } on Exception catch (e, stack) {
-    throw ApiException.withInner(
-        500, 'Exception during deserialization.', e, stack);
+    throw ApiException.withInner(500, 'Exception during deserialization.', e, stack);
   }
 }
 
@@ -153,13 +150,11 @@ int extractNetworkType(int version) => version.toUnsigned(32) >> 24;
 
 int extractVersion(int version) {
   final buffer = Uint8List(8).buffer;
-  final bufferData = ByteData.view(buffer)
-    ..setUint64(0, version, Endian.little);
+  final bufferData = ByteData.view(buffer)..setUint64(0, version, Endian.little);
   return bufferData.getUint8(0);
 }
 
-SignedTransaction signTransactionWith(
-    Transaction tx, Account a, String generationHash) {
+SignedTransaction signTransactionWith(Transaction tx, Account a, String generationHash) {
   final s = a.account;
   final b = tx.generateBytes();
   var sb = Uint8List.fromList(b.skip(100).take(b.length).toList());
@@ -178,12 +173,11 @@ SignedTransaction signTransactionWith(
 
   final hash = _createTransactionHash(pHex, generationHash);
 
-  return SignedTransaction(
-      tx.absTransaction().type.value, pHex.toUpperCase(), hash);
+  return SignedTransaction(tx.absTransaction().type.value, pHex.toUpperCase(), hash);
 }
 
-SignedTransaction signTransactionWithCosignatures(Transaction tx, Account a,
-    List<Account> cosignatories, String generationHash) {
+SignedTransaction signTransactionWithCosignatures(
+    Transaction tx, Account a, List<Account> cosignatories, String generationHash) {
   final stx = signTransactionWith(tx, a, generationHash);
 
   final p = StringBuffer(stx.payload);
@@ -204,12 +198,10 @@ SignedTransaction signTransactionWithCosignatures(Transaction tx, Account a,
 
   i.replaceRange(0, s.lengthInBytes, s.buffer.asUint8List());
 
-  return SignedTransaction(
-      tx.absTransaction().type.value, hex.encode(i).toUpperCase(), stx.hash);
+  return SignedTransaction(tx.absTransaction().type.value, hex.encode(i).toUpperCase(), stx.hash);
 }
 
-CosignatureSignedTransaction signCosignatureTransactionRwa(
-    CosignatureTransaction tx, Account a) {
+CosignatureSignedTransaction signCosignatureTransactionRwa(CosignatureTransaction tx, Account a) {
   if (tx._transactionToCosign.getTransactionInfo == null ||
       tx._transactionToCosign.getTransactionInfo.transactionHash == '') {
     throw errCosignatureTxHash;
@@ -217,15 +209,12 @@ CosignatureSignedTransaction signCosignatureTransactionRwa(
 
   final signer = a.account;
 
-  final hashByte =
-      hex.decode(tx._transactionToCosign.getTransactionInfo.transactionHash);
+  final hashByte = hex.decode(tx._transactionToCosign.getTransactionInfo.transactionHash);
 
   final signatureByte = signer.sign(hashByte);
 
-  return CosignatureSignedTransaction(
-      tx._transactionToCosign.getTransactionInfo.transactionHash,
-      hex.encode(signatureByte),
-      signer.publicKey.toString());
+  return CosignatureSignedTransaction(tx._transactionToCosign.getTransactionInfo.transactionHash,
+      hex.encode(signatureByte), signer.publicKey.toString());
 }
 
 String _createTransactionHash(String pHex, String generationHash) {
@@ -258,8 +247,7 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
 
   rB.insertAll(rB.length, b.skip(100).take(versionSize + typeSize));
 
-  rB.insertAll(signerSize + sizeSize + versionSize + typeSize,
-      b.skip(transactionHeaderSize));
+  rB.insertAll(signerSize + sizeSize + versionSize + typeSize, b.skip(transactionHeaderSize));
 
   final buffer = Uint8List(4).buffer;
   final s = ByteData.view(buffer);
@@ -271,8 +259,7 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
   return Uint8List.fromList(rB);
 }
 
-int cosignatoryModificationArrayToBuffer(
-    fb.Builder builder, List<MultisigCosignatoryModification> modifications) {
+int cosignatoryModificationArrayToBuffer(fb.Builder builder, List<MultisigCosignatoryModification> modifications) {
   final msb = <int>[];
   for (final m in modifications) {
     final b = hexDecodeStringOdd(m.publicAccount.publicKey);

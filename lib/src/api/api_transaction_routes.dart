@@ -9,22 +9,19 @@ const _transactionsRoute = '/transaction',
     _announceAggregateCosignatureRoute = '/transaction/cosignature';
 
 class TransactionRoutesApi {
-  TransactionRoutesApi([_ApiClient _apiClient])
-      : _apiClient = _apiClient ?? defaultApiClient;
+  TransactionRoutesApi([_ApiClient _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
 
   final _ApiClient _apiClient;
 
   /// returns transaction hash after announcing passed SignedTransaction
-  Future<Object> announce(SignedTransaction tx) async =>
-      _announceTransaction(tx, _transactionsRoute);
+  Future<Object> announce(SignedTransaction tx) async => _announceTransaction(tx, _transactionsRoute);
 
   /// returns transaction hash after announcing passed aggregate bounded SignedTransaction
   Future<Object> announceAggregateBonded(SignedTransaction tx) async =>
       _announceTransaction(tx, _announceAggregateRoute);
 
   /// returns transaction hash after announcing passed CosignatureSignedTransaction
-  Future<Object> announceAggregateBondedCosignature(
-          CosignatureSignedTransaction tx) async =>
+  Future<Object> announceAggregateBondedCosignature(CosignatureSignedTransaction tx) async =>
       _announceTransaction(tx, _announceAggregateCosignatureRoute);
 
   /// Announce a  transaction
@@ -62,16 +59,13 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = _transactionRoute
-        .replaceAll('{format}', 'json')
-        .replaceAll('{transactionId}', transactionId);
+    final String path = _transactionRoute.replaceAll('{format}', 'json').replaceAll('{transactionId}', transactionId);
 
     final response = await _apiClient.get(path);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return deserializeDTO(
-          _apiClient.deserialize(response.body, 'Transaction'));
+      return deserializeDTO(_apiClient.deserialize(response.body, 'Transaction'));
     } else {
       return null;
     }
@@ -97,8 +91,7 @@ class TransactionRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final List resp =
-          _apiClient.deserialize(response.body, 'List<Transaction>');
+      final List resp = _apiClient.deserialize(response.body, 'List<Transaction>');
       return resp.map(deserializeDTO).toList();
     } else {
       return null;
@@ -115,9 +108,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path = _transactionStatusRoute
-        .replaceAll('{format}', 'json')
-        .replaceAll('{hash}', hash.toString());
+    final String path = _transactionStatusRoute.replaceAll('{format}', 'json').replaceAll('{hash}', hash.toString());
 
     final response = await _apiClient.get(path);
 
@@ -134,8 +125,7 @@ class TransactionRoutesApi {
   ///
   /// Returns an List of transaction statuses for a given
   /// List of transaction hashes.
-  Future<List<TransactionStatus>> getTransactionsStatuses(
-      List<String> transactionHashes) async {
+  Future<List<TransactionStatus>> getTransactionsStatuses(List<String> transactionHashes) async {
     final Object postBody = TransactionHashes.fromList(transactionHashes);
 
     // verify required params are set
@@ -151,9 +141,7 @@ class TransactionRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return _apiClient
-          .deserialize(response.body, 'List<TransactionStatus>')
-          .cast<TransactionStatus>();
+      return _apiClient.deserialize(response.body, 'List<TransactionStatus>').cast<TransactionStatus>();
     } else {
       return null;
     }

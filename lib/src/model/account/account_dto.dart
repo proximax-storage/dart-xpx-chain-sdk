@@ -1,8 +1,7 @@
 part of xpx_chain_sdk.account;
 
 class AccountDTO {
-  AccountDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  AccountDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     address = json['address'];
     addressHeight = UInt64DTO.fromJson(json['addressHeight']);
     _publicKey = json['publicKey'];
@@ -38,8 +37,7 @@ class AccountDTO {
 }
 
 class AccountInfoDTO {
-  AccountInfoDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  AccountInfoDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     _account = AccountDTO.fromJson(json['account']);
   }
 

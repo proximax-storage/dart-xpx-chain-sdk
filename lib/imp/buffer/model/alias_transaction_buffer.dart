@@ -8,39 +8,32 @@ class AliasTransactionBuffer {
 
   AliasTransactionBuffer._(this._bc, this._bcOffset);
 
-  static const fb.Reader<AliasTransactionBuffer> reader =
-      _AliasTransactionBufferReader();
+  static const fb.Reader<AliasTransactionBuffer> reader = _AliasTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
 
-  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 8, null);
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 8, null);
 
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int> get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 14, null);
 
-  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 16, null);
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 16, null);
 
   int get actionType => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
 
-  List<int> get namespaceId => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 20, null);
+  List<int> get namespaceId => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 20, null);
 
   ///  In case of address it is 25 bytes array. In case of mosaic
   ///  it is 8 byte array(or 2 uint32 array)
-  List<int> get aliasId => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 22, null);
+  List<int> get aliasId => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 22, null);
 
   @override
   String toString() => 'AliasTransactionBuffer{'
@@ -56,18 +49,15 @@ class AliasTransactionBuffer {
       ' aliasId: $aliasId}';
 }
 
-class _AliasTransactionBufferReader
-    extends fb.TableReader<AliasTransactionBuffer> {
+class _AliasTransactionBufferReader extends fb.TableReader<AliasTransactionBuffer> {
   const _AliasTransactionBufferReader();
 
   @override
-  AliasTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-      AliasTransactionBuffer._(bc, offset);
+  AliasTransactionBuffer createObject(fb.BufferContext bc, int offset) => AliasTransactionBuffer._(bc, offset);
 }
 
 class AliasTransactionBufferBuilder {
-  AliasTransactionBufferBuilder(this.fbBuilder)
-      : assert(fbBuilder != null, 'fbBuilder must not be null');
+  AliasTransactionBufferBuilder(this.fbBuilder) : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -166,22 +156,12 @@ class AliasTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   @override
   int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null, 'fbBuilder must not be null');
-    final int signatureOffset = _signature?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_signature)
-        : null;
-    final int signerOffset =
-        _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
-    final int maxFeeOffset =
-        _maxFee?.isNotEmpty == true ? fbBuilder.writeListUint32(_maxFee) : null;
-    final int deadlineOffset = _deadline?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_deadline)
-        : null;
-    final int namespaceIdOffset = _namespaceId?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_namespaceId)
-        : null;
-    final int aliasIdOffset = _aliasId?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_aliasId)
-        : null;
+    final int signatureOffset = _signature?.isNotEmpty == true ? fbBuilder.writeListUint8(_signature) : null;
+    final int signerOffset = _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
+    final int maxFeeOffset = _maxFee?.isNotEmpty == true ? fbBuilder.writeListUint32(_maxFee) : null;
+    final int deadlineOffset = _deadline?.isNotEmpty == true ? fbBuilder.writeListUint32(_deadline) : null;
+    final int namespaceIdOffset = _namespaceId?.isNotEmpty == true ? fbBuilder.writeListUint32(_namespaceId) : null;
+    final int aliasIdOffset = _aliasId?.isNotEmpty == true ? fbBuilder.writeListUint8(_aliasId) : null;
 
     fbBuilder.startTable();
     fbBuilder.addUint32(0, _size);

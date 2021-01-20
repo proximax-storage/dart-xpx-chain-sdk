@@ -4,18 +4,15 @@ part of xpx_chain_sdk.transaction;
 /// Aggregate Bonded propose many transactions between different [Account].
 ///
 class AggregateTransaction extends AbstractTransaction implements Transaction {
-  factory AggregateTransaction.bonded(
-          Deadline deadline, List<Transaction> innerTxs, int networkType) =>
-      AggregateTransaction._(deadline, innerTxs, networkType,
-          aggregateBondedVersion, TransactionType.aggregateBonded);
+  factory AggregateTransaction.bonded(Deadline deadline, List<Transaction> innerTxs, int networkType) =>
+      AggregateTransaction._(deadline, innerTxs, networkType, aggregateBondedVersion, TransactionType.aggregateBonded);
 
-  factory AggregateTransaction.complete(
-          Deadline deadline, List<Transaction> innerTxs, int networkType) =>
-      AggregateTransaction._(deadline, innerTxs, networkType,
-          aggregateCompletedVersion, TransactionType.aggregateCompleted);
+  factory AggregateTransaction.complete(Deadline deadline, List<Transaction> innerTxs, int networkType) =>
+      AggregateTransaction._(
+          deadline, innerTxs, networkType, aggregateCompletedVersion, TransactionType.aggregateCompleted);
 
-  AggregateTransaction._(Deadline deadline, List<Transaction> innerTxs,
-      int networkType, int version, TransactionType type)
+  AggregateTransaction._(
+      Deadline deadline, List<Transaction> innerTxs, int networkType, int version, TransactionType type)
       : super() {
     if (innerTxs.isEmpty == null) {
       throw errNullInnerTransactions;
@@ -31,10 +28,8 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   AggregateTransaction.fromDTO(AggregateTransactionInfoDTO dto)
       : assert(dto != null, 'dto must not be null'),
         super.fromDto(dto._transaction, dto.meta) {
-    innerTransactions =
-        dto._transaction._transactions.map(deserializeDTO).toList();
-    cosignatures = AggregateTransactionCosignature.listFromDTO(
-        networkType, dto._transaction._cosignatures);
+    innerTransactions = dto._transaction._transactions.map(deserializeDTO).toList();
+    cosignatures = AggregateTransactionCosignature.listFromDTO(networkType, dto._transaction._cosignatures);
   }
 
   List<Transaction> innerTransactions;
@@ -47,11 +42,8 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
   AbstractTransaction get abstractTransaction => absTransaction();
 
-  static List<AggregateTransaction> listFromDTO(
-          List<AggregateTransactionInfoDTO> json) =>
-      json == null
-          ? null
-          : json.map((value) => AggregateTransaction.fromDTO(value)).toList();
+  static List<AggregateTransaction> listFromDTO(List<AggregateTransactionInfoDTO> json) =>
+      json == null ? null : json.map((value) => AggregateTransaction.fromDTO(value)).toList();
 
   @override
   String toString() {
@@ -77,8 +69,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   int _size() {
     int sizeOfInnerTransactions = 0;
     for (final itx in innerTransactions) {
-      sizeOfInnerTransactions +=
-          itx._size() - signatureSize - maxFeeSize - deadLineSize;
+      sizeOfInnerTransactions += itx._size() - signatureSize - maxFeeSize - deadLineSize;
     }
     return aggregateBondedHeader + sizeOfInnerTransactions;
   }
@@ -110,8 +101,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
     final codedAggregate = txnBuilder.finish();
 
-    return aggregateTransactionSchema()
-        .serialize(builder.finish(codedAggregate));
+    return aggregateTransactionSchema().serialize(builder.finish(codedAggregate));
   }
 }
 
@@ -119,8 +109,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 class AggregateTransactionCosignature {
   AggregateTransactionCosignature(this.signature, this.signer);
 
-  AggregateTransactionCosignature.fromDTO(
-      int networkType, _AggregateTransactionCosignatureDTO dto) {
+  AggregateTransactionCosignature.fromDTO(int networkType, _AggregateTransactionCosignatureDTO dto) {
     if (dto?.signer == null) {
       return;
     }
@@ -140,12 +129,7 @@ class AggregateTransactionCosignature {
 
   static List<AggregateTransactionCosignature> listFromDTO(
           int networkType, List<_AggregateTransactionCosignatureDTO> json) =>
-      json == null
-          ? null
-          : json
-              .map((value) =>
-                  AggregateTransactionCosignature.fromDTO(networkType, value))
-              .toList();
+      json == null ? null : json.map((value) => AggregateTransactionCosignature.fromDTO(networkType, value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

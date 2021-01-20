@@ -1,8 +1,7 @@
 part of xpx_chain_sdk.alias;
 
 class AddressAliasDTO extends AbstractTransactionDTO {
-  AddressAliasDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  AddressAliasDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     deadline = UInt64DTO.fromJson(json['deadline']);
     signature = json['signature'];
     signer = json['signer'];
@@ -27,12 +26,10 @@ class AddressAliasDTO extends AbstractTransactionDTO {
     return data;
   }
 
-  static List<AddressAliasDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => AddressAliasDTO.fromJson(value)).toList();
+  static List<AddressAliasDTO> listFromJson(List<dynamic> json) =>
+      json == null ? null : json.map((value) => AddressAliasDTO.fromJson(value)).toList();
 
-  static Map<String, AddressAliasDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, AddressAliasDTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, AddressAliasDTO>{};
     if (json != null && json.isNotEmpty) {
       json.forEach((key, value) => map[key] = AddressAliasDTO.fromJson(value));
@@ -43,12 +40,9 @@ class AddressAliasDTO extends AbstractTransactionDTO {
 
 class AddressAliasTransactionInfoDTO {
   AddressAliasTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
-    transaction = json['transaction'] != null
-        ? AddressAliasDTO.fromJson(json['transaction'])
-        : null;
+    transaction = json['transaction'] != null ? AddressAliasDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO meta;
@@ -67,8 +61,7 @@ class AddressAliasTransactionInfoDTO {
 }
 
 class AliasDTO {
-  AliasDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  AliasDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     aliasAction = json['aliasAction'];
     mosaicId = UInt64DTO.fromJson(json['mosaicId']);
     address = json['address'];
@@ -87,12 +80,10 @@ class AliasDTO {
     return data;
   }
 
-  static List<AliasDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => AliasDTO.fromJson(value)).toList();
+  static List<AliasDTO> listFromJson(List<dynamic> json) =>
+      json == null ? null : json.map((value) => AliasDTO.fromJson(value)).toList();
 
-  static Map<String, AliasDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, AliasDTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, AliasDTO>{};
     if (json != null && json.isNotEmpty) {
       json.forEach((key, value) => map[key] = AliasDTO.fromJson(value));

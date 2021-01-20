@@ -8,35 +8,28 @@ class AggregateTransactionBuffer {
 
   AggregateTransactionBuffer._(this._bc, this._bcOffset);
 
-  static const fb.Reader<AggregateTransactionBuffer> reader =
-      _AggregateTransactionBufferReader();
+  static const fb.Reader<AggregateTransactionBuffer> reader = _AggregateTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
 
-  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 8, null);
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 8, null);
 
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 14, null);
 
-  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 16, null);
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 16, null);
 
-  int get transactionsSize =>
-      const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 18, 0);
+  int get transactionsSize => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 18, 0);
 
-  List<int> get transactions => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 20, null);
+  List<int> get transactions => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 20, null);
 
   @override
   String toString() => 'AggregateTransactionBuffer{'
@@ -51,18 +44,15 @@ class AggregateTransactionBuffer {
       ' transactions: $transactions}';
 }
 
-class _AggregateTransactionBufferReader
-    extends fb.TableReader<AggregateTransactionBuffer> {
+class _AggregateTransactionBufferReader extends fb.TableReader<AggregateTransactionBuffer> {
   const _AggregateTransactionBufferReader();
 
   @override
-  AggregateTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-      AggregateTransactionBuffer._(bc, offset);
+  AggregateTransactionBuffer createObject(fb.BufferContext bc, int offset) => AggregateTransactionBuffer._(bc, offset);
 }
 
 class AggregateTransactionBufferBuilder {
-  AggregateTransactionBufferBuilder(this.fbBuilder)
-      : assert(fbBuilder != null, 'fbBuilder must not be null');
+  AggregateTransactionBufferBuilder(this.fbBuilder) : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -153,19 +143,11 @@ class AggregateTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   @override
   int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null, 'fbBuilder must not be null');
-    final int signatureOffset = _signature?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_signature)
-        : null;
-    final int signerOffset =
-        _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
-    final int feeOffset =
-        _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
-    final int deadlineOffset = _deadline?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_deadline)
-        : null;
-    final int transactionsOffset = _transactions?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_transactions)
-        : null;
+    final int signatureOffset = _signature?.isNotEmpty == true ? fbBuilder.writeListUint8(_signature) : null;
+    final int signerOffset = _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
+    final int feeOffset = _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
+    final int deadlineOffset = _deadline?.isNotEmpty == true ? fbBuilder.writeListUint32(_deadline) : null;
+    final int transactionsOffset = _transactions?.isNotEmpty == true ? fbBuilder.writeListUint8(_transactions) : null;
 
     fbBuilder.startTable();
     fbBuilder.addUint32(0, _size);

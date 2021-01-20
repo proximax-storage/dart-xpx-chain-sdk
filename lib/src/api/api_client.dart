@@ -165,21 +165,17 @@ class _ApiClient {
         default:
           {
             Match match;
-            if (value is List &&
-                (match = regList.firstMatch(targetType)) != null) {
+            if (value is List && (match = regList.firstMatch(targetType)) != null) {
               final newTargetType = match[1];
               return value.map((v) => _deserialize(v, newTargetType)).toList();
-            } else if (value is Map &&
-                (match = regMap.firstMatch(targetType)) != null) {
+            } else if (value is Map && (match = regMap.firstMatch(targetType)) != null) {
               final newTargetType = match[1];
-              return Map.fromIterables(value.keys,
-                  value.values.map((v) => _deserialize(v, newTargetType)));
+              return Map.fromIterables(value.keys, value.values.map((v) => _deserialize(v, newTargetType)));
             }
           }
       }
     } on Exception catch (e, stack) {
-      throw ApiException.withInner(
-          500, 'Exception during deserialization.', e, stack);
+      throw ApiException.withInner(500, 'Exception during deserialization.', e, stack);
     }
     return null;
   }
@@ -210,17 +206,9 @@ class _ApiClient {
 
   // We don't use a Map<String, String> for queryParams.
   // If collectionFormat is 'multi' a key might appear multiple times.
-  Future<http.Response> _invokeAPI(
-      final String path,
-      String method,
-      Iterable<QueryParam> queryParams,
-      Object body,
-      final Map<String, String> headerParams,
-      final Map<String, String> formParams,
-      final String contentType) async {
-    final ps = queryParams
-        .where((p) => p.value != null)
-        .map((p) => '${p.name}=${p.value}');
+  Future<http.Response> _invokeAPI(final String path, String method, Iterable<QueryParam> queryParams, Object body,
+      final Map<String, String> headerParams, final Map<String, String> formParams, final String contentType) async {
+    final ps = queryParams.where((p) => p.value != null).map((p) => '${p.name}=${p.value}');
     final String queryString = ps.isNotEmpty ? '?${ps.join('&')}' : '';
 
     final String url = baseUrl + path + queryString;
@@ -237,9 +225,7 @@ class _ApiClient {
       final response = await _client.send(request);
       return http.Response.fromStream(response);
     } else {
-      final msgBody = contentType == 'application/x-www-form-urlencoded'
-          ? formParams
-          : serialize(body);
+      final msgBody = contentType == 'application/x-www-form-urlencoded' ? formParams : serialize(body);
 
       switch (method) {
         case 'POST':
@@ -289,10 +275,8 @@ class _ApiClient {
 
     final List<String> contentTypes = [];
 
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
+    final String contentType = contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
 
-    return await _invokeAPI(path, method, queryParams, postBody, headerParams,
-        formParams, contentType);
+    return await _invokeAPI(path, method, queryParams, postBody, headerParams, formParams, contentType);
   }
 }

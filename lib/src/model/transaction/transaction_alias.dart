@@ -2,8 +2,8 @@ part of xpx_chain_sdk.transaction;
 
 // AliasTransaction
 class AliasTransaction extends AbstractTransaction implements Transaction {
-  AliasTransaction._(int version, Deadline deadline, this.actionType,
-      this.namespaceId, TransactionType transactionType, int networkType)
+  AliasTransaction._(int version, Deadline deadline, this.actionType, this.namespaceId, TransactionType transactionType,
+      int networkType)
       : super() {
     this.version = version;
     this.deadline = deadline;
@@ -14,23 +14,19 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
   AliasTransaction._fromAddressAliasDTO(AddressAliasTransactionInfoDTO dto)
       : assert(dto != null, 'dto must not be null'),
         super.fromDto(dto.transaction, dto.meta) {
-    actionType = dto.transaction.aliasAction == 0
-        ? actionType = AliasActionType.aliasLink
-        : AliasActionType.aliasUnlink;
-    namespaceId = dto.transaction.namespaceId != null
-        ? NamespaceId.fromId(dto.transaction.namespaceId.toUint64())
-        : null;
+    actionType =
+        dto.transaction.aliasAction == 0 ? actionType = AliasActionType.aliasLink : AliasActionType.aliasUnlink;
+    namespaceId =
+        dto.transaction.namespaceId != null ? NamespaceId.fromId(dto.transaction.namespaceId.toUint64()) : null;
   }
 
   AliasTransaction._fromMosaicAliasDTO(MosaicAliasTransactionInfoDTO dto)
       : assert(dto != null, 'dto must not be null'),
         super.fromDto(dto.transaction, dto.meta) {
-    actionType = dto.transaction.aliasAction == 0
-        ? actionType = AliasActionType.aliasLink
-        : AliasActionType.aliasUnlink;
-    namespaceId = dto.transaction.namespaceId != null
-        ? NamespaceId.fromId(dto.transaction.namespaceId.toUint64())
-        : null;
+    actionType =
+        dto.transaction.aliasAction == 0 ? actionType = AliasActionType.aliasLink : AliasActionType.aliasUnlink;
+    namespaceId =
+        dto.transaction.namespaceId != null ? NamespaceId.fromId(dto.transaction.namespaceId.toUint64()) : null;
   }
 
   AliasActionType actionType;
@@ -96,10 +92,9 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
 }
 
 class AddressAliasTransaction extends AliasTransaction {
-  AddressAliasTransaction(Deadline deadline, this.address,
-      NamespaceId namespaceId, AliasActionType actionType, int networkType)
-      : super._(addressAliasVersion, deadline, actionType, namespaceId,
-            TransactionType.addressAlias, networkType);
+  AddressAliasTransaction(
+      Deadline deadline, this.address, NamespaceId namespaceId, AliasActionType actionType, int networkType)
+      : super._(addressAliasVersion, deadline, actionType, namespaceId, TransactionType.addressAlias, networkType);
 
   AddressAliasTransaction.fromDTO(AddressAliasTransactionInfoDTO dto)
       : assert(dto != null, 'dto must not be null'),
@@ -146,10 +141,9 @@ class AddressAliasTransaction extends AliasTransaction {
 }
 
 class MosaicAliasTransaction extends AliasTransaction {
-  MosaicAliasTransaction(Deadline deadline, this.mosaicId,
-      NamespaceId namespaceId, AliasActionType actionType, int networkType)
-      : super._(mosaicAliasVersion, deadline, actionType, namespaceId,
-            TransactionType.mosaicAlias, networkType);
+  MosaicAliasTransaction(
+      Deadline deadline, this.mosaicId, NamespaceId namespaceId, AliasActionType actionType, int networkType)
+      : super._(mosaicAliasVersion, deadline, actionType, namespaceId, TransactionType.mosaicAlias, networkType);
 
   MosaicAliasTransaction.fromDTO(
     MosaicAliasTransactionInfoDTO value,

@@ -11,14 +11,8 @@ class MultisigCosignatoryModificationDTO {
   int type;
   String cosignatoryPublicKey;
 
-  static List<MultisigCosignatoryModificationDTO> listFromJson(
-          List<dynamic> json) =>
-      json == null
-          ? null
-          : json
-              .map(
-                  (value) => MultisigCosignatoryModificationDTO.fromJson(value))
-              .toList();
+  static List<MultisigCosignatoryModificationDTO> listFromJson(List<dynamic> json) =>
+      json == null ? null : json.map((value) => MultisigCosignatoryModificationDTO.fromJson(value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -30,12 +24,10 @@ class MultisigCosignatoryModificationDTO {
 
 class ModifyMultisigAccountTransactionInfoDTO {
   ModifyMultisigAccountTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
-    transaction = json['transaction'] != null
-        ? _ModifyMultisigAccountTransactionDTO.fromJson(json['transaction'])
-        : null;
+    transaction =
+        json['transaction'] != null ? _ModifyMultisigAccountTransactionDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO meta;
@@ -61,8 +53,7 @@ class _ModifyMultisigAccountTransactionDTO extends AbstractTransactionDTO {
     type = json['type'];
     fee = UInt64DTO.fromJson(json['maxFee']);
     deadline = UInt64DTO.fromJson(json['deadline']);
-    modifications =
-        MultisigCosignatoryModificationDTO.listFromJson(json['modifications']);
+    modifications = MultisigCosignatoryModificationDTO.listFromJson(json['modifications']);
     minApprovalDelta = json['minApprovalDelta'];
     minRemovalDelta = json['minRemovalDelta'];
   }

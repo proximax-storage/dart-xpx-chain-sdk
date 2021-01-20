@@ -19,8 +19,7 @@ const Map<String, int> addressNet = {
 };
 
 class NetworkType {
-  NetworkType.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  NetworkType.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     networkType = json['name'];
     description = json['description'];
   }

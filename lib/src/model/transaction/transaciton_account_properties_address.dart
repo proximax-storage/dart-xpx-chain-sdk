@@ -1,10 +1,8 @@
 part of xpx_chain_sdk.transaction;
 
 // AliasTransaction
-class AccountPropertiesAddressTransaction extends AbstractTransaction
-    implements Transaction {
-  AccountPropertiesAddressTransaction(
-      Deadline deadline, this.propertyType, this.modifications, int networkType)
+class AccountPropertiesAddressTransaction extends AbstractTransaction implements Transaction {
+  AccountPropertiesAddressTransaction(Deadline deadline, this.propertyType, this.modifications, int networkType)
       : super() {
     version = accountPropertyAddressVersion;
     this.deadline = deadline;
@@ -12,13 +10,11 @@ class AccountPropertiesAddressTransaction extends AbstractTransaction
     this.networkType = networkType;
   }
 
-  AccountPropertiesAddressTransaction.fromDTO(
-      AccountPropertiesAddressTransactionInfoDTO dto)
+  AccountPropertiesAddressTransaction.fromDTO(AccountPropertiesAddressTransactionInfoDTO dto)
       : assert(dto != null, 'dto must not be null'),
         super.fromDto(dto.transaction, dto.meta) {
     propertyType = AccountPropertyType.fromInt(dto.transaction.propertyType);
-    modifications = AccountPropertiesAddressModification.listFromJson(
-        dto.transaction.modifications);
+    modifications = AccountPropertiesAddressModification.listFromJson(dto.transaction.modifications);
   }
 
   AccountPropertyType propertyType;
@@ -49,9 +45,7 @@ class AccountPropertiesAddressTransaction extends AbstractTransaction
   }
 
   @override
-  int _size() =>
-      accountPropertyAddressHeader +
-      (accountPropertiesAddressModificationSize * modifications.length);
+  int _size() => accountPropertyAddressHeader + (accountPropertiesAddressModificationSize * modifications.length);
 
   @override
   AbstractTransaction absTransaction() => _absTransaction();
@@ -89,7 +83,6 @@ class AccountPropertiesAddressTransaction extends AbstractTransaction
 
     final codedAccountProperty = txnBuilder.finish();
 
-    return accountPropertyTransactionSchema()
-        .serialize(builder.finish(codedAccountProperty));
+    return accountPropertyTransactionSchema().serialize(builder.finish(codedAccountProperty));
   }
 }

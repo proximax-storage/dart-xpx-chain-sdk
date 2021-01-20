@@ -17,19 +17,15 @@ final errInvalidNamespaceName = Exception('namespace name is invalid');
 final errEmptyNamespaceIds = Exception('list namespace ids must not by empty');
 
 /// Blockchain errors
-final errNullOrZeroHeight =
-    Exception('block height should not be null or zero');
+final errNullOrZeroHeight = Exception('block height should not be null or zero');
 final errNullOrZeroLimit = Exception('limit should not be null or zero');
 
 /// Transactions errors
 final errNullRecipient = Exception('recipient must not be null');
 final errNullDuration = Exception('duration must not be null');
-final errNullMessage =
-    Exception('message must not be null, but could be with empty payload');
-final errNullInnerTransactions =
-    Exception('innerTransactions must not be null');
-final errTransactionSigner =
-    Exception('some of the transaction does not have a signer');
+final errNullMessage = Exception('message must not be null, but could be with empty payload');
+final errNullInnerTransactions = Exception('innerTransactions must not be null');
+final errTransactionSigner = Exception('some of the transaction does not have a signer');
 final errEmptyModifications = Exception('modifications must not empty');
 final errCosignatureTxHash = Exception('cosignature transaction hash is null');
 
@@ -40,8 +36,7 @@ final errInvalidSignature = Exception('signature length is incorrect');
 final errInvalidHexadecimal = Exception('must be hexadecimal');
 
 /// Various
-final errorInvalidMosaicsOffer =
-    Exception("you can't get more mosaics when in offer");
+final errorInvalidMosaicsOffer = Exception("you can't get more mosaics when in offer");
 final errUnknownOfferType = Exception('unknown offer type');
 final errUnknownTransactionType = Exception('unknown transaction type');
 final errNullConfirmations = Exception('confirmations must not be null');

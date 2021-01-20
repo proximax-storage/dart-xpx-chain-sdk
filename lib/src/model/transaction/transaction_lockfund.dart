@@ -4,8 +4,7 @@ part of xpx_chain_sdk.transaction;
 /// Alias: LockFundsTransaction
 ///
 class LockFundsTransaction extends AbstractTransaction implements Transaction {
-  LockFundsTransaction(Deadline deadline, Mosaic mosaic, Uint64 duration,
-      SignedTransaction signedTx, int networkType)
+  LockFundsTransaction(Deadline deadline, Mosaic mosaic, Uint64 duration, SignedTransaction signedTx, int networkType)
       : assert(mosaic != null, 'mosaic must not be null'),
         assert(duration != null, 'duration must not be null'),
         assert(signedTx != null, 'signedTx must not be null'),
@@ -26,8 +25,7 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
   LockFundsTransaction.fromDTO(LockFundsTransactionInfoDTO dto)
       : assert(dto != null, 'dto must not be null'),
         super.fromDto(dto._transaction, dto.meta) {
-    mosaic = Mosaic(MosaicId.fromUint64(dto._transaction._assetId.toUint64()),
-        dto._transaction._amount.toUint64());
+    mosaic = Mosaic(MosaicId.fromUint64(dto._transaction._assetId.toUint64()), dto._transaction._amount.toUint64());
     duration = dto._transaction._duration.toUint64();
     signedTransaction = SignedTransaction(0x4148, '', dto._transaction._hash);
   }
@@ -95,7 +93,6 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
 
     final codedLockFunds = txnBuilder.finish();
 
-    return lockFundsTransactionSchema()
-        .serialize(builder.finish(codedLockFunds));
+    return lockFundsTransactionSchema().serialize(builder.finish(codedLockFunds));
   }
 }

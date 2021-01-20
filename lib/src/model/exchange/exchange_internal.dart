@@ -23,8 +23,7 @@ int addExchangeOfferToArrayToBuffer(fb.Builder builder, List<AddOffer> offers) {
   return builder.writeList(msb);
 }
 
-int exchangeOfferToArrayToBuffer(
-    fb.Builder builder, List<ExchangeConfirmation> offers) {
+int exchangeOfferToArrayToBuffer(fb.Builder builder, List<ExchangeConfirmation> offers) {
   final List<int> msb = List(offers.length);
   int i = 0;
   for (final offer in offers) {
@@ -50,8 +49,7 @@ int exchangeOfferToArrayToBuffer(
   return builder.writeList(msb);
 }
 
-int removeExchangeOfferToArrayToBuffer(
-    fb.Builder builder, List<RemoveOffer> offers) {
+int removeExchangeOfferToArrayToBuffer(fb.Builder builder, List<RemoveOffer> offers) {
   final List<int> msb = List(offers.length);
   int i = 0;
   for (final offer in offers) {

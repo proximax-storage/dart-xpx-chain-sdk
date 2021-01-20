@@ -1,8 +1,7 @@
 part of xpx_chain_sdk.mosaic;
 
 class MosaicDTO {
-  MosaicDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  MosaicDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     _id = UInt64DTO.fromJson(json['id']);
     _amount = UInt64DTO.fromJson(json['amount']);
   }
@@ -19,14 +18,12 @@ class MosaicDTO {
     return data;
   }
 
-  static List<MosaicDTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => MosaicDTO.fromJson(value)).toList();
+  static List<MosaicDTO> listFromJson(List<dynamic> json) =>
+      json == null ? null : json.map((value) => MosaicDTO.fromJson(value)).toList();
 }
 
 class MosaicInfoDTO {
-  MosaicInfoDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  MosaicInfoDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     meta = MosaicMetaDTO.fromJson(json['meta']);
     _mosaic = MosaicDefinitionDTO.fromJson(json['mosaic']);
   }
@@ -45,8 +42,7 @@ class MosaicInfoDTO {
 }
 
 class MosaicMetaDTO {
-  MosaicMetaDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  MosaicMetaDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     _id = json['id'];
   }
 
@@ -56,8 +52,7 @@ class MosaicMetaDTO {
 }
 
 class MosaicDefinitionDTO {
-  MosaicDefinitionDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  MosaicDefinitionDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     mosaicId = UInt64DTO.fromJson(json['mosaicId']);
     _supply = UInt64DTO.fromJson(json['supply']);
     _height = UInt64DTO.fromJson(json['height']);
@@ -81,10 +76,8 @@ class MosaicDefinitionDTO {
 }
 
 class MosaicNameDTO {
-  MosaicNameDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
-    _parentId =
-        json['parentId'] != null ? UInt64DTO.fromJson(json['parentId']) : null;
+  MosaicNameDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
+    _parentId = json['parentId'] != null ? UInt64DTO.fromJson(json['parentId']) : null;
 
     mosaicId = UInt64DTO.fromJson(json['mosaicId']);
     _names = List.from(json['names']);
@@ -116,9 +109,7 @@ class _MosaicPropertyDTO {
   UInt64DTO _value;
 
   static List<_MosaicPropertyDTO> listFromJson(List<dynamic> json) =>
-      json == null
-          ? null
-          : json.map((value) => _MosaicPropertyDTO.fromJson(value)).toList();
+      json == null ? null : json.map((value) => _MosaicPropertyDTO.fromJson(value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -131,11 +122,8 @@ class _MosaicPropertyDTO {
 
 class MosaicDefinitionTransactionInfoDTO {
   MosaicDefinitionTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
-    transaction = json['transaction'] != null
-        ? MosaicDefinitionTransactionDTO.fromJson(json['transaction'])
-        : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    transaction = json['transaction'] != null ? MosaicDefinitionTransactionDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO meta;
@@ -207,12 +195,9 @@ class MosaicDefinitionTransactionDTO extends AbstractTransactionDTO {
 
 class MosaicSupplyChangeTransactionInfoDTO {
   MosaicSupplyChangeTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
-    transaction = json['transaction'] != null
-        ? _MosaicSupplyChangeTransactionDTO.fromJson(json['transaction'])
-        : null;
+    transaction = json['transaction'] != null ? _MosaicSupplyChangeTransactionDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO meta;
@@ -284,12 +269,9 @@ class _MosaicSupplyChangeTransactionDTO extends AbstractTransactionDTO {
 
 class MosaicAliasTransactionInfoDTO {
   MosaicAliasTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
-    transaction = json['transaction'] != null
-        ? MosaicAliasDTO.fromJson(json['transaction'])
-        : null;
+    transaction = json['transaction'] != null ? MosaicAliasDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO meta;
@@ -308,8 +290,7 @@ class MosaicAliasTransactionInfoDTO {
 }
 
 class MosaicAliasDTO extends AbstractTransactionDTO {
-  MosaicAliasDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  MosaicAliasDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     deadline = UInt64DTO.fromJson(json['deadline']);
     signature = json['signature'];
     signer = json['signer'];

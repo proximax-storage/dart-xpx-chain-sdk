@@ -10,15 +10,13 @@ String _generateEncodedAddress(String pKey, int version) {
   final ripemd160StepOneHash = crypto.HashesRipemd160(sha3PublicKeyHash);
 
   // step 3: add version byte in front of (2)
-  final versionPrefixedRipemd160Hash =
-      addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
+  final versionPrefixedRipemd160Hash = addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
 
   // step 4: get the checksum of (3)
   final stepThreeChecksum = _generateChecksum(versionPrefixedRipemd160Hash);
 
   // step 5: concatenate (3) and (4)
-  final concatStepThreeAndStepSix =
-      addUint8List(versionPrefixedRipemd160Hash, stepThreeChecksum);
+  final concatStepThreeAndStepSix = addUint8List(versionPrefixedRipemd160Hash, stepThreeChecksum);
 
   // step 6: base32 encode (5)
   return base32.encode(concatStepThreeAndStepSix);

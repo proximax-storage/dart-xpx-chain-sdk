@@ -20,11 +20,8 @@ class AbstractTransactionDTO {
 
 class TransferTransactionInfoDTO {
   TransferTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
-    _transaction = json['transaction'] != null
-        ? _TransferTransactionDTO.fromJson(json['transaction'])
-        : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    _transaction = json['transaction'] != null ? _TransferTransactionDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO meta;
@@ -44,12 +41,9 @@ class TransferTransactionInfoDTO {
 
 class AggregateTransactionInfoDTO {
   AggregateTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
-    _transaction = json['transaction'] != null
-        ? _AggregateTransactionDTO.fromJson(json['transaction'])
-        : null;
+    _transaction = json['transaction'] != null ? _AggregateTransactionDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO meta;
@@ -128,14 +122,8 @@ class _AggregateTransactionCosignatureDTO {
   String signature;
   String signer;
 
-  static List<_AggregateTransactionCosignatureDTO> listFromJson(
-          List<dynamic> json) =>
-      json == null
-          ? null
-          : json
-              .map((value) =>
-                  _AggregateTransactionCosignatureDTO.fromJson(value))
-              .toList();
+  static List<_AggregateTransactionCosignatureDTO> listFromJson(List<dynamic> json) =>
+      json == null ? null : json.map((value) => _AggregateTransactionCosignatureDTO.fromJson(value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -147,12 +135,9 @@ class _AggregateTransactionCosignatureDTO {
 
 class LockFundsTransactionInfoDTO {
   LockFundsTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
-    _transaction = json['transaction'] != null
-        ? LockFundsTransactionDTO.fromJson(json['transaction'])
-        : null;
+    _transaction = json['transaction'] != null ? LockFundsTransactionDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO meta;
@@ -208,8 +193,7 @@ class _TransferTransactionDTO extends AbstractTransactionDTO {
       });
       _mosaics = mosaics;
     }
-    _message =
-        json['message'] != null ? MessageDTO.fromJson(json['message']) : null;
+    _message = json['message'] != null ? MessageDTO.fromJson(json['message']) : null;
   }
 
   String _recipient;
@@ -261,8 +245,7 @@ class _AggregateTransactionDTO extends AbstractTransactionDTO {
     type = json['type'];
     fee = UInt64DTO.fromJson(json['maxFee']);
     deadline = UInt64DTO.fromJson(json['deadline']);
-    _cosignatures =
-        _AggregateTransactionCosignatureDTO.listFromJson(json['cosignatures']);
+    _cosignatures = _AggregateTransactionCosignatureDTO.listFromJson(json['cosignatures']);
     _transactions = txnDeserialize(json['transactions'], 'List<Transaction>');
   }
 
