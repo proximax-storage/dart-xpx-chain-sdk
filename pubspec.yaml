@@ -1,10 +1,10 @@
 name: xpx_chain_sdk
-version: 0.0.6+5
+version: 0.0.6+6
 #author: 'Eleazar Garrido <eleazar.garrido@proximax.io>'
 
 description: 'The ProximaX Sirius Chain Dart SDK works as a lightweight Dart library for interacting with the Sirius Blockchain.'
 
-homepage: https://www.proximax.io
+homepage: https://github.com/proximax-storage/dart-xpx-chain-sdk
 
 repository: https://github.com/proximax-storage/dart-xpx-chain-sdk
 issue_tracker: https://github.com/proximax-storage/dart-xpx-chain-sdk/issues
@@ -17,7 +17,7 @@ dependencies:
   base32: '^1.0.1'
   fixnum: '^0.10.9'
   convert: '^2.1.1'
-  xpx_crypto: '^0.0.3+6'
+  xpx_crypto: '^0.0.3+7'
 
   flat_buffers: '^1.11.0'
 

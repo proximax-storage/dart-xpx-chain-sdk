@@ -1,3 +1,7 @@
+## 0.0.6+6
+### Updates
+[UPDATE] Homepage URL.
+
 ## 0.0.6+5
 ### New Features
 [ADD] Message encrypted.
