@@ -1,11 +1,9 @@
 part of xpx_chain_sdk.multisig;
 
 class Multisig {
-  Multisig.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  Multisig.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     accountAddress = Address.fromEncoded(json['accountAddress']);
-    account = PublicAccount.fromPublicKey(
-        json['account'], accountAddress.networkType);
+    account = PublicAccount.fromPublicKey(json['account'], accountAddress.networkType);
     minApproval = json['minApproval'];
     minRemoval = json['minRemoval'];
     cosignatories = List<String>.from(json['cosignatories']);
@@ -37,12 +35,10 @@ class Multisig {
     return sb.toString();
   }
 
-  static List<Multisig> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => Multisig.fromJson(value)).toList();
+  static List<Multisig> listFromJson(List<dynamic> json) =>
+      json == null ? null : json.map((value) => Multisig.fromJson(value)).toList();
 
-  static Map<String, Multisig> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, Multisig> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, Multisig>{};
     if (json != null && json.isNotEmpty) {
       json.forEach((key, value) => map[key] = Multisig.fromJson(value));
@@ -64,8 +60,7 @@ class Multisig {
 }
 
 class MultisigAccountGraphInfo {
-  MultisigAccountGraphInfo.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  MultisigAccountGraphInfo.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     level = json['level'];
     multisigEntries = MultisigAccountInfo.listFromJson(json['multisigEntries']);
   }
@@ -81,18 +76,12 @@ class MultisigAccountGraphInfo {
       '}\n';
 
   static List<MultisigAccountGraphInfo> listFromJson(List<dynamic> json) =>
-      json == null
-          ? null
-          : json
-              .map((value) => MultisigAccountGraphInfo.fromJson(value))
-              .toList();
+      json == null ? null : json.map((value) => MultisigAccountGraphInfo.fromJson(value)).toList();
 
-  static Map<String, MultisigAccountGraphInfo> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, MultisigAccountGraphInfo> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, MultisigAccountGraphInfo>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = MultisigAccountGraphInfo.fromJson(value));
+      json.forEach((key, value) => map[key] = MultisigAccountGraphInfo.fromJson(value));
     }
     return map;
   }
@@ -107,8 +96,7 @@ class MultisigAccountGraphInfo {
 }
 
 class MultisigAccountInfo {
-  MultisigAccountInfo.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  MultisigAccountInfo.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     multisig = Multisig.fromJson(json['multisig']);
   }
 
@@ -118,16 +106,12 @@ class MultisigAccountInfo {
   String toString() => '$multisig';
 
   static List<MultisigAccountInfo> listFromJson(List<dynamic> json) =>
-      json == null
-          ? null
-          : json.map((value) => MultisigAccountInfo.fromJson(value)).toList();
+      json == null ? null : json.map((value) => MultisigAccountInfo.fromJson(value)).toList();
 
-  static Map<String, MultisigAccountInfo> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, MultisigAccountInfo> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, MultisigAccountInfo>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = MultisigAccountInfo.fromJson(value));
+      json.forEach((key, value) => map[key] = MultisigAccountInfo.fromJson(value));
     }
     return map;
   }

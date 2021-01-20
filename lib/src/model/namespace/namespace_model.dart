@@ -12,8 +12,7 @@ class NamespaceId extends AssetId {
   const NamespaceId._(final Uint64 id) : super(id);
 
   /// NewNamespaceIdFromName generate Id from namespaceName
-  NamespaceId.fromName(String namespaceName)
-      : super(generateNamespacePath(namespaceName));
+  NamespaceId.fromName(String namespaceName) : super(generateNamespacePath(namespaceName));
 
   NamespaceId.fromId(final Uint64 id) : super(id);
 
@@ -37,16 +36,12 @@ class NamespaceId extends AssetId {
   @override
   bool operator ==(final other) =>
       identical(this, other) ||
-      other is NamespaceId &&
-          runtimeType == other.runtimeType &&
-          toBytes() == other.toBytes();
+      other is NamespaceId && runtimeType == other.runtimeType && toBytes() == other.toBytes();
 }
 
 class NamespaceName {
-  NamespaceName.fromDTO(NamespaceNameDTO dto)
-      : assert(dto != null, 'dto must not be null') {
-    parentId =
-        dto.parentId == null ? NamespaceId._(dto.parentId.toUint64()) : null;
+  NamespaceName.fromDTO(NamespaceNameDTO dto) : assert(dto != null, 'dto must not be null') {
+    parentId = dto.parentId == null ? NamespaceId._(dto.parentId.toUint64()) : null;
     namespaceId = NamespaceId._(dto.namespaceId.toUint64());
     name = dto.name;
   }
@@ -70,9 +65,7 @@ class NamespaceName {
   }
 
   static List<NamespaceName> listFromDTO(List<NamespaceNameDTO> json) =>
-      json == null
-          ? null
-          : json.map((value) => NamespaceName.fromDTO(value)).toList();
+      json == null ? null : json.map((value) => NamespaceName.fromDTO(value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -89,16 +82,14 @@ class NamespaceName {
 class NamespaceInfo {
   NamespaceInfo();
 
-  NamespaceInfo.fromDTO(NamespaceInfoDTO dto)
-      : assert(dto != null, 'dto must not be null') {
+  NamespaceInfo.fromDTO(NamespaceInfoDTO dto) : assert(dto != null, 'dto must not be null') {
     metaId = dto.meta.id;
     active = dto.meta.active;
     index = dto.meta.index;
 
     final _ownerAddress = Address.fromEncoded(dto._namespace.ownerAddress);
 
-    owner = PublicAccount.fromPublicKey(
-        dto._namespace.owner, _ownerAddress.networkType);
+    owner = PublicAccount.fromPublicKey(dto._namespace.owner, _ownerAddress.networkType);
 
     startHeight = dto._namespace.startHeight.toUint64();
     endHeight = dto._namespace.endHeight.toUint64();
@@ -106,13 +97,11 @@ class NamespaceInfo {
     levels = extractLevels(dto);
     typeSpace = dto._namespace.type;
 
-    alias = dto._namespace.alias.address != null
-        ? Alias(address: Address.fromEncoded(dto._namespace.alias.address))
-        : null;
+    alias =
+        dto._namespace.alias.address != null ? Alias(address: Address.fromEncoded(dto._namespace.alias.address)) : null;
     if (dto._namespace.parentId.toUint64().toInt() != 0) {
       namespaceId = NamespaceId._(levels[0]);
-      parent = NamespaceInfo()
-        ..namespaceId = NamespaceId._(dto._namespace.parentId.toUint64());
+      parent = NamespaceInfo()..namespaceId = NamespaceId._(dto._namespace.parentId.toUint64());
     } else {
       namespaceId = NamespaceId._(levels[0]);
     }
@@ -160,9 +149,8 @@ class NamespaceInfo {
       '\tendHeight: $endHeight\n'
       '}\n';
 
-  static List<NamespaceInfo> listFromDTO(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => NamespaceInfo.fromDTO(value)).toList();
+  static List<NamespaceInfo> listFromDTO(List<dynamic> json) =>
+      json == null ? null : json.map((value) => NamespaceInfo.fromDTO(value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -185,8 +173,7 @@ class NamespaceInfo {
 }
 
 class NamespaceIds {
-  NamespaceIds.fromList(List<NamespaceId> list)
-      : assert(list != null, 'list must not be null') {
+  NamespaceIds.fromList(List<NamespaceId> list) : assert(list != null, 'list must not be null') {
     _list = list.map((item) => item).toList();
   }
 

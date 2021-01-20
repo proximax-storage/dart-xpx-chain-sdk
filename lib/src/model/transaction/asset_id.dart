@@ -10,10 +10,7 @@ abstract class AssetId {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AssetId &&
-          runtimeType == other.runtimeType &&
-          value == other.value;
+      identical(this, other) || other is AssetId && runtimeType == other.runtimeType && value == other.value;
 
   @override
   int get hashCode => 'Id'.hashCode ^ value.hashCode;

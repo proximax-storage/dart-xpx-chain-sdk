@@ -8,27 +8,22 @@ class MetadataModificationBuffer {
 
   MetadataModificationBuffer._(this._bc, this._bcOffset);
 
-  static const fb.Reader<MetadataModificationBuffer> reader =
-      _MetadataModificationBufferReader();
+  static const fb.Reader<MetadataModificationBuffer> reader = _MetadataModificationBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  int get modificationType =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 6, 0);
+  int get modificationType => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 6, 0);
 
   int get keySize => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 8, 0);
 
-  List<int> get valueSize => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 10, null);
+  List<int> get valueSize => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 10, null);
 
-  List<int> get key => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 12, null);
+  List<int> get key => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 12, null);
 
-  List<int> get value => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get value => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 14, null);
 
   @override
   String toString() => 'MetadataModificationBuffer{'
@@ -40,18 +35,15 @@ class MetadataModificationBuffer {
       ' value: $value}';
 }
 
-class _MetadataModificationBufferReader
-    extends fb.TableReader<MetadataModificationBuffer> {
+class _MetadataModificationBufferReader extends fb.TableReader<MetadataModificationBuffer> {
   const _MetadataModificationBufferReader();
 
   @override
-  MetadataModificationBuffer createObject(fb.BufferContext bc, int offset) =>
-      MetadataModificationBuffer._(bc, offset);
+  MetadataModificationBuffer createObject(fb.BufferContext bc, int offset) => MetadataModificationBuffer._(bc, offset);
 }
 
 class MetadataModificationBufferBuilder {
-  MetadataModificationBufferBuilder(this.fbBuilder)
-      : assert(fbBuilder != null, 'fbBuilder must not be null');
+  MetadataModificationBufferBuilder(this.fbBuilder) : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -118,13 +110,9 @@ class MetadataModificationBufferObjectBuilder extends fb.ObjectBuilder {
   @override
   int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null, 'fbBuilder must not be null');
-    final int valueSizeOffset = _valueSize?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_valueSize)
-        : null;
-    final int keyOffset =
-        _key?.isNotEmpty == true ? fbBuilder.writeListUint8(_key) : null;
-    final int valueOffset =
-        _value?.isNotEmpty == true ? fbBuilder.writeListUint8(_value) : null;
+    final int valueSizeOffset = _valueSize?.isNotEmpty == true ? fbBuilder.writeListUint8(_valueSize) : null;
+    final int keyOffset = _key?.isNotEmpty == true ? fbBuilder.writeListUint8(_key) : null;
+    final int valueOffset = _value?.isNotEmpty == true ? fbBuilder.writeListUint8(_value) : null;
 
     fbBuilder.startTable();
     fbBuilder.addUint32(0, _size);
@@ -159,39 +147,31 @@ class ModifyMetadataTransactionBuffer {
 
   ModifyMetadataTransactionBuffer._(this._bc, this._bcOffset);
 
-  static const fb.Reader<ModifyMetadataTransactionBuffer> reader =
-      _ModifyMetadataTransactionBufferReader();
+  static const fb.Reader<ModifyMetadataTransactionBuffer> reader = _ModifyMetadataTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
 
-  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 8, null);
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 8, null);
 
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 14, null);
 
-  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 16, null);
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 16, null);
 
-  int get metadataType =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+  int get metadataType => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
 
-  List<int> get metadataId => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 20, null);
+  List<int> get metadataId => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 20, null);
 
   List<MetadataModificationBuffer> get modifications =>
-      const fb.ListReader<MetadataModificationBuffer>(
-              MetadataModificationBuffer.reader)
+      const fb.ListReader<MetadataModificationBuffer>(MetadataModificationBuffer.reader)
           .vTableGet(_bc, _bcOffset, 22, null);
 
   @override
@@ -207,19 +187,16 @@ class ModifyMetadataTransactionBuffer {
       ' modifications: $modifications}';
 }
 
-class _ModifyMetadataTransactionBufferReader
-    extends fb.TableReader<ModifyMetadataTransactionBuffer> {
+class _ModifyMetadataTransactionBufferReader extends fb.TableReader<ModifyMetadataTransactionBuffer> {
   const _ModifyMetadataTransactionBufferReader();
 
   @override
-  ModifyMetadataTransactionBuffer createObject(
-          fb.BufferContext bc, int offset) =>
+  ModifyMetadataTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
       ModifyMetadataTransactionBuffer._(bc, offset);
 }
 
 class ModifyMetadataTransactionBufferBuilder {
-  ModifyMetadataTransactionBufferBuilder(this.fbBuilder)
-      : assert(fbBuilder != null, 'fbBuilder must not be null');
+  ModifyMetadataTransactionBufferBuilder(this.fbBuilder) : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -318,22 +295,13 @@ class ModifyMetadataTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   @override
   int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null, 'fbBuilder must not be null');
-    final int signatureOffset = _signature?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_signature)
-        : null;
-    final int signerOffset =
-        _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
-    final int feeOffset =
-        _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
-    final int deadlineOffset = _deadline?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_deadline)
-        : null;
-    final int metadataIdOffset = _metadataId?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_metadataId)
-        : null;
+    final int signatureOffset = _signature?.isNotEmpty == true ? fbBuilder.writeListUint8(_signature) : null;
+    final int signerOffset = _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
+    final int feeOffset = _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
+    final int deadlineOffset = _deadline?.isNotEmpty == true ? fbBuilder.writeListUint32(_deadline) : null;
+    final int metadataIdOffset = _metadataId?.isNotEmpty == true ? fbBuilder.writeListUint8(_metadataId) : null;
     final int modificationsOffset = _modifications?.isNotEmpty == true
-        ? fbBuilder.writeList(
-            _modifications.map((b) => b.getOrCreateOffset(fbBuilder)).toList())
+        ? fbBuilder.writeList(_modifications.map((b) => b.getOrCreateOffset(fbBuilder)).toList())
         : null;
 
     fbBuilder.startTable();

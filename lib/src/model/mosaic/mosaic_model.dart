@@ -41,9 +41,8 @@ class Mosaic {
     return data;
   }
 
-  static List<Mosaic> listFromDTO(List<MosaicDTO> json) => json == null
-      ? <Mosaic>[]
-      : json.map((value) => Mosaic.fromDTO(value)).toList();
+  static List<Mosaic> listFromDTO(List<MosaicDTO> json) =>
+      json == null ? <Mosaic>[] : json.map((value) => Mosaic.fromDTO(value)).toList();
 }
 
 class MosaicId extends AssetId {
@@ -89,15 +88,11 @@ class MosaicId extends AssetId {
 
   @override
   bool operator ==(final other) =>
-      identical(this, other) ||
-      other is MosaicId &&
-          runtimeType == other.runtimeType &&
-          toBytes() == other.toBytes();
+      identical(this, other) || other is MosaicId && runtimeType == other.runtimeType && toBytes() == other.toBytes();
 }
 
 class MosaicIds {
-  MosaicIds.fromList(List<MosaicId> list)
-      : assert(list != null, 'list must not be null') {
+  MosaicIds.fromList(List<MosaicId> list) : assert(list != null, 'list must not be null') {
     _list = list.map((item) => item).toList();
   }
 
@@ -114,8 +109,7 @@ class MosaicIds {
 }
 
 class MosaicInfo {
-  MosaicInfo.fromDTO(MosaicInfoDTO dto)
-      : assert(dto != null, 'dto must not be null') {
+  MosaicInfo.fromDTO(MosaicInfoDTO dto) : assert(dto != null, 'dto must not be null') {
     mosaicId = MosaicId(id: dto._mosaic.mosaicId.toUint64());
     supply = dto._mosaic._supply.toUint64();
     height = dto._mosaic._height.toUint64();
@@ -145,14 +139,12 @@ class MosaicInfo {
     return sb.toString();
   }
 
-  static List<MosaicInfo> listFromDTO(List<MosaicInfoDTO> json) => json == null
-      ? null
-      : json.map((value) => MosaicInfo.fromDTO(value)).toList();
+  static List<MosaicInfo> listFromDTO(List<MosaicInfoDTO> json) =>
+      json == null ? null : json.map((value) => MosaicInfo.fromDTO(value)).toList();
 }
 
 class MosaicName {
-  MosaicName.fromDTO(MosaicNameDTO dto)
-      : assert(dto != null, 'dto must not be null') {
+  MosaicName.fromDTO(MosaicNameDTO dto) : assert(dto != null, 'dto must not be null') {
     mosaicId = MosaicId.fromId(dto.mosaicId.toUint64());
     names = dto._names != null ? List.from(dto._names) : null;
   }
@@ -165,9 +157,8 @@ class MosaicName {
   String toString() => '"assetId":${mosaicId.toHex()},'
       ' "names":$names}';
 
-  static List<MosaicName> listFromDTO(List<MosaicNameDTO> json) => json == null
-      ? null
-      : json.map((value) => MosaicName.fromDTO(value)).toList();
+  static List<MosaicName> listFromDTO(List<MosaicNameDTO> json) =>
+      json == null ? null : json.map((value) => MosaicName.fromDTO(value)).toList();
 }
 
 class MosaicProperty {
@@ -184,9 +175,7 @@ class MosaicProperty {
   Uint64 value;
 
   static List<MosaicProperty> listFromDTO(List<_MosaicPropertyDTO> json) =>
-      json == null
-          ? <MosaicProperty>[]
-          : json.map((value) => MosaicProperty.fromDTO(value)).toList();
+      json == null ? <MosaicProperty>[] : json.map((value) => MosaicProperty.fromDTO(value)).toList();
 
   @override
   String toString() => 'id: $id, value: $value';
@@ -204,14 +193,11 @@ class MosaicProperties {
       Uint64 duration,
       [this.optionalProperties]) {
     optionalProperties = duration.toInt() != 0
-        ? List<MosaicProperty>.from([
-            MosaicProperty(MosaicPropertyId.mosaicPropertyDurationId, duration)
-          ])
+        ? List<MosaicProperty>.from([MosaicProperty(MosaicPropertyId.mosaicPropertyDurationId, duration)])
         : List(0);
   }
 
-  MosaicProperties.fromDTO(List<_MosaicPropertyDTO> value)
-      : assert(value != null, 'mosaic Properties is not valid') {
+  MosaicProperties.fromDTO(List<_MosaicPropertyDTO> value) : assert(value != null, 'mosaic Properties is not valid') {
     var flags = Uint64.zero;
 
     divisibility = 0;

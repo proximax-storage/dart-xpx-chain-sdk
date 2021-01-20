@@ -13,8 +13,7 @@ class BlockInfo {
     type = v._block.type;
     height = v._block._height.toUint64();
     timestamp = DateTime.fromMillisecondsSinceEpoch(
-        v._block._timestamp.toUint64().toInt() +
-            timestampNemesisBlock.toUtc().millisecondsSinceEpoch);
+        v._block._timestamp.toUint64().toInt() + timestampNemesisBlock.toUtc().millisecondsSinceEpoch);
     difficulty = v._block._difficulty.toUint64();
     feeMultiplier = v._block.feeMultiplier;
     previousBlockHash = v._block._previousBlockHash;
@@ -22,8 +21,7 @@ class BlockInfo {
     blockReceiptsHash = v._block._blockReceiptsHash;
     stateHash = v._block._stateHash;
     beneficiary = v._block._beneficiaryPublicKey != null
-        ? PublicAccount.fromPublicKey(
-            v._block._beneficiaryPublicKey, networkType)
+        ? PublicAccount.fromPublicKey(v._block._beneficiaryPublicKey, networkType)
         : null;
     feeInterest = v._block.feeInterest;
     feeInterestDenominator = v._block.feeInterestDenominator;
@@ -103,9 +101,8 @@ class BlockInfo {
     return data;
   }
 
-  static List<BlockInfo> listFromDTO(List<BlockInfoDTO> json) => json == null
-      ? null
-      : json.map((value) => BlockInfo.fromDTO(value)).toList();
+  static List<BlockInfo> listFromDTO(List<BlockInfoDTO> json) =>
+      json == null ? null : json.map((value) => BlockInfo.fromDTO(value)).toList();
 }
 
 class Height {
@@ -126,10 +123,8 @@ class Height {
 }
 
 class BlockchainScore {
-  BlockchainScore.fromDTO(BlockchainScoreDTO dto)
-      : assert(dto != null, 'dto must not be null') {
-    score = Uint64.fromInts(
-        dto._scoreLow.toUint64().toInt(), dto._scoreHigh.toUint64().toInt());
+  BlockchainScore.fromDTO(BlockchainScoreDTO dto) : assert(dto != null, 'dto must not be null') {
+    score = Uint64.fromInts(dto._scoreLow.toUint64().toInt(), dto._scoreHigh.toUint64().toInt());
   }
 
   Uint64 score;
@@ -145,8 +140,7 @@ class BlockchainScore {
 }
 
 class BlockchainStorageInfo {
-  BlockchainStorageInfo.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  BlockchainStorageInfo.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     numBlocks = json['numBlocks'];
     numTransactions = json['numTransactions'];
     numAccounts = json['numAccounts'];

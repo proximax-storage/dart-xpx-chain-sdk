@@ -8,32 +8,26 @@ class PropertyModificationBuffer {
 
   PropertyModificationBuffer._(this._bc, this._bcOffset);
 
-  static const fb.Reader<PropertyModificationBuffer> reader =
-      _PropertyModificationBufferReader();
+  static const fb.Reader<PropertyModificationBuffer> reader = _PropertyModificationBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  int get modificationType =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
+  int get modificationType => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
   ///  In case of address it is 25 bytes array. In case of mosaic it is 8 byte array(or 2 uint32 array).
   ///  In case of transaction it is 2 byte array(ushort)
-  List<int> get value => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get value => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
 
   @override
-  String toString() =>
-      'PropertyModificationBuffer{modificationType: $modificationType, value: $value}';
+  String toString() => 'PropertyModificationBuffer{modificationType: $modificationType, value: $value}';
 }
 
-class _PropertyModificationBufferReader
-    extends fb.TableReader<PropertyModificationBuffer> {
+class _PropertyModificationBufferReader extends fb.TableReader<PropertyModificationBuffer> {
   const _PropertyModificationBufferReader();
 
   @override
-  PropertyModificationBuffer createObject(fb.BufferContext bc, int offset) =>
-      PropertyModificationBuffer._(bc, offset);
+  PropertyModificationBuffer createObject(fb.BufferContext bc, int offset) => PropertyModificationBuffer._(bc, offset);
 }
 
 class PropertyModificationBufferBuilder {
@@ -72,8 +66,7 @@ class PropertyModificationBufferObjectBuilder extends fb.ObjectBuilder {
   @override
   int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null);
-    final int valueOffset =
-        _value?.isNotEmpty == true ? fbBuilder.writeListUint8(_value) : null;
+    final int valueOffset = _value?.isNotEmpty == true ? fbBuilder.writeListUint8(_value) : null;
 
     fbBuilder.startTable();
     fbBuilder.addUint8(0, _modificationType);
@@ -100,39 +93,31 @@ class AccountPropertiesTransactionBuffer {
 
   AccountPropertiesTransactionBuffer._(this._bc, this._bcOffset);
 
-  static const fb.Reader<AccountPropertiesTransactionBuffer> reader =
-      _AccountPropertiesTransactionBufferReader();
+  static const fb.Reader<AccountPropertiesTransactionBuffer> reader = _AccountPropertiesTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
 
-  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 8, null);
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 8, null);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int> get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 14, null);
 
-  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 16, null);
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 16, null);
 
-  int get propertyType =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+  int get propertyType => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
 
-  int get modificationCount =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 20, 0);
+  int get modificationCount => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 20, 0);
 
   List<PropertyModificationBuffer> get modifications =>
-      const fb.ListReader<PropertyModificationBuffer>(
-              PropertyModificationBuffer.reader)
+      const fb.ListReader<PropertyModificationBuffer>(PropertyModificationBuffer.reader)
           .vTableGet(_bc, _bcOffset, 22, null);
 
   @override
@@ -140,19 +125,16 @@ class AccountPropertiesTransactionBuffer {
       'AccountPropertiesTransactionBuffer{size: $size, signature: $signature, signer: $signer, version: $version, type: $type, maxFee: $maxFee, deadline: $deadline, propertyType: $propertyType, modificationCount: $modificationCount, modifications: $modifications}';
 }
 
-class _AccountPropertiesTransactionBufferReader
-    extends fb.TableReader<AccountPropertiesTransactionBuffer> {
+class _AccountPropertiesTransactionBufferReader extends fb.TableReader<AccountPropertiesTransactionBuffer> {
   const _AccountPropertiesTransactionBufferReader();
 
   @override
-  AccountPropertiesTransactionBuffer createObject(
-          fb.BufferContext bc, int offset) =>
+  AccountPropertiesTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
       AccountPropertiesTransactionBuffer._(bc, offset);
 }
 
 class AccountPropertiesTransactionBufferBuilder {
-  AccountPropertiesTransactionBufferBuilder(this.fbBuilder)
-      : assert(fbBuilder != null);
+  AccountPropertiesTransactionBufferBuilder(this.fbBuilder) : assert(fbBuilder != null);
 
   final fb.Builder fbBuilder;
 
@@ -251,19 +233,12 @@ class AccountPropertiesTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   @override
   int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null);
-    final int signatureOffset = _signature?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_signature)
-        : null;
-    final int signerOffset =
-        _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
-    final int maxFeeOffset =
-        _maxFee?.isNotEmpty == true ? fbBuilder.writeListUint32(_maxFee) : null;
-    final int deadlineOffset = _deadline?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_deadline)
-        : null;
+    final int signatureOffset = _signature?.isNotEmpty == true ? fbBuilder.writeListUint8(_signature) : null;
+    final int signerOffset = _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
+    final int maxFeeOffset = _maxFee?.isNotEmpty == true ? fbBuilder.writeListUint32(_maxFee) : null;
+    final int deadlineOffset = _deadline?.isNotEmpty == true ? fbBuilder.writeListUint32(_deadline) : null;
     final int modificationsOffset = _modifications?.isNotEmpty == true
-        ? fbBuilder.writeList(
-            _modifications.map((b) => b.getOrCreateOffset(fbBuilder)).toList())
+        ? fbBuilder.writeList(_modifications.map((b) => b.getOrCreateOffset(fbBuilder)).toList())
         : null;
 
     fbBuilder.startTable();

@@ -1,8 +1,7 @@
 part of xpx_chain_sdk.node;
 
 class NodeInfo {
-  NodeInfo.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  NodeInfo.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     publicKey = json['publicKey'];
     port = json['port'];
     networkIdentifier = json['networkIdentifier'];
@@ -37,12 +36,10 @@ class NodeInfo {
       '\t"friendlyName":$friendlyName\n'
       '}\n';
 
-  static List<NodeInfo> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => NodeInfo.fromJson(value)).toList();
+  static List<NodeInfo> listFromJson(List<dynamic> json) =>
+      json == null ? null : json.map((value) => NodeInfo.fromJson(value)).toList();
 
-  static Map<String, NodeInfo> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, NodeInfo> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, NodeInfo>{};
     if (json != null && json.isNotEmpty) {
       json.forEach((key, value) => map[key] = NodeInfo.fromJson(value));
@@ -65,8 +62,7 @@ class NodeInfo {
 }
 
 class CommunicationTimestamps {
-  CommunicationTimestamps.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  CommunicationTimestamps.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     final sRaw = UInt64DTO.fromJson(json['sendTimestamp']);
     final rRaw = UInt64DTO.fromJson(json['receiveTimestamp']);
     sendTimestamp = sRaw.toUint64();
@@ -84,18 +80,12 @@ class CommunicationTimestamps {
       '}\n';
 
   static List<CommunicationTimestamps> listFromJson(List<dynamic> json) =>
-      json == null
-          ? null
-          : json
-              .map((value) => CommunicationTimestamps.fromJson(value))
-              .toList();
+      json == null ? null : json.map((value) => CommunicationTimestamps.fromJson(value)).toList();
 
-  static Map<String, CommunicationTimestamps> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, CommunicationTimestamps> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, CommunicationTimestamps>{};
     if (json != null && json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = CommunicationTimestamps.fromJson(value));
+      json.forEach((key, value) => map[key] = CommunicationTimestamps.fromJson(value));
     }
     return map;
   }

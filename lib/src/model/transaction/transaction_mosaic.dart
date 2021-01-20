@@ -3,10 +3,9 @@ part of xpx_chain_sdk.transaction;
 /// Register a new mosaic.
 /// Announce a [MosaicDefinitionTransaction] to create a new [Mosaic].
 ///
-class MosaicDefinitionTransaction extends AbstractTransaction
-    implements Transaction {
-  MosaicDefinitionTransaction(Deadline deadline, int nonce,
-      String ownerPublicKey, MosaicProperties mosaicProps, int networkType)
+class MosaicDefinitionTransaction extends AbstractTransaction implements Transaction {
+  MosaicDefinitionTransaction(
+      Deadline deadline, int nonce, String ownerPublicKey, MosaicProperties mosaicProps, int networkType)
       : super() {
     if (ownerPublicKey.length != 64) {
       throw errInvalidOwnerPublicKey;
@@ -43,13 +42,8 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
   AbstractTransaction get abstractTransaction => absTransaction();
 
-  static List<MosaicDefinitionTransaction> listFromDTO(
-          List<MosaicDefinitionTransactionInfoDTO> json) =>
-      json == null
-          ? null
-          : json
-              .map((value) => MosaicDefinitionTransaction.fromDTO(value))
-              .toList();
+  static List<MosaicDefinitionTransaction> listFromDTO(List<MosaicDefinitionTransactionInfoDTO> json) =>
+      json == null ? null : json.map((value) => MosaicDefinitionTransaction.fromDTO(value)).toList();
 
   @override
   String toString() {
@@ -79,8 +73,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
   @override
   AbstractTransaction absTransaction() => _absTransaction();
 
-  int _buildMosaicPropertyBuffer(
-      fb.Builder builder, List<MosaicProperty> properties) {
+  int _buildMosaicPropertyBuffer(fb.Builder builder, List<MosaicProperty> properties) {
     if (properties == null) return 0;
     final List<int> pBuffer = List(properties.length);
 
@@ -112,8 +105,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
     final mV = builder.writeListUint32(mosaicId.toIntArray());
 
-    final pV = _buildMosaicPropertyBuffer(
-        builder, mosaicProperties.optionalProperties);
+    final pV = _buildMosaicPropertyBuffer(builder, mosaicProperties.optionalProperties);
 
     final vector = _generateVector(builder);
 
@@ -131,18 +123,16 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
     final codedMosaicDefinition = txnBuilder.finish();
 
-    return mosaicDefinitionTransactionSchema()
-        .serialize(builder.finish(codedMosaicDefinition));
+    return mosaicDefinitionTransactionSchema().serialize(builder.finish(codedMosaicDefinition));
   }
 }
 
 /// Change an existent mosaic supply.
 /// Announce a [MosaicSupplyChangeTransaction] to increase or decrease a mosaic’s supply.
 ///
-class MosaicSupplyChangeTransaction extends AbstractTransaction
-    implements Transaction {
-  MosaicSupplyChangeTransaction(Deadline deadline, MosaicSupplyType supplyType,
-      MosaicId mosaicId, Uint64 delta, int networkType)
+class MosaicSupplyChangeTransaction extends AbstractTransaction implements Transaction {
+  MosaicSupplyChangeTransaction(
+      Deadline deadline, MosaicSupplyType supplyType, MosaicId mosaicId, Uint64 delta, int networkType)
       : super() {
     if (mosaicId == null) {
       throw errNullMosaicId;
@@ -159,8 +149,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
     }
   }
 
-  MosaicSupplyChangeTransaction.fromDTO(
-      MosaicSupplyChangeTransactionInfoDTO dto)
+  MosaicSupplyChangeTransaction.fromDTO(MosaicSupplyChangeTransactionInfoDTO dto)
       : assert(dto != null, 'dto must not be null'),
         super.fromDto(dto.transaction, dto.meta) {
     mosaicSupplyType = dto.transaction.direction == 0 ? decrease : increase;
@@ -179,18 +168,12 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 
   AbstractTransaction get abstractTransaction => absTransaction();
 
-  static List<MosaicSupplyChangeTransaction> listFromDTO(
-          List<MosaicSupplyChangeTransactionInfoDTO> json) =>
-      json == null
-          ? null
-          : json
-              .map((value) => MosaicSupplyChangeTransaction.fromDTO(value))
-              .toList();
+  static List<MosaicSupplyChangeTransaction> listFromDTO(List<MosaicSupplyChangeTransactionInfoDTO> json) =>
+      json == null ? null : json.map((value) => MosaicSupplyChangeTransaction.fromDTO(value)).toList();
 
   @override
   String toString() {
-    final String _supplyType =
-        mosaicSupplyType.index == 0 ? 'decrease' : 'increase';
+    final String _supplyType = mosaicSupplyType.index == 0 ? 'decrease' : 'increase';
     final sb = StringBuffer()
       ..writeln('{')
       ..writeln('\t"abstractTransaction": ${_absToString()}')
@@ -237,7 +220,6 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
 
     final codedMosaicSupply = txnBuilder.finish();
 
-    return mosaicSupplyChangeTransactionSchema()
-        .serialize(builder.finish(codedMosaicSupply));
+    return mosaicSupplyChangeTransactionSchema().serialize(builder.finish(codedMosaicSupply));
   }
 }

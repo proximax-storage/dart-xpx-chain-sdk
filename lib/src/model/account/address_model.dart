@@ -24,8 +24,7 @@ class Address {
     final addressRaw = address.trim().replaceAll('-', '').toUpperCase();
 
     if (addressRaw.length != addressEncodeSize) {
-      throw ArgumentError(
-          'Address $addressRaw has to be $addressEncodeSize characters long');
+      throw ArgumentError('Address $addressRaw has to be $addressEncodeSize characters long');
     }
 
     return Address._(addressRaw, addressNet[addressRaw[0]]);
@@ -54,20 +53,17 @@ class Address {
     return buffer.toString();
   }
 
-  Map<String, dynamic> toJson() =>
-      {'networkType': networkType, 'address': address};
+  Map<String, dynamic> toJson() => {'networkType': networkType, 'address': address};
 }
 
 class Addresses {
   Addresses();
 
-  Addresses.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  Addresses.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     addresses = (json['addresses']).map((item) => item).toList();
   }
 
-  Addresses.fromList(List<Address> list)
-      : assert(list != null, 'list must not be null') {
+  Addresses.fromList(List<Address> list) : assert(list != null, 'list must not be null') {
     addresses = list.map((item) => item).toList();
   }
 
@@ -76,6 +72,5 @@ class Addresses {
   @override
   String toString() => 'addresses:$addresses';
 
-  Map<String, dynamic> toJson() =>
-      {'addresses': addresses.map((a) => a.address).toList()};
+  Map<String, dynamic> toJson() => {'addresses': addresses.map((a) => a.address).toList()};
 }

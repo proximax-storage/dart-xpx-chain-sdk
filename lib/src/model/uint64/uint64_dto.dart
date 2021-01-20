@@ -20,12 +20,10 @@ class UInt64DTO {
 
   Int32 lower, higher;
 
-  static List<UInt64DTO> listFromJson(List<dynamic> json) => json == null
-      ? null
-      : json.map((value) => UInt64DTO.fromJson(value)).toList();
+  static List<UInt64DTO> listFromJson(List<dynamic> json) =>
+      json == null ? null : json.map((value) => UInt64DTO.fromJson(value)).toList();
 
-  static Map<String, UInt64DTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, UInt64DTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, UInt64DTO>{};
     if (json != null && json.isNotEmpty) {
       json.forEach((key, value) => map[key] = UInt64DTO.fromJson(value));

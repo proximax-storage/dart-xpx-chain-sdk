@@ -1,8 +1,7 @@
 part of xpx_chain_sdk.blockchain;
 
 class BlockDTO {
-  BlockDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  BlockDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     signature = json['signature'];
     signer = json['signer'];
     version = json['version'];
@@ -15,8 +14,7 @@ class BlockDTO {
     _blockTransactionsHash = json['blockTransactionsHash'];
     _blockReceiptsHash = json['blockReceiptsHash'];
     _stateHash = json['stateHash'];
-    _beneficiaryPublicKey = json['beneficiary'] !=
-            '0000000000000000000000000000000000000000000000000000000000000000'
+    _beneficiaryPublicKey = json['beneficiary'] != '0000000000000000000000000000000000000000000000000000000000000000'
         ? json['beneficiary']
         : null;
     feeInterest = json['feeInterest'];
@@ -74,8 +72,7 @@ class BlockDTO {
 }
 
 class BlockInfoDTO {
-  BlockInfoDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  BlockInfoDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     meta = BlockMetaDTO.fromJson(json['meta']);
     _block = BlockDTO.fromJson(json['block']);
   }
@@ -94,8 +91,7 @@ class BlockInfoDTO {
 }
 
 class BlockMetaDTO {
-  BlockMetaDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  BlockMetaDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     _hash = json['hash'];
     _generationHash = json['generationHash'];
     _totalFee = UInt64DTO.fromJson(json['totalFee']);
@@ -122,8 +118,7 @@ class BlockMetaDTO {
 }
 
 class BlockchainScoreDTO {
-  BlockchainScoreDTO.fromJson(Map<String, dynamic> json)
-      : assert(json != null, 'json must not be null') {
+  BlockchainScoreDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
     _scoreHigh = UInt64DTO.fromJson(json['scoreHigh']);
     _scoreLow = UInt64DTO.fromJson(json['scoreLow']);
   }

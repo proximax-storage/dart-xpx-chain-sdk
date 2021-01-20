@@ -8,40 +8,32 @@ class SecretProofTransactionBuffer {
 
   SecretProofTransactionBuffer._(this._bc, this._bcOffset);
 
-  static const fb.Reader<SecretProofTransactionBuffer> reader =
-      _SecretProofTransactionBufferReader();
+  static const fb.Reader<SecretProofTransactionBuffer> reader = _SecretProofTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
 
-  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 8, null);
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 8, null);
 
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 14, null);
 
-  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 16, null);
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 16, null);
 
-  int get hashAlgorithm =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+  int get hashAlgorithm => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
 
-  List<int> get secret => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 20, null);
+  List<int> get secret => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 20, null);
 
   int get proofSize => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 22, 0);
 
-  List<int> get proof => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 24, null);
+  List<int> get proof => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 24, null);
 
   @override
   String toString() => 'SecretProofTransactionBuffer{'
@@ -58,8 +50,7 @@ class SecretProofTransactionBuffer {
       ' proof: $proof}';
 }
 
-class _SecretProofTransactionBufferReader
-    extends fb.TableReader<SecretProofTransactionBuffer> {
+class _SecretProofTransactionBufferReader extends fb.TableReader<SecretProofTransactionBuffer> {
   const _SecretProofTransactionBufferReader();
 
   @override
@@ -68,8 +59,7 @@ class _SecretProofTransactionBufferReader
 }
 
 class SecretProofTransactionBufferBuilder {
-  SecretProofTransactionBufferBuilder(this.fbBuilder)
-      : assert(fbBuilder != null, 'fbBuilder must not be null');
+  SecretProofTransactionBufferBuilder(this.fbBuilder) : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -176,20 +166,12 @@ class SecretProofTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   @override
   int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null, 'fbBuilder must not be null');
-    final int signatureOffset = _signature?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_signature)
-        : null;
-    final int signerOffset =
-        _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
-    final int feeOffset =
-        _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
-    final int deadlineOffset = _deadline?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_deadline)
-        : null;
-    final int secretOffset =
-        _secret?.isNotEmpty == true ? fbBuilder.writeListUint8(_secret) : null;
-    final int proofOffset =
-        _proof?.isNotEmpty == true ? fbBuilder.writeListUint8(_proof) : null;
+    final int signatureOffset = _signature?.isNotEmpty == true ? fbBuilder.writeListUint8(_signature) : null;
+    final int signerOffset = _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
+    final int feeOffset = _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
+    final int deadlineOffset = _deadline?.isNotEmpty == true ? fbBuilder.writeListUint32(_deadline) : null;
+    final int secretOffset = _secret?.isNotEmpty == true ? fbBuilder.writeListUint8(_secret) : null;
+    final int proofOffset = _proof?.isNotEmpty == true ? fbBuilder.writeListUint8(_proof) : null;
 
     fbBuilder.startTable();
     fbBuilder.addUint32(0, _size);

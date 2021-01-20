@@ -4,8 +4,7 @@ final xpxMosaicId = MosaicId(id: Uint64(481110499, 231112638));
 
 enum MosaicSupplyType { decrease, increase }
 
-const decrease = MosaicSupplyType.decrease,
-    increase = MosaicSupplyType.increase;
+const decrease = MosaicSupplyType.decrease, increase = MosaicSupplyType.increase;
 
 const getSupplyMutable = 0x01;
 
@@ -29,8 +28,7 @@ Mosaic xpx(int amount) {
 
 Mosaic xpxRelative(int amount) {
   if (amount > xpxMaxRelativeValue) {
-    throw ArgumentError(
-        'Maximum xpx relative value must be $xpxMaxRelativeValue');
+    throw ArgumentError('Maximum xpx relative value must be $xpxMaxRelativeValue');
   }
   return xpx(amount * xpxDivisibility);
 }
@@ -54,8 +52,7 @@ Uint64 _generateMosaicId(int nonce, String ownerPublicKey) {
 
   nonceB.setUint32(0, nonce, Endian.little);
 
-  final result = createSha3Digest(length: 32)
-    ..update(nonceB.buffer.asUint8List(), 0, nonceB.lengthInBytes);
+  final result = createSha3Digest(length: 32)..update(nonceB.buffer.asUint8List(), 0, nonceB.lengthInBytes);
 
   final ownerBytes = hex.decode(ownerPublicKey);
 

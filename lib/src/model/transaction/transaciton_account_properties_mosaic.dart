@@ -1,10 +1,8 @@
 part of xpx_chain_sdk.transaction;
 
 // AliasTransaction
-class AccountPropertiesMosaicTransaction extends AbstractTransaction
-    implements Transaction {
-  AccountPropertiesMosaicTransaction(
-      Deadline deadline, this.propertyType, this.modifications, int networkType)
+class AccountPropertiesMosaicTransaction extends AbstractTransaction implements Transaction {
+  AccountPropertiesMosaicTransaction(Deadline deadline, this.propertyType, this.modifications, int networkType)
       : super() {
     version = accountPropertyMosaicVersion;
     this.deadline = deadline;
@@ -12,13 +10,11 @@ class AccountPropertiesMosaicTransaction extends AbstractTransaction
     this.networkType = networkType;
   }
 
-  AccountPropertiesMosaicTransaction.fromDTO(
-      AccountPropertiesMosaicTransactionInfoDTO dto)
+  AccountPropertiesMosaicTransaction.fromDTO(AccountPropertiesMosaicTransactionInfoDTO dto)
       : assert(dto != null, 'dto must not be null'),
         super.fromDto(dto.transaction, dto.meta) {
     propertyType = AccountPropertyType.fromInt(dto.transaction.propertyType);
-    modifications = AccountPropertiesMosaicModification.listFromJson(
-        dto.transaction.modifications);
+    modifications = AccountPropertiesMosaicModification.listFromJson(dto.transaction.modifications);
   }
 
   AccountPropertyType propertyType;
@@ -46,9 +42,7 @@ class AccountPropertiesMosaicTransaction extends AbstractTransaction
   }
 
   @override
-  int _size() =>
-      accountPropertyMosaicHeader +
-      (accountPropertiesMosaicModificationSize * modifications.length);
+  int _size() => accountPropertyMosaicHeader + (accountPropertiesMosaicModificationSize * modifications.length);
 
   @override
   TransactionType entityType() => type;
@@ -89,7 +83,6 @@ class AccountPropertiesMosaicTransaction extends AbstractTransaction
 
     final codedAccountProperty = txnBuilder.finish();
 
-    return accountPropertyTransactionSchema()
-        .serialize(builder.finish(codedAccountProperty));
+    return accountPropertyTransactionSchema().serialize(builder.finish(codedAccountProperty));
   }
 }

@@ -106,8 +106,7 @@ class _BuyOffer extends OfferType {
 class UserExchangeInfo {
   UserExchangeInfo({this.owner, this.offers});
 
-  UserExchangeInfo.fromDTO(ExchangeDTO dto)
-      : assert(dto != null, 'dto must not be null') {
+  UserExchangeInfo.fromDTO(ExchangeDTO dto) : assert(dto != null, 'dto must not be null') {
     owner = dto.owner;
 
     if (dto.sellOffers.isNotEmpty) {
@@ -158,12 +157,10 @@ class UserExchangeInfo {
 }
 
 class OfferInfo {
-  OfferInfo.fromDTO(OfferInfoDTO dto)
-      : assert(dto != null, 'dto must not be null') {
+  OfferInfo.fromDTO(OfferInfoDTO dto) : assert(dto != null, 'dto must not be null') {
     type = OfferType(dto.type);
     owner = dto.owner;
-    mosaic =
-        Mosaic(MosaicId.fromId(dto.mosaicId.toUint64()), dto.amount.toUint64());
+    mosaic = Mosaic(MosaicId.fromId(dto.mosaicId.toUint64()), dto.amount.toUint64());
     priceNumerator = dto.priceNumerator.toUint64();
     priceDenominator = dto.priceDenominator.toUint64();
     deadline = Deadline.fromUInt64DTO(dto.deadline);
@@ -183,11 +180,9 @@ class OfferInfo {
 
     switch (type.runtimeType) {
       case _SellOffer:
-        return Uint64((priceNumerator * amount).toInt().ceilToDouble() /
-            priceDenominator.toDouble());
+        return Uint64((priceNumerator * amount).toInt().ceilToDouble() / priceDenominator.toDouble());
       case _BuyOffer:
-        return Uint64((priceNumerator * amount).toInt().floorToDouble() /
-            priceDenominator.toDouble());
+        return Uint64((priceNumerator * amount).toInt().floorToDouble() / priceDenominator.toDouble());
       default:
         throw errUnknownOfferType;
     }
@@ -219,14 +214,12 @@ class OfferInfo {
     return sb.toString();
   }
 
-  static List<OfferInfo> listFromDTO(List<OfferInfoDTO> json) => json == null
-      ? null
-      : json.map((value) => OfferInfo.fromDTO(value)).toList();
+  static List<OfferInfo> listFromDTO(List<OfferInfoDTO> json) =>
+      json == null ? null : json.map((value) => OfferInfo.fromDTO(value)).toList();
 }
 
 class AddOffer extends Offer {
-  AddOffer({Offer offer, this.duration})
-      : super(offer.offerType, offer.mosaic, offer.cost);
+  AddOffer({Offer offer, this.duration}) : super(offer.offerType, offer.mosaic, offer.cost);
 
   AddOffer.fromDTO(AddOfferDTO dto)
       : assert(dto != null, 'dto must not be null'),
@@ -256,8 +249,7 @@ class AddOffer extends Offer {
 class RemoveOffer {
   RemoveOffer({this.offerType, this.assetId});
 
-  RemoveOffer.fromDTO(RemoveOfferDTO dto)
-      : assert(dto != null, 'dto must not be null') {
+  RemoveOffer.fromDTO(RemoveOfferDTO dto) : assert(dto != null, 'dto must not be null') {
     offerType = dto.offerType;
     assetId = MosaicId.fromId(dto.mosaicId.toUint64());
   }
@@ -268,14 +260,12 @@ class RemoveOffer {
   @override
   String toString() => 'type: $offerType, assetId: $assetId';
 
-  static List<RemoveOffer> listFromDto(List<dynamic> dto) => dto == null
-      ? null
-      : dto.map((value) => RemoveOffer.fromDTO(value)).toList();
+  static List<RemoveOffer> listFromDto(List<dynamic> dto) =>
+      dto == null ? null : dto.map((value) => RemoveOffer.fromDTO(value)).toList();
 }
 
 class ExchangeConfirmation extends Offer {
-  ExchangeConfirmation({this.owner, Offer offer})
-      : super(offer.offerType, offer.mosaic, offer.cost);
+  ExchangeConfirmation({this.owner, Offer offer}) : super(offer.offerType, offer.mosaic, offer.cost);
 
   ExchangeConfirmation.fromDTO(ConfirmationOfferDTO dto)
       : assert(dto != null, 'dto must not be null'),
@@ -299,7 +289,5 @@ class ExchangeConfirmation extends Offer {
   }
 
   static List<ExchangeConfirmation> listFromDto(List<dynamic> dto) =>
-      dto == null
-          ? null
-          : dto.map((value) => ExchangeConfirmation.fromDTO(value)).toList();
+      dto == null ? null : dto.map((value) => ExchangeConfirmation.fromDTO(value)).toList();
 }

@@ -1,8 +1,7 @@
 part of xpx_chain_sdk.api;
 
 class MosaicRoutesApi {
-  MosaicRoutesApi([_ApiClient apiClient])
-      : _apiClient = apiClient ?? defaultApiClient;
+  MosaicRoutesApi([_ApiClient apiClient]) : _apiClient = apiClient ?? defaultApiClient;
 
   final _ApiClient _apiClient;
 
@@ -16,9 +15,7 @@ class MosaicRoutesApi {
     }
     final nsId = mosaicId.toHex();
     // create path and map variables
-    final String path = '/mosaic/{mosaicId}'
-        .replaceAll('{format}', 'json')
-        .replaceAll('{mosaicId}', nsId);
+    final String path = '/mosaic/{mosaicId}'.replaceAll('{format}', 'json').replaceAll('{mosaicId}', nsId);
 
     final response = await _apiClient.get(path);
 
@@ -51,9 +48,7 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient
-          .deserialize(response.body, 'List<MosaicInfoDTO>')
-          .cast<MosaicInfoDTO>();
+      final resp = _apiClient.deserialize(response.body, 'List<MosaicInfoDTO>').cast<MosaicInfoDTO>();
       return MosaicInfo.listFromDTO(resp);
     } else {
       return null;
@@ -79,9 +74,7 @@ class MosaicRoutesApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      final resp = _apiClient
-          .deserialize(response.body, 'List<MosaicNameDTO>')
-          .cast<MosaicNameDTO>();
+      final resp = _apiClient.deserialize(response.body, 'List<MosaicNameDTO>').cast<MosaicNameDTO>();
       return MosaicName.listFromDTO(resp);
     } else {
       return null;

@@ -94,39 +94,29 @@ mixin TransactionInfo {
 class TransactionType {
   const TransactionType._internal(this.value);
 
-  static const TransactionType aggregateCompleted =
-      TransactionType._internal(0x4141);
+  static const TransactionType aggregateCompleted = TransactionType._internal(0x4141);
 
-  static const TransactionType aggregateBonded =
-      TransactionType._internal(0x4241);
+  static const TransactionType aggregateBonded = TransactionType._internal(0x4241);
 
   static const TransactionType addressAlias = TransactionType._internal(0x424E);
 
-  static const TransactionType metadataAddress =
-      TransactionType._internal(0x413d);
+  static const TransactionType metadataAddress = TransactionType._internal(0x413d);
 
-  static const TransactionType metadataMosaic =
-      TransactionType._internal(0x423d);
+  static const TransactionType metadataMosaic = TransactionType._internal(0x423d);
 
-  static const TransactionType metadataNamespace =
-      TransactionType._internal(0x433d);
+  static const TransactionType metadataNamespace = TransactionType._internal(0x433d);
 
-  static const TransactionType mosaicDefinition =
-      TransactionType._internal(0x414d);
+  static const TransactionType mosaicDefinition = TransactionType._internal(0x414d);
 
   static const TransactionType mosaicAlias = TransactionType._internal(0x434e);
 
-  static const TransactionType mosaicSupplyChange =
-      TransactionType._internal(0x424d);
+  static const TransactionType mosaicSupplyChange = TransactionType._internal(0x424d);
 
-  static const TransactionType modifyMultisig =
-      TransactionType._internal(0x4155);
+  static const TransactionType modifyMultisig = TransactionType._internal(0x4155);
 
-  static const TransactionType modifyContract =
-      TransactionType._internal(0x4157);
+  static const TransactionType modifyContract = TransactionType._internal(0x4157);
 
-  static const TransactionType registerNamespace =
-      TransactionType._internal(0x414e);
+  static const TransactionType registerNamespace = TransactionType._internal(0x414e);
 
   static const TransactionType transfer = TransactionType._internal(0x4154);
 
@@ -136,23 +126,17 @@ class TransactionType {
 
   static const TransactionType secretProof = TransactionType._internal(0x4252);
 
-  static const TransactionType addExchangeOffer =
-      TransactionType._internal(0x415D);
+  static const TransactionType addExchangeOffer = TransactionType._internal(0x415D);
 
-  static const TransactionType exchangeOffer =
-      TransactionType._internal(0x425D);
+  static const TransactionType exchangeOffer = TransactionType._internal(0x425D);
 
-  static const TransactionType removeExchangeOffer =
-      TransactionType._internal(0x435D);
+  static const TransactionType removeExchangeOffer = TransactionType._internal(0x435D);
 
-  static const TransactionType accountPropertyAddress =
-      TransactionType._internal(0x4150);
+  static const TransactionType accountPropertyAddress = TransactionType._internal(0x4150);
 
-  static const TransactionType accountPropertyMosaic =
-      TransactionType._internal(0x4250);
+  static const TransactionType accountPropertyMosaic = TransactionType._internal(0x4250);
 
-  static const TransactionType accountPropertyEntityType =
-      TransactionType._internal(0x4350);
+  static const TransactionType accountPropertyEntityType = TransactionType._internal(0x4350);
 
   final int value;
 
@@ -211,12 +195,7 @@ class TransactionType {
 
 class Deadline {
   Deadline(
-      {int days = 0,
-      int hours = 0,
-      int minutes = 0,
-      int seconds = 0,
-      int milliseconds = 0,
-      int microseconds = 0}) {
+      {int days = 0, int hours = 0, int minutes = 0, int seconds = 0, int milliseconds = 0, int microseconds = 0}) {
     final d = Duration(
         days: days,
         hours: hours,
@@ -228,11 +207,10 @@ class Deadline {
   }
 
   Deadline.fromUInt64DTO(UInt64DTO data)
-      : assert(data.lower != null || data.higher == null,
-            'lower or higher must not be null') {
+      : assert(data.lower != null || data.higher == null, 'lower or higher must not be null') {
     value = data.toUint64() != null
-        ? DateTime.fromMillisecondsSinceEpoch(data.toUint64().toInt() +
-            timestampNemesisBlock.toUtc().millisecondsSinceEpoch)
+        ? DateTime.fromMillisecondsSinceEpoch(
+            data.toUint64().toInt() + timestampNemesisBlock.toUtc().millisecondsSinceEpoch)
         : null;
   }
 
@@ -247,9 +225,7 @@ class Deadline {
     }
   }
 
-  int toBlockchainTimestamp() =>
-      value.millisecondsSinceEpoch -
-      timestampNemesisBlock.millisecondsSinceEpoch;
+  int toBlockchainTimestamp() => value.millisecondsSinceEpoch - timestampNemesisBlock.millisecondsSinceEpoch;
 }
 
 class SignedTransaction {
@@ -283,16 +259,9 @@ class SignedTransaction {
 
 class AbstractTransaction with TransactionInfo {
   AbstractTransaction(
-      [this.networkType,
-      this.deadline,
-      this.type,
-      this.version,
-      this.maxFee,
-      this.signature,
-      this.signer]);
+      [this.networkType, this.deadline, this.type, this.version, this.maxFee, this.signature, this.signer]);
 
-  AbstractTransaction.fromDto(
-      AbstractTransactionDTO absValue, MetaTransactionDTO metaValue) {
+  AbstractTransaction.fromDto(AbstractTransactionDTO absValue, MetaTransactionDTO metaValue) {
     networkType = extractNetworkType(absValue.version);
     deadline = Deadline.fromUInt64DTO(absValue.deadline);
     type = TransactionType.fromInt(absValue.type);
@@ -330,10 +299,8 @@ class AbstractTransaction with TransactionInfo {
     data['versionV'] = (networkType << 24) + version;
     data['signatureV'] = builder.writeListUint8(Uint8List(signatureSize));
     data['signerV'] = builder.writeListUint8(Uint8List(signerSize));
-    data['deadlineV'] = builder
-        .writeListUint32(Uint64(deadline.toBlockchainTimestamp()).toIntArray());
-    data['feeV'] =
-        builder.writeListUint32(maxFee != null ? maxFee.toIntArray() : [0, 0]);
+    data['deadlineV'] = builder.writeListUint32(Uint64(deadline.toBlockchainTimestamp()).toIntArray());
+    data['feeV'] = builder.writeListUint32(maxFee != null ? maxFee.toIntArray() : [0, 0]);
     return data;
   }
 
@@ -347,15 +314,13 @@ class AbstractTransaction with TransactionInfo {
       ..addDeadlineOffset(vector['deadlineV']);
   }
 
-  AbstractTransaction _absTransaction()  => this;
+  AbstractTransaction _absTransaction() => this;
 
-  bool isUnconfirmed() =>
-      height.toInt() == 0 && transactionHash == merkleComponentHash;
+  bool isUnconfirmed() => height.toInt() == 0 && transactionHash == merkleComponentHash;
 
   bool isConfirmed() => height.toInt() > 0;
 
-  bool hasMissingSignatures() =>
-      height.toInt() == 0 && transactionHash != merkleComponentHash;
+  bool hasMissingSignatures() => height.toInt() == 0 && transactionHash != merkleComponentHash;
 
   bool isUnannounced() => this == null;
 

@@ -3,8 +3,7 @@ part of xpx_chain_sdk.api;
 class ApiException implements Exception {
   ApiException(this.code, this.message);
 
-  ApiException.withInner(
-      this.code, this.message, this.innerException, this.stackTrace);
+  ApiException.withInner(this.code, this.message, this.innerException, this.stackTrace);
 
   int code = 0;
   String message;

@@ -3,9 +3,7 @@ part of xpx_chain_sdk.utils;
 /// A utility class that provides functions for converting hex strings.
 class HexUtils {
   /// Converts a hex string to a [Uint8List].
-  static Uint8List hexToBytes(String hexString) {
-    return Uint8List.fromList(hex.decode(hexString));
-  }
+  static Uint8List hexToBytes(String hexString) => Uint8List.fromList(hex.decode(hexString));
 
   /// Converts [hex] string to a byte array.
   ///
@@ -52,7 +50,7 @@ class HexUtils {
 
   /// Determines whether the [input] string is a valid hex string.
   static bool isHexString(String input) {
-    var hexChars = <String>[
+    final hexChars = <String>[
       '0',
       '1',
       '2',
@@ -106,9 +104,7 @@ class HexUtils {
   }
 
   /// Converts a hex string to a binary string.
-  static String hexToBinary(String hexString) {
-    return BigInt.parse(hexString, radix: 16).toRadixString(2);
-  }
+  static String hexToBinary(String hexString) => BigInt.parse(hexString, radix: 16).toRadixString(2);
 
   /// Returns the reversed order of the given [input] hex string.
   ///

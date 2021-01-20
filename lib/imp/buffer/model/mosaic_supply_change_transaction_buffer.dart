@@ -8,37 +8,30 @@ class MosaicSupplyChangeTransactionBuffer {
 
   MosaicSupplyChangeTransactionBuffer._(this._bc, this._bcOffset);
 
-  static const fb.Reader<MosaicSupplyChangeTransactionBuffer> reader =
-      _MosaicSupplyChangeTransactionBufferReader();
+  static const fb.Reader<MosaicSupplyChangeTransactionBuffer> reader = _MosaicSupplyChangeTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 6, null);
+  List<int> get signature => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 6, null);
 
-  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader())
-      .vTableGet(_bc, _bcOffset, 8, null);
+  List<int> get signer => const fb.ListReader<int>(fb.Uint8Reader()).vTableGet(_bc, _bcOffset, 8, null);
 
   int get version => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 14, null);
+  List<int> get fee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 14, null);
 
-  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 16, null);
+  List<int> get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 16, null);
 
-  List<int> get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 18, null);
+  List<int> get mosaicId => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 18, null);
 
   int get direction => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 20, 0);
 
-  List<int> get delta => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGet(_bc, _bcOffset, 22, null);
+  List<int> get delta => const fb.ListReader<int>(fb.Uint32Reader()).vTableGet(_bc, _bcOffset, 22, null);
 
   @override
   String toString() => 'MosaicSupplyChangeTransactionBuffer{'
@@ -54,19 +47,16 @@ class MosaicSupplyChangeTransactionBuffer {
       ' delta: $delta}';
 }
 
-class _MosaicSupplyChangeTransactionBufferReader
-    extends fb.TableReader<MosaicSupplyChangeTransactionBuffer> {
+class _MosaicSupplyChangeTransactionBufferReader extends fb.TableReader<MosaicSupplyChangeTransactionBuffer> {
   const _MosaicSupplyChangeTransactionBufferReader();
 
   @override
-  MosaicSupplyChangeTransactionBuffer createObject(
-          fb.BufferContext bc, int offset) =>
+  MosaicSupplyChangeTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
       MosaicSupplyChangeTransactionBuffer._(bc, offset);
 }
 
 class MosaicSupplyChangeTransactionBufferBuilder {
-  MosaicSupplyChangeTransactionBufferBuilder(this.fbBuilder)
-      : assert(fbBuilder != null, 'fbBuilder must not be null');
+  MosaicSupplyChangeTransactionBufferBuilder(this.fbBuilder) : assert(fbBuilder != null, 'fbBuilder must not be null');
 
   final fb.Builder fbBuilder;
 
@@ -127,8 +117,7 @@ class MosaicSupplyChangeTransactionBufferBuilder {
   int finish() => fbBuilder.endTable();
 }
 
-class MosaicSupplyChangeTransactionBufferObjectBuilder
-    extends fb.ObjectBuilder {
+class MosaicSupplyChangeTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   MosaicSupplyChangeTransactionBufferObjectBuilder({
     int size,
     List<int> signature,
@@ -166,21 +155,12 @@ class MosaicSupplyChangeTransactionBufferObjectBuilder
   @override
   int finish(fb.Builder fbBuilder) {
     assert(fbBuilder != null, 'fbBuilder must not be null');
-    final int signatureOffset = _signature?.isNotEmpty == true
-        ? fbBuilder.writeListUint8(_signature)
-        : null;
-    final int signerOffset =
-        _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
-    final int feeOffset =
-        _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
-    final int deadlineOffset = _deadline?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_deadline)
-        : null;
-    final int mosaicIdOffset = _mosaicId?.isNotEmpty == true
-        ? fbBuilder.writeListUint32(_mosaicId)
-        : null;
-    final int deltaOffset =
-        _delta?.isNotEmpty == true ? fbBuilder.writeListUint32(_delta) : null;
+    final int signatureOffset = _signature?.isNotEmpty == true ? fbBuilder.writeListUint8(_signature) : null;
+    final int signerOffset = _signer?.isNotEmpty == true ? fbBuilder.writeListUint8(_signer) : null;
+    final int feeOffset = _fee?.isNotEmpty == true ? fbBuilder.writeListUint32(_fee) : null;
+    final int deadlineOffset = _deadline?.isNotEmpty == true ? fbBuilder.writeListUint32(_deadline) : null;
+    final int mosaicIdOffset = _mosaicId?.isNotEmpty == true ? fbBuilder.writeListUint32(_mosaicId) : null;
+    final int deltaOffset = _delta?.isNotEmpty == true ? fbBuilder.writeListUint32(_delta) : null;
 
     fbBuilder.startTable();
     fbBuilder.addUint32(0, _size);

@@ -63,8 +63,7 @@ class Uint64 implements Comparable<Uint64> {
   static final BigInt _minValueUnsigned = BigInt.zero;
 
   /// The maximum value of 64-bit unsigned integer. Equals to 18446744073709551615.
-  static final BigInt _maxValueUnsigned =
-      BigInt.parse('FFFFFFFFFFFFFFFF', radix: 16);
+  static final BigInt _maxValueUnsigned = BigInt.parse('FFFFFFFFFFFFFFFF', radix: 16);
 
   /// The value of Uint64 is stored as BigInt.
   BigInt _value;
@@ -88,8 +87,7 @@ class Uint64 implements Comparable<Uint64> {
 
   bool get isMinValue => _value == _minValueUnsigned;
 
-  bool get isZero =>
-      _value == BigInt.zero && toBytes().every((value) => 0 == value);
+  bool get isZero => _value == BigInt.zero && toBytes().every((value) => 0 == value);
 
   @override
   int get hashCode => _value.hashCode;

@@ -11,8 +11,7 @@ class AccountPropertyType {
   // emulates an enum class with a value.
   const AccountPropertyType._(this.value);
 
-  static const String unknownAccountPropertyType =
-      'unknown account restriction type';
+  static const String unknownAccountPropertyType = 'unknown account restriction type';
 
   ///  Allow address property type.
   static const AccountPropertyType allowAddress = AccountPropertyType._(0x01);
@@ -21,20 +20,16 @@ class AccountPropertyType {
   static const AccountPropertyType allowMosaic = AccountPropertyType._(0x02);
 
   /// Allow transaction type property type.
-  static const AccountPropertyType allowTransaction =
-      AccountPropertyType._(0x04);
+  static const AccountPropertyType allowTransaction = AccountPropertyType._(0x04);
 
   /// Block address property type.
-  static const AccountPropertyType blockAddress =
-      AccountPropertyType._(0x80 + 0x01);
+  static const AccountPropertyType blockAddress = AccountPropertyType._(0x80 + 0x01);
 
   /// Block mosaic identifier property type.
-  static const AccountPropertyType blockMosaic =
-      AccountPropertyType._(0x80 + 0x02);
+  static const AccountPropertyType blockMosaic = AccountPropertyType._(0x80 + 0x02);
 
   /// Blocking transaction type property type.
-  static const AccountPropertyType blockTransaction =
-      AccountPropertyType._(0x80 + 0x04);
+  static const AccountPropertyType blockTransaction = AccountPropertyType._(0x80 + 0x04);
 
   /// Supported property types.
   static final List<AccountPropertyType> values = <AccountPropertyType>[

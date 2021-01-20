@@ -3,15 +3,13 @@ part of xpx_chain_sdk.transaction;
 class MultisigCosignatoryModification {
   MultisigCosignatoryModification(this.type, this.publicAccount);
 
-  MultisigCosignatoryModification.fromDTO(
-      int networkType, MultisigCosignatoryModificationDTO dto) {
+  MultisigCosignatoryModification.fromDTO(int networkType, MultisigCosignatoryModificationDTO dto) {
     if (dto?.cosignatoryPublicKey == null) {
       return;
     }
 
     type = dto.type == 0 ? add : remove;
-    publicAccount =
-        PublicAccount.fromPublicKey(dto.cosignatoryPublicKey, networkType);
+    publicAccount = PublicAccount.fromPublicKey(dto.cosignatoryPublicKey, networkType);
   }
 
   MultisigCosignatoryModificationType type;
@@ -29,12 +27,7 @@ class MultisigCosignatoryModification {
 
   static List<MultisigCosignatoryModification> listFromDTO(
           int networkType, List<MultisigCosignatoryModificationDTO> dto) =>
-      dto == null
-          ? null
-          : dto
-              .map((value) =>
-                  MultisigCosignatoryModification.fromDTO(networkType, value))
-              .toList();
+      dto == null ? null : dto.map((value) => MultisigCosignatoryModification.fromDTO(networkType, value)).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -50,14 +43,9 @@ class MultisigCosignatoryModification {
 /// b) Change the configurable properties of a multisig account.
 /// c) Add or delete cosignatories from a multisig account.
 ///
-class ModifyMultisigAccountTransaction extends AbstractTransaction
-    implements Transaction {
-  ModifyMultisigAccountTransaction(
-      Deadline deadline,
-      int minApproval,
-      int minRemoval,
-      List<MultisigCosignatoryModification> modifications,
-      int networkType)
+class ModifyMultisigAccountTransaction extends AbstractTransaction implements Transaction {
+  ModifyMultisigAccountTransaction(Deadline deadline, int minApproval, int minRemoval,
+      List<MultisigCosignatoryModification> modifications, int networkType)
       : assert(modifications != null, 'modifications must not be null'),
         super() {
     if (modifications.isEmpty && minApproval == 0 && minRemoval == 0) {
@@ -73,8 +61,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
     }
   }
 
-  ModifyMultisigAccountTransaction.fromDTO(
-      ModifyMultisigAccountTransactionInfoDTO dto)
+  ModifyMultisigAccountTransaction.fromDTO(ModifyMultisigAccountTransactionInfoDTO dto)
       : assert(dto != null, 'dto must not be null'),
         super.fromDto(dto.transaction, dto.meta) {
     type = TransactionType.fromInt(dto.transaction.type);
@@ -87,8 +74,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
 
     minApprovalDelta = dto.transaction.minApprovalDelta;
     minRemovalDelta = dto.transaction.minRemovalDelta;
-    modifications = MultisigCosignatoryModification.listFromDTO(
-        networkType, dto.transaction.modifications);
+    modifications = MultisigCosignatoryModification.listFromDTO(networkType, dto.transaction.modifications);
   }
 
   int minApprovalDelta;
@@ -102,13 +88,8 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
 
   AbstractTransaction get abstractTransaction => absTransaction();
 
-  static List<ModifyMultisigAccountTransaction> listFromDTO(
-          List<ModifyMultisigAccountTransactionInfoDTO> dto) =>
-      dto == null
-          ? null
-          : dto
-              .map((value) => ModifyMultisigAccountTransaction.fromDTO(value))
-              .toList();
+  static List<ModifyMultisigAccountTransaction> listFromDTO(List<ModifyMultisigAccountTransactionInfoDTO> dto) =>
+      dto == null ? null : dto.map((value) => ModifyMultisigAccountTransaction.fromDTO(value)).toList();
 
   @override
   String toString() {
@@ -134,10 +115,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
   }
 
   @override
-  int _size() =>
-      modifyMultisigHeaderSize +
-      ((keySize + 1 /* MultisigModificationType size */) *
-          modifications.length);
+  int _size() => modifyMultisigHeaderSize + ((keySize + 1 /* MultisigModificationType size */) * modifications.length);
 
   @override
   AbstractTransaction absTransaction() => _absTransaction();
@@ -160,7 +138,6 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
     _buildVector(builder, vectors);
 
     final codedModifyMultisigAccount = txnBuilder.finish();
-    return modifyMultisigAccountTransactionSchema()
-        .serialize(builder.finish(codedModifyMultisigAccount));
+    return modifyMultisigAccountTransactionSchema().serialize(builder.finish(codedModifyMultisigAccount));
   }
 }

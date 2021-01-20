@@ -66,8 +66,7 @@ List<Uint64> extractLevels(NamespaceInfoDTO ref) {
 Uint64 generateNamespaceId(String name, Uint64 parentId) {
   final Uint8List parentIdBytes = parentId.toBytes();
 
-  final result = createSha3Digest(length: 32)
-    ..update(parentIdBytes, 0, parentIdBytes.length);
+  final result = createSha3Digest(length: 32)..update(parentIdBytes, 0, parentIdBytes.length);
 
   final nameBytes = Uint8List(name.length);
   for (int i = 0; i < name.length; i++) {

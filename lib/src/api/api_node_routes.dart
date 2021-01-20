@@ -1,8 +1,7 @@
 part of xpx_chain_sdk.api;
 
 class NodeRoutesApi {
-  NodeRoutesApi([_ApiClient _apiClient])
-      : _apiClient = _apiClient ?? defaultApiClient;
+  NodeRoutesApi([_ApiClient _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
 
   final _ApiClient _apiClient;
 

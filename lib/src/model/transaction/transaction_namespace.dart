@@ -3,10 +3,8 @@ part of xpx_chain_sdk.transaction;
 /// Register a namespace to organize your assets.
 /// Announce a [RegisterNamespaceTransaction] to register and re-rent a namespace.
 ///
-class RegisterNamespaceTransaction extends AbstractTransaction
-    implements Transaction {
-  RegisterNamespaceTransaction.createRoot(Deadline deadline,
-      String rootNamespaceName, Uint64 duration, int networkType)
+class RegisterNamespaceTransaction extends AbstractTransaction implements Transaction {
+  RegisterNamespaceTransaction.createRoot(Deadline deadline, String rootNamespaceName, Uint64 duration, int networkType)
       : super() {
     if (rootNamespaceName == null) {
       throw errInvalidNamespaceName;
@@ -24,8 +22,8 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     }
   }
 
-  RegisterNamespaceTransaction.createSub(Deadline deadline,
-      String subNamespaceName, String rootNamespaceName, int networkType)
+  RegisterNamespaceTransaction.createSub(
+      Deadline deadline, String subNamespaceName, String rootNamespaceName, int networkType)
       : super() {
     if (subNamespaceName == null || subNamespaceName == '') {
       throw errInvalidNamespaceName;
@@ -36,8 +34,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       this.deadline = deadline;
       type = TransactionType.registerNamespace;
       parentId = NamespaceId.fromName(rootNamespaceName);
-      namespaceId = NamespaceId(
-          id: generateNamespaceId(subNamespaceName, parentId.toUint64()));
+      namespaceId = NamespaceId(id: generateNamespaceId(subNamespaceName, parentId.toUint64()));
       this.networkType = networkType;
       namespaceName = subNamespaceName;
       namespaceType = NamespaceType.sub;
@@ -48,9 +45,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       : assert(dto != null, 'dto must not be null'),
         super.fromDto(dto.transaction, dto.meta) {
     namespaceId = NamespaceId(id: dto.transaction.namespaceId.toUint64());
-    namespaceType = dto.transaction.namespaceType == 0
-        ? NamespaceType.root
-        : NamespaceType.sub;
+    namespaceType = dto.transaction.namespaceType == 0 ? NamespaceType.root : NamespaceType.sub;
     namespaceName = dto.transaction.name;
     if (namespaceType == NamespaceType.root) {
       duration = dto.transaction.duration.toUint64();
@@ -72,13 +67,8 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 
   AbstractTransaction get abstractTransaction => absTransaction();
 
-  static List<RegisterNamespaceTransaction> listFromDTO(
-          List<RegisterNamespaceTransactionInfoDTO> data) =>
-      data == null
-          ? List
-          : data
-              .map((value) => RegisterNamespaceTransaction.fromDTO(value))
-              .toList();
+  static List<RegisterNamespaceTransaction> listFromDTO(List<RegisterNamespaceTransactionInfoDTO> data) =>
+      data == null ? List : data.map((value) => RegisterNamespaceTransaction.fromDTO(value)).toList();
 
   @override
   String toString() {
@@ -144,8 +134,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     _buildVector(builder, vector);
 
     final codedRegisterNamespace = txnBuilder.finish();
-    return registerNamespaceTransactionSchema()
-        .serialize(builder.finish(codedRegisterNamespace));
+    return registerNamespaceTransactionSchema().serialize(builder.finish(codedRegisterNamespace));
   }
 
   @override
