@@ -17,7 +17,8 @@ dependencies:
   base32: '^1.0.1'
   fixnum: '^0.10.9'
   convert: '^2.1.1'
-  xpx_crypto: '^0.0.3+7'
+  xpx_crypto:
+    git: https://github.com/proximax-storage/dart-xpx-crypto
 
   flat_buffers: '^1.11.0'
 
