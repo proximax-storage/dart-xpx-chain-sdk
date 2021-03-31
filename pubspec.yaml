@@ -17,8 +17,11 @@ dependencies:
   base32: '^1.0.1'
   fixnum: '^1.0.0'
   convert: '^2.1.1'
+
   xpx_crypto:
-    git: https://github.com/proximax-storage/dart-xpx-crypto
+    git:
+      url: https://github.com/proximax-storage/dart-xpx-crypto
+      ref: "silo_dev"
 
   flat_buffers: '^1.11.0'
 
