@@ -35,7 +35,9 @@ void main() async {
   }
 
   final address =
-      Address.fromPublicKey('6F4416CA9AE06AF4DDDE4A30132C55B47740C0262568BEE99D59CF3A92BD04D1', networkType);
+      Address.fromPublicKey('A1574ADBE3CD7A065192275344062C92AC82197E811DCC372612702B33477AFB', networkType);
+
+  print(address);
 
   /// Gets an list of namespaces for a given account address.
   try {
