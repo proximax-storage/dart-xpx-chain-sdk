@@ -13,12 +13,13 @@ environment:
   sdk: '>=2.6.1 <3.0.0'
 
 dependencies:
-  http: '^0.13.0'
+  http: '^0.12.0'
   base32: '^1.0.1'
-  fixnum: '^1.0.0'
+#  fixnum: '^1.0.0'
   convert: '^2.1.1'
 
   xpx_crypto:
+#    path: '../dart-xpx-crypto'
     git:
       url: https://github.com/proximax-storage/dart-xpx-crypto
       ref: "silo_dev"
