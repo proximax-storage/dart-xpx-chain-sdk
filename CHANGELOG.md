@@ -1,3 +1,11 @@
+## 0.0.6+8
+### Updates
+[UPDATE] dependencies.
+
+## 0.0.6+7
+### Updates
+[FIXED] fixed bug in AliasDTO
+
 ## 0.0.6+6
 ### Updates
 [UPDATE] Homepage URL.

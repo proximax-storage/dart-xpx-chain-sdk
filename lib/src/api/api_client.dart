@@ -211,13 +211,13 @@ class _ApiClient {
     final ps = queryParams.where((p) => p.value != null).map((p) => '${p.name}=${p.value}');
     final String queryString = ps.isNotEmpty ? '?${ps.join('&')}' : '';
 
-    final String url = baseUrl + path + queryString;
+    final Uri url = Uri.parse(baseUrl + path + queryString);
 
     headerParams.addAll(_defaultHeaderMap);
     headerParams['Content-Type'] = contentType;
 
     if (body is http.MultipartRequest) {
-      final request = http.MultipartRequest(method, Uri.parse(url));
+      final request = http.MultipartRequest(method, url);
       request.fields.addAll(body.fields);
       request.files.addAll(body.files);
       request.headers.addAll(body.headers);

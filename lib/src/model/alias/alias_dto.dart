@@ -62,7 +62,7 @@ class AddressAliasTransactionInfoDTO {
 
 class AliasDTO {
   AliasDTO.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
-    aliasAction = json['aliasAction'];
+    aliasAction = json['type'];
     mosaicId = UInt64DTO.fromJson(json['mosaicId']);
     address = json['address'];
   }
