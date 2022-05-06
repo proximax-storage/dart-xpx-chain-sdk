@@ -1,4 +1,10 @@
-part of xpx_chain_sdk.account;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
+part of xpx_chain_sdk.model.account;
 
 /// The property type of an account.
 ///
@@ -11,7 +17,8 @@ class AccountPropertyType {
   // emulates an enum class with a value.
   const AccountPropertyType._(this.value);
 
-  static const String unknownAccountPropertyType = 'unknown account restriction type';
+  static const String unknownAccountPropertyType =
+      'unknown account restriction type';
 
   ///  Allow address property type.
   static const AccountPropertyType allowAddress = AccountPropertyType._(0x01);
@@ -20,16 +27,20 @@ class AccountPropertyType {
   static const AccountPropertyType allowMosaic = AccountPropertyType._(0x02);
 
   /// Allow transaction type property type.
-  static const AccountPropertyType allowTransaction = AccountPropertyType._(0x04);
+  static const AccountPropertyType allowTransaction =
+      AccountPropertyType._(0x04);
 
   /// Block address property type.
-  static const AccountPropertyType blockAddress = AccountPropertyType._(0x80 + 0x01);
+  static const AccountPropertyType blockAddress =
+      AccountPropertyType._(0x80 + 0x01);
 
   /// Block mosaic identifier property type.
-  static const AccountPropertyType blockMosaic = AccountPropertyType._(0x80 + 0x02);
+  static const AccountPropertyType blockMosaic =
+      AccountPropertyType._(0x80 + 0x02);
 
   /// Blocking transaction type property type.
-  static const AccountPropertyType blockTransaction = AccountPropertyType._(0x80 + 0x04);
+  static const AccountPropertyType blockTransaction =
+      AccountPropertyType._(0x80 + 0x04);
 
   /// Supported property types.
   static final List<AccountPropertyType> values = <AccountPropertyType>[
@@ -47,7 +58,7 @@ class AccountPropertyType {
   /// Returns a [AccountPropertyType] for the given int value.
   ///
   /// Throws an error when the type is unknown.
-  static AccountPropertyType fromInt(final int value) {
+  static AccountPropertyType fromInt(final int? value) {
     for (var type in values) {
       if (type.value == value) {
         return type;

@@ -1,0 +1,195 @@
+namespace Catapult.Buffers;
+
+table PrepareDriveTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    owner:[ubyte];
+    duration:[uint];
+    billingPeriod:[uint];
+    billingPrice:[uint];
+    driveSize:[uint];
+    replicas:ushort;
+    minReplicators:ushort;
+    percentApprovers:ubyte;
+}
+
+table JoinToDriveTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    driveKey:[ubyte];
+}
+
+table AddActionBuffer {
+    fileHash: [ubyte];
+    fileSize: [ubyte];
+}
+
+table RemoveActionBuffer {
+    fileHash: [ubyte];
+    fileSize: [ubyte];
+}
+
+table FileBuffer {
+    fileHash: [ubyte];
+}
+
+table UploadInfoBuffer {
+    replicator: [ubyte];
+    uploaded: [uint];
+}
+
+table DriveFileSystemTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    driveKey: [ubyte];
+    rootHash: [ubyte];
+    xorRootHash: [ubyte];
+    // It is ushort. But it can be zero, and we still want to represent it like 2 bytes
+    addActionsCount: [ubyte];
+    // It is ushort. But it can be zero, and we still want to represent it like 2 bytes
+    removeActionsCount: [ubyte];
+    addActions: [AddActionBuffer];
+    removeActions: [RemoveActionBuffer];
+}
+
+table FilesDepositTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    driveKey:[ubyte];
+    filesCount: ushort;
+    files: [FileBuffer];
+}
+
+table EndDriveTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    driveKey: [ubyte];
+}
+
+table DriveFilesRewardTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    uploadInfosCount: ushort;
+    uploadInfos: [UploadInfoBuffer];
+}
+
+table StartDriveVerificationTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    driveKey: [ubyte];
+}
+
+table BlockHashBuffer {
+    blockHashe: [ubyte];
+}
+
+table VerificationFailureBuffer {
+    size: uint;
+    replicator: [ubyte];
+    blockHashes: [BlockHashBuffer];
+}
+
+table EndDriveVerificationTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    failures: [VerificationFailureBuffer];
+}
+
+table StartFileDownloadTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    driveKey: [ubyte];
+    fileCount: ushort;
+    files: [AddActionBuffer];
+}
+
+table EndFileDownloadTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    recipient: [ubyte];
+    operationToken: [ubyte];
+    fileCount: ushort;
+    files: [RemoveActionBuffer];
+}
+
+root_type AddActionBuffer;
+
+root_type RemoveActionBuffer;
+
+root_type FileBuffer;
+
+root_type UploadInfoBuffer;
+
+root_type DriveFileSystemTransactionBuffer;
+
+root_type EndDriveTransactionBuffer;
+
+root_type DriveFilesRewardTransactionBuffer;
+
+root_type FilesDepositTransactionBuffer;
+
+root_type JoinToDriveTransactionBuffer;
+
+root_type PrepareDriveTransactionBuffer;
+
+root_type StartDriveVerificationTransactionBuffer;
+
+root_type BlockHashBuffer;
+
+root_type VerificationFailureBuffer;
+
+root_type EndDriveVerificationTransactionBuffer;
+
+root_type StartFileDownloadTransactionBuffer;
+
+root_type EndFileDownloadTransactionBuffer;

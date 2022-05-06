@@ -1,9 +1,16 @@
-part of xpx_chain_sdk.utils;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
+part of xpx_chain_sdk.model.utils;
 
 /// A utility class that provides functions for converting hex strings.
 class HexUtils {
   /// Converts a hex string to a [Uint8List].
-  static Uint8List hexToBytes(String hexString) => Uint8List.fromList(hex.decode(hexString));
+  static Uint8List hexToBytes(String hexString) =>
+      Uint8List.fromList(hex.decode(hexString));
 
   /// Converts [hex] string to a byte array.
   ///
@@ -11,18 +18,19 @@ class HexUtils {
   static List<int> getBytes(final String hex) {
     try {
       return _getBytesInternal(hex);
-    } catch (e) {
-      throw ArgumentError('Could not convert hex string into a byte array. Error: $e');
+    } on Exception catch (e) {
+      throw ArgumentError(
+          'Could not convert hex string into a byte array. Error: $e');
     }
   }
 
   /// Tries to convert [hex] string to a byte array.
   ///
   /// The output will be null if the input is malformed.
-  static List<int> tryGetBytes(final String hex) {
+  static List<int>? tryGetBytes(final String hex) {
     try {
       return _getBytesInternal(hex);
-    } catch (e) {
+    } on Exception catch (_) {
       return null;
     }
   }
@@ -31,13 +39,13 @@ class HexUtils {
   ///
   /// Used for converting UTF-8 encoded data from and to bytes.
   static String getString(final List<int> bytes) {
-    final encodedString = hex.encode(bytes);
-    return ByteUtils.bytesToUtf8String(encodedString.codeUnits);
+    final String encodedString = hex.encode(bytes);
+    return ByteUtils.bytesToUtf8String(encodedString.codeUnits as Uint8List);
   }
 
   /// Determines whether or not an [input] string is a hex string.
   static bool isHex(final String input) {
-    if (input == null) {
+    if (input.isEmpty) {
       return false;
     }
 
@@ -45,7 +53,7 @@ class HexUtils {
       return false;
     }
 
-    return tryGetBytes(input) == null ? false : true;
+    return tryGetBytes(input) != null && true;
   }
 
   /// Determines whether the [input] string is a valid hex string.
@@ -97,14 +105,15 @@ class HexUtils {
   static String tryHexToUtf8(final String hex) {
     final codeUnits = _getCodeUnits(hex);
     try {
-      return ByteUtils.bytesToUtf8String(codeUnits);
-    } catch (e) {
+      return ByteUtils.bytesToUtf8String(codeUnits as Uint8List);
+    } on Exception catch (_) {
       return String.fromCharCodes(codeUnits);
     }
   }
 
   /// Converts a hex string to a binary string.
-  static String hexToBinary(String hexString) => BigInt.parse(hexString, radix: 16).toRadixString(2);
+  static String hexToBinary(String hexString) =>
+      BigInt.parse(hexString, radix: 16).toRadixString(2);
 
   /// Returns the reversed order of the given [input] hex string.
   ///
@@ -112,7 +121,7 @@ class HexUtils {
   static String reverseHexString(String input) {
     try {
       return getString(getBytes(input).reversed.toList());
-    } catch (e) {
+    } on Exception catch (e) {
       throw ArgumentError('Failed reversing the input. Error: $e');
     }
   }
@@ -121,7 +130,8 @@ class HexUtils {
 
   /// Converts a hex string into byte array. Also tries to correct malformed hex string.
   static List<int> _getBytesInternal(final String hexString) {
-    final paddedHexString = 0 == hexString.length % 2 ? hexString : '0$hexString';
+    final paddedHexString =
+        0 == hexString.length % 2 ? hexString : '0$hexString';
     final encodedBytes = ByteUtils.stringToBytesUtf8(paddedHexString);
     return hex.decode(String.fromCharCodes(encodedBytes));
   }

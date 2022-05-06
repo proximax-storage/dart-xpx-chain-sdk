@@ -1,10 +1,17 @@
-part of xpx_chain_sdk.mosaic;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
+part of xpx_chain_sdk.model.mosaic;
 
 final xpxMosaicId = MosaicId(id: Uint64(481110499, 231112638));
 
 enum MosaicSupplyType { decrease, increase }
 
-const decrease = MosaicSupplyType.decrease, increase = MosaicSupplyType.increase;
+const decrease = MosaicSupplyType.decrease,
+    increase = MosaicSupplyType.increase;
 
 const getSupplyMutable = 0x01;
 
@@ -28,51 +35,67 @@ Mosaic xpx(int amount) {
 
 Mosaic xpxRelative(int amount) {
   if (amount > xpxMaxRelativeValue) {
-    throw ArgumentError('Maximum xpx relative value must be $xpxMaxRelativeValue');
+    throw ArgumentError(
+        'Maximum xpx relative value must be $xpxMaxRelativeValue');
   }
   return xpx(amount * xpxDivisibility);
 }
 
-MosaicPropertyId getPropertyId(int value) {
+MosaicPropertyId? getPropertyId(int? value) {
   switch (value) {
     case 1:
-      return MosaicPropertyId.mosaicPropertyFlagsId;
+      return MosaicPropertyId.mosaicPropertyFlags;
     case 2:
-      return MosaicPropertyId.mosaicPropertyDivisibilityId;
+      return MosaicPropertyId.mosaicPropertyDivisibility;
     case 3:
-      return MosaicPropertyId.mosaicPropertyDurationId;
+      return MosaicPropertyId.mosaicPropertyDuration;
     default:
       return null;
   }
 }
 
-Uint64 _generateMosaicId(int nonce, String ownerPublicKey) {
-  final buffer = Uint8List(4).buffer;
-  final nonceB = ByteData.view(buffer);
+Uint64 _generateMosaicId(MosaicNonce nonce, PublicAccount ownerPublicAccount) {
+  final sha3_256 = SHA3(256, SHA3_PADDING, 256);
 
-  nonceB.setUint32(0, nonce, Endian.little);
+  final result = sha3_256.update(nonce.nonce);
 
-  final result = createSha3Digest(length: 32)..update(nonceB.buffer.asUint8List(), 0, nonceB.lengthInBytes);
+  final List<int> ownerBytes = hex.decode(ownerPublicAccount.publicKey);
 
-  final ownerBytes = hex.decode(ownerPublicKey);
+  final t = result.update(Uint8List.fromList(ownerBytes));
 
-  final t = result.process(Uint8List.fromList(ownerBytes));
-
-  return Uint64.fromBytes(t) & 0x7FFFFFFFFFFFFFFF;
+  return Uint64.fromHex((Int64.fromBytes(t.digest()) ^ 1 << 63).toHexString());
 }
 
-int mosaicNonce() {
-  final random = Random.secure();
-  return random.nextInt(1000000000);
+Uint8List randombytesArray(Uint8List x) => randombytesArrayLen(x, x.length);
+
+Uint8List randombytes(int len) => randombytesArray(Uint8List(len));
+
+Uint8List randombytesArrayLen(Uint8List x, int len) {
+  final jrandom = Random.secure();
+
+  final int ret = len % 4;
+  Int64 rnd;
+  for (int i = 0; i < len - ret; i += 4) {
+    rnd = Int64(jrandom.nextInt(1 << 32));
+    x[i + 0] = rnd.shiftRightUnsigned(0).toInt();
+    x[i + 1] = rnd.shiftRightUnsigned(8).toInt();
+    x[i + 2] = rnd.shiftRightUnsigned(16).toInt();
+    x[i + 3] = rnd.shiftRightUnsigned(24).toInt();
+  }
+  if (ret > 0) {
+    rnd = Int64(jrandom.nextInt(1 << 32));
+    for (int i = len - ret; i < len; i++)
+      x[i] = rnd.shiftRightUnsigned(8 * i).toInt();
+  }
+  return x;
 }
 
 bool equalsBigInts(BigInt first, BigInt second) {
-  if (first == null && second == null) {
+  if (first == second) {
     return true;
   }
-
-  if (first != null) {
-    return first.compareTo(second) == 0;
+  if (first.compareTo(second) == 0) {
+    return true;
   }
 
   return second.compareTo(first) == 0;

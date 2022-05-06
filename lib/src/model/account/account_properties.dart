@@ -1,4 +1,10 @@
-part of xpx_chain_sdk.account;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
+part of xpx_chain_sdk.model.account;
 
 // PropertyModificationType enums
 enum PropertyModificationType {
@@ -7,40 +13,44 @@ enum PropertyModificationType {
 }
 
 class AccountProperties {
-  AccountProperties.fromDto(AccountPropertiesDTO dto) {
+  AccountProperties.fromDto(AccountPropertiesDTO? dto) {
     if (dto == null) return;
-    address = Address.fromEncoded(dto.address);
+    address = Address.fromEncoded(dto.address!);
 
-    for (var v in dto.properties) {
+    for (var v in dto.properties!) {
       switch (v.propertyType) {
         case 0x01:
-          allowedAddresses.addAll(v.addresses.map(Address.fromEncoded));
+          allowedAddresses.addAll(v.addresses!.map(Address.fromEncoded));
           continue;
 
         case 0x02:
-          allowedMosaicId.addAll(v.mosaicIds.map((m) => MosaicId.fromId(m.toUint64())));
+          allowedMosaicId
+              .addAll(v.mosaicIds!.map((m) => MosaicId.fromId(m.toUint64())));
           continue;
 
         case 0x04:
-          allowedEntityTypes.addAll(v.entityTypes.map(TransactionType.fromInt));
+          allowedEntityTypes
+              .addAll(v.entityTypes!.map(TransactionType.fromInt));
           continue;
 
         case 0x80 + 0x01:
-          blockedAddresses.addAll(v.addresses.map(Address.fromEncoded));
+          blockedAddresses.addAll(v.addresses!.map(Address.fromEncoded));
           continue;
 
         case 0x80 + 0x02:
-          blockedMosaicId.addAll(v.mosaicIds.map((m) => MosaicId.fromId(m.toUint64())));
+          blockedMosaicId
+              .addAll(v.mosaicIds!.map((m) => MosaicId.fromId(m.toUint64())));
           continue;
 
         case 0x80 + 0x04:
-          blockedEntityTypes.addAll(v.entityTypes.map(TransactionType.fromInt));
+          blockedEntityTypes
+              .addAll(v.entityTypes!.map(TransactionType.fromInt));
           continue;
       }
     }
   }
 
-  Address address;
+  Address? address;
   List<Address> allowedAddresses = [];
   List<MosaicId> allowedMosaicId = [];
   List<TransactionType> allowedEntityTypes = [];
@@ -48,23 +58,14 @@ class AccountProperties {
   List<MosaicId> blockedMosaicId = [];
   List<TransactionType> blockedEntityTypes = [];
 
-  static List<AccountProperties> listFromJson(List<AccountPropertiesDTO> json) =>
-      json == null ? <AccountProperties>[] : json.map((value) => AccountProperties.fromDto(value)).toList();
+  static List<AccountProperties> listFromJson(
+          List<AccountPropertiesDTO>? json) =>
+      json == null
+          ? <AccountProperties>[]
+          : json.map(AccountProperties.fromDto).toList();
 
   @override
-  String toString() {
-    final sb = StringBuffer()
-      ..writeln('{')
-      ..writeln('\t"address": $address')
-      ..writeln('\t"allowedAddresses": $allowedAddresses,')
-      ..writeln('\t"allowedMosaicId": $allowedMosaicId')
-      ..writeln('\t"allowedEntityTypes": $allowedEntityTypes')
-      ..writeln('\t"blockedAddresses": $blockedAddresses')
-      ..writeln('\t"blockedMosaicId": $blockedMosaicId')
-      ..writeln('\t"blockedEntityTypes": $blockedEntityTypes')
-      ..write('}');
-    return sb.toString();
-  }
+  String toString() => encoder.convert(this);
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -83,18 +84,21 @@ class AccountProperties {
 class AccountPropertiesMosaicModification {
   AccountPropertiesMosaicModification(this.modificationType, this.assetId);
 
-  AccountPropertiesMosaicModification.fromDto(AccountPropertiesMosaicModificationDTO dto) {
-    if (dto == null) return;
-    assetId = MosaicId.fromId(dto.assetId.toUint64());
-    modificationType =
-        dto.modificationType == 0 ? PropertyModificationType.addProperty : PropertyModificationType.removeProperty;
+  AccountPropertiesMosaicModification.fromDto(dto) {
+    assetId = MosaicId.fromId(dto.assetId!.toUint64());
+    modificationType = dto.modificationType == 0
+        ? PropertyModificationType.addProperty
+        : PropertyModificationType.removeProperty;
   }
 
-  PropertyModificationType modificationType;
-  AssetId assetId;
+  PropertyModificationType? modificationType;
+  AssetId? assetId;
 
-  static List<AccountPropertiesMosaicModification> listFromJson(List<dynamic> json) =>
-      json == null ? null : json.map((value) => AccountPropertiesMosaicModification.fromDto(value)).toList();
+  static List<AccountPropertiesMosaicModification> listFromJson(
+          List<dynamic>? json) =>
+      json == null
+          ? []
+          : json.map(AccountPropertiesMosaicModification.fromDto).toList();
 
   @override
   String toString() => '${toJson()}';
@@ -102,7 +106,9 @@ class AccountPropertiesMosaicModification {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['modificationType'] =
-        modificationType == PropertyModificationType.removeProperty ? 'removeProperty' : 'addProperty';
+        modificationType == PropertyModificationType.removeProperty
+            ? 'removeProperty'
+            : 'addProperty';
     data['assetId'] = assetId;
 
     return data;
@@ -112,18 +118,21 @@ class AccountPropertiesMosaicModification {
 class AccountPropertiesAddressModification {
   AccountPropertiesAddressModification(this.modificationType, this.address);
 
-  AccountPropertiesAddressModification.fromDto(AccountPropertiesAddressModificationDTO dto) {
-    if (dto == null) return;
-    address = Address.fromEncoded(dto.address);
-    modificationType =
-        dto.modificationType == 0 ? PropertyModificationType.addProperty : PropertyModificationType.removeProperty;
+  AccountPropertiesAddressModification.fromDto(dto) {
+    address = Address.fromEncoded(dto.address!);
+    modificationType = dto.modificationType == 0
+        ? PropertyModificationType.addProperty
+        : PropertyModificationType.removeProperty;
   }
 
-  PropertyModificationType modificationType;
-  Address address;
+  PropertyModificationType? modificationType;
+  Address? address;
 
-  static List<AccountPropertiesAddressModification> listFromJson(List<dynamic> json) =>
-      json == null ? null : json.map((value) => AccountPropertiesAddressModification.fromDto(value)).toList();
+  static List<AccountPropertiesAddressModification> listFromJson(
+          List<dynamic>? json) =>
+      json == null
+          ? []
+          : json.map(AccountPropertiesAddressModification.fromDto).toList();
 
   @override
   String toString() => '${toJson()}';
@@ -131,7 +140,9 @@ class AccountPropertiesAddressModification {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['modificationType'] =
-        modificationType == PropertyModificationType.removeProperty ? 'removeProperty' : 'addProperty';
+        modificationType == PropertyModificationType.removeProperty
+            ? 'removeProperty'
+            : 'addProperty';
     data['address'] = address;
 
     return data;
@@ -139,19 +150,24 @@ class AccountPropertiesAddressModification {
 }
 
 class AccountPropertiesEntityTypeModification {
-  AccountPropertiesEntityTypeModification(this.modificationType, this.transactionType);
+  AccountPropertiesEntityTypeModification(
+      this.modificationType, this.transactionType);
 
-  AccountPropertiesEntityTypeModification.fromDto(AccountPropertiesEntityTypeModificationDTO dto) {
+  AccountPropertiesEntityTypeModification.fromDto(dto) {
     transactionType = TransactionType.fromInt(dto.entityType);
-    modificationType =
-        dto.modificationType == 0 ? PropertyModificationType.addProperty : PropertyModificationType.removeProperty;
+    modificationType = dto.modificationType == 0
+        ? PropertyModificationType.addProperty
+        : PropertyModificationType.removeProperty;
   }
 
-  PropertyModificationType modificationType;
-  TransactionType transactionType;
+  PropertyModificationType? modificationType;
+  TransactionType? transactionType;
 
-  static List<AccountPropertiesEntityTypeModification> listFromJson(List<dynamic> json) =>
-      json == null ? null : json.map((value) => AccountPropertiesEntityTypeModification.fromDto(value)).toList();
+  static List<AccountPropertiesEntityTypeModification> listFromJson(
+          List<dynamic>? json) =>
+      json == null
+          ? []
+          : json.map(AccountPropertiesEntityTypeModification.fromDto).toList();
 
   @override
   String toString() => '${toJson()}';
@@ -159,7 +175,9 @@ class AccountPropertiesEntityTypeModification {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['modificationType'] =
-        modificationType == PropertyModificationType.removeProperty ? 'removeProperty' : 'addProperty';
+        modificationType == PropertyModificationType.removeProperty
+            ? 'removeProperty'
+            : 'addProperty';
     data['transactionType'] = transactionType;
 
     return data;

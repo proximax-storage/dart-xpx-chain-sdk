@@ -1,48 +1,49 @@
-part of xpx_chain_sdk.transaction;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
+part of xpx_chain_sdk.model.transaction;
 
 // AliasTransaction
-class AccountPropertiesEntityTypeTransaction extends AbstractTransaction implements Transaction {
-  AccountPropertiesEntityTypeTransaction(Deadline deadline, this.propertyType, this.modifications, int networkType)
-      : super() {
-    version = accountPropertyEntityTypeVersion;
-    this.deadline = deadline;
-    type = TransactionType.accountPropertyEntityType;
-    this.networkType = networkType;
+class AccountPropertiesEntityTypeTransaction extends AbstractTransaction
+    implements Transaction {
+  AccountPropertiesEntityTypeTransaction(Deadline deadline, this.propertyType,
+      this.modifications, NetworkType networkType, [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.accountPropertyEntityType,
+            accountRestrictionEntityTypeVersion, maxFee);
+
+  AccountPropertiesEntityTypeTransaction.fromDTO(
+      AccountPropertiesEntityTypeTransactionInfoDTO dto)
+      : super.fromDto(dto.transaction!, dto.meta!) {
+    propertyType = AccountPropertyType.fromInt(dto.transaction!.propertyType);
+    modifications = AccountPropertiesEntityTypeModification.listFromJson(
+        dto.transaction!.modifications);
   }
 
-  AccountPropertiesEntityTypeTransaction.fromDTO(AccountPropertiesEntityTypeTransactionInfoDTO dto)
-      : assert(dto != null, 'dto must not be null'),
-        super.fromDto(dto.transaction, dto.meta) {
-    propertyType = AccountPropertyType.fromInt(dto.transaction.propertyType);
-    modifications = AccountPropertiesEntityTypeModification.listFromJson(dto.transaction.modifications);
-  }
-
-  AccountPropertyType propertyType;
-  List<AccountPropertiesEntityTypeModification> modifications;
-
-  int get size => _size();
+  AccountPropertyType? propertyType;
+  List<AccountPropertiesEntityTypeModification>? modifications;
 
   AbstractTransaction get abstractTransaction => absTransaction();
 
   @override
-  String toString() => '{\n'
-      '\t"abstractTransaction": ${_absToString()}\n'
-      '\t"propertyType": $propertyType,\n'
-      '\t"modifications": $modifications\n'
-      '}\n';
+  String toString() => encoder.convert(this);
 
   @override
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['abstractTransaction'] = _absToJson();
-    data['propertyType'] = propertyType;
-    data['modifications'] = modifications;
+    final Map<String, dynamic> val = {}..addAll(_absToJson());
 
-    return data;
+    val['propertyType'] = propertyType;
+    val['modifications'] = modifications;
+
+    return val;
   }
 
   @override
-  int _size() => accountPropertyEntityTypeHeader + (accountPropertiesEntityModificationSize * modifications.length);
+  int size() =>
+      accountPropertyEntityTypeHeader +
+      (accountPropertiesEntityModificationSize * modifications!.length);
 
   @override
   TransactionType entityType() => type;
@@ -55,34 +56,37 @@ class AccountPropertiesEntityTypeTransaction extends AbstractTransaction impleme
     final builder = fb.Builder(initialSize: 0);
 
     /// Create mosaics
-    final List<int> msb = List(modifications.length);
+    final List<int?> msb =
+        List.filled(modifications!.length, null, growable: false);
     int i = 0;
-    for (final modification in modifications) {
-      final entity = modification.transactionType;
+    for (final modification in modifications!) {
+      final entity = modification.transactionType!;
       final aV = builder.writeListUint8(entity.toBytes());
 
-      final ms = PropertyModificationBufferBuilder(builder)
+      final ms = $buffer.PropertyModificationBufferBuilder(builder)
         ..begin()
-        ..addModificationType(modification.modificationType.index)
+        ..addModificationType(modification.modificationType!.index)
         ..addValueOffset(aV);
       msb[i] = ms.finish();
       i++;
     }
 
-    final mV = builder.writeList(msb);
+    final mV = builder.writeList(msb as List<int>);
 
-    final vectors = _generateVector(builder);
+    final vectors = _generateCommonVector(builder);
 
-    final txnBuilder = AccountPropertiesTransactionBufferBuilder(builder)
-      ..begin()
-      ..addSize(_size())
-      ..addPropertyType(propertyType.value)
-      ..addModificationCount(modifications.length)
-      ..addModificationsOffset(mV);
-    _buildVector(builder, vectors);
+    final txnBuilder =
+        $buffer.AccountPropertiesTransactionBufferBuilder(builder)
+          ..begin()
+          ..addSize(size())
+          ..addPropertyType(propertyType!.value)
+          ..addModificationCount(modifications!.length)
+          ..addModificationsOffset(mV);
+    _buildCommonVector(builder, vectors);
 
     final codedAccountProperty = txnBuilder.finish();
 
-    return accountPropertyTransactionSchema().serialize(builder.finish(codedAccountProperty));
+    builder.finish(codedAccountProperty);
+    return accountPropertyTransactionSchema().serialize(builder.buffer);
   }
 }

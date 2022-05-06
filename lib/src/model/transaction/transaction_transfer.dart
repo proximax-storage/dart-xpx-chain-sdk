@@ -1,73 +1,61 @@
-part of xpx_chain_sdk.transaction;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
+part of xpx_chain_sdk.model.transaction;
 
 /// Send mosaics and messages between two accounts.
 /// Announce a [TransferTransaction] to send [Mosaic] or [Message] between two [Account].
 ///
 class TransferTransaction extends AbstractTransaction implements Transaction {
-  TransferTransaction(Deadline deadline, Address recipient, List<Mosaic> mosaics, Message message, int networkType)
-      : super() {
-    if (recipient == null) {
-      throw errNullRecipient;
-    } else if (mosaics == null) {
-      throw errNullMosaics;
-    } else if (message == null) {
-      throw errNullMessage;
-    } else {
-      version = transferVersion;
-      this.deadline = deadline;
-      type = TransactionType.transfer;
-      this.recipient = recipient;
-      this.mosaics = mosaics;
-      this.message = message;
-      this.networkType = networkType;
-    }
-  }
+  TransferTransaction.create(Deadline deadline, Address this.recipient,
+      List<Mosaic> this.mosaics, Message this.message, NetworkType networkType,
+      [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.transfer, transferVersion,
+            maxFee);
 
   TransferTransaction.fromDTO(TransferTransactionInfoDTO dto)
-      : assert(dto != null, 'dto must not be null'),
-        super.fromDto(dto._transaction, dto.meta) {
-    mosaics = Mosaic.listFromDTO(dto._transaction._mosaics);
-    recipient = Address.fromEncoded(dto._transaction._recipient);
-    message = dto._transaction._message != null ? Message.fromDTO(dto._transaction._message) : null;
+      : super.fromDto(dto.transaction!, dto.meta!) {
+    mosaics = Mosaic.listFromDTO(dto.transaction!.mosaics);
+    recipient = Address.fromEncoded(dto.transaction!.recipient!);
+    message = dto.transaction!.message != null
+        ? Message.fromDTO(dto.transaction!.message!)
+        : null;
   }
 
-  List<Mosaic> mosaics;
-  Address recipient;
-  Message message;
-
-  static List<TransferTransaction> listFromDTO(List<TransferTransactionInfoDTO> json) =>
-      json == null ? null : json.map((value) => TransferTransaction.fromDTO(value)).toList();
+  List<Mosaic>? mosaics;
+  Address? recipient;
+  Message? message;
 
   @override
-  String toString() {
-    final sb = StringBuffer()
-      ..writeln('\n{')
-      ..writeln('\t"abstractTransaction": ${_absToString()}')
-      ..writeln('\t"recipient": $recipient')
-      ..writeln('\t"mosaics": ${mosaics.map((v) => v.toJson()).toList()},');
-    if (message != null) {
-      sb.writeln('\t"message": $message,');
-    }
-    sb.write('}\n');
-    return sb.toString();
-  }
+  String toString() => encoder.convert(this);
 
   @override
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['abstractTransaction'] = _absToJson();
-    if (mosaics != null) {
-      data['mosaics'] = mosaics.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> val = {}..addAll(_absToJson());
+
+    void writeNotNull(String key, value) {
+      if (value != null) {
+        val[key] = value;
+      }
     }
-    data['recipient'] = recipient?.toJson();
-    data['message'] = message;
-    return data;
+
+    writeNotNull('mosaics', mosaics);
+    writeNotNull('recipient', recipient);
+    writeNotNull('message', message);
+
+    return val;
   }
 
-  int messageSize() => message.payload.length + 1;
+  int messageSize() => message!.payload.length + 1;
 
   @override
-  int _size() => transferHeaderSize + (mosaicIdSize + amountSize) * mosaics.length + messageSize();
+  int size() =>
+      transferHeaderSize +
+      (mosaicIdSize + amountSize) * mosaics!.length +
+      messageSize();
 
   @override
   AbstractTransaction absTransaction() => _absTransaction();
@@ -77,13 +65,13 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     final builder = fb.Builder(initialSize: 0);
 
     /// Create mosaics
-    final List<int> mb = List(mosaics.length);
+    final mb = List.generate(mosaics!.length, (_) => 0);
     int i = 0;
-    for (final mosaic in mosaics) {
-      final id = builder.writeListUint32(mosaic.assetId.toIntArray());
-      final amount = builder.writeListUint32(mosaic.amount.toIntArray());
+    for (final mosaic in mosaics!) {
+      final id = builder.writeListUint32(mosaic.assetId!.toIntArray());
+      final amount = builder.writeListUint32(mosaic.amount!.toIntArray());
 
-      final ms = MosaicBufferBuilder(builder)
+      final ms = $buffer.MosaicBufferBuilder(builder)
         ..begin()
         ..addIdOffset(id)
         ..addAmountOffset(amount);
@@ -92,34 +80,32 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     }
 
     /// Create message;
-    final mp = builder.writeListUint8(this.message.payload);
-    final message = MessageBufferBuilder(builder)
+    final mp = builder.writeListUint8(this.message!.payload);
+    final message = $buffer.MessageBufferBuilder(builder)
       ..begin()
-      ..addType(this.message.type.value)
+      ..addType(this.message!.type.value)
       ..addPayloadOffset(mp);
-    final int m = message.finish();
+    final int messageOffset = message.finish();
 
-    final recipient = base32.decode(this.recipient.address);
+    final recipient = base32.decode(this.recipient!.address);
+    final recipientOffset = builder.writeListUint8(recipient);
+    final mosaicsOffset = builder.writeList(mb);
 
-    final rV = builder.writeListUint8(recipient);
+    final vectors = _generateCommonVector(builder);
 
-    final mV = builder.writeList(mb);
-
-    final vectors = _generateVector(builder);
-
-    final txnBuilder = TransferTransactionBufferBuilder(builder)
+    final txnBuilder = $buffer.TransferTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size())
-      ..addRecipientOffset(rV)
-      ..addNumMosaics(mosaics.length)
-      ..addMessageSize(this.message.payload.length + 1)
-      ..addMessageOffset(m)
-      ..addMosaicsOffset(mV);
-    _buildVector(builder, vectors);
+      ..addSize(size())
+      ..addRecipientOffset(recipientOffset)
+      ..addNumMosaics(mosaics!.length)
+      ..addMessageSize(this.message!.payload.length + 1)
+      ..addMessageOffset(messageOffset)
+      ..addMosaicsOffset(mosaicsOffset);
+    _buildCommonVector(builder, vectors);
 
     final codedTransfer = txnBuilder.finish();
-
-    return transferTransactionSchema().serialize(builder.finish(codedTransfer));
+    builder.finish(codedTransfer);
+    return transferTransactionSchema().serialize(builder.buffer);
   }
 
   @override

@@ -1,32 +1,101 @@
-part of xpx_chain_sdk.transaction;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
+part of xpx_chain_sdk.model.transaction;
 
 final regList = RegExp(r'^List<(.*)>$');
 
 final regMap = RegExp(r'^Map<String,(.*)>$');
 
 // TransactionVersion enums
-const accountPropertyAddressVersion = 1,
-    accountPropertyMosaicVersion = 1,
-    accountPropertyEntityTypeVersion = 1,
-    aggregateCompletedVersion = 2,
-    aggregateBondedVersion = 2,
+const
+
+    /// Account Restriction address transaction version.
+    accountRestrictionAddressVersion = 1,
+
+    /// Account Restriction mosaic transaction version.
+    accountRestrictionMosaicVersion = 1,
+
+    /// Account Restriction operation transaction version.
+    accountRestrictionEntityTypeVersion = 1,
+
+    /// Address Alias transaction version.
     addressAliasVersion = 1,
+
+    /// Register namespace transaction version.
     registerNamespaceVersion = 2,
+
+    /// Transfer Transaction transaction version.
     transferVersion = 3,
-    addExchangeOfferVersion = 1,
-    exchangeOfferVersion = 1,
-    removeExchangeOfferVersion = 1,
+
+    /// Aggregate complete transaction version.
+    aggregateCompletedVersion = 2, // TODO: implement new version 3
+
+    /// Aggregate bonded transaction version.
+    aggregateBondedVersion = 2, // TODO: implement new version 3
+
+    /// Add exchange transaction version.
+    addExchangeOfferVersion = 1, // TODO: implement new version 4
+
+    /// Exchange transaction version.
+    exchangeOfferVersion = 1, // TODO: implement new version 2
+
+    /// Remove exchange transaction version.
+    removeExchangeOfferVersion = 1, // TODO: implement new version 2
+
+    /// Mosaic Alias transaction version.
     mosaicAliasVersion = 1,
+
+    /// Mosaic definition transaction version.
     mosaicDefinitionVersion = 3,
+
+    /// Mosaic supply change transaction.
     mosaicSupplyChangeVersion = 2,
-    modifyMultisigVersion = 3,
+
+    /// Modify multisig account transaction version.
+    modifyMultisigAccountVersion = 3,
+
+    /// Lock transaction version.
     lockVersion = 1,
-    modifyContractVersion = 3,
-    metadataAddressVersion = 1,
-    metadataMosaicVersion = 1,
-    metadataNamespaceVersion = 1,
-    secretLockVersion = 1,
-    secretProofVersion = 1;
+    metadataAddressVersion = 1, // TODO: remove
+    metadataMosaicVersion = 1, // TODO: remove
+    metadataNamespaceVersion = 1, // TODO: remove
+
+    /// Modify metadata transactions version.
+    modifyMetadataVersion = 1, // TODO: unimplemented
+
+    /// Modify account metadata nem transactions version.
+    accountMetadataVersionV2 = 1,
+
+    /// Modify mosaic metadata nem transactions version.
+    mosaicMetadataVersionV2 = 1,
+
+    /// Modify namespace metadata nem transactions version.
+    namespaceMetadataVersionV2 = 1, // TODO: unimplemented
+
+    /// Secret Lock transaction version.
+    secretLockVersion = 1, // TODO: unimplemented
+
+    /// Secret Proof transaction version.
+    secretProofVersion = 1, // TODO: unimplemented
+
+    /// Link account transaction version.
+    linkAccountVersion = 2, // TODO: unimplemented
+
+    /// Modify mosaic modify levy transactions version.
+    mosaicModifyLevyVersion = 1, // TODO: unimplemented
+
+    /// Modify remove mosaic levy transactions version.
+    mosaicRemoveLevyVersion = 1, // TODO: unimplemented
+
+    /// Chain configuration transaction version.
+    chainConfigVersion = 1, // TODO: unimplemented
+
+    /// Chain upgrade transaction version.
+    chainUpgradeVersion = 1; // TODO: unimplemented
 
 var timestampNemesisBlock = DateTime.fromMillisecondsSinceEpoch(1459468800000);
 
@@ -80,6 +149,16 @@ String _mapTransaction(decodedJson) {
       return 'SecretLock';
     case TransactionType.secretProof:
       return 'SecretProof';
+    case TransactionType.accountMetadataV2:
+      return 'AccountMetadataV2';
+    case TransactionType.mosaicMetadataV2:
+      return 'MosaicMetadataV2';
+    case TransactionType.namespaceMetadataV2:
+      return 'NamespaceMetadataV2';
+    case TransactionType.networkConfigEntityType:
+      return 'NetworkConfigEntityType';
+    case TransactionType.blockchainUpgrade:
+      return 'BlockchainUpgrade';
     default:
       return 'NULL';
   }
@@ -87,17 +166,13 @@ String _mapTransaction(decodedJson) {
 
 dynamic txnDeserialize(value, String targetType) {
   if (targetType == 'List<Transaction>') {
-    {
-      Match match;
-      if (value is List && (match = regList.firstMatch(targetType)) != null) {
-        final newTargetType = match[1];
-
-        return value.map((v) => txnDeserialize(v, newTargetType)).toList();
-      } else if (value is Map && (match = regMap.firstMatch(targetType)) != null) {
-        final newTargetType = match[1];
-        return Map.fromIterables(value.keys, value.values.map((v) => txnDeserialize(v, newTargetType)));
-      }
-    }
+    final data = value is Map ? value['data'] : value;
+    final match = regList.firstMatch(targetType);
+    final newTargetType = match![1];
+    return data
+        .map((v) => txnDeserialize(v, newTargetType!))
+        .where((element) => element != null)
+        .toList();
   }
 
   // ignore: parameter_assignments
@@ -137,11 +212,18 @@ dynamic txnDeserialize(value, String targetType) {
         return ModifyMultisigAccountTransactionInfoDTO.fromJson(value);
       case 'Lock':
         return LockFundsTransactionInfoDTO.fromJson(value);
+      case 'NetworkConfigEntityType':
+        return; // TODO: missing implementation
+      case 'BlockchainUpgrade':
+        return; // TODO: missing implementation
+      case 'AccountMetadataV2':
+        return MetaDataEntryTransactioInfoDTO.fromJson(value);
       default:
         return null;
     }
   } on Exception catch (e, stack) {
-    throw ApiException.withInner(500, 'Exception during deserialization.', e, stack);
+    throw ApiException.withInner(
+        500, 'Exception during deserialization.', e, stack);
   }
 }
 
@@ -150,42 +232,45 @@ int extractNetworkType(int version) => version.toUnsigned(32) >> 24;
 
 int extractVersion(int version) {
   final buffer = Uint8List(8).buffer;
-  final bufferData = ByteData.view(buffer)..setUint64(0, version, Endian.little);
+  final bufferData = ByteData.view(buffer)
+    ..setUint64(0, version, Endian.little);
   return bufferData.getUint8(0);
 }
 
-SignedTransaction signTransactionWith(Transaction tx, Account a, String generationHash) {
+Future<SignedTransaction> signTransactionWith(
+    Transaction tx, Account a, String generationHash) async {
   final s = a.account;
   final b = tx.generateBytes();
   var sb = Uint8List.fromList(b.skip(100).take(b.length).toList());
 
   sb = Uint8List.fromList(hex.decode(generationHash) + sb);
 
-  final signature = s.sign(sb);
+  final signature = await s.sign(sb);
 
   final p = <int>[]
     ..insertAll(0, b.skip(0).take(4))
-    ..insertAll(4, signature)
-    ..insertAll(4 + 64, a.account.publicKey.raw)
+    ..insertAll(4, signature.bytes)
+    ..insertAll(4 + 64, a.account.publicKey)
     ..insertAll(100, b.skip(100).take(b.length));
 
-  final pHex = hex.encode(p);
+  final String pHex = hex.encode(p);
 
   final hash = _createTransactionHash(pHex, generationHash);
 
-  return SignedTransaction(tx.absTransaction().type.value, pHex.toUpperCase(), hash);
+  return Future.value(
+      SignedTransaction(tx.absTransaction().type, pHex.toUpperCase(), hash));
 }
 
-SignedTransaction signTransactionWithCosignatures(
-    Transaction tx, Account a, List<Account> cosignatories, String generationHash) {
-  final stx = signTransactionWith(tx, a, generationHash);
+Future<SignedTransaction> signTransactionWithCosignatures(Transaction tx,
+    Account a, List<Account> cosignatories, String generationHash) async {
+  final stx = await signTransactionWith(tx, a, generationHash);
 
   final p = StringBuffer(stx.payload);
 
   for (final cos in cosignatories) {
     final s = cos.account;
-    final sb = s.sign(hexDecodeStringOdd(stx.hash));
-    p.write(cos.publicAccount.publicKey + hex.encode(sb));
+    final sb = await s.sign(hexDecodeStringOdd(stx.hash));
+    p.write(cos.publicAccount.publicKey + hex.encode(sb.bytes));
   }
 
   final List<int> i = <int>[];
@@ -198,27 +283,31 @@ SignedTransaction signTransactionWithCosignatures(
 
   i.replaceRange(0, s.lengthInBytes, s.buffer.asUint8List());
 
-  return SignedTransaction(tx.absTransaction().type.value, hex.encode(i).toUpperCase(), stx.hash);
+  return SignedTransaction(
+      tx.absTransaction().type, hex.encode(i).toUpperCase(), stx.hash);
 }
 
-CosignatureSignedTransaction signCosignatureTransactionRwa(CosignatureTransaction tx, Account a) {
-  if (tx._transactionToCosign.getTransactionInfo == null ||
-      tx._transactionToCosign.getTransactionInfo.transactionHash == '') {
+Future<CosignatureSignedTransaction> signCosignatureTransactionRwa(
+    CosignatureTransaction tx, Account a) async {
+  if (tx._transactionToCosign.getTransactionInfo.transactionHash!.isEmpty) {
     throw errCosignatureTxHash;
   }
 
   final signer = a.account;
 
-  final hashByte = hex.decode(tx._transactionToCosign.getTransactionInfo.transactionHash);
+  final List<int> hashByte =
+      hex.decode(tx._transactionToCosign.getTransactionInfo.transactionHash!);
 
-  final signatureByte = signer.sign(hashByte);
+  final signatureByte = await signer.sign(Uint8List.fromList(hashByte));
 
-  return CosignatureSignedTransaction(tx._transactionToCosign.getTransactionInfo.transactionHash,
-      hex.encode(signatureByte), signer.publicKey.toString());
+  return CosignatureSignedTransaction(
+      tx._transactionToCosign.getTransactionInfo.transactionHash,
+      hex.encode(signatureByte.bytes),
+      signer.publicKey.toString());
 }
 
 String _createTransactionHash(String pHex, String generationHash) {
-  final p = hex.decode(pHex);
+  final List<int> p = hex.decode(pHex);
 
   final generationHashBytes = hexDecodeStringOdd(generationHash);
 
@@ -228,9 +317,8 @@ String _createTransactionHash(String pHex, String generationHash) {
     ..insertAll(64, generationHashBytes)
     ..addAll(p.skip(100));
 
-  final r = crypto.HashesSha3_256(Uint8List.fromList(sb));
-
-  return hex.encode(r).toUpperCase();
+  final r = SHA3(256, SHA3_PADDING, 256).update(sb);
+  return hex.encode(r.digest()).toUpperCase();
 }
 
 Uint8List toAggregateTransactionBytes(Transaction tx) {
@@ -238,7 +326,7 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
     throw errTransactionSigner;
   }
 
-  final sb = hex.decode(tx.absTransaction().signer.publicKey);
+  final List<int> sb = hex.decode(tx.absTransaction().signer!.publicKey);
 
   final b = tx.generateBytes();
 
@@ -247,7 +335,8 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
 
   rB.insertAll(rB.length, b.skip(100).take(versionSize + typeSize));
 
-  rB.insertAll(signerSize + sizeSize + versionSize + typeSize, b.skip(transactionHeaderSize));
+  rB.insertAll(signerSize + sizeSize + versionSize + typeSize,
+      b.skip(transactionHeaderSize));
 
   final buffer = Uint8List(4).buffer;
   final s = ByteData.view(buffer);
@@ -259,22 +348,23 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
   return Uint8List.fromList(rB);
 }
 
-int cosignatoryModificationArrayToBuffer(fb.Builder builder, List<MultisigCosignatoryModification> modifications) {
+int cosignatoryModificationArrayToBuffer(
+    fb.Builder builder, List<MultisigCosignatoryModification> modifications) {
   final msb = <int>[];
   for (final m in modifications) {
-    final b = hexDecodeStringOdd(m.publicAccount.publicKey);
+    final b = hexDecodeStringOdd(m.publicAccount!.publicKey);
     final pV = builder.writeListUint8(b);
 
-    final txnBuilder = CosignatoryModificationBufferBuilder(builder)
+    final txnBuilder = $buffer.CosignatoryModificationBufferBuilder(builder)
       ..begin()
-      ..addType(m.type.index)
+      ..addType(m.type!.index)
       ..addCosignatoryPublicKeyOffset(pV);
     msb.add(txnBuilder.finish());
   }
   return builder.writeList(msb);
 }
 
-Transaction deserializeDTO(value) {
+Transaction? deserializeDTO(value) {
   switch (value.runtimeType) {
     case AccountPropertiesAddressTransactionInfoDTO:
       return AccountPropertiesAddressTransaction.fromDTO(value);
@@ -306,6 +396,8 @@ Transaction deserializeDTO(value) {
       return ModifyMultisigAccountTransaction.fromDTO(value);
     case LockFundsTransactionInfoDTO:
       return LockFundsTransaction.fromDTO(value);
+    case MetaDataEntryTransactioInfoDTO:
+      return AccountMetadataTransaction.fromDTO(value);
     default:
       if (value is List) {
         value.map(deserializeDTO).toList();

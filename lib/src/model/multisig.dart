@@ -1,8 +1,13 @@
-library xpx_chain_sdk.multisig;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
 
-import 'package:xpx_chain_sdk/src/model/account.dart';
-import 'package:xpx_chain_sdk/src/model/transaction.dart';
-import 'package:xpx_chain_sdk/src/model/uint64.dart';
+library xpx_chain_sdk.model.multisig;
 
-part 'multisig/multisig_dto.dart';
-part 'multisig/multisig_model.dart';
+import '../../xpx_sdk.dart';
+
+part 'multisig/multisig.dart';
+part 'multisig/multisig_account_graph_info.dart';
+part 'multisig/multisig_account_info.dart';

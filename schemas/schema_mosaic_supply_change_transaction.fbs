@@ -1,0 +1,16 @@
+namespace Catapult.Buffers;
+
+table MosaicSupplyChangeTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    mosaicId:[uint];
+    direction:ubyte;
+    delta:[uint];
+}
+
+root_type MosaicSupplyChangeTransactionBuffer;

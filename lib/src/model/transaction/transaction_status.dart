@@ -1,7 +1,14 @@
-part of xpx_chain_sdk.transaction;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
+part of xpx_chain_sdk.model.transaction;
 
 class TransactionStatus {
-  TransactionStatus.fromJson(Map<String, dynamic> json) : assert(json != null, 'json must not be null') {
+  TransactionStatus.fromJson(Map json)
+      : assert(json.isNotEmpty, 'json must not be empty') {
     group = json['group'];
     status = json['status'];
     hash = json['hash'];
@@ -9,32 +16,28 @@ class TransactionStatus {
     height = UInt64DTO.fromJson(json['height']).toUint64();
   }
 
-  String group;
+  String? group;
 
-  String status;
+  String? status;
 
-  String hash;
+  String? hash;
 
-  Deadline deadline;
+  Deadline? deadline;
 
-  Uint64 height;
+  Uint64? height;
 
   @override
-  String toString() => '{\n'
-      '\tgroup: $group,\n'
-      '\tstatus: $status,\n'
-      '\thash: $hash,\n'
-      '\tdeadline: $deadline,\n'
-      '\theight: $height\n'
-      '}\n';
+  String toString() => encoder.convert(this);
 
-  static List<TransactionStatus> listFromJson(List<dynamic> json) =>
-      json == null ? null : json.map((value) => TransactionStatus.fromJson(value)).toList();
+  static List<TransactionStatus> listFromJson(List<Map> json) =>
+      json.isEmpty ? [] : json.map(TransactionStatus.fromJson).toList();
 
-  static Map<String, TransactionStatus> mapFromJson(Map<String, Map<String, dynamic>> json) {
+  static Map<String, TransactionStatus> mapFromJson(
+      Map<String, Map<String, dynamic>> json) {
     final map = <String, TransactionStatus>{};
-    if (json != null && json.isNotEmpty) {
-      json.forEach((key, value) => map[key] = TransactionStatus.fromJson(value));
+    if (json.isNotEmpty) {
+      json.forEach(
+          (key, value) => map[key] = TransactionStatus.fromJson(value));
     }
     return map;
   }
