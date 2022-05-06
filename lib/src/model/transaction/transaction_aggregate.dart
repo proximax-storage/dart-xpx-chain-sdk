@@ -1,75 +1,90 @@
-part of xpx_chain_sdk.transaction;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
+part of xpx_chain_sdk.model.transaction;
 
 /// Aggregate Complete send transactions in batches to different [Account].
 /// Aggregate Bonded propose many transactions between different [Account].
 ///
 class AggregateTransaction extends AbstractTransaction implements Transaction {
-  factory AggregateTransaction.bonded(Deadline deadline, List<Transaction> innerTxs, int networkType) =>
-      AggregateTransaction._(deadline, innerTxs, networkType, aggregateBondedVersion, TransactionType.aggregateBonded);
+  factory AggregateTransaction.bonded(Deadline deadline,
+          List<Transaction> innerTxs, NetworkType networkType,
+          [Uint64? maxFee]) =>
+      AggregateTransaction._(deadline, innerTxs, networkType,
+          aggregateBondedVersion, TransactionType.aggregateBonded, maxFee);
 
-  factory AggregateTransaction.complete(Deadline deadline, List<Transaction> innerTxs, int networkType) =>
+  factory AggregateTransaction.complete(Deadline deadline,
+          List<Transaction> innerTxs, NetworkType networkType,
+          [Uint64? maxFee]) =>
       AggregateTransaction._(
-          deadline, innerTxs, networkType, aggregateCompletedVersion, TransactionType.aggregateCompleted);
+          deadline,
+          innerTxs,
+          networkType,
+          aggregateCompletedVersion,
+          TransactionType.aggregateCompleted,
+          maxFee);
 
-  AggregateTransaction._(
-      Deadline deadline, List<Transaction> innerTxs, int networkType, int version, TransactionType type)
-      : super() {
-    if (innerTxs.isEmpty == null) {
+  AggregateTransaction._(Deadline deadline, List<Transaction> innerTxs,
+      NetworkType networkType, int version, TransactionType type,
+      [Uint64? maxFee])
+      : super(networkType, deadline, type, version, maxFee) {
+    if (innerTxs.isEmpty) {
       throw errNullInnerTransactions;
     } else {
-      this.version = version;
-      this.deadline = deadline;
-      this.type = type;
-      this.networkType = networkType;
       innerTransactions = innerTxs;
     }
   }
 
   AggregateTransaction.fromDTO(AggregateTransactionInfoDTO dto)
-      : assert(dto != null, 'dto must not be null'),
-        super.fromDto(dto._transaction, dto.meta) {
-    innerTransactions = dto._transaction._transactions.map(deserializeDTO).toList();
-    cosignatures = AggregateTransactionCosignature.listFromDTO(networkType, dto._transaction._cosignatures);
+      : super.fromDto(dto.transaction!, dto.meta!) {
+    innerTransactions =
+        dto.transaction!.transactions!.map(deserializeDTO).toList();
+    cosignatures = AggregateTransactionCosignature.listFromDTO(
+        networkType.identifier, dto.transaction!.cosignatures);
   }
 
-  List<Transaction> innerTransactions;
-  List<AggregateTransactionCosignature> cosignatures;
-
-  int get size => _size();
+  List<Transaction?>? innerTransactions;
+  List<AggregateTransactionCosignature>? cosignatures;
 
   @override
   TransactionType entityType() => type;
 
   AbstractTransaction get abstractTransaction => absTransaction();
 
-  static List<AggregateTransaction> listFromDTO(List<AggregateTransactionInfoDTO> json) =>
-      json == null ? null : json.map((value) => AggregateTransaction.fromDTO(value)).toList();
+  static List<AggregateTransaction> listFromDTO(
+          List<AggregateTransactionInfoDTO> json) =>
+      json.isEmpty
+          ? <AggregateTransaction>[]
+          : json.map(AggregateTransaction.fromDTO).toList();
 
   @override
-  String toString() {
-    final sb = StringBuffer()
-      ..writeln('{')
-      ..writeln('\t"abstractTransaction": ${_absToString()}')
-      ..writeln('\t"innerTransactions": $innerTransactions,')
-      ..writeln('\t"cosignatures": $cosignatures')
-      ..write('}');
-    return sb.toString();
-  }
+  String toString() => encoder.convert(this);
 
   @override
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['abstractTransaction'] = _absToJson();
-    data['innerTransactions'] = innerTransactions;
-    data['cosignatures'] = cosignatures;
-    return data;
+    final Map<String, dynamic> val = {}..addAll(_absToJson());
+
+    void writeNotNull(String key, value) {
+      if (value != null) {
+        val[key] = value;
+      }
+    }
+
+    writeNotNull('innerTransactions', innerTransactions);
+    writeNotNull('cosignatures', cosignatures);
+
+    return val;
   }
 
   @override
-  int _size() {
+  int size() {
     int sizeOfInnerTransactions = 0;
-    for (final itx in innerTransactions) {
-      sizeOfInnerTransactions += itx._size() - signatureSize - maxFeeSize - deadLineSize;
+    for (final itx in innerTransactions!) {
+      sizeOfInnerTransactions +=
+          itx!.size() - signatureSize - maxFeeSize - deadLineSize;
     }
     return aggregateBondedHeader + sizeOfInnerTransactions;
   }
@@ -83,25 +98,25 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
     // InnerTransactions
     final txsBytes = <int>[];
-    for (final itx in innerTransactions) {
-      final txb = toAggregateTransactionBytes(itx);
+    for (final itx in innerTransactions!) {
+      final txb = toAggregateTransactionBytes(itx!);
       txsBytes.addAll(txb);
     }
 
     final tV = builder.writeListUint8(Uint8List.fromList(txsBytes));
 
-    final vector = _generateVector(builder);
+    final vector = _generateCommonVector(builder);
 
-    final txnBuilder = AggregateTransactionBufferBuilder(builder)
+    final txnBuilder = $buffer.AggregateTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size())
+      ..addSize(size())
       ..addTransactionsSize(txsBytes.length)
       ..addTransactionsOffset(tV);
-    _buildVector(builder, vector);
+    _buildCommonVector(builder, vector);
 
     final codedAggregate = txnBuilder.finish();
-
-    return aggregateTransactionSchema().serialize(builder.finish(codedAggregate));
+    builder.finish(codedAggregate);
+    return aggregateTransactionSchema().serialize(builder.buffer);
   }
 }
 
@@ -109,27 +124,31 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 class AggregateTransactionCosignature {
   AggregateTransactionCosignature(this.signature, this.signer);
 
-  AggregateTransactionCosignature.fromDTO(int networkType, _AggregateTransactionCosignatureDTO dto) {
-    if (dto?.signer == null) {
+  AggregateTransactionCosignature.fromDTO(
+      int networkTypeInt, AggregateTransactionCosignatureDTO dto) {
+    if (dto.signer == null) {
       return;
     }
 
     signature = dto.signature;
-    signer = PublicAccount.fromPublicKey(dto.signer, networkType);
+    signer = PublicAccount.fromPublicKey(
+        dto.signer, NetworkType.fromInt(networkTypeInt));
   }
 
-  String signature;
-  PublicAccount signer;
+  String? signature;
+  PublicAccount? signer;
 
   @override
-  String toString() => '{\n'
-      '\t"signature": $signature\n'
-      '\t"signer": $signer\n'
-      '}\n';
+  String toString() => encoder.convert(this);
 
   static List<AggregateTransactionCosignature> listFromDTO(
-          int networkType, List<_AggregateTransactionCosignatureDTO> json) =>
-      json == null ? null : json.map((value) => AggregateTransactionCosignature.fromDTO(networkType, value)).toList();
+          int? networkType, List<AggregateTransactionCosignatureDTO>? json) =>
+      json == null
+          ? <AggregateTransactionCosignature>[]
+          : json
+              .map((value) =>
+                  AggregateTransactionCosignature.fromDTO(networkType!, value))
+              .toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -143,10 +162,12 @@ class AggregateTransactionCosignature {
 /// [CosignatureTransaction] are used to sign announced aggregate bonded transactions with missing cosignatures.
 ///
 class CosignatureTransaction {
-  CosignatureTransaction(this._transactionToCosign)
-      : assert(_transactionToCosign != null, 'txToCosign must not be null');
+  CosignatureTransaction(this._transactionToCosign);
 
   final AggregateTransaction _transactionToCosign;
+
+  @override
+  String toString() => encoder.convert(this);
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

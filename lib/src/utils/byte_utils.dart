@@ -1,8 +1,14 @@
-part of xpx_chain_sdk.utils;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
+part of xpx_chain_sdk.model.utils;
 
 /// A utility class that provides functions for converting Bytes.
 class ByteUtils {
-  static List<String> hexArray = '0123456789ABCDEF'.split('');
+  List<String> hexArray = '0123456789ABCDEF'.split('');
 
   /// Decode a BigInt from bytes in big-endian encoding.
   static BigInt _decodeBigInt(List<int> bytes) {
@@ -26,23 +32,20 @@ class ByteUtils {
   }
 
   /// Converts bytes to [BigInt].
-  static BigInt bytesToBigInt(Uint8List bigIntBytes) {
-    return _decodeBigInt(bigIntBytes);
-  }
+  static BigInt bytesToBigInt(Uint8List bigIntBytes) =>
+      _decodeBigInt(bigIntBytes);
 
   /// Converts a bigint to a byte array.
-  static Uint8List bigIntTo16Bytes(BigInt bigInt) {
-    return HexUtils.hexToBytes(bigInt.toRadixString(16).padLeft(32, '0'));
-  }
+  static Uint8List bigIntTo16Bytes(BigInt bigInt) =>
+      HexUtils.hexToBytes(bigInt.toRadixString(16).padLeft(32, '0'));
 
   /// Converts a binary string into a hex string.
-  static String binaryToHex(String binary) {
-    return BigInt.parse(binary, radix: 2).toRadixString(16).toUpperCase();
-  }
+  static String binaryToHex(String binary) =>
+      BigInt.parse(binary, radix: 2).toRadixString(16).toUpperCase();
 
   /// Reverse the bytes.
   static Uint8List reverseBytes(Uint8List bytes) {
-    var reversed = Uint8List(bytes.length);
+    final reversed = Uint8List(bytes.length);
     for (var i = bytes.length; i > 0; i--) {
       reversed[bytes.length - i] = bytes[i - 1];
     }
@@ -67,27 +70,24 @@ class ByteUtils {
   }
 
   /// Converts byte array to string UTF-8.
-  static String bytesToUtf8String(Uint8List bytes) {
-    return utf8.decode(bytes);
-  }
+  static String bytesToUtf8String(Uint8List bytes) => utf8.decode(bytes);
 
   /// Converts a UTF-8 [input] string to an encoded byte array.
-  static List<int> stringToBytesUtf8(final String input) {
-    return utf8.encode(input);
-  }
+  static List<int> stringToBytesUtf8(final String input) => utf8.encode(input);
 
   /// Converts a UTF-8 [input] string to an encoded byte array.
-  static Uint8List utf8StringToBytes(final String input) {
-    return Uint8List.fromList(utf8.encode(input));
-  }
+  static Uint8List utf8StringToBytes(final String input) =>
+      Uint8List.fromList(utf8.encode(input));
 
   /// Concatenates one or more byte arrays.
   static Uint8List concat(List<Uint8List> bytes) {
-    var hex = '';
-    bytes.forEach((v) {
-      hex += bytesToHex(v);
-    });
-    return HexUtils.hexToBytes(hex);
+    final bufferHex = StringBuffer();
+    // var hex = '';
+
+    for (var byte in bytes) {
+      bufferHex.write(bytesToHex(byte));
+    }
+    return HexUtils.hexToBytes(hex.toString());
   }
 
   /// Converts an byte array to a integer.
@@ -95,7 +95,7 @@ class ByteUtils {
     var value = 0;
 
     for (var i = 0, length = bytes.length; i < length; i++) {
-      value += bytes[i] * pow(256, i);
+      value += bytes[i] * (pow(256, i) as int);
     }
     return value;
   }

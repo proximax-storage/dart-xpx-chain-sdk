@@ -1,4 +1,10 @@
-part of xpx_chain_sdk.alias;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
+part of xpx_chain_sdk.model.alias;
 
 // AliasType enums
 enum AliasType {
@@ -20,33 +26,26 @@ extension AliasActionTypeToInt on AliasActionType {
 class Alias {
   Alias({this.type, this.address, this.mosaicId});
 
-  final AliasType type;
+  final AliasType? type;
 
-  final Address address;
+  final Address? address;
 
-  final MosaicId mosaicId;
+  final MosaicId? mosaicId;
 
   @override
-  String toString() {
-    final sb = StringBuffer()..write('{');
-    if (type != null) {
-      sb.write('aliasAction: $type,');
-    }
-    if (mosaicId != null) {
-      sb.write('mosaicId: $mosaicId');
-    }
-    if (address != null) {
-      sb.write('address: $address');
-    }
-    sb.write('}');
-    return sb.toString();
-  }
+  String toString() => encoder.convert(this);
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['type'] = type.toInt;
-    data['mosaicId'] = mosaicId;
-    data['address'] = address;
+    if (type != null) {
+      data['type'] = type!.toInt;
+    }
+    if (mosaicId != null) {
+      data['mosaicId'] = mosaicId!.toHex();
+    }
+    if (address != null) {
+      data['address'] = address;
+    }
     return data;
   }
 }
@@ -58,7 +57,7 @@ class AddressAlias implements Alias {
   final Address address;
 
   @override
-  MosaicId get mosaicId => null;
+  MosaicId? get mosaicId => null;
 
   @override
   Map<String, dynamic> toJson() {

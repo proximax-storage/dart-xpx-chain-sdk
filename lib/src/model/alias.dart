@@ -1,10 +1,12 @@
-library xpx_chain_sdk.alias;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
 
-import 'package:xpx_chain_sdk/src/model/account.dart';
-import 'package:xpx_chain_sdk/src/model/mosaic.dart';
-import 'package:xpx_chain_sdk/src/model/transaction.dart';
-import 'package:xpx_chain_sdk/src/model/uint64.dart';
+library xpx_chain_sdk.model.alias;
 
-part 'alias/alias_dto.dart';
+import '../../xpx_sdk.dart';
+
 part 'alias/alias_internal.dart';
 part 'alias/alias_model.dart';

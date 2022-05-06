@@ -1,0 +1,26 @@
+namespace Catapult.Buffers;
+
+table CosignatoryModificationBuffer {
+    type: ubyte;
+    cosignatoryPublicKey: [ubyte];
+}
+
+table ModifyContractTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    durationDelta: [uint];
+    hash: [ubyte];
+    numCustomers: ubyte;
+    numExecutors: ubyte;
+    numVerifiers: ubyte;
+    customers: [CosignatoryModificationBuffer];
+    executors: [CosignatoryModificationBuffer];
+    verifiers: [CosignatoryModificationBuffer];
+}
+
+root_type ModifyContractTransactionBuffer;

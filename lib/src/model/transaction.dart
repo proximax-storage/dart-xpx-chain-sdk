@@ -1,40 +1,50 @@
-library xpx_chain_sdk.transaction;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
 
+library xpx_chain_sdk.model.transaction;
+
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:base32/base32.dart';
 import 'package:convert/convert.dart' show hex;
 import 'package:flat_buffers/flat_buffers.dart' as fb;
-import 'package:xpx_chain_sdk/imp/buffer.dart';
-import 'package:xpx_chain_sdk/src/api/api.dart';
-import 'package:xpx_chain_sdk/src/model/account.dart';
-import 'package:xpx_chain_sdk/src/model/alias.dart';
-import 'package:xpx_chain_sdk/src/model/exchange.dart';
-import 'package:xpx_chain_sdk/src/model/message.dart';
-import 'package:xpx_chain_sdk/src/model/mosaic.dart';
-import 'package:xpx_chain_sdk/src/model/multisig.dart';
-import 'package:xpx_chain_sdk/src/model/namespace.dart';
-import 'package:xpx_chain_sdk/src/model/uint64.dart';
+import 'package:sha3/sha3.dart';
+import 'package:xpx_chain_sdk/imp/buffer.dart' as $buffer;
+import 'package:xpx_chain_sdk/imp/buffer/transactions_buffer.dart'
+    as $txn_buffer;
+import 'package:xpx_chain_sdk/src/model/transaction/schema.dart';
 import 'package:xpx_chain_sdk/xpx_sdk_all_errors.dart';
-import 'package:xpx_chain_sdk/xpx_sdk_consts.dart';
-import 'package:xpx_crypto/xpx_crypto.dart' as crypto;
 
-part 'transaction/announce_transaction_info_dto.dart';
+import '../../xpx_sdk.dart';
+import '../api/dto.dart';
+
+part 'transaction/abstract_transaction.dart';
 part 'transaction/asset_id.dart';
+part 'transaction/basic_metadata_transaction.dart';
+part 'transaction/cosignature_signed_transaction.dart';
+part 'transaction/deadline.dart';
+part 'transaction/signed_transaction.dart';
 part 'transaction/transaciton_account_properties_address.dart';
 part 'transaction/transaciton_account_properties_entity_type.dart';
 part 'transaction/transaciton_account_properties_mosaic.dart';
+part 'transaction/transaction.dart';
+part 'transaction/transaction_account_metadata.dart';
 part 'transaction/transaction_aggregate.dart';
 part 'transaction/transaction_alias.dart';
-part 'transaction/transaction_dto.dart';
 part 'transaction/transaction_exchange.dart';
-part 'transaction/transaction_hashes.dart';
+part 'transaction/transaction_group_type.dart';
 part 'transaction/transaction_ids.dart';
+part 'transaction/transaction_info.dart';
 part 'transaction/transaction_internal.dart';
 part 'transaction/transaction_lockfund.dart';
-part 'transaction/transaction_model.dart';
 part 'transaction/transaction_mosaic.dart';
+part 'transaction/transaction_mosaic_metadata.dart';
 part 'transaction/transaction_multisig.dart';
 part 'transaction/transaction_namespace.dart';
 part 'transaction/transaction_status.dart';
 part 'transaction/transaction_transfer.dart';
+part 'transaction/transaction_type.dart';

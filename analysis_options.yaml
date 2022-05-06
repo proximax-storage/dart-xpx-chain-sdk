@@ -1,14 +1,14 @@
 ## analysis_options.yaml docs: https://www.dartlang.org/guides/language/analysis-options
-#analyzer:
-#  # Strong mode is required. Applies to the current project.
-#  strong-mode:
-#    # When compiling to JS, both implicit options apply to the current
-#    # project and all dependencies. They are useful to find possible
-#    # Type fixes or areas for explicit typing.
-#    implicit-casts: true
-#    implicit-dynamic: true
-#  exclude:
-#    - test_fixtures/**
+analyzer:
+  # Strong mode is required. Applies to the current project.
+  strong-mode:
+    # When compiling to JS, both implicit options apply to the current
+    # project and all dependencies. They are useful to find possible
+    # Type fixes or areas for explicit typing.
+    implicit-casts: true
+    implicit-dynamic: true
+  exclude:
+    - lib/imp/**
 #
 ## ALL lint rules are included. Unused lints should be commented
 ## out with a reason. An up to date list of all options is here
@@ -23,13 +23,6 @@
 ## https://www.dartlang.org/guides/language/analysis-options#excluding-lines-within-a-file
 linter:
   rules:
-    - always_declare_returntypes
-
-    # Separate the control structure expression from its statement.
-    # recommendation: optional
-    # FIXME: 18 lint(s)
-    # - always_put_control_body_on_new_line
-
     # Put @required named parameters first.
     # recommendation: recommended
     # 0 issues
@@ -55,11 +48,6 @@ linter:
     # 0 issues
     - avoid_annotating_with_dynamic
 
-    # Avoid using `as`.
-    # recommendation: optional
-    # 0 issues
-    - avoid_as
-
     # Avoid bool literals in conditional expressions.
     # recommendation: optional
     # 0 issues
@@ -78,7 +66,7 @@ linter:
     # Avoid defining a class that contains only static members.
     # recommendation: recommended
     # 0 issues
-    - avoid_classes_with_only_static_members
+    - avoid_classes_with_only_static_members: false
 
     # Avoid empty else statements.
     # recommendation: required
@@ -106,11 +94,6 @@ linter:
     # 0 issues
     - avoid_positional_boolean_parameters
 
-    # Avoid private typedef functions.
-    # recommendation: optional
-    # 0 issues
-    - avoid_privatetypedef_functions
-
     # Avoid relative imports for files in `lib/`.
     # recommendation: recommended
     # reason: JS compilation will be faster without relative imports. Use package imports.
@@ -122,20 +105,10 @@ linter:
     # 0 issues
     - avoid_renaming_method_parameters
 
-    # Avoid return types on setters.
-    # recommendation: required
-    # 0 issues
-    - avoid_returntypes_on_setters
-
     # Avoid returning null from members whose return type is bool, double, int, or num.
     # recommendation: optional
     # 0 issues
     - avoid_returning_null
-
-    # Avoid returning this from methods just to enable a fluent interface.
-    # recommendation: recommended
-    # 0 issues
-    - avoid_returning_this false
 
     # Avoid setters without getters.
     # recommendation: recommended
@@ -152,16 +125,6 @@ linter:
     # 0 issues
     - avoid_slow_async_io
 
-    # Avoid types as parameter names.
-    # recommendation: optional
-    # 0 issues
-    - avoidtypes_as_parameter_names
-
-    # Avoid annotating types for function expression parameters.
-    # recommendation: optional
-    # 0 issues
-    - avoidtypes_on_closure_parameters
-
     # Avoid defining unused paramters in constructors.
     # recommendation: recommended
     # 0 issues
@@ -172,20 +135,10 @@ linter:
     # 0 issues
     - await_only_futures
 
-    # Name types using UpperCamelCase.
-    # recommendation: optional
-    # 0 issues
-    - camel_casetypes
-
     # Cancel instances of dart.async.StreamSubscription.
     # recommendation: required
     # 0 issues
     - cancel_subscriptions
-
-    # Cascade consecutive method invocations on the same reference.
-    # recommendation: optional
-    # 0 issues
-    - cascade_invocations false
 
     # Close instances of `dart.core.Sink`.
     # recommendation: required
@@ -242,11 +195,6 @@ linter:
     # 0 issues
     - invariant_booleans
 
-    # Invocation of Iterable<E>.contains with references of unrelated types.
-    # recommendation: required
-    # 0 issues
-    - iterable_contains_unrelatedtype
-
     # Join return statement with assignment when possible.
     # recommendation: optional
     # 0 issues
@@ -261,11 +209,6 @@ linter:
     # recommendation: recommended
     # 0 issues
     - library_prefixes
-
-    # Invocation of `remove` with references of unrelated types.
-    # recommendation: required
-    # 0 issues
-    - list_remove_unrelatedtype
 
     # Boolean expression composed only with literals.
     # recommendation: required
@@ -285,7 +228,7 @@ linter:
     # Name non-constant identifiers using lowerCamelCase.
     # recommendation: recommended
     # 0 issues
-    - non_constant_identifier_names
+    - non_constant_identifier_names : false
 
     # Omit type annotations for local variables.
     # recommendation: avoid
@@ -326,7 +269,7 @@ linter:
     # Don't reassign references to parameters of functions or methods.
     # recommendation: optional
     # 0 issues
-    - parameter_assignments
+    - parameter_assignments: false
 
     # Use adjacent strings to concatenate string literals.
     # recommendation: optional
@@ -368,11 +311,6 @@ linter:
     # 0 issues
     - prefer_const_literals_to_create_immutables
 
-    # Prefer defining constructors instead of static methods to create instances.
-    # recommendation: optional
-    # 0 issues
-    - prefer_constructors_over_static_methods false
-
     # Use contains for `List` and `String` instances.
     # recommendation: optional
     # 0 issues
@@ -397,7 +335,7 @@ linter:
     # recommendation: optional
     # reason: Generates a lot of lint since people use var a lot for local variables.
     # 0 issues
-    - prefer_final_locals
+    - prefer_final_locals: false
 
     # Use `forEach` to only apply a function to all the elements.
     # recommendation: optional
@@ -453,28 +391,17 @@ linter:
     # Sort constructor declarations before method declarations.
     # recommendation: optional
     # 0 issues
-    - sort_constructors_first
+    - sort_constructors_first: false
 
     # Sort unnamed constructor declarations first.
     # recommendation: optional
     # 0 issues
-    - sort_unnamed_constructors_first
-
-    # Test type arguments in operator ==(Object other).
-    # recommendation: required
-    # 0 issues
-    - testtypes_in_equals
+    - sort_unnamed_constructors_first: false
 
     # Avoid `throw` in finally block.
     # recommendation: required
     # 0 issues
     - throw_in_finally
-
-    # Type annotate public APIs.
-    # recommendation: recommended
-    # reason: React component render() method can return either ReactElement or false. Use overrides.
-    # FIXME: 7 lint(s)
-    - type_annotate_public_apis false
 
     # Don't type annotate initializing formals.
     # recommendation: optional
@@ -489,7 +416,7 @@ linter:
     # Avoid using braces in interpolation when not needed.
     # recommendation: optional
     # 0 issues
-    - unnecessary_brace_in_string_interps
+    - unnecessary_brace_in_string_interps: false
 
     # Avoid wrapping fields in getters and setters just to be 'safe'.
     # recommendation: optional
@@ -530,12 +457,6 @@ linter:
     # recommendation: recommended
     # 0 issues
     - unnecessary_this
-
-    # Equality operator `==` invocation with references of unrelated types.
-    # recommendation: required
-    # reason: Comparing references of a type where neither is a subtype of the other most likely will return false and might not reflect programmer's intent.
-    # 0 issues
-    - unrelatedtype_equality_checks
 
     # Use rethrow to rethrow a caught exception.
     # recommendation: optional

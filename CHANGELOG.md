@@ -1,3 +1,19 @@
+## 0.0.7+5
+### Updates
+[UPDATE] update README
+
+## 0.0.7+4
+### New Features
+[ADD] Metadata version V2 support.
+
+## 0.0.7+2
+### New Features
+[ADD] Transaction examples api.
+
+## 0.0.7+1
+### Updates
+[UPDATE] sdk: '>=2.16.0'.
+
 ## 0.0.6+6
 ### Updates
 [UPDATE] Homepage URL.

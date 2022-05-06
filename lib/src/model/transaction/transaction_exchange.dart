@@ -1,27 +1,31 @@
-part of xpx_chain_sdk.transaction;
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
 
-class AddExchangeOfferTransaction extends AbstractTransaction implements Transaction {
-  AddExchangeOfferTransaction(Deadline deadline, List<AddOffer> addOffers, int networkType) : super() {
-    if (addOffers == null) {
+part of xpx_chain_sdk.model.transaction;
+
+class AddExchangeOfferTransaction extends AbstractTransaction
+    implements Transaction {
+  AddExchangeOfferTransaction(
+      Deadline deadline, List<AddOffer> addOffers, NetworkType networkType,
+      [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.addExchangeOffer,
+            addExchangeOfferVersion, maxFee) {
+    if (addOffers.isEmpty) {
       throw errNullAddOffers;
     } else {
-      version = addExchangeOfferVersion;
-      this.deadline = deadline;
-      type = TransactionType.addExchangeOffer;
-      this.networkType = networkType;
       offers = addOffers;
     }
   }
 
   AddExchangeOfferTransaction.fromDTO(AddExchangeOfferTransactionInfoDTO dto)
-      : assert(dto != null, 'dto must not be null'),
-        super.fromDto(dto.transaction, dto.meta) {
-    offers = AddOffer.listFromDto(dto.transaction.offers);
+      : super.fromDto(dto.transaction!, dto.meta!) {
+    offers = AddOffer.listFromDto(dto.transaction!.offers);
   }
 
-  List<AddOffer> offers;
-
-  int get size => _size();
+  List<AddOffer>? offers;
 
   @override
   TransactionType entityType() => type;
@@ -32,65 +36,61 @@ class AddExchangeOfferTransaction extends AbstractTransaction implements Transac
   AbstractTransaction absTransaction() => _absTransaction();
 
   @override
-  String toString() => '{\n'
-      '\t"abstractTransaction": ${_absToString()}\n'
-      '\t"offers": $offers,\n'
-      '}\n';
+  String toString() => encoder.convert(this);
 
   @override
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['abstractTransaction'] = _absToJson();
-    data['offers'] = offers;
-    return data;
+    final Map<String, dynamic> val = {}..addAll(_absToJson());
+
+    val['offers'] = offers;
+    return val;
   }
 
   @override
-  int _size() => addExchangeOfferHeaderSize + offers.length * addExchangeOfferSize;
+  int size() =>
+      addExchangeOfferHeaderSize + offers!.length * addExchangeOfferSize;
 
   @override
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final vectors = _generateVector(builder);
+    final vectors = _generateCommonVector(builder);
 
-    final offersV = addExchangeOfferToArrayToBuffer(builder, offers);
+    final offersV = addExchangeOfferToArrayToBuffer(builder, offers!);
 
-    final txnBuilder = ExchangeOfferTransactionBufferBuilder(builder)
+    final txnBuilder = $buffer.ExchangeOfferTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size())
-      ..addOffersCount(offers.length)
+      ..addSize(size())
+      ..addOffersCount(offers!.length)
       ..addOffersOffset(offersV);
-    _buildVector(builder, vectors);
+    _buildCommonVector(builder, vectors);
 
     final codedTransfer = txnBuilder.finish();
-
-    return addExchangeOfferTransactionSchema().serialize(builder.finish(codedTransfer));
+    builder.finish(codedTransfer);
+    return addExchangeOfferTransactionSchema().serialize(builder.buffer);
   }
 }
 
-class ExchangeOfferTransaction extends AbstractTransaction implements Transaction {
-  ExchangeOfferTransaction(Deadline deadline, List<ExchangeConfirmation> confirmations, int networkType) : super() {
-    if (confirmations == null) {
+class ExchangeOfferTransaction extends AbstractTransaction
+    implements Transaction {
+  ExchangeOfferTransaction(Deadline deadline,
+      List<ExchangeConfirmation> confirmations, NetworkType networkType,
+      [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.exchangeOffer,
+            exchangeOfferVersion, maxFee) {
+    if (confirmations.isEmpty) {
       throw errNullConfirmations;
     } else {
-      version = exchangeOfferVersion;
-      this.deadline = deadline;
-      type = TransactionType.exchangeOffer;
-      this.networkType = networkType;
       this.confirmations = confirmations;
     }
   }
 
   ExchangeOfferTransaction.fromDTO(ExchangeOfferTransactionInfoDTO dto)
-      : assert(dto != null, 'dto must not be null'),
-        super.fromDto(dto.transaction, dto.meta) {
-    confirmations = ExchangeConfirmation.listFromDto(dto.transaction.offers);
+      : super.fromDto(dto.transaction!, dto.meta!) {
+    confirmations = ExchangeConfirmation.listFromDto(dto.transaction!.offers);
   }
 
-  List<ExchangeConfirmation> confirmations;
-
-  int get size => _size();
+  List<ExchangeConfirmation>? confirmations;
 
   @override
   TransactionType entityType() => type;
@@ -101,65 +101,62 @@ class ExchangeOfferTransaction extends AbstractTransaction implements Transactio
   AbstractTransaction absTransaction() => _absTransaction();
 
   @override
-  String toString() => '{\n'
-      '\t"abstractTransaction": ${_absToString()}\n'
-      '\t"confirmations": $confirmations,\n'
-      '}\n';
+  String toString() => encoder.convert(this);
 
   @override
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['abstractTransaction'] = _absToJson();
-    data['confirmations'] = confirmations;
-    return data;
+    final Map<String, dynamic> val = {}..addAll(_absToJson());
+
+    val['confirmations'] = confirmations;
+    return val;
   }
 
   @override
-  int _size() => exchangeOfferHeaderSize + confirmations.length * exchangeOfferSize;
+  int size() =>
+      exchangeOfferHeaderSize + confirmations!.length * exchangeOfferSize;
 
   @override
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final vectors = _generateVector(builder);
+    final vectors = _generateCommonVector(builder);
 
-    final offersV = exchangeOfferToArrayToBuffer(builder, confirmations);
+    final offersV = exchangeOfferToArrayToBuffer(builder, confirmations!);
 
-    final txnBuilder = ExchangeOfferTransactionBufferBuilder(builder)
+    final txnBuilder = $buffer.ExchangeOfferTransactionBufferBuilder(builder)
       ..begin()
-      ..addSize(_size())
-      ..addOffersCount(confirmations.length)
+      ..addSize(size())
+      ..addOffersCount(confirmations!.length)
       ..addOffersOffset(offersV);
-    _buildVector(builder, vectors);
+    _buildCommonVector(builder, vectors);
 
     final codedTransfer = txnBuilder.finish();
-
-    return exchangeOfferTransactionSchema().serialize(builder.finish(codedTransfer));
+    builder.finish(codedTransfer);
+    return exchangeOfferTransactionSchema().serialize(builder.buffer);
   }
 }
 
-class RemoveExchangeOfferTransaction extends AbstractTransaction implements Transaction {
-  RemoveExchangeOfferTransaction(Deadline deadline, List<RemoveOffer> removeOffer, int networkType) : super() {
-    if (removeOffer == null) {
+class RemoveExchangeOfferTransaction extends AbstractTransaction
+    implements Transaction {
+  RemoveExchangeOfferTransaction(
+      Deadline deadline, List<RemoveOffer> removeOffer, NetworkType networkType,
+      [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.removeExchangeOffer,
+            removeExchangeOfferVersion, maxFee) {
+    if (removeOffer.isEmpty) {
       throw errNullRemoveOffers;
     } else {
-      version = removeExchangeOfferVersion;
-      this.deadline = deadline;
-      type = TransactionType.removeExchangeOffer;
-      this.networkType = networkType;
       offers = removeOffer;
     }
   }
 
-  RemoveExchangeOfferTransaction.fromDTO(RemoveExchangeOfferTransactionInfoDTO dto)
-      : assert(dto != null, 'dto must not be null'),
-        super.fromDto(dto.transaction, dto.meta) {
-    offers = RemoveOffer.listFromDto(dto.transaction.offers);
+  RemoveExchangeOfferTransaction.fromDTO(
+      RemoveExchangeOfferTransactionInfoDTO dto)
+      : super.fromDto(dto.transaction!, dto.meta!) {
+    offers = RemoveOffer.listFromDto(dto.transaction!.offers);
   }
 
-  List<RemoveOffer> offers;
-
-  int get size => _size();
+  List<RemoveOffer>? offers;
 
   AbstractTransaction get abstractTransaction => absTransaction();
 
@@ -181,7 +178,8 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction implements Tran
   }
 
   @override
-  int _size() => removeExchangeOfferHeaderSize + offers.length * removeExchangeOfferSize;
+  int size() =>
+      removeExchangeOfferHeaderSize + offers!.length * removeExchangeOfferSize;
 
   @override
   TransactionType entityType() => type;
@@ -190,19 +188,20 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction implements Tran
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final vectors = _generateVector(builder);
+    final vectors = _generateCommonVector(builder);
 
-    final offersV = removeExchangeOfferToArrayToBuffer(builder, offers);
+    final offersV = removeExchangeOfferToArrayToBuffer(builder, offers!);
 
-    final txnBuilder = RemoveExchangeOfferTransactionBufferBuilder(builder)
-      ..begin()
-      ..addSize(_size())
-      ..addOffersCount(offers.length)
-      ..addOffersOffset(offersV);
-    _buildVector(builder, vectors);
+    final txnBuilder =
+        $buffer.RemoveExchangeOfferTransactionBufferBuilder(builder)
+          ..begin()
+          ..addSize(size())
+          ..addOffersCount(offers!.length)
+          ..addOffersOffset(offersV);
+    _buildCommonVector(builder, vectors);
 
     final codedTransfer = txnBuilder.finish();
-
-    return removeExchangeOfferTransactionSchema().serialize(builder.finish(codedTransfer));
+    builder.finish(codedTransfer);
+    return removeExchangeOfferTransactionSchema().serialize(builder.buffer);
   }
 }

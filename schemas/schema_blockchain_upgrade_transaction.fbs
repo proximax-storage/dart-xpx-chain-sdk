@@ -1,0 +1,15 @@
+namespace Catapult.Buffers;
+
+table BlockchainUpgradeTransactionBuffer {
+    size: uint;
+    signature: [ubyte];
+    signer: [ubyte];
+    version: uint;
+    type: ushort;
+    maxFee: [uint];
+    deadline:[uint];
+    upgradePeriod: [uint];
+    newBlockChainVersion: [uint];
+}
+
+root_type BlockchainUpgradeTransactionBuffer;

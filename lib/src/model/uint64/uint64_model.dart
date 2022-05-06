@@ -1,3 +1,9 @@
+/*
+ * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Use of this source code is governed by the Apache 2.0
+ * license that can be found in the LICENSE file.
+ */
+
 part of xpx_chain_sdk.uint64;
 
 /// Represents a 64-bit unsigned integer.
@@ -13,7 +19,7 @@ class Uint64 implements Comparable<Uint64> {
 
     // check if user is trying to create using an array of (32-bit) int
     if (_minValueSigned < value2) {
-      return Uint64.fromInts(value, value2);
+      return Uint64.fromInts(value as int, value2 as int);
     }
 
     final BigInt bigValue = BigInt.from(value);
@@ -29,6 +35,10 @@ class Uint64 implements Comparable<Uint64> {
     _checkValue(bigInt);
     return Uint64._internal(bigInt);
   }
+
+  /// Creates a [Uint64] from a [int].
+  static Uint64 fromInt(final int value) =>
+      Uint64.fromBigInt(BigInt.from(value));
 
   /// Creates a [Uint64] from a uint8list [bytes] (64-bit).
   static Uint64 fromBytes(final Uint8List bytes) {
@@ -50,10 +60,23 @@ class Uint64 implements Comparable<Uint64> {
 
   /// Creates a [Uint64] from a pair of [UInt64DTO].
   static Uint64 fromDto(UInt64DTO dto) {
-    final higher = dto.higher.toInt();
-    final lower = dto.lower.toInt();
+    final higher = dto.higher!.toInt();
+    final lower = dto.lower!.toInt();
     final Int64 int64 = Int64.fromInts(lower, higher);
     return fromHex(int64.toHexString());
+  }
+
+  /// Generate UInt64 from a string.
+  /// Deterministic uint64 value for the given string.
+  static Uint64 fromString(final String input) {
+    if (input.isEmpty) {
+      throw ArgumentError('Input must not be empty');
+    }
+    final sha3_256 = SHA3(256, SHA3_PADDING, 256);
+
+    final buf = sha3_256.update(ByteUtils.stringToBytesUtf8(input));
+
+    return Uint64.fromBytes(Uint8List.fromList(buf.digest()));
   }
 
   /// The accepted min value of 64-bit signed integer.
@@ -63,7 +86,8 @@ class Uint64 implements Comparable<Uint64> {
   static final BigInt _minValueUnsigned = BigInt.zero;
 
   /// The maximum value of 64-bit unsigned integer. Equals to 18446744073709551615.
-  static final BigInt _maxValueUnsigned = BigInt.parse('FFFFFFFFFFFFFFFF', radix: 16);
+  static final BigInt _maxValueUnsigned =
+      BigInt.parse('FFFFFFFFFFFFFFFF', radix: 16);
 
   /// The value of Uint64 is stored as BigInt.
   BigInt _value;
@@ -87,7 +111,8 @@ class Uint64 implements Comparable<Uint64> {
 
   bool get isMinValue => _value == _minValueUnsigned;
 
-  bool get isZero => _value == BigInt.zero && toBytes().every((value) => 0 == value);
+  bool get isZero =>
+      _value == BigInt.zero && toBytes().every((value) => 0 == value);
 
   @override
   int get hashCode => _value.hashCode;
@@ -137,6 +162,12 @@ class Uint64 implements Comparable<Uint64> {
     return Uint64.fromBigInt(_value & o._value);
   }
 
+  /// Bit-wise exclusive-or operator.
+  Uint64 operator ^(Object other) {
+    final Uint64 o = _promote(other);
+    return Uint64.fromBigInt(_value ^ o._value);
+  }
+
   /// Bit-wise or operator.
   Uint64 operator |(other) {
     final Uint64 o = _promote(other);
@@ -161,7 +192,7 @@ class Uint64 implements Comparable<Uint64> {
   String toString() => _value.toString();
 
   /// Converts to hex string representation. Fills with leading 0 to reach 16 characters length.
-  String toHex() {
+  String toHexString() {
     String hex = _value.toRadixString(16).toUpperCase();
     if (hex.length % 2 != 0) {
       hex = '0$hex';
@@ -171,7 +202,7 @@ class Uint64 implements Comparable<Uint64> {
 
   /// Converts to 64-bit byte array.
   Uint8List toBytes() {
-    final String hex = toHex();
+    final String hex = toHexString();
     final Int64 int64 = Int64.parseHex(hex);
 
     return Uint8List.fromList(int64.toBytes());
@@ -179,7 +210,7 @@ class Uint64 implements Comparable<Uint64> {
 
   /// Converts to a pair of 32-bit integers ([lower, higher]).
   List<int> toIntArray() {
-    if (_value == null) {
+    if (_value == BigInt.zero) {
       return [0, 0];
     }
     final l = _value.toUnsigned(32);
@@ -204,4 +235,6 @@ class Uint64 implements Comparable<Uint64> {
     }
     throw ArgumentError.value(value);
   }
+
+  dynamic toJson() => _value.toInt();
 }
