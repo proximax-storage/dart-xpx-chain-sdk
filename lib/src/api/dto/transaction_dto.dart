@@ -266,8 +266,11 @@ class AggregateTransactionDTO extends AbstractTransactionDTO {
     deadline = UInt64DTO.fromJson(json['deadline']);
     cosignatures = AggregateTransactionCosignatureDTO.listFromJson(
         json['cosignatures'].cast<Map>());
-    print(json['transactions']);
-    transactions = txnDeserialize(json['transactions'], 'List<Transaction>');
+    if (json['transactions'] == null) {
+      transactions = [];
+    } else {
+      transactions = txnDeserialize(json['transactions'], 'List<Transaction>');
+    }
   }
 
   List<AggregateTransactionCosignatureDTO>? cosignatures;
