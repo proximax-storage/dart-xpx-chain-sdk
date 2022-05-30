@@ -16,6 +16,7 @@ enum MetadataType {
 
 extension MetadataTypeExt on MetadataType {
   int get toInt => index;
+
   String get getName {
     switch (this) {
       case MetadataType.metadataAccount:

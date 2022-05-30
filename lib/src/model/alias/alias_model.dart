@@ -13,6 +13,17 @@ enum AliasType {
   addressAliasType,
 }
 
+AliasType getAliasType(int value) {
+  switch (value) {
+    case 1:
+      return AliasType.mosaicAliasType;
+    case 0:
+      return AliasType.addressAliasType;
+    default:
+      return AliasType.noneAliasType;
+  }
+}
+
 enum AliasActionType { aliasLink, aliasUnlink }
 
 extension AliasTypeToInt on AliasType {

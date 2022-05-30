@@ -40,25 +40,21 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
   AggregateTransaction.fromDTO(AggregateTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
-    innerTransactions =
-        dto.transaction!.transactions!.map(deserializeDTO).toList();
+    if (dto.transaction!.transactions.isNotEmpty) {
+      innerTransactions =
+          dto.transaction!.transactions.map(deserializeDTO).toList();
+    }
     cosignatures = AggregateTransactionCosignature.listFromDTO(
         networkType.identifier, dto.transaction!.cosignatures);
   }
 
-  List<Transaction?>? innerTransactions;
+  List<Transaction?> innerTransactions = [];
   List<AggregateTransactionCosignature>? cosignatures;
 
   @override
   TransactionType entityType() => type;
 
   AbstractTransaction get abstractTransaction => absTransaction();
-
-  static List<AggregateTransaction> listFromDTO(
-          List<AggregateTransactionInfoDTO> json) =>
-      json.isEmpty
-          ? <AggregateTransaction>[]
-          : json.map(AggregateTransaction.fromDTO).toList();
 
   @override
   String toString() => encoder.convert(this);
@@ -73,7 +69,9 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
       }
     }
 
-    writeNotNull('innerTransactions', innerTransactions);
+    if (innerTransactions.isNotEmpty) {
+      writeNotNull('innerTransactions', innerTransactions);
+    }
     writeNotNull('cosignatures', cosignatures);
 
     return val;
@@ -82,7 +80,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
   @override
   int size() {
     int sizeOfInnerTransactions = 0;
-    for (final itx in innerTransactions!) {
+    for (final itx in innerTransactions) {
       sizeOfInnerTransactions +=
           itx!.size() - signatureSize - maxFeeSize - deadLineSize;
     }
@@ -98,7 +96,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
     // InnerTransactions
     final txsBytes = <int>[];
-    for (final itx in innerTransactions!) {
+    for (final itx in innerTransactions) {
       final txb = toAggregateTransactionBytes(itx!);
       txsBytes.addAll(txb);
     }

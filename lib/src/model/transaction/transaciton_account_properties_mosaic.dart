@@ -19,7 +19,7 @@ class AccountPropertiesMosaicTransaction extends AbstractTransaction
       : super.fromDto(dto.transaction!, dto.meta!) {
     propertyType = AccountPropertyType.fromInt(dto.transaction!.propertyType);
     modifications = AccountPropertiesMosaicModification.listFromJson(
-        dto.transaction!.modifications);
+        dto.transaction!.modifications!);
   }
 
   AccountPropertyType? propertyType;

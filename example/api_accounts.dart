@@ -4,7 +4,7 @@
  * license that can be found in the LICENSE file.
  */
 
-import 'package:xpx_chain_sdk/xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
   const baseUrl = 'http://bctestnet3.brimstone.xpxsirius.io:3000';
@@ -59,7 +59,8 @@ void main() async {
 
   // Gets an array of transactions for which an account is the sender or receiver.
   try {
-    final result = await client.account.transactions(accountOne.address);
+    final result = await client.account
+        .transactions(accountOne, TransactionQueryParams()..embedded = true);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Account->Transactions: $e\n');
@@ -68,8 +69,7 @@ void main() async {
   // Gets an array of incoming transactions.
   // A transaction is said to be incoming with respect to an account if the account is the recipient of the transaction.
   try {
-    final result =
-        await client.account.incomingTransactions(accountOne.address);
+    final result = await client.account.incomingTransactions(accountOne);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Account->IncomingTransactions: $e\n');
@@ -86,8 +86,7 @@ void main() async {
 
   // Gets the array of transactions not included in a block where an account is the sender or receiver.
   try {
-    final result =
-        await client.account.unconfirmedTransactions(accountOne.address);
+    final result = await client.account.unconfirmedTransactions(accountOne);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Account->UnconfirmedTransactions: $e\n');
@@ -95,7 +94,8 @@ void main() async {
 
   // Gets an array of [aggregate bonded transactions] where the account is the sender or requires to cosign the transaction.
   try {
-    final result = await client.account.partialTransactions(accountOne.address);
+    final result = await client.account.partialTransactions(
+        accountOne, TransactionQueryParams()..embedded = true);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Account->AggregateBondedTransactions: $e\n');

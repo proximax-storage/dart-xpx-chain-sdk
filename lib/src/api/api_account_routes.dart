@@ -7,10 +7,10 @@
 part of xpx_chain_sdk.api;
 
 class AccountRoutesApi {
-  AccountRoutesApi([_ApiClient? _apiClient])
+  AccountRoutesApi([ApiClient? _apiClient])
       : _apiClient = _apiClient ?? defaultApiClient;
 
-  final _ApiClient _apiClient;
+  final ApiClient _apiClient;
 
   static const _accountInfoRoute = '/account/{accountId}';
   static const _accountsInfoRoute = '/account';
@@ -122,30 +122,24 @@ class AccountRoutesApi {
   /// param: pageSize The number of transactions to return for each request.
   /// param: id The transaction id up to which transactions are returned.
   /// param: ordering The ordering criteria: * -id - Descending order by id. * id - Ascending order by id.
-  Future<List<Transaction>> transactions(Address address,
-      {TransactionQueryParams? txnQueryParams}) async {
-    // create path and map variables
-    const String path = _transactionsRoute;
-
+  Future<List<Transaction>> transactions(PublicAccount account,
+      [TransactionQueryParams? txnQueryParams]) async {
     // query params
     final List<QueryParam> queryParams = [];
     if (txnQueryParams != null) {
+      txnQueryParams.publicKey = account.publicKey;
       queryParams.addAll(txnQueryParams.toQueryParams());
-    }
-
-    queryParams.add(QueryParam('address', address.address));
-
-    final response = await _apiClient.get(path, null, queryParams);
-
-    if (response.statusCode! >= 299) {
-      throw ApiException(response.statusCode!, response.data);
-    } else if (response.data != null) {
-      final List resp =
-          _apiClient.deserialize(response.data, 'List<Transaction>');
-      return resp.map(deserializeDTO).toList().cast<Transaction>();
     } else {
-      return [];
+      queryParams.add(QueryParam('publicKey', account.publicKey));
     }
+
+    bool firstLevel = true;
+    if (txnQueryParams != null && !txnQueryParams.firstLevel) {
+      firstLevel = false;
+    }
+    return internalGetTransactions(
+        _apiClient, _transactionsRoute, queryParams, null,
+        firstLevel: firstLevel);
   }
 
   /// Get incoming transactions
@@ -153,29 +147,23 @@ class AccountRoutesApi {
   /// Gets an List of incoming transactions.
   /// A transaction is said to be incoming with respect to an
   /// account if the account is the recipient of the transaction.
-  Future<List<Transaction>> incomingTransactions(Address address,
-      {TransactionQueryParams? txnQueryParams}) async {
-    // create path and map variables
-    const String path = _transactionsRoute;
-
+  Future<List<Transaction>> incomingTransactions(PublicAccount account,
+      [TransactionQueryParams? txnQueryParams]) async {
     // query params
     final List<QueryParam> queryParams = [];
     if (txnQueryParams != null) {
       queryParams.addAll(txnQueryParams.toQueryParams());
-    }
-    queryParams.add(QueryParam('recipientAddress', address.address));
-
-    final response = await _apiClient.get(path, null, queryParams);
-
-    if (response.statusCode! >= 299) {
-      throw ApiException(response.statusCode!, response.data);
-    } else if (response.data != null) {
-      final List resp =
-          _apiClient.deserialize(response.data, 'List<Transaction>');
-      return resp.map(deserializeDTO).toList().cast<Transaction>();
     } else {
-      return [];
+      queryParams.add(QueryParam('recipientAddress', account.address.address));
     }
+
+    bool firstLevel = true;
+    if (txnQueryParams != null && !txnQueryParams.firstLevel) {
+      firstLevel = false;
+    }
+    return internalGetTransactions(
+        _apiClient, _transactionsRoute, queryParams, null,
+        firstLevel: firstLevel);
   }
 
   /// Get outgoing transactions
@@ -184,72 +172,65 @@ class AccountRoutesApi {
   /// A transaction is said to be outgoing with respect to an
   /// account if the account is the sender of the transaction.
   Future<List<Transaction>> outgoingTransactions(PublicAccount account,
-      {TransactionQueryParams? txnQueryParams}) async {
-    const String path = _transactionsRoute;
-
+      [TransactionQueryParams? txnQueryParams]) async {
     // query params
     final List<QueryParam> queryParams = [];
     if (txnQueryParams != null) {
+      txnQueryParams.signerPublicKey = account.publicKey;
       queryParams.addAll(txnQueryParams.toQueryParams());
-    }
-    queryParams.add(QueryParam('signerPublicKey', account.publicKey));
-
-    final response = await _apiClient.get(path, null, queryParams);
-
-    if (response.statusCode! >= 299) {
-      throw ApiException(response.statusCode!, response.data);
-    } else if (response.data != null) {
-      final List resp =
-          _apiClient.deserialize(response.data, 'List<Transaction>');
-      return resp.map(deserializeDTO).toList().cast<Transaction>();
     } else {
-      return [];
+      queryParams.add(QueryParam('signerPublicKey', account.publicKey));
     }
+
+    bool firstLevel = true;
+    if (txnQueryParams != null && !txnQueryParams.firstLevel) {
+      firstLevel = false;
+    }
+    return internalGetTransactions(
+        _apiClient, _transactionsRoute, queryParams, null,
+        firstLevel: firstLevel);
   }
 
   /// Get unconfirmed transactions
   ///
   /// Gets the List of transactions not included in a block where an account
   /// is the sender or receiver.
-  Future<List<Transaction>> unconfirmedTransactions(Address address,
-      {TransactionQueryParams? txnQueryParams}) async {
-    // create path and map variables
-    const String path = _unconfirmedTransactionsRoute;
-
+  Future<List<Transaction>> unconfirmedTransactions(PublicAccount account,
+      [TransactionQueryParams? txnQueryParams]) async {
     // query params
     final List<QueryParam> queryParams = [];
     if (txnQueryParams != null) {
+      txnQueryParams.signerPublicKey = account.publicKey;
       queryParams.addAll(txnQueryParams.toQueryParams());
-    }
-    queryParams.add(QueryParam('address', address.address));
-
-    final response = await _apiClient.get(path, null, queryParams);
-
-    if (response.statusCode! >= 299) {
-      throw ApiException(response.statusCode!, response.data);
-    } else if (response.data != null) {
-      final List resp =
-          _apiClient.deserialize(response.data, 'List<Transaction>');
-      return resp.map(deserializeDTO).toList().cast<Transaction>();
     } else {
-      return [];
+      queryParams.add(QueryParam('signerPublicKey', account.publicKey));
     }
+
+    bool firstLevel = true;
+    if (txnQueryParams != null && !txnQueryParams.firstLevel) {
+      firstLevel = false;
+    }
+    return internalGetTransactions(
+        _apiClient, _unconfirmedTransactionsRoute, queryParams, null,
+        firstLevel: firstLevel);
   }
 
   /// Get aggregate bonded transactions information
   ///
   /// Gets an List of [aggregate bonded transactions] where the account is
   /// the sender or requires to cosign the transaction.
-  Future<List<Transaction>> partialTransactions(Address address,
-      {TransactionQueryParams? txnQueryParams}) async {
+  Future<List<AggregateTransaction>> partialTransactions(PublicAccount account,
+      [TransactionQueryParams? txnQueryParams]) async {
     const String path = _aggregateBondedTransactionsRoute;
 
     // query params
     final List<QueryParam> queryParams = [];
     if (txnQueryParams != null) {
+      txnQueryParams.publicKey = account.publicKey;
       queryParams.addAll(txnQueryParams.toQueryParams());
+    } else {
+      queryParams.add(QueryParam('publicKey', account.publicKey));
     }
-    queryParams.add(QueryParam('address', address.address));
 
     final response = await _apiClient.get(path, null, queryParams);
 
@@ -258,7 +239,28 @@ class AccountRoutesApi {
     } else if (response.data != null) {
       final List resp =
           _apiClient.deserialize(response.data, 'List<Transaction>');
-      return resp.map(deserializeDTO).toList().cast<Transaction>();
+
+      final allTransaction =
+          resp.map(deserializeDTO).toList().cast<Transaction>();
+
+      var aggregateBondedTransactions = <AggregateTransaction>[];
+      for (var transaction in allTransaction) {
+        if (transaction.entityType() == TransactionType.aggregateBonded) {
+          aggregateBondedTransactions.add(transaction as AggregateTransaction);
+        }
+      }
+
+      for (var transaction in allTransaction) {
+        if (transaction.entityType() != TransactionType.aggregateBonded) {
+          final aggregateTransaction = aggregateBondedTransactions.firstWhere(
+              (element) =>
+                  element.absTransaction().transactionHash ==
+                  transaction.absTransaction().aggregateHash);
+          aggregateTransaction.innerTransactions.add(transaction);
+        }
+      }
+
+      return aggregateBondedTransactions;
     } else {
       return [];
     }

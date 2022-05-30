@@ -7,19 +7,19 @@
 part of xpx_chain_sdk.api;
 
 class MetadataSortingField {
-  MetadataSortingField(this.value);
+  MetadataSortingField(this._value);
 
-  static MetadataSortingField VALUE =
+  static MetadataSortingField value =
       MetadataSortingField('metadataEntry.value');
-  static MetadataSortingField VALUE_SIZE =
+  static MetadataSortingField valueSize =
       MetadataSortingField('metadataEntry.valueSize');
 
-  String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  String toJson() => _value;
 }
 
 class MetadataFieldOrder {

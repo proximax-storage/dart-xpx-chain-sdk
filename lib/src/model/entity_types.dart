@@ -6,7 +6,7 @@
 
 library xpx_chain_sdk.model.entity_types;
 
-import '../../xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 typedef Amount = Uint64;
 typedef Height = Uint64;

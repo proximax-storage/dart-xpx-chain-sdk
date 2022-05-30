@@ -7,9 +7,7 @@
 library xpx_chain_sdk.api.dto;
 
 import 'package:fixnum/fixnum.dart';
-
-import '../../xpx_sdk.dart';
-import '../../xpx_sdk_all_errors.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 part 'dto/account_dto.dart';
 part 'dto/account_metadata_v2.dart';

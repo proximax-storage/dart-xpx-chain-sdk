@@ -1,4 +1,4 @@
-import 'package:xpx_chain_sdk/xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 /// Simple Account API AnnounceTransaction
 void main() async {

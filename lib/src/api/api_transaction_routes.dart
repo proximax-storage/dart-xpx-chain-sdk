@@ -7,10 +7,10 @@
 part of xpx_chain_sdk.api;
 
 class TransactionRoutesApi {
-  TransactionRoutesApi([_ApiClient? _apiClient])
+  TransactionRoutesApi([ApiClient? _apiClient])
       : _apiClient = _apiClient ?? defaultApiClient;
 
-  final _ApiClient _apiClient;
+  final ApiClient _apiClient;
 
   // routes for TransactionApi.
   static const _announceTransactionRoute = '/transactions';
@@ -112,7 +112,7 @@ class TransactionRoutesApi {
   /// GetTransactionsByGroup returns an array of Transaction's for passed TransactionGroupType.
   Future<List<Transaction>> getTransactionsByGroup(
       TransactionGroupType groupType,
-      {TransactionQueryParams? txnQueryParams}) async {
+      [TransactionQueryParams? txnQueryParams]) async {
     // create path and map variables
     final String path =
         _transactionsRoute.replaceAll('{group}', groupType.name);
@@ -123,17 +123,12 @@ class TransactionRoutesApi {
       queryParams.addAll(txnQueryParams.toQueryParams());
     }
 
-    final response = await _apiClient.get(path, null, queryParams);
-
-    if (response.statusCode! >= 299) {
-      throw ApiException(response.statusCode!, response.data);
-    } else if (response.data != null) {
-      final List resp =
-          _apiClient.deserialize(response.data, 'List<Transaction>');
-      return resp.map(deserializeDTO).toList().cast<Transaction>();
-    } else {
-      return [];
+    bool firstLevel = true;
+    if (txnQueryParams != null && !txnQueryParams.firstLevel) {
+      firstLevel = false;
     }
+    return internalGetTransactions(_apiClient, path, queryParams, null,
+        firstLevel: firstLevel);
   }
 
   /// Get transactions information
@@ -154,17 +149,7 @@ class TransactionRoutesApi {
     final String path =
         _transactionsRoute.replaceAll('{group}', groupType.name);
 
-    final response = await _apiClient.post(path, postBody);
-
-    if (response.statusCode! >= 299) {
-      throw ApiException(response.statusCode!, response.data);
-    } else if (response.data != null) {
-      final List resp =
-          _apiClient.deserialize(response.data, 'List<Transaction>');
-      return resp.map(deserializeDTO).toList().cast<Transaction>();
-    } else {
-      return [];
-    }
+    return internalGetTransactions(_apiClient, path, [], postBody);
   }
 
   /// Get transaction status

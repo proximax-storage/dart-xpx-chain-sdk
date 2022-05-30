@@ -10,6 +10,7 @@ class TransactionCountDTO {
     type = json['type'] as int;
     count = json['count'] as int;
   }
+
   late final int type;
   late final int count;
 }

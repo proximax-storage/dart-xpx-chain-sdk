@@ -7,10 +7,10 @@
 part of xpx_chain_sdk.api;
 
 class MosaicRoutesApi {
-  MosaicRoutesApi([_ApiClient? apiClient])
+  MosaicRoutesApi([ApiClient? apiClient])
       : _apiClient = apiClient ?? defaultApiClient;
 
-  final _ApiClient _apiClient;
+  final ApiClient _apiClient;
 
   static const _mosaicRoute = '/mosaic/{mosaicId}';
   static const _mosaicsRoute = '/mosaic';

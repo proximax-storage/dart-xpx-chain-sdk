@@ -7,11 +7,8 @@
 library xpx_chain_sdk.model.exchange;
 
 import 'package:flat_buffers/flat_buffers.dart' as fb;
-import 'package:xpx_chain_sdk/imp/buffer.dart';
-import 'package:xpx_chain_sdk/src/model/mosaic.dart';
-import 'package:xpx_chain_sdk/src/model/transaction.dart';
-import 'package:xpx_chain_sdk/src/model/uint64.dart';
-import 'package:xpx_chain_sdk/xpx_sdk_all_errors.dart';
+import 'package:xpx_chain_sdk/src/model/transaction/buffer/buffer.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 import '../api/dto.dart';
 

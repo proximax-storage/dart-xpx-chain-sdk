@@ -10,7 +10,7 @@ part of xpx_chain_sdk.model.transaction;
 ///
 class MosaicMetadataTransaction extends BasicMetadataTransaction
     implements Transaction {
-  MosaicMetadataTransaction(
+  MosaicMetadataTransaction._(
       this.targetMosaicId,
       PublicAccount targetAccount,
       Uint64 scopedMetadataKey,
@@ -75,7 +75,7 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
       valueDifferenceBytes[i] = valueUint8List[i] ^ oldValueUint8List[i];
     }
 
-    return MosaicMetadataTransaction(
+    return MosaicMetadataTransaction._(
         targetMosaicId,
         targetAccount,
         scopedMetadataKey,

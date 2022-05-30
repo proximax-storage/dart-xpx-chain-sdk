@@ -51,7 +51,7 @@ class MultisigCosignatoryModification {
 ///
 class ModifyMultisigAccountTransaction extends AbstractTransaction
     implements Transaction {
-  ModifyMultisigAccountTransaction(
+  ModifyMultisigAccountTransaction.create(
       Deadline deadline,
       int minApproval,
       int minRemoval,
@@ -73,15 +73,6 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
   ModifyMultisigAccountTransaction.fromDTO(
       ModifyMultisigAccountTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
-    type = TransactionType.fromInt(dto.transaction!.type);
-    deadline = Deadline.fromUInt64DTO(dto.transaction!.deadline!);
-    signature = dto.transaction!.signature;
-    networkType =
-        NetworkType.fromInt(extractNetworkType(dto.transaction!.version!));
-    version = extractVersion(dto.transaction!.version!);
-    maxFee = dto.transaction!.fee!.toUint64();
-    signer = PublicAccount.fromPublicKey(dto.transaction!.signer, networkType);
-
     minApprovalDelta = dto.transaction!.minApprovalDelta;
     minRemovalDelta = dto.transaction!.minRemovalDelta;
     modifications = MultisigCosignatoryModification.listFromDTO(

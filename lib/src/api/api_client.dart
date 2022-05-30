@@ -25,7 +25,8 @@ class SiriusClient {
   /// It's been chosen because it's easy to use.
   final Dio httpClient;
 
-  final _ApiClient _apiClient;
+  final ApiClient _apiClient;
+  Future<NetworkType>? _networkType;
   BlockchainRoutesApi? _blockChain;
   AccountRoutesApi? _account;
   ExchangeRoutesApi? _exchange;
@@ -68,7 +69,7 @@ class SiriusClient {
 
   Future<String?> get generationHash => _getGenerationHash();
 
-  Future<NetworkType> get networkType => _getNetworkType();
+  Future<NetworkType> get networkType => _networkType ??= _getNetworkType();
 
   Future<String?> _getGenerationHash() async {
     final BlockInfo? hash = await blockChain.getBlockByHeight(1.toHeight);
@@ -84,14 +85,14 @@ class SiriusClient {
     // ignore: parameter_assignments
     client ??= http.Client();
 
-    final _ApiClient apiClient = _ApiClient(baseUrl, Dio());
+    final ApiClient apiClient = ApiClient(baseUrl, Dio());
 
     return SiriusClient._(apiClient, Dio());
   }
 }
 
-class _ApiClient {
-  _ApiClient(this.baseUrl, this._client);
+class ApiClient {
+  ApiClient(this.baseUrl, this._client);
 
   String? baseUrl;
 
@@ -270,18 +271,6 @@ class _ApiClient {
       options.headers!.addAll(headerParams);
     }
 
-    // if (body is http.MultipartRequest) {
-    //   final request = http.MultipartRequest(method, url);
-    //   request.fields.addAll(body.fields);
-    //   request.files.addAll(body.files);
-    //   request.headers.addAll(body.headers);
-    //    // if (options != null ) {
-    //    //   request.headers.addAll(options!.headers);
-    //    // }
-    //
-    //   // final response = await _client!.send(request);
-    //   // return await Response.fromStream(response);
-    // } else {
     final msgBody = contentType == 'application/x-www-form-urlencoded'
         ? formParams
         : serialize(body);

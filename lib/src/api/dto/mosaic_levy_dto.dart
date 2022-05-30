@@ -14,6 +14,7 @@ class MosaicLevyDTO {
     mosaicId = UInt64DTO.fromJson(json['mosaicId']);
     fee = UInt64DTO.fromJson(json['fee']);
   }
+
   late final int type;
   late final String recipient;
   late final UInt64DTO mosaicId;

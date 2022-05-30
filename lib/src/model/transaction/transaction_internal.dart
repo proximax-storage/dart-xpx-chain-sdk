@@ -414,3 +414,52 @@ Uint8List hexDecodeStringOdd(final String s) {
   }
   return Uint8List.fromList(hex.decode(data));
 }
+
+List<Transaction> fixAggregate(List<Transaction> allTransaction) {
+  final containsAggregate = allTransaction.firstWhereOrNull((element) =>
+      element.entityType() == TransactionType.aggregateCompleted ||
+      element.entityType() == TransactionType.aggregateBonded);
+
+  if (containsAggregate != null) {
+    for (var transaction in allTransaction) {
+      if (transaction.entityType() != TransactionType.aggregateCompleted &&
+          transaction.entityType() != TransactionType.aggregateBonded) {
+        final aggregateTransaction = allTransaction.firstWhere((element) =>
+            element.absTransaction().transactionHash ==
+            transaction.absTransaction().aggregateHash) as AggregateTransaction;
+        aggregateTransaction.innerTransactions.add(transaction);
+        final indexATx = allTransaction.indexOf(aggregateTransaction);
+        allTransaction[indexATx] = aggregateTransaction;
+      }
+    }
+
+    final respAll = <Transaction>[];
+    for (var transaction in allTransaction) {
+      if (transaction.absTransaction().aggregateHash == null)
+        respAll.add(transaction);
+    }
+    return respAll;
+  }
+  return allTransaction;
+}
+
+Future<List<Transaction>> internalGetTransactions(ApiClient client, String path,
+    List<QueryParam> queryParams, Object? postBody,
+    {bool firstLevel = true}) async {
+  final response = await client.get(path, postBody, queryParams);
+
+  if (response.statusCode! >= 299) {
+    throw ApiException(response.statusCode!, response.data);
+  } else if (response.data != null) {
+    final List resp = client.deserialize(response.data, 'List<Transaction>');
+    final allTransaction =
+        resp.map(deserializeDTO).toList().cast<Transaction>();
+
+    if (firstLevel) {
+      return allTransaction;
+    } else
+      return fixAggregate(allTransaction);
+  } else {
+    return [];
+  }
+}

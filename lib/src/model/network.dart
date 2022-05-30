@@ -6,7 +6,7 @@
 
 library xpx_chain_sdk.model.network;
 
-import '../../xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 part 'network/network_info.dart';
 part 'network/network_type.dart';

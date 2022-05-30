@@ -52,7 +52,6 @@ class AggregateTransactionInfoDTO {
   AggregateTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
     meta =
         json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
-
     transaction = json['transaction'] != null
         ? AggregateTransactionDTO.fromJson(json['transaction'])
         : null;
@@ -266,12 +265,13 @@ class AggregateTransactionDTO extends AbstractTransactionDTO {
     deadline = UInt64DTO.fromJson(json['deadline']);
     cosignatures = AggregateTransactionCosignatureDTO.listFromJson(
         json['cosignatures'].cast<Map>());
-    print(json['transactions']);
-    transactions = txnDeserialize(json['transactions'], 'List<Transaction>');
+    if (json['transactions'] != null) {
+      transactions = txnDeserialize(json['transactions'], 'List<Transaction>');
+    }
   }
 
   List<AggregateTransactionCosignatureDTO>? cosignatures;
-  List<dynamic>? transactions;
+  List<dynamic> transactions = [];
 
   @override
   Map<String, dynamic> toJson() => {

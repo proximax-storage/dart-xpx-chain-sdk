@@ -38,7 +38,6 @@ class Address {
   }
 
   NetworkType networkType;
-
   String address;
 
   String get pretty => _pretty(address);

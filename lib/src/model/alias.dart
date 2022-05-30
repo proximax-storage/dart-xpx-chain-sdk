@@ -6,7 +6,6 @@
 
 library xpx_chain_sdk.model.alias;
 
-import '../../xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
-part 'alias/alias_internal.dart';
 part 'alias/alias_model.dart';
