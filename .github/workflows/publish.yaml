@@ -8,14 +8,17 @@ jobs:
   publish:
 
     runs-on: ubuntu-latest
-
+    container:
+      image: dart
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Publish
-        uses: sakebook/actions-flutter-pub-publisher@v1.4.0
-        with:
-          credential: ${{ secrets.PUB_CREDENTIALS_JSON }}
-          flutter_package: false
-          skip_test: true
-          dry_run: false
+      
+      - name: Setup credentials
+        env:
+          CREDENTIALS_JSON: ${{ secrets.PUB_CREDENTIALS_JSON}}
+        run: |
+          echo $CREDENTIALS_JSON > $HOME/.config/dart/pub-credentials.json
+          
+      - name: Publish package
+        run: dart pub publish -f
