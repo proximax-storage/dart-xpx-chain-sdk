@@ -12,8 +12,7 @@ import 'package:base32/base32.dart';
 import 'package:convert/convert.dart' show hex;
 import 'package:pointycastle/api.dart';
 import 'package:sha3/sha3.dart';
-import 'package:xpx_chain_sdk/xpx_sdk.dart';
-import 'package:xpx_chain_sdk/xpx_sdk_all_errors.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 import 'package:xpx_crypto/xpx_crypto.dart' as crypto;
 
 import '../api/dto.dart';

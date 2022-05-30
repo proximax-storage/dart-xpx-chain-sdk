@@ -12,9 +12,8 @@ import 'dart:typed_data' show Uint8List;
 import 'package:convert/convert.dart' show hex;
 import 'package:fixnum/fixnum.dart';
 import 'package:sha3/sha3.dart';
-import 'package:xpx_chain_sdk/xpx_sdk_all_errors.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
-import '../../xpx_sdk.dart';
 import '../api/dto.dart';
 
 part 'mosaic/mosaic.dart';

@@ -68,7 +68,7 @@ class TransactionQueryParams {
   int? pageSize;
   int? ageNumber;
   List<TransactionType>? type;
-  bool? embedded;
+  bool embedded = false;
   Order_v2? order;
   TransactionSortingField? sortField;
   Height? toHeight;
@@ -78,6 +78,7 @@ class TransactionQueryParams {
   String? recipientAddress;
   String? address;
   String? publicKey;
+  bool firstLevel = true;
 
   void updateFieldOrder(TransactionFieldOrder transactionFieldOrder) {
     sortField = transactionFieldOrder.sortingField;
@@ -86,8 +87,15 @@ class TransactionQueryParams {
 
   Iterable<QueryParam> toQueryParams() {
     final params = <QueryParam>[];
-    toJson()
-        .forEach((key, value) => params.add(QueryParam(key, value.toString())));
+    toJson().forEach((key, value) {
+      if (value is List) {
+        for (var element in value) {
+          params.add(QueryParam('$key%5B%5D', element.toString()));
+        }
+      } else {
+        params.add(QueryParam(key, value.toString()));
+      }
+    });
     return params;
   }
 
@@ -115,6 +123,7 @@ class TransactionQueryParams {
     writeNotNull('signerPublicKey', signerPublicKey);
     writeNotNull('recipientAddress', recipientAddress);
     writeNotNull('address', address);
+    writeNotNull('firstLevel', firstLevel);
     writeNotNull('publicKey', publicKey);
 
     return val;

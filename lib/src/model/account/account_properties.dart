@@ -95,13 +95,13 @@ class AccountPropertiesMosaicModification {
   AssetId? assetId;
 
   static List<AccountPropertiesMosaicModification> listFromJson(
-          List<dynamic>? json) =>
-      json == null
+          List<dynamic> json) =>
+      json.isEmpty
           ? []
           : json.map(AccountPropertiesMosaicModification.fromDto).toList();
 
   @override
-  String toString() => '${toJson()}';
+  String toString() => encoder.convert(this);
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -129,13 +129,13 @@ class AccountPropertiesAddressModification {
   Address? address;
 
   static List<AccountPropertiesAddressModification> listFromJson(
-          List<dynamic>? json) =>
-      json == null
+          List<dynamic> json) =>
+      json.isEmpty
           ? []
           : json.map(AccountPropertiesAddressModification.fromDto).toList();
 
   @override
-  String toString() => '${toJson()}';
+  String toString() => encoder.convert(this);
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -164,13 +164,13 @@ class AccountPropertiesEntityTypeModification {
   TransactionType? transactionType;
 
   static List<AccountPropertiesEntityTypeModification> listFromJson(
-          List<dynamic>? json) =>
-      json == null
+          List<dynamic> json) =>
+      json.isEmpty
           ? []
           : json.map(AccountPropertiesEntityTypeModification.fromDto).toList();
 
   @override
-  String toString() => '${toJson()}';
+  String toString() => encoder.convert(this);
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

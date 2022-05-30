@@ -10,17 +10,16 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:base32/base32.dart';
+import 'package:collection/collection.dart';
 import 'package:convert/convert.dart' show hex;
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 import 'package:sha3/sha3.dart';
-import 'package:xpx_chain_sdk/imp/buffer.dart' as $buffer;
-import 'package:xpx_chain_sdk/imp/buffer/transactions_buffer.dart'
-    as $txn_buffer;
 import 'package:xpx_chain_sdk/src/model/transaction/schema.dart';
-import 'package:xpx_chain_sdk/xpx_sdk_all_errors.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
-import '../../xpx_sdk.dart';
 import '../api/dto.dart';
+import 'transaction/buffer/buffer.dart' as $buffer;
+import 'transaction/buffer/transactions_buffer.dart' as $txn_buffer;
 
 part 'transaction/abstract_transaction.dart';
 part 'transaction/asset_id.dart';

@@ -12,6 +12,8 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 
+part './utils/all_errors.dart';
 part './utils/byte_utils.dart';
+part './utils/consts.dart';
 part './utils/hex_utils.dart';
 part './utils/json_utils.dart';

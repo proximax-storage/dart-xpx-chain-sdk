@@ -6,7 +6,8 @@
 
 library xpx_chain_sdk.model.blockchain;
 
-import '../../xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
+
 import '../api/dto.dart';
 
 part 'blockchain/block_info.dart';

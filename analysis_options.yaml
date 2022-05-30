@@ -8,7 +8,7 @@ analyzer:
     implicit-casts: true
     implicit-dynamic: true
   exclude:
-    - lib/imp/**
+    - lib/src/model/transaction/buffer/**
 #
 ## ALL lint rules are included. Unused lints should be commented
 ## out with a reason. An up to date list of all options is here
@@ -228,7 +228,7 @@ linter:
     # Name non-constant identifiers using lowerCamelCase.
     # recommendation: recommended
     # 0 issues
-    - non_constant_identifier_names : false
+    - non_constant_identifier_names: false
 
     # Omit type annotations for local variables.
     # recommendation: avoid

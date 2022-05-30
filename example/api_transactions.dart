@@ -4,7 +4,7 @@
  * license that can be found in the LICENSE file.
  */
 
-import 'package:xpx_chain_sdk/xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
   const baseUrl = 'http://bctestnet3.brimstone.xpxsirius.io:3000';
@@ -13,7 +13,7 @@ void main() async {
   final client = SiriusClient.fromUrl(baseUrl);
 
   const hashOne =
-      'B3543906F375F9259FC4687EAE644FF71982ED1AEA97E9AAF6D031B200DE849C';
+      '8454782DB6B2BC5764A9EB74C8A7AE4A4024A83BBC7E37626663C21F5C7F5B8C';
   const hashTwo =
       'BF9B3AF29569A17B2FC72204A793A3984FB14022AD597D4D5E997D0965F97E02';
 
@@ -36,11 +36,16 @@ void main() async {
     print('Exception when calling Transaction->GetTransaction: $e\n');
   }
 
+  final txnQueryParams = TransactionQueryParams()
+    ..embedded = true
+    ..signerPublicKey =
+        "785B6EDD55934391C4C0CBFCF5ECDCBC5104CB781178616A99167480418282BD";
+
   // Returns a [Transaction] information given a transactionId or hash.
   try {
     /// Get a transaction information given a transactionId or hash.
     final result = await client.transaction
-        .getTransactionsByGroup(TransactionGroupType.confirmed);
+        .getTransactionsByGroup(TransactionGroupType.confirmed, txnQueryParams);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Transaction->GetTransaction: $e\n');

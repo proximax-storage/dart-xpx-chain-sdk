@@ -6,7 +6,7 @@
 
 library xpx_chain_sdk.model.multisig;
 
-import '../../xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 part 'multisig/multisig.dart';
 part 'multisig/multisig_account_graph_info.dart';

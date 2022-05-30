@@ -11,11 +11,8 @@ import 'dart:convert' show json;
 
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
-import 'package:xpx_chain_sdk/src/model/multisig.dart';
-import 'package:xpx_chain_sdk/xpx_sdk_all_errors.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
-import '../../xpx_sdk.dart';
-import '../model/metadata.dart';
 import 'dto.dart';
 
 part 'api_account_routes.dart';
@@ -35,4 +32,4 @@ part 'page_query_params.dart';
 part 'query_params.dart';
 part 'transaction_query_params.dart';
 
-_ApiClient defaultApiClient = _ApiClient(null, null);
+ApiClient defaultApiClient = ApiClient(null, null);

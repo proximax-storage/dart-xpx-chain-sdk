@@ -3,7 +3,8 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-The ProximaX Sirius Chain Dart SDK works as a lightweight Dart library for interacting with the Sirius Blockchain. It provides a complete library set coverage, and supports synchronous and asynchronous requests.
+The ProximaX Sirius Chain Dart SDK works as a lightweight Dart library for interacting with the Sirius Blockchain. It
+provides a complete library set coverage, and supports synchronous and asynchronous requests.
 
 **1. Depend on it**
 
@@ -11,7 +12,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  xpx_chain_sdk: 0.0.7+5
+  xpx_chain_sdk: 0.0.7+8
 ```
 
 **2. Install it**
@@ -47,6 +48,8 @@ Examples are in the [examples](https://github.com/proximax-storage/dart-xpx-chai
 For more examples, go to our [wiki](https://github.com/proximax-storage/dart-xpx-chain-sdk/wiki)
 
 ## Contribution ##
-We'd love to get more people involved in the project. Please feel free to raise any issues or PR and we'll review your contribution.
-    
+
+We'd love to get more people involved in the project. Please feel free to raise any issues or PR and we'll review your
+contribution.
+
 Copyright (c) 2019 ProximaX Limited
