@@ -20,9 +20,14 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
       : super.fromDto(dto.transaction!, dto.meta!) {
     mosaics = Mosaic.listFromDTO(dto.transaction!.mosaics);
     recipient = Address.fromEncoded(dto.transaction!.recipient!);
-    message = dto.transaction!.message != null
-        ? Message.fromDTO(dto.transaction!.message!)
-        : null;
+    message = null;
+    if (dto.transaction!.message != null) {
+      if (MessageType.getType(dto.transaction!.message!.type) == MessageType.unencrypted) {
+        message = PlainMessage(payload: dto.transaction!.message!.payload);
+      } else if (MessageType.getType(dto.transaction!.message!.type) == MessageType.encrypted) {
+        message = EncryptedMessage.fromPayload(dto.transaction!.message!.payload as String);
+      }
+    }
   }
 
   List<Mosaic>? mosaics;

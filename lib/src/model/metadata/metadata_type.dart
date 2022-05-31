@@ -8,10 +8,10 @@ part of xpx_chain_sdk.model.metadata;
 
 /// Types of metadata
 enum MetadataType {
-  metadataNone,
   metadataAccount,
   metadataMosaic,
   metadataNamespace,
+  metadataNone,
 }
 
 extension MetadataTypeExt on MetadataType {
