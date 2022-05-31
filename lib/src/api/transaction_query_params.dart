@@ -66,7 +66,7 @@ class TransactionFieldOrder {
 
 class TransactionQueryParams {
   int? pageSize;
-  int? ageNumber;
+  int? pageNumber;
   List<TransactionType>? type;
   bool embedded = false;
   Order_v2? order;
@@ -112,7 +112,7 @@ class TransactionQueryParams {
     }
 
     writeNotNull('pageSize', pageSize);
-    writeNotNull('ageNumber', ageNumber);
+    writeNotNull('pageNumber', pageNumber);
     writeNotNull('type', type);
     writeNotNull('embedded', embedded);
     writeNotNull('order', order);
