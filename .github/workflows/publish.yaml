@@ -18,6 +18,7 @@ jobs:
         env:
           CREDENTIALS_JSON: ${{ secrets.PUB_CREDENTIALS_JSON}}
         run: |
+          mkdir -p $HOME/.config/dart/
           echo $CREDENTIALS_JSON > $HOME/.config/dart/pub-credentials.json
           
       - name: Publish package
