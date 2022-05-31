@@ -22,10 +22,10 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     recipient = Address.fromEncoded(dto.transaction!.recipient!);
     message = null;
     if (dto.transaction!.message != null) {
-      if (MessageType.getType(dto.transaction!.message?.type) == MessageType.unencrypted) {
-        message = PlainMessage(payload: dto.transaction!.message?.payload);
-      } else if (MessageType.getType(dto.transaction!.message?.type) == MessageType.encrypted) {
-        message = EncryptedMessage.fromPayload(dto.transaction!.message?.payload as String);
+      if (MessageType.getType(dto.transaction!.message!.type) == MessageType.unencrypted) {
+        message = PlainMessage(payload: dto.transaction!.message!.payload);
+      } else if (MessageType.getType(dto.transaction!.message!.type) == MessageType.encrypted) {
+        message = EncryptedMessage.fromPayload(dto.transaction!.message!.payload as String);
       }
     }
   }
