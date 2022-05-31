@@ -1,3 +1,9 @@
+## 0.0.7+9
+### Bug Fixes
+[FIXED] transaction query param typo.
+[FIXED] fetching wrong type of metadata transaction.
+[FIXED] fetching transfer transaction with encrypted message returns error.
+
 ## 0.0.7+8
 [FIXED] fixed bug ModifyMultisigAccountTransaction.
 
