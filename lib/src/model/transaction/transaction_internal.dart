@@ -217,7 +217,7 @@ dynamic txnDeserialize(value, String targetType) {
       case 'BlockchainUpgrade':
         return; // TODO: missing implementation
       case 'AccountMetadataV2':
-        return MetaDataEntryTransactioInfoDTO.fromJson(value);
+        return MetaDataEntryTransactionInfoDTO.fromJson(value);
       default:
         return null;
     }
@@ -396,7 +396,7 @@ Transaction? deserializeDTO(value) {
       return ModifyMultisigAccountTransaction.fromDTO(value);
     case LockFundsTransactionInfoDTO:
       return LockFundsTransaction.fromDTO(value);
-    case MetaDataEntryTransactioInfoDTO:
+    case MetaDataEntryTransactionInfoDTO:
       return AccountMetadataTransaction.fromDTO(value);
     default:
       if (value is List) {

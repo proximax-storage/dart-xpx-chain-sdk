@@ -24,7 +24,7 @@ class BasicMetadataTransaction extends AbstractTransaction {
       Uint64? maxFee)
       : super(networkType, deadline, type, version, maxFee);
 
-  BasicMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto)
+  BasicMetadataTransaction.fromDTO(MetaDataEntryTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
     targetPublicAccount =
         PublicAccount.fromPublicKey(dto.transaction!.targetKey, networkType);

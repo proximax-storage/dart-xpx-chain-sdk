@@ -35,7 +35,7 @@ class AccountMetadataTransaction extends BasicMetadataTransaction
             accountMetadataVersionV2,
             maxFee);
 
-  AccountMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto)
+  AccountMetadataTransaction.fromDTO(MetaDataEntryTransactionInfoDTO dto)
       : super.fromDTO(dto) {
     targetPublicAccount =
         PublicAccount.fromPublicKey(dto.transaction!.targetKey, networkType);

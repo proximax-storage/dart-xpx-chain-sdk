@@ -357,8 +357,8 @@ class MetaDataEntryTransactionDTO extends AbstractTransactionDTO {
       };
 }
 
-class MetaDataEntryTransactioInfoDTO {
-  MetaDataEntryTransactioInfoDTO.fromJson(Map<String, dynamic> json) {
+class MetaDataEntryTransactionInfoDTO {
+  MetaDataEntryTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
     meta =
         json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 

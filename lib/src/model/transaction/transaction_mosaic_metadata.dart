@@ -36,7 +36,7 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
             mosaicMetadataVersionV2,
             maxFee);
 
-  MosaicMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto)
+  MosaicMetadataTransaction.fromDTO(MetaDataEntryTransactionInfoDTO dto)
       : super.fromDTO(dto) {
     targetPublicAccount =
         PublicAccount.fromPublicKey(dto.transaction!.targetKey, networkType);
