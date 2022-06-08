@@ -6,12 +6,12 @@
 
 part of xpx_chain_sdk.model.transaction;
 
-/// Create/ modify a [MosaicMetadataTransaction] entry contains information about metadata .
+/// Create/ modify a [NamespaceMetadataTransaction] entry contains information about metadata .
 ///
-class MosaicMetadataTransaction extends BasicMetadataTransaction
+class NamespaceMetadataTransaction extends BasicMetadataTransaction
     implements Transaction {
-  MosaicMetadataTransaction(
-      this.targetMosaicId,
+  NamespaceMetadataTransaction(
+      this.targetNamespaceId,
       PublicAccount targetAccount,
       Uint64 scopedMetadataKey,
       int valueSizeDelta,
@@ -32,18 +32,18 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
             valueDifferences,
             networkType,
             deadline,
-            TransactionType.mosaicMetadataV2,
-            mosaicMetadataVersionV2,
+            TransactionType.namespaceMetadataV2,
+            namespaceMetadataVersionV2,
             maxFee);
 
-  MosaicMetadataTransaction.fromDTO(MetaDataEntryTransactionInfoDTO dto)
-      : targetMosaicId =
-            MosaicId.fromId(dto.transaction!.targetMosaicId!.toUint64()),
+  NamespaceMetadataTransaction.fromDTO(MetaDataEntryTransactionInfoDTO dto)
+      : targetNamespaceId =
+            NamespaceId.fromId(dto.transaction!.targetNamespaceId!.toUint64()),
         super.fromDTO(dto);
 
-  factory MosaicMetadataTransaction.create(
+  factory NamespaceMetadataTransaction.create(
       Deadline deadline,
-      MosaicId targetMosaicId,
+      NamespaceId targetNamespaceId,
       PublicAccount targetAccount,
       String scopedMetadataKeyString,
       String value,
@@ -70,8 +70,8 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
       valueDifferenceBytes[i] = valueUint8List[i] ^ oldValueUint8List[i];
     }
 
-    return MosaicMetadataTransaction(
-        targetMosaicId,
+    return NamespaceMetadataTransaction(
+        targetNamespaceId,
         targetAccount,
         scopedMetadataKey,
         valueSizeDelta,
@@ -84,12 +84,12 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
         maxFee);
   }
 
-  MosaicId? targetMosaicId;
+  NamespaceId? targetNamespaceId;
 
   @override
   Map<String, dynamic> toJson() {
     final val = super.toJson();
-    val['targetMosaicId'] = targetMosaicId;
+    val['targetNamespaceId'] = targetNamespaceId;
     return val;
   }
 
@@ -103,7 +103,7 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final buffer = Uint8List(mosaicIdSize).buffer;
+    final buffer = Uint8List(namespaceSize).buffer;
     final nonceB = ByteData.view(buffer);
     nonceB.setUint64(0, valueSize!, Endian.little);
     final targetIdOffset = builder.writeListUint8(buffer.asUint8List());

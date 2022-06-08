@@ -150,6 +150,10 @@ dynamic txnDeserialize(value, String targetType) {
         return; // TODO: missing implementation
       case TransactionType.accountMetadataV2:
         return MetaDataEntryTransactionInfoDTO.fromJson(value);
+      case TransactionType.mosaicMetadataV2:
+        return MetaDataEntryTransactionInfoDTO.fromJson(value);
+      case TransactionType.namespaceMetadataV2:
+        return MetaDataEntryTransactionInfoDTO.fromJson(value);
       default:
         return null;
     }
@@ -332,6 +336,10 @@ Transaction? deserializeDTO(value) {
       return LockFundsTransaction.fromDTO(value);
     case TransactionType.accountMetadataV2:
       return AccountMetadataTransaction.fromDTO(value);
+    case TransactionType.mosaicMetadataV2:
+      return MosaicMetadataTransaction.fromDTO(value);
+    case TransactionType.namespaceMetadataV2:
+      return NamespaceMetadataTransaction.fromDTO(value);
     default:
       if (value is List) {
         value.map(deserializeDTO).toList();

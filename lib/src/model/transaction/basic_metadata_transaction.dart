@@ -32,6 +32,8 @@ class BasicMetadataTransaction extends AbstractTransaction {
     valueSizeDelta = dto.transaction!.valueSizeDelta!;
     value = ByteUtils.bytesToUtf8String(
         HexUtils.hexToBytes(dto.transaction!.value!));
+    valueSize = dto.transaction!.valueSize!;
+    valueDifferences = HexUtils.hexToBytes(dto.transaction!.value!);
   }
 
   PublicAccount? targetPublicAccount;

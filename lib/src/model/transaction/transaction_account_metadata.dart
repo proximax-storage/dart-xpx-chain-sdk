@@ -36,14 +36,7 @@ class AccountMetadataTransaction extends BasicMetadataTransaction
             maxFee);
 
   AccountMetadataTransaction.fromDTO(MetaDataEntryTransactionInfoDTO dto)
-      : super.fromDTO(dto) {
-    targetPublicAccount =
-        PublicAccount.fromPublicKey(dto.transaction!.targetKey, networkType);
-    scopedMetadataKey = dto.transaction!.scopedMetadataKey!.toUint64()!;
-    valueSizeDelta = dto.transaction!.valueSizeDelta!;
-    value = ByteUtils.bytesToUtf8String(
-        HexUtils.hexToBytes(dto.transaction!.value!));
-  }
+      : super.fromDTO(dto);
 
   factory AccountMetadataTransaction.create(
       Deadline deadline,

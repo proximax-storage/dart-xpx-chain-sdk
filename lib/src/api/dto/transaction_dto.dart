@@ -329,6 +329,8 @@ class MetaDataEntryTransactionDTO extends AbstractTransactionDTO {
     fee = UInt64DTO.fromJson(json['maxFee']);
     deadline = UInt64DTO.fromJson(json['deadline']);
     targetKey = json['targetKey'] as String;
+    targetMosaicId = UInt64DTO.fromJson(json['targetMosaicId']);
+    targetNamespaceId = UInt64DTO.fromJson(json['targetNamespaceId']);
     scopedMetadataKey = UInt64DTO.fromJson(json['scopedMetadataKey']);
     valueSizeDelta = json['valueSizeDelta'] as int;
     valueSize = json['valueSize'] as int;
@@ -336,6 +338,8 @@ class MetaDataEntryTransactionDTO extends AbstractTransactionDTO {
   }
 
   String? targetKey;
+  UInt64DTO? targetMosaicId;
+  UInt64DTO? targetNamespaceId;
   UInt64DTO? scopedMetadataKey;
   int? valueSizeDelta;
   int? valueSize;
