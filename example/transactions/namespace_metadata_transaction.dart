@@ -13,23 +13,27 @@ void main() async {
 
   final networkType = await client.networkType;
 
-  /// Create an Account from a given Private key.
+  /// Create an [Account] from a given Private key.
   final bobAccount = await Account.fromPrivateKey(
-      '970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF10',
+      '970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF11',
       networkType);
 
-  /// Create an Account from a given Private key.
+  /// Create an [PublicAccount] from a given Public key.
   final alicePublicAccount = PublicAccount.fromPublicKey(
       'D04AB232742BB4AB3A1368BD4615E4E6D0224AB71A016BAF8520A332C9778737',
       networkType);
 
+  // replace with namespace id
+  final namespaceId = NamespaceId.fromHex('2111AB580BD93748');
+
   /// Create a  transaction type transfer
-  final metadataTx = AccountMetadataTransaction.create(
+  final metadataTx = NamespaceMetadataTransaction.create(
       // The maximum amount of time to include the transaction in the blockchain.
       Deadline(hours: 1),
+      namespaceId,
       alicePublicAccount,
-      'CERT',
-      'Hello world',
+      'name',
+      'testing',
       '',
       networkType);
 

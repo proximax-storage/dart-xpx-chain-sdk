@@ -122,7 +122,7 @@ class UserExchangeInfo {
         final offer = OfferInfo.fromDTO(sellDto);
         offer.type = sellOffer;
         offer.owner = owner;
-        sellMap[MosaicId.fromId(sellDto.mosaicId.toUint64())] = offer;
+        sellMap[MosaicId.fromUint64(sellDto.mosaicId.toUint64())] = offer;
       }
 
       offers![sellOffer] = sellMap;
@@ -135,7 +135,7 @@ class UserExchangeInfo {
         final offer = OfferInfo.fromDTO(buyDto);
         offer.type = buyOffer;
         offer.owner = owner;
-        buyMap[MosaicId.fromId(buyDto.mosaicId.toUint64())] = offer;
+        buyMap[MosaicId.fromUint64(buyDto.mosaicId.toUint64())] = offer;
       }
 
       offers![buyOffer] = buyMap;
@@ -167,7 +167,7 @@ class OfferInfo {
     type = OfferType(dto.type);
     owner = dto.owner;
     mosaic =
-        Mosaic(MosaicId.fromId(dto.mosaicId.toUint64()), dto.amount.toUint64());
+        Mosaic(MosaicId.fromUint64(dto.mosaicId.toUint64()), dto.amount.toUint64());
     priceNumerator = dto.priceNumerator.toUint64();
     priceDenominator = dto.priceDenominator.toUint64();
     deadline = Deadline.fromUInt64DTO(dto.deadline);
@@ -259,7 +259,7 @@ class RemoveOffer {
 
   RemoveOffer.fromDTO(RemoveOfferDTO dto) {
     offerType = dto.offerType;
-    assetId = MosaicId.fromId(dto.mosaicId.toUint64());
+    assetId = MosaicId.fromUint64(dto.mosaicId.toUint64());
   }
 
   OfferType? offerType;

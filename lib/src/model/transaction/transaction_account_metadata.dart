@@ -8,8 +8,7 @@ part of xpx_chain_sdk.model.transaction;
 
 /// Create/ modify a [AccountMetadataTransaction] entry contains information about metadata .
 ///
-class AccountMetadataTransaction extends BasicMetadataTransaction
-    implements Transaction {
+class AccountMetadataTransaction extends BasicMetadataTransaction implements Transaction {
   AccountMetadataTransaction(
       PublicAccount targetAccount,
       Uint64 scopedMetadataKey,
@@ -21,73 +20,46 @@ class AccountMetadataTransaction extends BasicMetadataTransaction
       NetworkType networkType,
       Deadline deadline,
       Uint64? maxFee)
-      : super(
-            targetAccount,
-            scopedMetadataKey,
-            valueSizeDelta,
-            value,
-            valueSize,
-            oldValue,
-            valueDifferences,
-            networkType,
-            deadline,
-            TransactionType.accountMetadataV2,
-            accountMetadataVersionV2,
-            maxFee);
+      : super(targetAccount, scopedMetadataKey, valueSizeDelta, value, valueSize, oldValue, valueDifferences,
+            networkType, deadline, TransactionType.accountMetadataV2, accountMetadataVersionV2, maxFee);
 
-  AccountMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto)
-      : super.fromDTO(dto) {
-    targetPublicAccount =
-        PublicAccount.fromPublicKey(dto.transaction!.targetKey, networkType);
-    scopedMetadataKey = dto.transaction!.scopedMetadataKey!.toUint64()!;
-    valueSizeDelta = dto.transaction!.valueSizeDelta!;
-    value = ByteUtils.bytesToUtf8String(
-        HexUtils.hexToBytes(dto.transaction!.value!));
-  }
+  AccountMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto) : super.fromDTO(dto);
 
-  factory AccountMetadataTransaction.create(
-      Deadline deadline,
-      PublicAccount targetAccount,
-      String scopedMetadataKeyString,
-      String value,
-      String oldValue,
-      NetworkType networkType,
+  factory AccountMetadataTransaction.create(Deadline deadline, PublicAccount targetAccount, scopedMetadataKey,
+      String value, String oldValue, NetworkType networkType,
       [Uint64? maxFee]) {
     if (value == oldValue) {
       throw ArgumentError('new value is the same');
     }
 
-    final scopedMetadataKey = Uint64.fromString(scopedMetadataKeyString);
+    if (!(scopedMetadataKey is Uint64) && !(scopedMetadataKey is String)) {
+      throw ArgumentError('invalid scopedMetadataKey type');
+    }
 
-    final valueSizeDelta = (value.length - oldValue.length).toInt();
-    final valueSize = [value.length, oldValue.length, 0].reduce(max).toInt();
+    final scopedMetadataKeyValue = Uint64.fromString(scopedMetadataKey);
+
+    final valueLength = HexUtils.utf8ToHex(value).length ~/ 2;
+    final oldValueLength = HexUtils.utf8ToHex(oldValue).length ~/ 2;
+
+    final valueSizeDelta = valueLength - oldValueLength;
+    final valueSize = [valueLength, oldValueLength, 0].reduce(max);
 
     final Uint8List valueUint8List = Uint8List(valueSize);
     valueUint8List.setAll(0, HexUtils.hexToBytes(HexUtils.utf8ToHex(value)));
     final Uint8List oldValueUint8List = Uint8List(valueSize);
-    oldValueUint8List.setAll(
-        0, HexUtils.hexToBytes(HexUtils.utf8ToHex(oldValue)));
+    oldValueUint8List.setAll(0, HexUtils.hexToBytes(HexUtils.utf8ToHex(oldValue)));
     final Uint8List valueDifferenceBytes = Uint8List(valueSize);
 
     for (var i = 0; i < valueSize; ++i) {
       valueDifferenceBytes[i] = valueUint8List[i] ^ oldValueUint8List[i];
     }
 
-    return AccountMetadataTransaction(
-        targetAccount,
-        scopedMetadataKey,
-        valueSizeDelta,
-        value,
-        valueSize,
-        oldValue,
-        valueDifferenceBytes,
-        networkType,
-        deadline,
-        maxFee);
+    return AccountMetadataTransaction(targetAccount, scopedMetadataKeyValue, valueSizeDelta, value, valueSize, oldValue,
+        valueDifferenceBytes, networkType, deadline, maxFee);
   }
 
   @override
-  int size() => metadataV2HeaderSize + value!.length;
+  int size() => metadataV2HeaderSize + valueSize;
 
   @override
   AbstractTransaction absTransaction() => _absTransaction();

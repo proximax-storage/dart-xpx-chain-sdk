@@ -36,10 +36,10 @@ class BasicMetadataTransaction extends AbstractTransaction {
 
   PublicAccount? targetPublicAccount;
   Uint64? scopedMetadataKey;
-  int? valueSizeDelta;
-  String? value;
+  late int valueSizeDelta;
+  late String value;
   String? oldValue;
-  int? valueSize;
+  late int valueSize;
   Uint8List? valueDifferences;
 
   @override
@@ -64,7 +64,7 @@ class BasicMetadataTransaction extends AbstractTransaction {
     return val;
   }
 
-  int size() => metadataV2HeaderSize + value!.length;
+  int size() => metadataV2HeaderSize + valueSize;
 
   AbstractTransaction absTransaction() => _absTransaction();
 
@@ -81,10 +81,10 @@ class BasicMetadataTransaction extends AbstractTransaction {
     final buffer = Uint8List(2).buffer;
     final nonceB = ByteData.view(buffer);
 
-    nonceB.setUint16(0, valueSize!, Endian.little);
+    nonceB.setUint16(0, valueSize, Endian.little);
     final valueSizeOffset = builder.writeListUint8(buffer.asUint8List());
 
-    nonceB.setUint16(0, valueSizeDelta!, Endian.little);
+    nonceB.setUint16(0, valueSizeDelta, Endian.little);
     final valueSizeDeltaOffset = builder.writeListUint8(buffer.asUint8List());
 
     final vectors = _generateCommonVector(builder);

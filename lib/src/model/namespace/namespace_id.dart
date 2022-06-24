@@ -21,9 +21,9 @@ class NamespaceId extends AssetId {
   NamespaceId.fromName(String namespaceName)
       : super(generateNamespacePath(namespaceName));
 
-  NamespaceId.fromId(final Uint64? id) : super(id);
-
-  NamespaceId.fromBigInt(final Uint64 bigInt) : super(bigInt);
+  static NamespaceId fromInts([final int value = 0, final int value2 = 0]) => NamespaceId._(Uint64.fromInts(value, value2));
+  
+  NamespaceId.fromUint64(final Uint64 value) : super(value);
 
   static NamespaceId fromHex(final String hex) {
     if (hex.isEmpty) {

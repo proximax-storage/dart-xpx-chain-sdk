@@ -15,11 +15,11 @@ class MosaicId extends AssetId {
     return MosaicId._(id);
   }
 
-  const MosaicId._(final Uint64 id) : super(id);
+  const MosaicId._(final Uint64 value) : super(value);
 
-  MosaicId.fromId(final Uint64? id) : super(id);
+  static MosaicId fromInts([final int value = 0, final int value2 = 0]) => MosaicId._(Uint64.fromInts(value, value2));
 
-  MosaicId.fromUint64(final Uint64? bigInt) : super(bigInt);
+  MosaicId.fromUint64(final Uint64? value) : super(value);
 
   static MosaicId fromHex(final String hex) {
     if (hex.isEmpty) {
@@ -33,8 +33,7 @@ class MosaicId extends AssetId {
     return MosaicId._(bigInt);
   }
 
-  static MosaicId fromNonceAndOwner(
-          MosaicNonce nonce, PublicAccount ownerPublicAccount) =>
+  static MosaicId fromNonceAndOwner(MosaicNonce nonce, PublicAccount ownerPublicAccount) =>
       MosaicId._(_generateMosaicId(nonce, ownerPublicAccount));
 
   @override
@@ -45,8 +44,5 @@ class MosaicId extends AssetId {
 
   @override
   bool operator ==(final other) =>
-      identical(this, other) ||
-      other is MosaicId &&
-          runtimeType == other.runtimeType &&
-          toBytes() == other.toBytes();
+      identical(this, other) || other is MosaicId && runtimeType == other.runtimeType && toBytes() == other.toBytes();
 }
