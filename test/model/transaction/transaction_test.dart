@@ -26,7 +26,7 @@ void main() {
         test('should return 181 for MosaicMetadataTransaction byte size with newValue=testing oldValue=test', () async {
           final mosaicId = MosaicId.fromInts(2262289484, 3405110546);
           final modifyMetadataTransaction = MosaicMetadataTransaction.create(Deadline(hours: 1), mosaicId,
-              testingAccount.publicAccount, 'name', 'testing', 'test', NetworkType.MIJIN_TEST, Uint64.zero);
+              testingAccount.publicAccount, 'name', 'testing', 'test', NetworkType.PUBLIC_TEST, Uint64.zero);
           final signedTransaction = await testingAccount.signTransaction(modifyMetadataTransaction, generationHash);
 
           expect(modifyMetadataTransaction.size(), 181);
@@ -38,7 +38,7 @@ void main() {
         test('should return 181 for namespace MetadataTransaction byte size with newValue=test, oldValue=testing', () async {
           final namespaceId = NamespaceId.fromInts(2262289484, 3405110546);
           final modifyMetadataTransaction = NamespaceMetadataTransaction.create(Deadline(hours: 1), namespaceId,
-              testingAccount.publicAccount, 'name', 'test', 'testing', NetworkType.MIJIN_TEST, Uint64.zero);
+              testingAccount.publicAccount, 'name', 'test', 'testing', NetworkType.PUBLIC_TEST, Uint64.zero);
           final signedTransaction = await testingAccount.signTransaction(modifyMetadataTransaction, generationHash);
 
           expect(modifyMetadataTransaction.size(), 181);
@@ -49,7 +49,7 @@ void main() {
 
         test('should return 173 for accountMetadataTransaction byte size with newValue=testing, oldValue=""', () async {
           final modifyMetadataTransaction = AccountMetadataTransaction.create(Deadline(hours: 1),
-              testingAccount.publicAccount, 'name', 'testing', '', NetworkType.MIJIN_TEST, Uint64.zero);
+              testingAccount.publicAccount, 'name', 'testing', '', NetworkType.PUBLIC_TEST, Uint64.zero);
           final signedTransaction = await testingAccount.signTransaction(modifyMetadataTransaction, generationHash);
 
           expect(modifyMetadataTransaction.size(), 173);
