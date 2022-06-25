@@ -12,9 +12,8 @@ void main() async {
   final networkType = await client.networkType;
 
   /// Create an Account from a given Private key.
-  final account = await Account.fromPrivateKey(
-      '970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF10',
-      networkType);
+  final account =
+      await Account.fromPrivateKey('970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF10', networkType);
 
   /// Create a Mosaic definition transaction.
   final mosaicDefinition = MosaicDefinitionTransaction.create(
@@ -22,8 +21,7 @@ void main() async {
       Deadline(hours: 1),
       MosaicNonce.random(),
       account.publicAccount,
-      MosaicProperties.create(
-          supplyMutable: true, transferable: true, divisibility: 0),
+      MosaicProperties.create(supplyMutable: true, transferable: true, divisibility: 0),
       // The network type
       networkType);
 

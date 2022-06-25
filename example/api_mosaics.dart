@@ -33,8 +33,7 @@ void main() async {
 
   // Returns a [MosaicName] friendly names for mosaics.
   try {
-    final result =
-        await client.mosaic.getMosaicsName([mosaicIdOne, mosaicIdTwo]);
+    final result = await client.mosaic.getMosaicsName([mosaicIdOne, mosaicIdTwo]);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Mosaic->GetMosaicsName: $e\n');

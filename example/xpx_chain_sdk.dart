@@ -1,24 +1,20 @@
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
-  const privateKey =
-      'B3543906F375F9259FC4687EAE644FF71982ED1AEA97E9AAF6D031B200DE849C';
+  const privateKey = 'B3543906F375F9259FC4687EAE644FF71982ED1AEA97E9AAF6D031B200DE849C';
 
   /// Create an Account from a given Private key.
-  final accountOne =
-      await Account.fromPrivateKey(privateKey, NetworkType.PUBLIC_TEST);
+  final accountOne = await Account.fromPrivateKey(privateKey, NetworkType.PUBLIC_TEST);
   print(accountOne);
 
   /// Create an random Account from a given networkType.
   final accountTwo = await Account.random(NetworkType.PUBLIC_TEST);
   print(accountTwo);
 
-  const publicKey =
-      '9a6a4e41d2b69dfe899c0c34d56261059986340cf83fc597d4b6715ab9e77ac8';
+  const publicKey = '9a6a4e41d2b69dfe899c0c34d56261059986340cf83fc597d4b6715ab9e77ac8';
 
   /// Create an Account from a given publicKey hex string.
-  final publicAccount =
-      PublicAccount.fromPublicKey(publicKey, NetworkType.PUBLIC_TEST);
+  final publicAccount = PublicAccount.fromPublicKey(publicKey, NetworkType.PUBLIC_TEST);
   print(publicAccount);
 
   const rawAddress = 'VAQXZH7TDE6EMG7KIGJ5KPCHHAEDYK4VIMLZD7VK';

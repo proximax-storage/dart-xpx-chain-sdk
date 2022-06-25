@@ -12,9 +12,8 @@ void main() async {
   final networkType = await client.networkType;
 
   /// Create an Account from a given Private key.
-  final account = await Account.fromPrivateKey(
-      '970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF10',
-      networkType);
+  final account =
+      await Account.fromPrivateKey('970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF10', networkType);
 
   /// Create a MosaicSupplyChange transaction.
   final mosaicSupplyChange = MosaicSupplyChangeTransaction.create(
@@ -26,8 +25,7 @@ void main() async {
       // The network type
       networkType);
 
-  final stx =
-      await account.signTransaction(mosaicSupplyChange, generationHash!);
+  final stx = await account.signTransaction(mosaicSupplyChange, generationHash!);
   try {
     final restTx = await client.transaction.announce(stx);
     print(restTx);

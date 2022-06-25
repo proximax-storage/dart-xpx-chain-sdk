@@ -41,14 +41,12 @@ void main() async {
     final result = await client.blockChain.getBlocksByHeightWithLimit(1, 25);
     print(result);
   } on Exception catch (e) {
-    print(
-        'Exception when calling BlockChain->GetBlocksByHeightWithLimit: $e\n');
+    print('Exception when calling BlockChain->GetBlocksByHeightWithLimit: $e\n');
   }
 
   // Returns an List of [Transaction] included in a block for a given block height.
   try {
-    final result =
-        await client.blockChain.getBlockTransactions(4993924.toHeight);
+    final result = await client.blockChain.getBlockTransactions(4993924.toHeight);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling BlockChain->getBlockTransactions: $e\n');

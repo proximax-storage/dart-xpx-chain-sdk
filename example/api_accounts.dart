@@ -15,14 +15,12 @@ void main() async {
   final networkType = await client.networkType;
 
   /// Create an Address from a given public key.
-  final accountOne = PublicAccount.fromPublicKey(
-      '785b6edd55934391c4c0cbfcf5ecdcbc5104cb781178616a99167480418282bd',
-      networkType);
+  final accountOne =
+      PublicAccount.fromPublicKey('785b6edd55934391c4c0cbfcf5ecdcbc5104cb781178616a99167480418282bd', networkType);
 
   /// Create an Address from a given public key.
-  final accountTwo = Address.fromPublicKey(
-      'F6A9951DDB2B9EF2C7EB5132654562FC6D2308B42AEAAFD11097B232F429AF70',
-      networkType);
+  final accountTwo =
+      Address.fromPublicKey('F6A9951DDB2B9EF2C7EB5132654562FC6D2308B42AEAAFD11097B232F429AF70', networkType);
 
   // Returns the account information.
   try {
@@ -34,8 +32,7 @@ void main() async {
 
   // Returns the account information for an array of accounts.
   try {
-    final result =
-        await client.account.getAccountsInfo([accountOne.address, accountTwo]);
+    final result = await client.account.getAccountsInfo([accountOne.address, accountTwo]);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Account->GetAccountsInfo: $e\n');
@@ -59,8 +56,7 @@ void main() async {
 
   // Gets an array of transactions for which an account is the sender or receiver.
   try {
-    final result = await client.account
-        .transactions(accountOne, TransactionQueryParams()..embedded = true);
+    final result = await client.account.transactions(accountOne, TransactionQueryParams()..embedded = true);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Account->Transactions: $e\n');
@@ -94,8 +90,7 @@ void main() async {
 
   // Gets an array of [aggregate bonded transactions] where the account is the sender or requires to cosign the transaction.
   try {
-    final result = await client.account.partialTransactions(
-        accountOne, TransactionQueryParams()..embedded = true);
+    final result = await client.account.partialTransactions(accountOne, TransactionQueryParams()..embedded = true);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Account->AggregateBondedTransactions: $e\n');
@@ -103,8 +98,7 @@ void main() async {
 
   // Returns friendly names for accounts.
   try {
-    final result =
-        await client.account.getAccountsNames([accountOne.address, accountTwo]);
+    final result = await client.account.getAccountsNames([accountOne.address, accountTwo]);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Account->GetAccountsNames: $e\n');
@@ -112,8 +106,7 @@ void main() async {
 
   // Returns the [configurable properties] for a given account.
   try {
-    final result =
-        await client.account.getAccountProperties(accountOne.address);
+    final result = await client.account.getAccountProperties(accountOne.address);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Account->GetAccountProperties: $e\n');
@@ -121,8 +114,7 @@ void main() async {
 
   // Returns the [configurable properties] for a given array of addresses.
   try {
-    final result = await client.account
-        .getAccountsProperties([accountOne.address, accountTwo]);
+    final result = await client.account.getAccountsProperties([accountOne.address, accountTwo]);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Account->GetAccountsProperties: $e\n');

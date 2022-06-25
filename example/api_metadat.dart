@@ -13,8 +13,8 @@ void main() async {
   final client = SiriusClient.fromUrl(baseUrl);
 
   try {
-    final result = await client.metadata.getMetadataV2Info(
-        '57D649B3FDC7CEE27A621F710492BB01DD8BA812B93B03B6B80044AABC313DB4');
+    final result =
+        await client.metadata.getMetadataV2Info('57D649B3FDC7CEE27A621F710492BB01DD8BA812B93B03B6B80044AABC313DB4');
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Metadata->GetMetadataV2Info: $e\n');

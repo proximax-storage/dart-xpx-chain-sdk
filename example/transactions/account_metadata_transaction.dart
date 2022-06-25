@@ -14,14 +14,12 @@ void main() async {
   final networkType = await client.networkType;
 
   /// Create an Account from a given Private key.
-  final bobAccount = await Account.fromPrivateKey(
-      '970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF10',
-      networkType);
+  final bobAccount =
+      await Account.fromPrivateKey('970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF10', networkType);
 
   /// Create an Account from a given Private key.
-  final alicePublicAccount = PublicAccount.fromPublicKey(
-      'D04AB232742BB4AB3A1368BD4615E4E6D0224AB71A016BAF8520A332C9778737',
-      networkType);
+  final alicePublicAccount =
+      PublicAccount.fromPublicKey('D04AB232742BB4AB3A1368BD4615E4E6D0224AB71A016BAF8520A332C9778737', networkType);
 
   /// Create a  transaction type transfer
   final metadataTx = AccountMetadataTransaction.create(
@@ -41,8 +39,7 @@ void main() async {
     networkType,
   );
 
-  final signedMetadataTxTransaction =
-      await bobAccount.signTransaction(aggregateTransaction, generationHash!);
+  final signedMetadataTxTransaction = await bobAccount.signTransaction(aggregateTransaction, generationHash!);
 
   final hashLockTransaction = LockFundsTransaction.create(
     Deadline(hours: 1),
@@ -69,8 +66,7 @@ void main() async {
   sleep(const Duration(seconds: 30));
 
   try {
-    final restTx = await client.transaction
-        .announcePartialTransaction(signedMetadataTxTransaction);
+    final restTx = await client.transaction.announcePartialTransaction(signedMetadataTxTransaction);
     print(restTx);
     print('Hash: ${signedMetadataTxTransaction.hash}');
     print('Signer: ${bobAccount.publicAccount.publicKey}');

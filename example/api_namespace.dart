@@ -15,10 +15,8 @@ void main() async {
   final namespaceIdOne = NamespaceId.fromHex('BFFB42A19116BDF6');
   final namespaceIdTwo = NamespaceId.fromHex('FB8A78E8ABB05A5E');
 
-  final addressOne =
-      Address.fromRawAddress('VCMCJPRMJ6IUBOZ7HCYBQOSEOVGISX6AMUJ4ESTN');
-  final addressTwo =
-      Address.fromRawAddress('VB2HPZ-FL3IRV-62FGZM-7GGIZS-LZGAZE-DZ23P3-EFOR');
+  final addressOne = Address.fromRawAddress('VCMCJPRMJ6IUBOZ7HCYBQOSEOVGISX6AMUJ4ESTN');
+  final addressTwo = Address.fromRawAddress('VB2HPZ-FL3IRV-62FGZM-7GGIZS-LZGAZE-DZ23P3-EFOR');
 
   // Gets a [NamespaceInfo] for a given namespaceId.
   try {
@@ -38,8 +36,7 @@ void main() async {
 
   // Gets namespaces for a given List of addresses.
   try {
-    final result = await client.namespace
-        .getNamespacesFromAccounts([addressOne, addressTwo]);
+    final result = await client.namespace.getNamespacesFromAccounts([addressOne, addressTwo]);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Namespace->GetNamespacesFromAccounts: $e\n');
@@ -47,8 +44,7 @@ void main() async {
 
   // Returns a [NamespaceName] friendly names for mosaics.
   try {
-    final result = await client.namespace
-        .getNamespacesNames([namespaceIdOne, namespaceIdTwo]);
+    final result = await client.namespace.getNamespacesNames([namespaceIdOne, namespaceIdTwo]);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Namespace->GetNamespacesNames: $e\n');

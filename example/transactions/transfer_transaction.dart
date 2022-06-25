@@ -12,13 +12,11 @@ void main() async {
   final networkType = await client.networkType;
 
   /// Create an Account from a given Private key.
-  final account = await Account.fromPrivateKey(
-      '970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF10',
-      networkType);
+  final account =
+      await Account.fromPrivateKey('970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF10', networkType);
 
   /// Create an Address from a given Public key.
-  final recipient =
-      Address.fromRawAddress('VDI5IS-5YXT5G-LRT5RS-S3EZIB-4QOAI2-6GLWR2-TDK7');
+  final recipient = Address.fromRawAddress('VDI5IS-5YXT5G-LRT5RS-S3EZIB-4QOAI2-6GLWR2-TDK7');
 
   /// Create a  transaction type transfer
   final tx = TransferTransaction.create(
