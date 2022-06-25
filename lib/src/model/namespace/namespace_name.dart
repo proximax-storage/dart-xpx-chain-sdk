@@ -9,8 +9,8 @@ part of xpx_chain_sdk.model.namespace;
 class NamespaceName {
   NamespaceName.fromDTO(NamespaceNameDTO dto) {
     parentId =
-        dto.parentId == null ? NamespaceId._(dto.parentId!.toUint64()) : null;
-    namespaceId = NamespaceId._(dto.namespaceId!.toUint64());
+        dto.parentId == null ? NamespaceId(dto.parentId!.toUint64()) : null;
+    namespaceId = NamespaceId(dto.namespaceId!.toUint64());
     name = dto.name;
   }
 

@@ -38,9 +38,9 @@ class UInt64DTO {
     return map;
   }
 
-  Uint64? toUint64() {
+  Uint64 toUint64() {
     if (lower == null || higher == null) {
-      return null;
+      return Uint64.zero;
     }
     return Uint64.fromDto(this);
   }

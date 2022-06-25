@@ -27,7 +27,7 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
 
   LockFundsTransaction.fromDTO(LockFundsTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
-    mosaic = Mosaic(MosaicId.fromUint64(dto.transaction!.assetId!.toUint64()),
+    mosaic = Mosaic(MosaicId(dto.transaction!.assetId!.toUint64()),
         dto.transaction!.amount!.toUint64());
     duration = dto.transaction!.duration!.toUint64();
     signedTransaction =

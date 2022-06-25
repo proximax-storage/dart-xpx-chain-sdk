@@ -11,16 +11,14 @@ class NamespaceInfo {
 
   static NamespaceInfo fromDTO(NamespaceInfoDTO dto) {
     final levels = extractLevels(dto);
-    final namespaceInfo =
-        NamespaceInfo(NamespaceId._(levels[levels.length - 1]));
+    final namespaceInfo = NamespaceInfo(NamespaceId(levels[levels.length - 1]!));
     namespaceInfo.metaId = dto.meta!.id;
     namespaceInfo.active = dto.meta!.active;
     namespaceInfo.index = dto.meta!.index;
 
     final _ownerAddress = Address.fromEncoded(dto.namespace!.ownerAddress!);
 
-    namespaceInfo.owner = PublicAccount.fromPublicKey(
-        dto.namespace!.owner, _ownerAddress.networkType);
+    namespaceInfo.owner = PublicAccount.fromPublicKey(dto.namespace!.owner, _ownerAddress.networkType);
 
     namespaceInfo.startHeight = dto.namespace!.startHeight!.toUint64();
     namespaceInfo.endHeight = dto.namespace!.endHeight!.toUint64();
@@ -30,17 +28,13 @@ class NamespaceInfo {
 
     if (dto.namespace!.alias != null) {
       if (dto.namespace!.alias!.address != null) {
-        namespaceInfo.alias =
-            Alias(address: Address.fromEncoded(dto.namespace!.alias!.address!));
+        namespaceInfo.alias = Alias(address: Address.fromEncoded(dto.namespace!.alias!.address!));
       } else {
-        namespaceInfo.alias = Alias(
-            mosaicId:
-                MosaicId.fromUint64(dto.namespace!.alias!.mosaicId!.toUint64()));
+        namespaceInfo.alias = Alias(mosaicId: MosaicId(dto.namespace!.alias!.mosaicId!.toUint64()));
       }
     }
-    if (dto.namespace!.parentId!.toUint64()!.toInt() != 0) {
-      namespaceInfo.parent =
-          NamespaceInfo(NamespaceId._(dto.namespace!.parentId!.toUint64()));
+    if (dto.namespace!.parentId!.toUint64().toInt() != 0) {
+      namespaceInfo.parent = NamespaceInfo(NamespaceId(dto.namespace!.parentId!.toUint64()));
     }
 
     return namespaceInfo;
@@ -76,9 +70,7 @@ class NamespaceInfo {
   String toString() => encoder.convert(this);
 
   static List<NamespaceInfo> listFromDTO(List<NamespaceInfoDTO> json) =>
-      json.isEmpty
-          ? <NamespaceInfo>[]
-          : json.map(NamespaceInfo.fromDTO).toList();
+      json.isEmpty ? <NamespaceInfo>[] : json.map(NamespaceInfo.fromDTO).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

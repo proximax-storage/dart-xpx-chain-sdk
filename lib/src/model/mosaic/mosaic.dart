@@ -21,7 +21,7 @@ class Mosaic {
   }
 
   Mosaic.fromDTO(MosaicDTO v) {
-    assetId = MosaicId.fromUint64(v.id!.toUint64());
+    assetId = MosaicId(v.id!.toUint64());
     amount = v.amount!.toUint64();
   }
 

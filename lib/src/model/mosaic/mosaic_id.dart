@@ -7,42 +7,27 @@
 part of xpx_chain_sdk.model.mosaic;
 
 class MosaicId extends AssetId {
-  factory MosaicId({final Uint64? id}) {
-    if (id == null) {
-      throw errNullId;
-    }
 
-    return MosaicId._(id);
-  }
+  /// Creates a new [MosaicId] from an [Uint64] id.
+  MosaicId(Uint64 uint64) : super(uint64);
 
-  const MosaicId._(final Uint64 value) : super(value);
+  /// Creates a new [MosaicId] from a [bigInt].
+  MosaicId.fromBigInt(BigInt bigInt): super(Uint64.fromBigInt(bigInt));
 
-  static MosaicId fromInts([final int value = 0, final int value2 = 0]) => MosaicId._(Uint64.fromInts(value, value2));
+  /// Creates a new [MosaicId] from a [hex] string.
+  MosaicId.fromHex(String hex) : super(Uint64.fromHex(hex));
 
-  MosaicId.fromUint64(final Uint64? value) : super(value);
+  /// Creates a new [MosaicId] from a pair of 32-bit integers.
+  MosaicId.fromInts(int lower, int higher) : super(Uint64.fromInts(lower, higher));
 
-  static MosaicId fromHex(final String hex) {
-    if (hex.isEmpty) {
-      throw ArgumentError('The hexString must not be null or empty');
-    }
-
-    if (0 != (hex.length % 2)) {
-      throw ArgumentError('invalid hex');
-    }
-    final Uint64 bigInt = Uint64.fromHex(hex);
-    return MosaicId._(bigInt);
-  }
-
-  static MosaicId fromNonceAndOwner(MosaicNonce nonce, PublicAccount ownerPublicAccount) =>
-      MosaicId._(_generateMosaicId(nonce, ownerPublicAccount));
-
-  @override
-  String toString() => '${toHex()}';
+  /// Creates a new [MosaicId] from a given [MosaicNonce] and owner [PublicAccount].
+  MosaicId.fromNonceAndOwner(MosaicNonce nonce, PublicAccount ownerPublicAccount)
+      : super(_generateMosaicId(nonce, ownerPublicAccount));
 
   @override
   int get hashCode => 'MosaicId'.hashCode ^ super.hashCode;
 
   @override
   bool operator ==(final other) =>
-      identical(this, other) || other is MosaicId && runtimeType == other.runtimeType && toBytes() == other.toBytes();
+      identical(this, other) || other is MosaicId && runtimeType == other.runtimeType && toHex() == other.toHex();
 }

@@ -42,7 +42,7 @@ class Offer implements Comparable<Offer> {
 
   Offer.fromDTO(OfferDTO dto) {
     offerType = dto.type;
-    mosaic = Mosaic(MosaicId(id: dto.mosaicId.toUint64()), dto.cost.toUint64());
+    mosaic = Mosaic(MosaicId(dto.mosaicId.toUint64()), dto.cost.toUint64());
     cost = dto.cost.toUint64();
   }
 
@@ -122,7 +122,7 @@ class UserExchangeInfo {
         final offer = OfferInfo.fromDTO(sellDto);
         offer.type = sellOffer;
         offer.owner = owner;
-        sellMap[MosaicId.fromUint64(sellDto.mosaicId.toUint64())] = offer;
+        sellMap[MosaicId(sellDto.mosaicId.toUint64())] = offer;
       }
 
       offers![sellOffer] = sellMap;
@@ -135,7 +135,7 @@ class UserExchangeInfo {
         final offer = OfferInfo.fromDTO(buyDto);
         offer.type = buyOffer;
         offer.owner = owner;
-        buyMap[MosaicId.fromUint64(buyDto.mosaicId.toUint64())] = offer;
+        buyMap[MosaicId(buyDto.mosaicId.toUint64())] = offer;
       }
 
       offers![buyOffer] = buyMap;
@@ -167,7 +167,7 @@ class OfferInfo {
     type = OfferType(dto.type);
     owner = dto.owner;
     mosaic =
-        Mosaic(MosaicId.fromUint64(dto.mosaicId.toUint64()), dto.amount.toUint64());
+        Mosaic(MosaicId(dto.mosaicId.toUint64()), dto.amount.toUint64());
     priceNumerator = dto.priceNumerator.toUint64();
     priceDenominator = dto.priceDenominator.toUint64();
     deadline = Deadline.fromUInt64DTO(dto.deadline);
@@ -259,7 +259,7 @@ class RemoveOffer {
 
   RemoveOffer.fromDTO(RemoveOfferDTO dto) {
     offerType = dto.offerType;
-    assetId = MosaicId.fromUint64(dto.mosaicId.toUint64());
+    assetId = MosaicId(dto.mosaicId.toUint64());
   }
 
   OfferType? offerType;

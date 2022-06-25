@@ -38,16 +38,13 @@ class TransactionRoutesApi {
   /// Announce a  transaction
   ///
   /// Announces a transaction to the network.
-  Future<Object?> _announceTransaction(tx, String uri) async {
+  Future<Object?> _announceTransaction(tx, String path) async {
     final Object postBody = tx;
 
     // verify required params are set
     if (tx == null) {
       throw ApiException(400, 'Missing required param: payload');
     }
-
-    // create path and map variables
-    final String path = uri.replaceAll('{format}', 'json');
 
     final response = await _apiClient.put(path, postBody);
 

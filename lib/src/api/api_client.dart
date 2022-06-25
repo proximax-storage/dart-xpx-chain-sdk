@@ -10,7 +10,7 @@ class QueryParam {
   QueryParam(this.name, this.value);
 
   String name;
-  String value;
+  Object value;
 
   @override
   String toString() => encoder.convert(this);
@@ -18,12 +18,14 @@ class QueryParam {
   Map<String, dynamic> toJson() => {'name': name, 'value': value};
 }
 
-class SiriusClient {
-  SiriusClient._(this._apiClient, Dio? dio) : httpClient = dio ?? Dio();
+class TimeoutOptions {
+  TimeoutOptions({required this.connectTimeout, required this.receiveTimeout});
+  final int connectTimeout;
+  final int receiveTimeout;
+}
 
-  /// [Dio] httpClient
-  /// It's been chosen because it's easy to use.
-  final Dio httpClient;
+class SiriusClient {
+  SiriusClient._(this._apiClient);
 
   final ApiClient _apiClient;
   Future<NetworkType>? _networkType;
@@ -38,8 +40,7 @@ class SiriusClient {
   TransactionRoutesApi? _transaction;
 
   /// Api dedicated to users operations
-  BlockchainRoutesApi get blockChain =>
-      _blockChain ??= BlockchainRoutesApi(_apiClient);
+  BlockchainRoutesApi get blockChain => _blockChain ??= BlockchainRoutesApi(_apiClient);
 
   /// Api dedicated to users operations
   AccountRoutesApi get account => _account ??= AccountRoutesApi(_apiClient);
@@ -54,8 +55,7 @@ class SiriusClient {
   MosaicRoutesApi get mosaic => _mosaic ??= MosaicRoutesApi(_apiClient);
 
   /// Api dedicated to users operations
-  NamespaceRoutesApi get namespace =>
-      _namespace ??= NamespaceRoutesApi(_apiClient);
+  NamespaceRoutesApi get namespace => _namespace ??= NamespaceRoutesApi(_apiClient);
 
   /// Api dedicated to users operations
   NetworkRoutesApi get network => _network ??= NetworkRoutesApi(_apiClient);
@@ -64,8 +64,7 @@ class SiriusClient {
   NodeRoutesApi get node => _node ??= NodeRoutesApi(_apiClient);
 
   /// Api dedicated to users operations
-  TransactionRoutesApi get transaction =>
-      _transaction ??= TransactionRoutesApi(_apiClient);
+  TransactionRoutesApi get transaction => _transaction ??= TransactionRoutesApi(_apiClient);
 
   Future<String?> get generationHash => _getGenerationHash();
 
@@ -81,28 +80,37 @@ class SiriusClient {
     return NetworkType.fromInt(info!.networkIdentifier!);
   }
 
-  static SiriusClient fromUrl(String baseUrl, [http.Client? client]) {
-    // ignore: parameter_assignments
-    client ??= http.Client();
+  static SiriusClient fromUrl(String baseUrl, [TimeoutOptions? timeOptions]) {
+    timeOptions ??=  TimeoutOptions(
+          connectTimeout: 5000,
+          receiveTimeout: 5000,
+        );
 
-    final ApiClient apiClient = ApiClient(baseUrl, Dio());
+    final options = BaseOptions(
+      connectTimeout: timeOptions.connectTimeout,
+      receiveTimeout: timeOptions.receiveTimeout,
+      receiveDataWhenStatusError: false,
+      responseType: ResponseType.json,
+      followRedirects: true,
+      validateStatus: (status) => status! <= 503,
+    );
 
-    return SiriusClient._(apiClient, Dio());
+    final ApiClient apiClient = ApiClient(baseUrl, options);
+
+    return SiriusClient._(apiClient);
   }
 }
 
 class ApiClient {
-  ApiClient(this.baseUrl, this._client);
+  ApiClient(this.baseUrl, this._options);
 
   String? baseUrl;
 
-  final Dio? _client;
+  final BaseOptions? _options;
 
-  final Map<String, String> _defaultHeaderMap = {};
+  Dio? _client;
 
-  void addDefaultHeader(String key, String value) {
-    _defaultHeaderMap[key] = value;
-  }
+  Dio get client => _client ?? Dio(_options);
 
   dynamic _deserialize(value, String? targetType) {
     try {
@@ -201,21 +209,17 @@ class ApiClient {
           {
             final data = value is Map ? value['data'] : value;
             Match? match;
-            if (data is List &&
-                (match = regList.firstMatch(targetType!)) != null) {
+            if (data is List && (match = regList.firstMatch(targetType!)) != null) {
               final newTargetType = match![1];
               return data.map((v) => _deserialize(v, newTargetType)).toList();
-            } else if (data is Map &&
-                (match = regMap.firstMatch(targetType!)) != null) {
+            } else if (data is Map && (match = regMap.firstMatch(targetType!)) != null) {
               final newTargetType = match![1];
-              return Map.fromIterables(data.keys,
-                  data.values.map((v) => _deserialize(v, newTargetType)));
+              return Map.fromIterables(data.keys, data.values.map((v) => _deserialize(v, newTargetType)));
             }
           }
       }
     } on Exception catch (e, stack) {
-      throw ApiException.withInner(
-          500, 'Exception during deserialization.', e, stack);
+      throw ApiException.withInner(500, 'Exception during deserialization.', e, stack);
     }
     return null;
   }
@@ -244,92 +248,47 @@ class ApiClient {
 
   // We don't use a Map<String, String> for queryParams.
   // If collectionFormat is 'multi' a key might appear multiple times.
-  Future<Response> _invokeAPI(
-      final String path,
-      String method,
-      Iterable<QueryParam> queryParams,
-      Object? body,
-      final Map<String, String>? headerParams,
-      final Map<String, String> formParams,
+  Future<Response> _invokeAPI(final String path, String method, Iterable<QueryParam> queryParams, Object? body,
       final String contentType) async {
-    final ps = queryParams
-        .where((p) => p.value.isNotEmpty)
-        .map((p) => '${p.name}=${p.value}');
+    final ps = queryParams.where((p) => p.name.isNotEmpty).map((p) => '${p.name}=${p.value}');
     final String queryString = ps.isNotEmpty ? '?${ps.join('&')}' : '';
 
     final String url = '${baseUrl!}$path$queryString';
 
-    final Options options = Options();
-    options.receiveDataWhenStatusError = false;
-    options.responseType = ResponseType.json;
-    options.followRedirects = true;
-    options.validateStatus = (status) => status! <= 503;
-    options.headers = _defaultHeaderMap;
-    options.headers!['Content-Type'] = contentType;
+    client.options.headers['Content-Type'] = contentType;
 
-    if (headerParams != null) {
-      options.headers!.addAll(headerParams);
-    }
-
-    final msgBody = contentType == 'application/x-www-form-urlencoded'
-        ? formParams
-        : serialize(body);
+    final msgBody = serialize(body);
 
     switch (method) {
       case 'POST':
-        return await _client!.post(url, options: options, data: msgBody);
+        client.options.method = 'POST';
+        return await client.request(url, data: msgBody);
       case 'PUT':
-        return await _client!.put(url, options: options, data: msgBody);
-      case 'DELETE':
-        return await _client!.delete(url, options: options);
-      case 'PATCH':
-        return await _client!.patch(url, options: options, data: msgBody);
+        client.options.method = 'PUT';
+        return await client.request(url, data: msgBody);
       default:
-        final response = await _client!.get(url, options: options);
-
-        return response;
+        client.options.method = 'GET';
+        return await client.request(url);
     }
-    // }
   }
 
-  Future<Response> get(String path,
-          [Object? postBody,
-          List<QueryParam>? queryParams,
-          Map<String, String>? headerParams,
-          Map<String, String>? formParams]) async =>
-      _response(path, 'GET', postBody, queryParams, headerParams, formParams);
+  Future<Response> get(String path, [Object? postBody, List<QueryParam>? queryParams]) async =>
+      _response(path, 'GET', postBody, queryParams);
 
-  Future<Response> post(String path,
-          [Object? postBody,
-          List<QueryParam>? queryParams,
-          Map<String, String>? headerParams,
-          Map<String, String>? formParams]) async =>
-      _response(path, 'POST', postBody, queryParams, headerParams, formParams);
+  Future<Response> post(String path, [Object? postBody, List<QueryParam>? queryParams]) async =>
+      _response(path, 'POST', postBody, queryParams);
 
-  Future<Response> put(String path,
-          [Object? postBody,
-          List<QueryParam>? queryParams,
-          Map<String, String>? headerParams,
-          Map<String, String>? formParams]) async =>
-      _response(path, 'PUT', postBody, queryParams, headerParams, formParams);
+  Future<Response> put(String path, [Object? postBody]) async => _response(path, 'PUT', postBody);
 
-  Future<Response> _response(String path, String method,
-      [Object? postBody,
-      List<QueryParam>? queryParams,
-      Map<String, String>? headerParams,
-      Map<String, String>? formParams]) async {
+  Future<Response> _response(String path, String method, [Object? postBody, List<QueryParam>? queryParams]) async {
     queryParams ??= [];
-    headerParams ??= {};
-    formParams ??= {};
 
     final List<String> contentTypes = [];
 
-    final String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
+    final String contentType = contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
 
     try {
-      return await _invokeAPI(path, method, queryParams, postBody, headerParams,
-          formParams, contentType);
+      return await _invokeAPI(path, method, queryParams, postBody, contentType);
     } on DioError catch (_) {
       rethrow;
     }

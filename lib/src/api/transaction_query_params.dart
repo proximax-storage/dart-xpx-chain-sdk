@@ -90,10 +90,10 @@ class TransactionQueryParams {
     toJson().forEach((key, value) {
       if (value is List) {
         for (var element in value) {
-          params.add(QueryParam('$key%5B%5D', element.toString()));
+          params.add(QueryParam('$key%5B%5D', element.toJson()));
         }
       } else {
-        params.add(QueryParam(key, value.toString()));
+        params.add(QueryParam(key, value));
       }
     });
     return params;

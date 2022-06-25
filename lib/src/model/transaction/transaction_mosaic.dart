@@ -30,7 +30,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
       : super.fromDto(dto.transaction!, dto.meta!) {
     mosaicProperties = MosaicProperties.fromDTO(dto.transaction!.properties!);
     mosaicNonce = MosaicNonce.fromInt(dto.transaction!.mosaicNonce!);
-    mosaicId = MosaicId.fromUint64(dto.transaction!.mosaicId!.toUint64());
+    mosaicId = MosaicId(dto.transaction!.mosaicId!.toUint64());
   }
 
   MosaicProperties? mosaicProperties;
@@ -139,7 +139,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
       MosaicSupplyChangeTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
     mosaicSupplyType = dto.transaction!.direction == 0 ? decrease : increase;
-    mosaicId = MosaicId.fromUint64(dto.transaction!.mosaicId!.toUint64());
+    mosaicId = MosaicId(dto.transaction!.mosaicId!.toUint64());
     delta = dto.transaction!.delta!.toUint64();
   }
 

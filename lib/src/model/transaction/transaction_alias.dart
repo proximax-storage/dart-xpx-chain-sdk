@@ -24,7 +24,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
         ? actionType = AliasActionType.aliasLink
         : AliasActionType.aliasUnlink;
     namespaceId = dto.transaction!.namespaceId != null
-        ? NamespaceId.fromUint64(dto.transaction!.namespaceId!.toUint64()!)
+        ? NamespaceId(dto.transaction!.namespaceId!.toUint64()!)
         : null;
   }
 
@@ -34,7 +34,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
         ? actionType = AliasActionType.aliasLink
         : AliasActionType.aliasUnlink;
     namespaceId = dto.transaction!.namespaceId != null
-        ? NamespaceId.fromUint64(dto.transaction!.namespaceId!.toUint64()!)
+        ? NamespaceId(dto.transaction!.namespaceId!.toUint64()!)
         : null;
   }
 
@@ -164,7 +164,7 @@ class MosaicAliasTransaction extends AliasTransaction {
   MosaicAliasTransaction.fromDTO(
     MosaicAliasTransactionInfoDTO value,
   ) : super._fromMosaicAliasDTO(value) {
-    mosaicId = MosaicId.fromUint64(value.transaction!.mosaicId!.toUint64());
+    mosaicId = MosaicId(value.transaction!.mosaicId!.toUint64());
   }
 
   MosaicId? mosaicId;

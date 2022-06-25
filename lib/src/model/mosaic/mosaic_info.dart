@@ -8,7 +8,7 @@ part of xpx_chain_sdk.model.mosaic;
 
 class MosaicInfo {
   MosaicInfo.fromDTO(MosaicInfoDTO dto) {
-    mosaicId = MosaicId(id: dto.mosaic!.mosaicId.toUint64());
+    mosaicId = MosaicId(dto.mosaic!.mosaicId.toUint64());
     supply = dto.mosaic!.supply.toUint64();
     height = dto.mosaic!.height.toUint64();
     owner = dto.mosaic!.owner;

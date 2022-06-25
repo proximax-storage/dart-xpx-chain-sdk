@@ -7,34 +7,24 @@
 part of xpx_chain_sdk.model.namespace;
 
 class NamespaceId extends AssetId {
-  factory NamespaceId({final Uint64? id}) {
-    if (id == null) {
-      throw errNullId;
+  /// Creates a new [NamespaceId] from an [Uint64] id.
+  NamespaceId(Uint64 id) : super(id);
+
+  /// Creates a new [NamespaceId] from a [bigInt].
+  NamespaceId.fromBigInt(BigInt bigInt) : super(Uint64.fromBigInt(bigInt));
+
+  /// Creates a new [NamespaceId] from a [hex].
+  NamespaceId.fromHex(String hex) : super(Uint64.fromHex(hex));
+
+  /// Creates a new [NamespaceId] from a pair of 32-bit integers.
+  NamespaceId.fromInts([int value = 0, int value2 = 0]) : super(Uint64.fromInts(value, value2));
+
+  /// Creates a new [NamespaceId] from a [namespaceName].
+  factory NamespaceId.fromName(String namespaceName) {
+    if (namespaceName.isEmpty) {
+      throw ArgumentError('Either fullName is required');
     }
-
-    return NamespaceId._(id);
-  }
-
-  const NamespaceId._(final Uint64? id) : super(id);
-
-  /// NewNamespaceIdFromName generate Id from namespaceName
-  NamespaceId.fromName(String namespaceName)
-      : super(generateNamespacePath(namespaceName));
-
-  static NamespaceId fromInts([final int value = 0, final int value2 = 0]) => NamespaceId._(Uint64.fromInts(value, value2));
-  
-  NamespaceId.fromUint64(final Uint64 value) : super(value);
-
-  static NamespaceId fromHex(final String hex) {
-    if (hex.isEmpty) {
-      throw ArgumentError('The hexString must not be null or empty');
-    }
-
-    if (0 != (hex.length % 2)) {
-      throw ArgumentError('invalid hex');
-    }
-    final Uint64 bigInt = Uint64.fromHex(hex);
-    return NamespaceId._(bigInt);
+    return NamespaceId(generateNamespacePath(namespaceName));
   }
 
   @override
@@ -42,14 +32,5 @@ class NamespaceId extends AssetId {
 
   @override
   bool operator ==(final other) =>
-      identical(this, other) ||
-      other is NamespaceId &&
-          runtimeType == other.runtimeType &&
-          toBytes() == other.toBytes();
-
-  @override
-  String toString() => encoder.convert(this);
-
-  @override
-  String toJson() => super.value!.toHexString();
+      identical(this, other) || other is NamespaceId && runtimeType == other.runtimeType && toHex() == other.toHex();
 }

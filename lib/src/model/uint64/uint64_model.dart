@@ -48,6 +48,13 @@ class Uint64 implements Comparable<Uint64> {
 
   /// Creates a [Uint64] from a [hex].
   static Uint64 fromHex(final String hex) {
+    if (hex.isEmpty) {
+      throw ArgumentError('The hexString must not be null or empty');
+    }
+
+    if (!HexUtils.isHex(hex)) {
+      throw ArgumentError('Invalid hex');
+    }
     final BigInt bigInt = BigInt.parse(hex, radix: 16);
     return fromBigInt(bigInt);
   }
@@ -220,9 +227,9 @@ class Uint64 implements Comparable<Uint64> {
   }
 
   static void _checkValue(final BigInt value) {
-//    if (value < _minValueUnsigned || value > _maxValueUnsigned) {
-//      throw ArgumentError('Value out of range');
-//    }
+   if (value < _minValueUnsigned || value > _maxValueUnsigned) {
+     throw ArgumentError('Value out of range');
+   }
   }
 
   // Returns the [Int64] representation of the specified value. Throws

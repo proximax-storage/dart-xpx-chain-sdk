@@ -9,12 +9,12 @@ part of xpx_chain_sdk.model.transaction;
 abstract class AssetId {
   const AssetId(this.value);
 
-  final Uint64? value;
+  final Uint64 value;
 
   @override
   String toString() => encoder.convert(this);
 
-  String toJson() => value!.toHexString();
+  String toJson() => value.toHexString();
 
   @override
   bool operator ==(Object other) =>
@@ -38,9 +38,9 @@ abstract class AssetId {
     return s;
   }
 
-  List<int> toIntArray() => value!.toIntArray();
+  List<int> toIntArray() => value.toIntArray();
 
   Uint64? toUint64() => value;
 
-  Uint8List toBytes() => value!.toBytes();
+  Uint8List toBytes() => value.toBytes();
 }

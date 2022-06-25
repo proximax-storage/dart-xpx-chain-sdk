@@ -41,7 +41,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     } else {
       parentId = NamespaceId.fromName(rootNamespaceName);
       namespaceId = NamespaceId(
-          id: generateNamespaceId(subNamespaceName, parentId!.toUint64()!));
+          generateNamespaceId(subNamespaceName, parentId!.toUint64()!));
       namespaceName = subNamespaceName;
       namespaceType = NamespaceType.sub;
     }
@@ -49,7 +49,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 
   RegisterNamespaceTransaction.fromDTO(RegisterNamespaceTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
-    namespaceId = NamespaceId(id: dto.transaction!.namespaceId!.toUint64());
+    namespaceId = NamespaceId(dto.transaction!.namespaceId!.toUint64());
     namespaceType = dto.transaction!.namespaceType == 0
         ? NamespaceType.root
         : NamespaceType.sub;
@@ -57,7 +57,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
     if (namespaceType == NamespaceType.root) {
       duration = dto.transaction!.duration!.toUint64();
     } else {
-      parentId = NamespaceId(id: dto.transaction!.parentId!.toUint64());
+      parentId = NamespaceId(dto.transaction!.parentId!.toUint64());
     }
   }
 

@@ -10,7 +10,6 @@ import 'dart:async';
 import 'dart:convert' show json;
 
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 import 'dto.dart';
@@ -32,4 +31,9 @@ part 'page_query_params.dart';
 part 'query_params.dart';
 part 'transaction_query_params.dart';
 
-ApiClient defaultApiClient = ApiClient(null, null);
+ApiClient defaultApiClient = ApiClient(
+    'http://127.0.0.1:3000',
+    BaseOptions(
+      connectTimeout: 5000,
+      receiveTimeout: 5000,
+    ));

@@ -8,7 +8,7 @@ part of xpx_chain_sdk.model.mosaic;
 
 class MosaicName {
   MosaicName.fromDTO(MosaicNameDTO dto) {
-    mosaicId = MosaicId.fromUint64(dto.mosaicId!.toUint64());
+    mosaicId = MosaicId(dto.mosaicId!.toUint64());
     names = dto.names != null ? List.from(dto.names!) : null;
   }
 

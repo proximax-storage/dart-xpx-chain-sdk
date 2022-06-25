@@ -6,7 +6,7 @@
 
 part of xpx_chain_sdk.model.mosaic;
 
-final xpxMosaicId = MosaicId(id: Uint64(481110499, 231112638));
+final xpxMosaicId = MosaicId.fromInts(481110499, 231112638);
 
 enum MosaicSupplyType { decrease, increase }
 
