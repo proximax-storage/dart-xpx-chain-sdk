@@ -9,8 +9,7 @@ part of xpx_chain_sdk.model.network;
 class NetworkInfo {
   NetworkInfo(this.networkType, this.description);
 
-  NetworkInfo.fromJson(Map<String, dynamic> json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  NetworkInfo.fromJson(Map<String, dynamic> json) : assert(json.isNotEmpty, 'json must not be empty') {
     networkType = NetworkType.fromName(json['name']);
     description = json['description'];
   }
@@ -21,6 +20,5 @@ class NetworkInfo {
   @override
   String toString() => encoder.convert(this);
 
-  Map<String, dynamic> toJson() =>
-      {'networkType': networkType, 'description': description};
+  Map<String, dynamic> toJson() => {'networkType': networkType, 'description': description};
 }

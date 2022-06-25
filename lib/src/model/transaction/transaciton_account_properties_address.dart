@@ -7,19 +7,15 @@
 part of xpx_chain_sdk.model.transaction;
 
 // AliasTransaction
-class AccountPropertiesAddressTransaction extends AbstractTransaction
-    implements Transaction {
-  AccountPropertiesAddressTransaction(Deadline deadline, this.propertyType,
-      this.modifications, NetworkType networkType, [Uint64? maxFee])
-      : super(networkType, deadline, TransactionType.accountPropertyAddress,
-            accountRestrictionAddressVersion, maxFee);
+class AccountPropertiesAddressTransaction extends AbstractTransaction implements Transaction {
+  AccountPropertiesAddressTransaction(Deadline deadline, this.propertyType, this.modifications, NetworkType networkType,
+      [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.accountPropertyAddress, accountRestrictionAddressVersion, maxFee);
 
-  AccountPropertiesAddressTransaction.fromDTO(
-      AccountPropertiesAddressTransactionInfoDTO dto)
+  AccountPropertiesAddressTransaction.fromDTO(AccountPropertiesAddressTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
     propertyType = AccountPropertyType.fromInt(dto.transaction!.propertyType);
-    modifications = AccountPropertiesAddressModification.listFromJson(
-        dto.transaction!.modifications!);
+    modifications = AccountPropertiesAddressModification.listFromJson(dto.transaction!.modifications!);
   }
 
   AccountPropertyType? propertyType;
@@ -44,9 +40,7 @@ class AccountPropertiesAddressTransaction extends AbstractTransaction
   }
 
   @override
-  int size() =>
-      accountPropertyAddressHeader +
-      (accountPropertiesAddressModificationSize * modifications!.length);
+  int size() => accountPropertyAddressHeader + (accountPropertiesAddressModificationSize * modifications!.length);
 
   @override
   AbstractTransaction absTransaction() => _absTransaction();
@@ -56,8 +50,7 @@ class AccountPropertiesAddressTransaction extends AbstractTransaction
     final builder = fb.Builder(initialSize: 0);
 
     /// Create mosaics
-    final List<int?> msb =
-        List.filled(modifications!.length, null, growable: false);
+    final List<int?> msb = List.filled(modifications!.length, null, growable: false);
     int i = 0;
     for (final modification in modifications!) {
       final address = modification.address!.decode();
@@ -75,13 +68,12 @@ class AccountPropertiesAddressTransaction extends AbstractTransaction
 
     final vectors = _generateCommonVector(builder);
 
-    final txnBuilder =
-        $buffer.AccountPropertiesTransactionBufferBuilder(builder)
-          ..begin()
-          ..addSize(size())
-          ..addPropertyType(propertyType!.value)
-          ..addModificationCount(modifications!.length)
-          ..addModificationsOffset(mV);
+    final txnBuilder = $buffer.AccountPropertiesTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(size())
+      ..addPropertyType(propertyType!.value)
+      ..addModificationCount(modifications!.length)
+      ..addModificationsOffset(mV);
     _buildCommonVector(builder, vectors);
 
     final codedAccountProperty = txnBuilder.finish();

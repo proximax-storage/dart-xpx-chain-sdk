@@ -17,8 +17,7 @@ class AbstractTransaction with TransactionInfo {
     this.signer,
   ]);
 
-  AbstractTransaction.fromDto(
-      AbstractTransactionDTO absValue, MetaTransactionDTO metaValue) {
+  AbstractTransaction.fromDto(AbstractTransactionDTO absValue, MetaTransactionDTO metaValue) {
     networkType = NetworkType.fromInt(extractNetworkType(absValue.version!));
     deadline = Deadline.fromUInt64DTO(absValue.deadline!);
     type = TransactionType.fromInt(absValue.type);
@@ -56,10 +55,8 @@ class AbstractTransaction with TransactionInfo {
     data['versionV'] = (networkType.identifier << 24) + version;
     data['signatureV'] = builder.writeListUint8(Uint8List(signatureSize));
     data['signerV'] = builder.writeListUint8(Uint8List(signerSize));
-    data['deadlineV'] = builder
-        .writeListUint32(Uint64(deadline.toBlockchainTimestamp()).toIntArray());
-    data['feeV'] =
-        builder.writeListUint32(maxFee != null ? maxFee!.toIntArray() : [0, 0]);
+    data['deadlineV'] = builder.writeListUint32(Uint64(deadline.toBlockchainTimestamp()).toIntArray());
+    data['feeV'] = builder.writeListUint32(maxFee != null ? maxFee!.toIntArray() : [0, 0]);
     return data;
   }
 
@@ -75,13 +72,11 @@ class AbstractTransaction with TransactionInfo {
 
   AbstractTransaction _absTransaction() => this;
 
-  bool isUnconfirmed() =>
-      height!.toInt() == 0 && transactionHash == merkleComponentHash;
+  bool isUnconfirmed() => height!.toInt() == 0 && transactionHash == merkleComponentHash;
 
   bool isConfirmed() => height!.toInt() > 0;
 
-  bool hasMissingSignatures() =>
-      height!.toInt() == 0 && transactionHash != merkleComponentHash;
+  bool hasMissingSignatures() => height!.toInt() == 0 && transactionHash != merkleComponentHash;
 
   bool isUnannounced() => this == null;
 

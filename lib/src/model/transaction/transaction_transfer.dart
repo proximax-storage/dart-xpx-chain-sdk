@@ -10,14 +10,12 @@ part of xpx_chain_sdk.model.transaction;
 /// Announce a [TransferTransaction] to send [Mosaic] or [Message] between two [Account].
 ///
 class TransferTransaction extends AbstractTransaction implements Transaction {
-  TransferTransaction.create(Deadline deadline, Address this.recipient,
-      List<Mosaic> this.mosaics, Message this.message, NetworkType networkType,
+  TransferTransaction.create(Deadline deadline, Address this.recipient, List<Mosaic> this.mosaics, Message this.message,
+      NetworkType networkType,
       [Uint64? maxFee])
-      : super(networkType, deadline, TransactionType.transfer, transferVersion,
-            maxFee);
+      : super(networkType, deadline, TransactionType.transfer, transferVersion, maxFee);
 
-  TransferTransaction.fromDTO(TransferTransactionInfoDTO dto)
-      : super.fromDto(dto.transaction!, dto.meta!) {
+  TransferTransaction.fromDTO(TransferTransactionInfoDTO dto) : super.fromDto(dto.transaction!, dto.meta!) {
     mosaics = Mosaic.listFromDTO(dto.transaction!.mosaics);
     recipient = Address.fromEncoded(dto.transaction!.recipient!);
     message = null;
@@ -57,10 +55,7 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
   int messageSize() => message!.payload.length + 1;
 
   @override
-  int size() =>
-      transferHeaderSize +
-      (mosaicIdSize + amountSize) * mosaics!.length +
-      messageSize();
+  int size() => transferHeaderSize + (mosaicIdSize + amountSize) * mosaics!.length + messageSize();
 
   @override
   AbstractTransaction absTransaction() => _absTransaction();

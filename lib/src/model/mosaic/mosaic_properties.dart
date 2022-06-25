@@ -22,10 +22,7 @@ class MosaicProperties {
   }
 
   factory MosaicProperties.create(
-          {required bool supplyMutable,
-          required bool transferable,
-          required int divisibility,
-          Uint64? duration}) =>
+          {required bool supplyMutable, required bool transferable, required int divisibility, Uint64? duration}) =>
       MosaicProperties._(supplyMutable, transferable, divisibility, duration);
 
   MosaicProperties.fromDTO(List<MosaicPropertyDTO> value) {

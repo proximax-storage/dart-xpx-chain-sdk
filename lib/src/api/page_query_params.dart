@@ -9,8 +9,7 @@ part of xpx_chain_sdk.api;
 /// The query params structure describes pagination by page number and page size.
 class PageQueryParams {
   PageQueryParams(int? page, int? pageSize) {
-    this.pageSize =
-        (pageSize != null && pageSize >= 10 && pageSize <= 100) ? pageSize : 25;
+    this.pageSize = (pageSize != null && pageSize >= 10 && pageSize <= 100) ? pageSize : 25;
     this.page = (page != null && page >= 0) ? page : 0;
   }
 

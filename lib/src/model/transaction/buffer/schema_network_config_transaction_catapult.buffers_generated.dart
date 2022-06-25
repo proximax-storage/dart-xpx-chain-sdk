@@ -15,44 +15,34 @@ class NetworkConfigTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<NetworkConfigTransactionBuffer> reader =
-      _NetworkConfigTransactionBufferReader();
+  static const fb.Reader<NetworkConfigTransactionBuffer> reader = _NetworkConfigTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get signature =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get signature => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get signer =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get signer => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 14);
+  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 14);
 
-  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 16);
+  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 16);
 
-  List<int>? get applyHeightDelta => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 18);
+  List<int>? get applyHeightDelta => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 18);
 
-  int get networkConfigSize =>
-      const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 20, 0);
+  int get networkConfigSize => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 20, 0);
 
-  int get supportedEntityVersionsSize =>
-      const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 22, 0);
+  int get supportedEntityVersionsSize => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 22, 0);
 
-  List<int>? get networkConfig =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 24);
+  List<int>? get networkConfig => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 24);
 
-  List<int>? get supportedEntityVersions =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 26);
+  List<int>? get supportedEntityVersions => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 26);
 
   @override
   String toString() {
@@ -60,13 +50,11 @@ class NetworkConfigTransactionBuffer {
   }
 }
 
-class _NetworkConfigTransactionBufferReader
-    extends fb.TableReader<NetworkConfigTransactionBuffer> {
+class _NetworkConfigTransactionBufferReader extends fb.TableReader<NetworkConfigTransactionBuffer> {
   const _NetworkConfigTransactionBufferReader();
 
   @override
-  NetworkConfigTransactionBuffer createObject(
-          fb.BufferContext bc, int offset) =>
+  NetworkConfigTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
       NetworkConfigTransactionBuffer._(bc, offset);
 }
 
@@ -187,23 +175,15 @@ class NetworkConfigTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? signatureOffset =
-        _signature == null ? null : fbBuilder.writeListUint8(_signature!);
-    final int? signerOffset =
-        _signer == null ? null : fbBuilder.writeListUint8(_signer!);
-    final int? maxFeeOffset =
-        _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
-    final int? deadlineOffset =
-        _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
-    final int? applyHeightDeltaOffset = _applyHeightDelta == null
-        ? null
-        : fbBuilder.writeListUint32(_applyHeightDelta!);
-    final int? networkConfigOffset = _networkConfig == null
-        ? null
-        : fbBuilder.writeListUint8(_networkConfig!);
-    final int? supportedEntityVersionsOffset = _supportedEntityVersions == null
-        ? null
-        : fbBuilder.writeListUint8(_supportedEntityVersions!);
+    final int? signatureOffset = _signature == null ? null : fbBuilder.writeListUint8(_signature!);
+    final int? signerOffset = _signer == null ? null : fbBuilder.writeListUint8(_signer!);
+    final int? maxFeeOffset = _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
+    final int? deadlineOffset = _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
+    final int? applyHeightDeltaOffset =
+        _applyHeightDelta == null ? null : fbBuilder.writeListUint32(_applyHeightDelta!);
+    final int? networkConfigOffset = _networkConfig == null ? null : fbBuilder.writeListUint8(_networkConfig!);
+    final int? supportedEntityVersionsOffset =
+        _supportedEntityVersions == null ? null : fbBuilder.writeListUint8(_supportedEntityVersions!);
     fbBuilder.startTable(12);
     fbBuilder.addUint32(0, _size);
     fbBuilder.addOffset(1, signatureOffset);

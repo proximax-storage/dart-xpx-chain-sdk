@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api.dto;
 
 class AccountDTO {
-  AccountDTO.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  AccountDTO.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     address = json['address'];
     addressHeight = UInt64DTO.fromJson(json['addressHeight']);
     publicKey = json['publicKey'];
@@ -44,8 +43,7 @@ class AccountDTO {
 }
 
 class AccountInfoDTO {
-  AccountInfoDTO.fromJson(Map<dynamic, dynamic> json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  AccountInfoDTO.fromJson(Map<dynamic, dynamic> json) : assert(json.isNotEmpty, 'json must not be empty') {
     account = AccountDTO.fromJson(json['account']);
   }
 

@@ -8,8 +8,7 @@ part of xpx_chain_sdk.model.account;
 
 class AccountInfo {
   AccountInfo.fromDTO(AccountInfoDTO v) {
-    final List<Mosaic?> mList =
-        List.filled(v.account!.mosaics!.length, null, growable: false);
+    final List<Mosaic?> mList = List.filled(v.account!.mosaics!.length, null, growable: false);
     for (var i = 0; i < v.account!.mosaics!.length; i++) {
       mList[i] = Mosaic.fromDTO(v.account!.mosaics![i]);
     }

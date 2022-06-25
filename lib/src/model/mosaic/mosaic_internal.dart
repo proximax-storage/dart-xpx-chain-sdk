@@ -10,8 +10,7 @@ final xpxMosaicId = MosaicId.fromInts(481110499, 231112638);
 
 enum MosaicSupplyType { decrease, increase }
 
-const decrease = MosaicSupplyType.decrease,
-    increase = MosaicSupplyType.increase;
+const decrease = MosaicSupplyType.decrease, increase = MosaicSupplyType.increase;
 
 const getSupplyMutable = 0x01;
 
@@ -35,8 +34,7 @@ Mosaic xpx(int amount) {
 
 Mosaic xpxRelative(int amount) {
   if (amount > xpxMaxRelativeValue) {
-    throw ArgumentError(
-        'Maximum xpx relative value must be $xpxMaxRelativeValue');
+    throw ArgumentError('Maximum xpx relative value must be $xpxMaxRelativeValue');
   }
   return xpx(amount * xpxDivisibility);
 }
@@ -84,8 +82,7 @@ Uint8List randombytesArrayLen(Uint8List x, int len) {
   }
   if (ret > 0) {
     rnd = Int64(jrandom.nextInt(1 << 32));
-    for (int i = len - ret; i < len; i++)
-      x[i] = rnd.shiftRightUnsigned(8 * i).toInt();
+    for (int i = len - ret; i < len; i++) x[i] = rnd.shiftRightUnsigned(8 * i).toInt();
   }
   return x;
 }

@@ -8,7 +8,17 @@ library xpx_chain_sdk.test.model.transaction.transaction_test;
 
 import 'package:test/test.dart';
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart'
-    show Account, AccountMetadataTransaction, ByteUtils, Deadline, MosaicId, MosaicMetadataTransaction, NamespaceId, NamespaceMetadataTransaction, NetworkType, Uint64;
+    show
+        Account,
+        AccountMetadataTransaction,
+        ByteUtils,
+        Deadline,
+        MosaicId,
+        MosaicMetadataTransaction,
+        NamespaceId,
+        NamespaceMetadataTransaction,
+        NetworkType,
+        Uint64;
 
 import '../../conf/conf.dart';
 
@@ -31,11 +41,22 @@ void main() {
 
           expect(modifyMetadataTransaction.size(), 181);
           expect(signedTransaction.payload.length, 181 * 2);
-          expect(signedTransaction.payload.substring(244, signedTransaction.payload.length,).toLowerCase(),
-              (testingAccount.publicKey + '859CBD19B98E068F' + ByteUtils.bytesToHex(mosaicId.toBytes()) + '0300070000000000696E67').toLowerCase());
+          expect(
+              signedTransaction.payload
+                  .substring(
+                    244,
+                    signedTransaction.payload.length,
+                  )
+                  .toLowerCase(),
+              (testingAccount.publicKey +
+                      '859CBD19B98E068F' +
+                      ByteUtils.bytesToHex(mosaicId.toBytes()) +
+                      '0300070000000000696E67')
+                  .toLowerCase());
         });
 
-        test('should return 181 for namespace MetadataTransaction byte size with newValue=test, oldValue=testing', () async {
+        test('should return 181 for namespace MetadataTransaction byte size with newValue=test, oldValue=testing',
+            () async {
           final namespaceId = NamespaceId.fromInts(2262289484, 3405110546);
           final modifyMetadataTransaction = NamespaceMetadataTransaction.create(Deadline(hours: 1), namespaceId,
               testingAccount.publicAccount, 'name', 'test', 'testing', NetworkType.PUBLIC_TEST, Uint64.zero);
@@ -43,8 +64,18 @@ void main() {
 
           expect(modifyMetadataTransaction.size(), 181);
           expect(signedTransaction.payload.length, 181 * 2);
-          expect(signedTransaction.payload.substring(244, signedTransaction.payload.length,).toLowerCase(),
-              (testingAccount.publicKey + '859CBD19B98E068F' + ByteUtils.bytesToHex(namespaceId.toBytes()) + 'FDFF070000000000696E67').toLowerCase());
+          expect(
+              signedTransaction.payload
+                  .substring(
+                    244,
+                    signedTransaction.payload.length,
+                  )
+                  .toLowerCase(),
+              (testingAccount.publicKey +
+                      '859CBD19B98E068F' +
+                      ByteUtils.bytesToHex(namespaceId.toBytes()) +
+                      'FDFF070000000000696E67')
+                  .toLowerCase());
         });
 
         test('should return 173 for accountMetadataTransaction byte size with newValue=testing, oldValue=""', () async {
@@ -54,10 +85,15 @@ void main() {
 
           expect(modifyMetadataTransaction.size(), 173);
           expect(signedTransaction.payload.length, 173 * 2);
-          expect(signedTransaction.payload.substring(244, signedTransaction.payload.length,).toLowerCase(),
+          expect(
+              signedTransaction.payload
+                  .substring(
+                    244,
+                    signedTransaction.payload.length,
+                  )
+                  .toLowerCase(),
               (testingAccount.publicKey + '859CBD19B98E068F' + '0700070074657374696E67').toLowerCase());
         });
-
       });
     });
   });

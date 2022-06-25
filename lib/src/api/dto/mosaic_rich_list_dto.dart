@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api.dto;
 
 class MosaicRichListDTO {
-  MosaicRichListDTO.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  MosaicRichListDTO.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     address = json['address'] as String;
     publicKey = json['address'] as String;
     amount = UInt64DTO.fromJson(json['amount']);

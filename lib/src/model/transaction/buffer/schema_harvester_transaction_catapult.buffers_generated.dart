@@ -15,29 +15,24 @@ class HarvesterTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<HarvesterTransactionBuffer> reader =
-      _HarvesterTransactionBufferReader();
+  static const fb.Reader<HarvesterTransactionBuffer> reader = _HarvesterTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get signature =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get signature => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get signer =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get signer => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 14);
+  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 14);
 
-  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 16);
+  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 16);
 
   @override
   String toString() {
@@ -45,13 +40,11 @@ class HarvesterTransactionBuffer {
   }
 }
 
-class _HarvesterTransactionBufferReader
-    extends fb.TableReader<HarvesterTransactionBuffer> {
+class _HarvesterTransactionBufferReader extends fb.TableReader<HarvesterTransactionBuffer> {
   const _HarvesterTransactionBufferReader();
 
   @override
-  HarvesterTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-      HarvesterTransactionBuffer._(bc, offset);
+  HarvesterTransactionBuffer createObject(fb.BufferContext bc, int offset) => HarvesterTransactionBuffer._(bc, offset);
 }
 
 class HarvesterTransactionBufferBuilder {
@@ -131,14 +124,10 @@ class HarvesterTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? signatureOffset =
-        _signature == null ? null : fbBuilder.writeListUint8(_signature!);
-    final int? signerOffset =
-        _signer == null ? null : fbBuilder.writeListUint8(_signer!);
-    final int? maxFeeOffset =
-        _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
-    final int? deadlineOffset =
-        _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
+    final int? signatureOffset = _signature == null ? null : fbBuilder.writeListUint8(_signature!);
+    final int? signerOffset = _signer == null ? null : fbBuilder.writeListUint8(_signer!);
+    final int? maxFeeOffset = _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
+    final int? deadlineOffset = _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
     fbBuilder.startTable(7);
     fbBuilder.addUint32(0, _size);
     fbBuilder.addOffset(1, signatureOffset);

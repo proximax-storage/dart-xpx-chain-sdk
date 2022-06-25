@@ -9,10 +9,8 @@ part of xpx_chain_sdk.api;
 class MetadataSortingField {
   MetadataSortingField(this._value);
 
-  static MetadataSortingField value =
-      MetadataSortingField('metadataEntry.value');
-  static MetadataSortingField valueSize =
-      MetadataSortingField('metadataEntry.valueSize');
+  static MetadataSortingField value = MetadataSortingField('metadataEntry.value');
+  static MetadataSortingField valueSize = MetadataSortingField('metadataEntry.valueSize');
 
   final String _value;
 
@@ -25,11 +23,9 @@ class MetadataSortingField {
 class MetadataFieldOrder {
   MetadataFieldOrder(this.order, this.sortingField);
 
-  static ascending(MetadataSortingField sortingField) =>
-      MetadataFieldOrder(Order_v2.ASC, sortingField);
+  static ascending(MetadataSortingField sortingField) => MetadataFieldOrder(Order_v2.ASC, sortingField);
 
-  static descending(MetadataSortingField sortingField) =>
-      MetadataFieldOrder(Order_v2.DESC, sortingField);
+  static descending(MetadataSortingField sortingField) => MetadataFieldOrder(Order_v2.DESC, sortingField);
 
   final Order_v2 order;
   final MetadataSortingField sortingField;
@@ -37,8 +33,7 @@ class MetadataFieldOrder {
   @override
   String toString() => encoder.convert(this);
 
-  Map<String, dynamic> toJson() =>
-      {'order': order, 'sortingField': sortingField};
+  Map<String, dynamic> toJson() => {'order': order, 'sortingField': sortingField};
 }
 
 class MetadataQueryParams {
@@ -59,8 +54,7 @@ class MetadataQueryParams {
 
   Iterable<QueryParam> toQueryParams() {
     final params = <QueryParam>[];
-    toJson()
-        .forEach((key, value) => params.add(QueryParam(key, value.toString())));
+    toJson().forEach((key, value) => params.add(QueryParam(key, value.toString())));
     return params;
   }
 

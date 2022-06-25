@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api.dto;
 
 class NamespaceDTO {
-  NamespaceDTO.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  NamespaceDTO.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     owner = json['owner'];
     ownerAddress = json['ownerAddress'];
     startHeight = UInt64DTO.fromJson(json['startHeight']);
@@ -54,8 +53,7 @@ class NamespaceDTO {
   static List<NamespaceDTO> listFromJson(List<Map> json) =>
       json.isEmpty ? [] : json.map(NamespaceDTO.fromJson).toList();
 
-  static Map<String, NamespaceDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, NamespaceDTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, NamespaceDTO>{};
     if (json.isNotEmpty) {
       json.forEach((key, value) => map[key] = NamespaceDTO.fromJson(value));
@@ -65,8 +63,7 @@ class NamespaceDTO {
 }
 
 class NamespaceInfoDTO {
-  NamespaceInfoDTO.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  NamespaceInfoDTO.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     meta = NamespaceMetaDTO.fromJson(json['meta']);
     namespace = NamespaceDTO.fromJson(json['namespace']);
   }
@@ -78,8 +75,7 @@ class NamespaceInfoDTO {
   static List<NamespaceInfoDTO> listFromJson(List<Map> json) =>
       json.isEmpty ? [] : json.map(NamespaceInfoDTO.fromJson).toList();
 
-  static Map<String, NamespaceInfoDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, NamespaceInfoDTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, NamespaceInfoDTO>{};
     if (json.isNotEmpty) {
       json.forEach((key, value) => map[key] = NamespaceInfoDTO.fromJson(value));
@@ -97,8 +93,7 @@ class NamespaceInfoDTO {
 }
 
 class NamespaceMetaDTO {
-  NamespaceMetaDTO.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  NamespaceMetaDTO.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     id = json['id'];
     active = json['active'];
     index = json['index'];
@@ -113,8 +108,7 @@ class NamespaceMetaDTO {
   static List<NamespaceMetaDTO> listFromJson(List<Map> json) =>
       json.isEmpty ? [] : json.map(NamespaceMetaDTO.fromJson).toList();
 
-  static Map<String, NamespaceMetaDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, NamespaceMetaDTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, NamespaceMetaDTO>{};
     if (json.isNotEmpty) {
       json.forEach((key, value) => map[key] = NamespaceMetaDTO.fromJson(value));
@@ -133,8 +127,7 @@ class NamespaceMetaDTO {
 }
 
 class NamespaceNameDTO {
-  NamespaceNameDTO.fromJson(Map<String, dynamic> json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  NamespaceNameDTO.fromJson(Map<String, dynamic> json) : assert(json.isNotEmpty, 'json must not be empty') {
     parentId = UInt64DTO.fromJson(json['parentId']);
     namespaceId = UInt64DTO.fromJson(json['namespaceId']);
     name = json['name'];
@@ -147,12 +140,9 @@ class NamespaceNameDTO {
   String? name;
 
   static List<NamespaceNameDTO> listFromJson(List<Map<String, dynamic>> json) =>
-      json.isEmpty
-          ? <NamespaceNameDTO>[]
-          : json.map(NamespaceNameDTO.fromJson).toList();
+      json.isEmpty ? <NamespaceNameDTO>[] : json.map(NamespaceNameDTO.fromJson).toList();
 
-  static Map<String, NamespaceNameDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, NamespaceNameDTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, NamespaceNameDTO>{};
     if (json.isNotEmpty) {
       json.forEach((key, value) => map[key] = NamespaceNameDTO.fromJson(value));
@@ -172,11 +162,8 @@ class NamespaceNameDTO {
 
 class RegisterNamespaceTransactionInfoDTO {
   RegisterNamespaceTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
-    transaction = json['transaction'] != null
-        ? RegisterNamespaceTransactionDTO.fromJson(json['transaction'])
-        : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    transaction = json['transaction'] != null ? RegisterNamespaceTransactionDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO? meta;
@@ -227,11 +214,9 @@ class RegisterNamespaceTransactionDTO extends AbstractTransactionDTO {
     namespaceId = UInt64DTO.fromJson(json['namespaceId']);
     namespaceType = json['namespaceType'];
     name = json['name'];
-    parentId =
-        json['parentId'] != null ? UInt64DTO.fromJson(json['parentId']) : null;
+    parentId = json['parentId'] != null ? UInt64DTO.fromJson(json['parentId']) : null;
 
-    duration =
-        json['duration'] != null ? UInt64DTO.fromJson(json['duration']) : null;
+    duration = json['duration'] != null ? UInt64DTO.fromJson(json['duration']) : null;
   }
 
   UInt64DTO? namespaceId;

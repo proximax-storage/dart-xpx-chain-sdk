@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api;
 
 class NetworkRoutesApi {
-  NetworkRoutesApi([ApiClient? apiClient])
-      : apiClient = apiClient ?? defaultApiClient;
+  NetworkRoutesApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient apiClient;
 

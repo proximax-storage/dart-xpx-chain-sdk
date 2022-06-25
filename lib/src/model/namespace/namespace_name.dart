@@ -8,8 +8,7 @@ part of xpx_chain_sdk.model.namespace;
 
 class NamespaceName {
   NamespaceName.fromDTO(NamespaceNameDTO dto) {
-    parentId =
-        dto.parentId == null ? NamespaceId(dto.parentId!.toUint64()) : null;
+    parentId = dto.parentId == null ? NamespaceId(dto.parentId!.toUint64()) : null;
     namespaceId = NamespaceId(dto.namespaceId!.toUint64());
     name = dto.name;
   }
@@ -24,9 +23,7 @@ class NamespaceName {
   String toString() => encoder.convert(this);
 
   static List<NamespaceName> listFromDTO(List<NamespaceNameDTO> json) =>
-      json.isEmpty
-          ? <NamespaceName>[]
-          : json.map(NamespaceName.fromDTO).toList();
+      json.isEmpty ? <NamespaceName>[] : json.map(NamespaceName.fromDTO).toList();
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

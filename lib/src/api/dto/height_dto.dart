@@ -9,8 +9,7 @@ part of xpx_chain_sdk.api.dto;
 class HeightDTO {
   HeightDTO(this.height);
 
-  HeightDTO.fromJson(Map<String, dynamic> json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  HeightDTO.fromJson(Map<String, dynamic> json) : assert(json.isNotEmpty, 'json must not be empty') {
     height = UInt64DTO.fromJson(json['height']);
   }
 

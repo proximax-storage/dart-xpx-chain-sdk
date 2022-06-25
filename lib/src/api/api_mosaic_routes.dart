@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api;
 
 class MosaicRoutesApi {
-  MosaicRoutesApi([ApiClient? apiClient])
-      : _apiClient = apiClient ?? defaultApiClient;
+  MosaicRoutesApi([ApiClient? apiClient]) : _apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient _apiClient;
 
@@ -22,8 +21,7 @@ class MosaicRoutesApi {
   ///
   /// Gets a [MosaicInfo] definition for a given mosaicId.
   Future<MosaicInfo?> getMosaic(MosaicId mosaicId) async {
-    final String path =
-        _mosaicRoute.replaceAll('{mosaicId}', mosaicId.toHex()!);
+    final String path = _mosaicRoute.replaceAll('{mosaicId}', mosaicId.toHex()!);
 
     final response = await _apiClient.get(path);
 
@@ -45,9 +43,7 @@ class MosaicRoutesApi {
       throw ApiException(400, 'mosaicIds must not be empty');
     }
 
-    final Object postBody = {
-      'mosaicIds': mosaicIds.map((id) => id.toHex()).toList()
-    };
+    final Object postBody = {'mosaicIds': mosaicIds.map((id) => id.toHex()).toList()};
 
     const String path = _mosaicsRoute;
 
@@ -56,9 +52,7 @@ class MosaicRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient
-          .deserialize(response.data, 'List<MosaicInfoDTO>')
-          .cast<MosaicInfoDTO>();
+      final resp = _apiClient.deserialize(response.data, 'List<MosaicInfoDTO>').cast<MosaicInfoDTO>();
       return MosaicInfo.listFromDTO(resp);
     } else {
       return [];
@@ -73,9 +67,7 @@ class MosaicRoutesApi {
       throw ApiException(400, 'mosaicIds must not be empty');
     }
 
-    final Object postBody = {
-      'mosaicIds': mosaicIds.map((id) => id.toHex()).toList()
-    };
+    final Object postBody = {'mosaicIds': mosaicIds.map((id) => id.toHex()).toList()};
 
     const String path = _mosaicsNameRoute;
 
@@ -84,9 +76,8 @@ class MosaicRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final List<MosaicNameDTO> resp = _apiClient
-          .deserialize(response.data, 'List<MosaicNameDTO>')
-          .cast<MosaicNameDTO>();
+      final List<MosaicNameDTO> resp =
+          _apiClient.deserialize(response.data, 'List<MosaicNameDTO>').cast<MosaicNameDTO>();
       return MosaicName.listFromDTO(resp);
     } else {
       return [];
@@ -98,10 +89,8 @@ class MosaicRoutesApi {
   /// param: page The page of list (starts at 0).
   /// param: pageSize The count of items on a page (max 100, default 25).
   /// Returns owners of a given mosaic sorted on descending order based on amount. (REST only)
-  Future<List<MosaicRichList>> getMosaicRichList(MosaicId mosaicId,
-      {PageQueryParams? pageQueryParams}) async {
-    final String path =
-        _mosaicRichListRoute.replaceAll('{mosaicId}', mosaicId.toHex()!);
+  Future<List<MosaicRichList>> getMosaicRichList(MosaicId mosaicId, {PageQueryParams? pageQueryParams}) async {
+    final String path = _mosaicRichListRoute.replaceAll('{mosaicId}', mosaicId.toHex()!);
 
     // query params
     final List<QueryParam> queryParams = [];
@@ -114,9 +103,7 @@ class MosaicRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient
-          .deserialize(response.data, 'List<MosaicRichListDTO>')
-          .cast<MosaicRichListDTO>();
+      final resp = _apiClient.deserialize(response.data, 'List<MosaicRichListDTO>').cast<MosaicRichListDTO>();
 
       return MosaicRichList.listFromDTO(resp);
     } else {
@@ -126,8 +113,7 @@ class MosaicRoutesApi {
 
   /// Get mosaic levy information for a mosaic.
   Future<MosaicLevy?> getMosaicLevy(MosaicId mosaicId) async {
-    final String path =
-        _getMosaicLevyRoute.replaceAll('{mosaicId}', mosaicId.toHex()!);
+    final String path = _getMosaicLevyRoute.replaceAll('{mosaicId}', mosaicId.toHex()!);
 
     final response = await _apiClient.get(path);
 

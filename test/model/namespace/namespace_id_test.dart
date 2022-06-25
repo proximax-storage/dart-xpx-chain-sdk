@@ -7,7 +7,6 @@
 library xpx_chain_sdk.test.model.namespace.namespace_id_test;
 
 import 'package:test/test.dart';
-
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart' show NamespaceId, Uint64;
 
 void main() {

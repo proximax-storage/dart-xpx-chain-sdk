@@ -10,8 +10,7 @@ class Account {
   Account._(this.publicAccount, this.account);
 
   /// Create an Account from a given hex private key.
-  static Future<Account> fromPrivateKey(
-      String shex, NetworkType networkType) async {
+  static Future<Account> fromPrivateKey(String shex, NetworkType networkType) async {
     final account = await crypto.KeyPair.fromPrivateKey(shex);
 
     final publicKey = ByteUtils.bytesToHex(account.publicKey.toList());
@@ -23,31 +22,22 @@ class Account {
   /// Create an Account from a given networkType.
   static Future<Account> random(NetworkType networkType) async {
     final kp = await crypto.KeyPair.random();
-    final acc = await Account.fromPrivateKey(
-        ByteUtils.bytesToHex(kp.secretKey), networkType);
+    final acc = await Account.fromPrivateKey(ByteUtils.bytesToHex(kp.secretKey), networkType);
     final publicAccount = acc.publicAccount;
     final account = acc.account;
     return Account._(publicAccount, account);
   }
 
   /// Creates an encrypted message from this account to the [recipientPublicAccount].
-  Future<EncryptedMessage> encryptMessage(String plainTextMessage,
-          PublicAccount recipientPublicAccount) async =>
-      EncryptedMessage.create(
-          plainTextMessage,
-          ByteUtils.bytesToHex(account.secretKey),
-          recipientPublicAccount.publicKey,
-          HexUtils.isHex(plainTextMessage));
+  Future<EncryptedMessage> encryptMessage(String plainTextMessage, PublicAccount recipientPublicAccount) async =>
+      EncryptedMessage.create(plainTextMessage, ByteUtils.bytesToHex(account.secretKey),
+          recipientPublicAccount.publicKey, HexUtils.isHex(plainTextMessage));
 
   /// Decrypts an encrypted message received by this account from [senderPublicAccount].
-  Future<PlainMessage> decryptMessage(
-          EncryptedMessage encryptedMessage, PublicAccount senderPublicAccount,
+  Future<PlainMessage> decryptMessage(EncryptedMessage encryptedMessage, PublicAccount senderPublicAccount,
           [isHexMessage = false]) async =>
       EncryptedMessage.decrypt(
-          encryptedMessage,
-          ByteUtils.bytesToHex(account.secretKey),
-          senderPublicAccount.publicKey,
-          isHexMessage);
+          encryptedMessage, ByteUtils.bytesToHex(account.secretKey), senderPublicAccount.publicKey, isHexMessage);
 
   PublicAccount publicAccount;
   crypto.KeyPair account;
@@ -63,8 +53,7 @@ class Account {
   @override
   String toString() => publicAccount.toString();
 
-  Map<String, dynamic> toJson() =>
-      {'publicAccount': publicAccount, 'account': account};
+  Map<String, dynamic> toJson() => {'publicAccount': publicAccount, 'account': account};
 
   /// Signs raw data.
   Future<String> signData(String rawData) async {
@@ -74,15 +63,13 @@ class Account {
     return ByteUtils.bytesToHex(signedData.bytes);
   }
 
-  Future<SignedTransaction> signTransaction(
-          Transaction tx, String generationHash) async =>
+  Future<SignedTransaction> signTransaction(Transaction tx, String generationHash) async =>
       signTransactionWith(tx, this, generationHash);
 
-  Future<SignedTransaction> signWithCosignatures(Transaction tx,
-          List<Account> cosignatories, String generationHash) async =>
+  Future<SignedTransaction> signWithCosignatures(
+          Transaction tx, List<Account> cosignatories, String generationHash) async =>
       signTransactionWithCosignatures(tx, this, cosignatories, generationHash);
 
-  Future<CosignatureSignedTransaction> signCosignatureTransaction(
-          CosignatureTransaction tx) async =>
+  Future<CosignatureSignedTransaction> signCosignatureTransaction(CosignatureTransaction tx) async =>
       signCosignatureTransactionRwa(tx, this);
 }

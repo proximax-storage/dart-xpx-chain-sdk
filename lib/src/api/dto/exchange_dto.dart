@@ -95,11 +95,8 @@ class ExchangeDTO {
 
 class ExchangeOfferTransactionInfoDTO {
   ExchangeOfferTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
-    transaction = json['transaction'] != null
-        ? ExchangeOfferTransactionDTO.fromJson(json['transaction'])
-        : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    transaction = json['transaction'] != null ? ExchangeOfferTransactionDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO? meta;
@@ -119,12 +116,7 @@ class ExchangeOfferTransactionInfoDTO {
 
 class ExchangeOfferTransactionDTO extends AbstractTransactionDTO {
   ExchangeOfferTransactionDTO(
-      {String? signature,
-      String? signer,
-      int? version,
-      int? type,
-      List<int>? maxFee,
-      List<int>? deadline}) {
+      {String? signature, String? signer, int? version, int? type, List<int>? maxFee, List<int>? deadline}) {
     this.signature = signature;
     this.signer = signer;
     this.version = version;
@@ -161,11 +153,8 @@ class ExchangeOfferTransactionDTO extends AbstractTransactionDTO {
 
 class AddExchangeOfferTransactionInfoDTO {
   AddExchangeOfferTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
-    transaction = json['transaction'] != null
-        ? AddExchangeOfferTransactionDTO.fromJson(json['transaction'])
-        : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    transaction = json['transaction'] != null ? AddExchangeOfferTransactionDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO? meta;
@@ -185,12 +174,7 @@ class AddExchangeOfferTransactionInfoDTO {
 
 class AddExchangeOfferTransactionDTO extends AbstractTransactionDTO {
   AddExchangeOfferTransactionDTO(
-      {String? signature,
-      String? signer,
-      int? version,
-      int? type,
-      List<int>? maxFee,
-      List<int>? deadline}) {
+      {String? signature, String? signer, int? version, int? type, List<int>? maxFee, List<int>? deadline}) {
     this.signature = signature;
     this.signer = signer;
     this.version = version;
@@ -226,11 +210,8 @@ class AddExchangeOfferTransactionDTO extends AbstractTransactionDTO {
 
 class RemoveExchangeOfferTransactionInfoDTO {
   RemoveExchangeOfferTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
-    transaction = json['transaction'] != null
-        ? RemoveExchangeOfferTransactionDTO.fromJson(json['transaction'])
-        : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    transaction = json['transaction'] != null ? RemoveExchangeOfferTransactionDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO? meta;
@@ -250,12 +231,7 @@ class RemoveExchangeOfferTransactionInfoDTO {
 
 class RemoveExchangeOfferTransactionDTO extends AbstractTransactionDTO {
   RemoveExchangeOfferTransactionDTO(
-      {String? signature,
-      String? signer,
-      int? version,
-      int? type,
-      List<int>? maxFee,
-      List<int>? deadline}) {
+      {String? signature, String? signer, int? version, int? type, List<int>? maxFee, List<int>? deadline}) {
     this.signature = signature;
     this.signer = signer;
     this.version = version;

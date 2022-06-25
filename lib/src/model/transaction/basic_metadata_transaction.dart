@@ -24,14 +24,11 @@ class BasicMetadataTransaction extends AbstractTransaction {
       Uint64? maxFee)
       : super(networkType, deadline, type, version, maxFee);
 
-  BasicMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto)
-      : super.fromDto(dto.transaction!, dto.meta!) {
-    targetPublicAccount =
-        PublicAccount.fromPublicKey(dto.transaction!.targetKey, networkType);
+  BasicMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto) : super.fromDto(dto.transaction!, dto.meta!) {
+    targetPublicAccount = PublicAccount.fromPublicKey(dto.transaction!.targetKey, networkType);
     scopedMetadataKey = dto.transaction!.scopedMetadataKey!.toUint64()!;
     valueSizeDelta = dto.transaction!.valueSizeDelta!;
-    value = ByteUtils.bytesToUtf8String(
-        HexUtils.hexToBytes(dto.transaction!.value!));
+    value = ByteUtils.bytesToUtf8String(HexUtils.hexToBytes(dto.transaction!.value!));
   }
 
   PublicAccount? targetPublicAccount;
@@ -68,13 +65,10 @@ class BasicMetadataTransaction extends AbstractTransaction {
 
   AbstractTransaction absTransaction() => _absTransaction();
 
-  Uint8List basicGenerateBytes(
-      fb.Builder builder, int targetIdOffset, int size) {
-    final targetKeyOffset = builder
-        .writeListUint8(HexUtils.hexToBytes(targetPublicAccount!.publicKey));
+  Uint8List basicGenerateBytes(fb.Builder builder, int targetIdOffset, int size) {
+    final targetKeyOffset = builder.writeListUint8(HexUtils.hexToBytes(targetPublicAccount!.publicKey));
 
-    final scopedMetadataKeyOffset =
-        builder.writeListUint32(scopedMetadataKey!.toIntArray());
+    final scopedMetadataKeyOffset = builder.writeListUint32(scopedMetadataKey!.toIntArray());
 
     final valueOffset = builder.writeListUint8(valueDifferences!);
 

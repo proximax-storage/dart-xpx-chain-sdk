@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api.dto;
 
 class AnnounceTransactionInfoDTO {
-  AnnounceTransactionInfoDTO.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  AnnounceTransactionInfoDTO.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     message = json['message'];
   }
 
@@ -17,16 +16,12 @@ class AnnounceTransactionInfoDTO {
   Map<String, dynamic> toJson() => {'message': message};
 
   static List<AnnounceTransactionInfoDTO> listFromJson(List<Map> json) =>
-      json.isEmpty
-          ? <AnnounceTransactionInfoDTO>[]
-          : json.map(AnnounceTransactionInfoDTO.fromJson).toList();
+      json.isEmpty ? <AnnounceTransactionInfoDTO>[] : json.map(AnnounceTransactionInfoDTO.fromJson).toList();
 
-  static Map<String, AnnounceTransactionInfoDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, AnnounceTransactionInfoDTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, AnnounceTransactionInfoDTO>{};
     if (json.isNotEmpty) {
-      json.forEach((key, value) =>
-          map[key] = AnnounceTransactionInfoDTO.fromJson(value));
+      json.forEach((key, value) => map[key] = AnnounceTransactionInfoDTO.fromJson(value));
     }
     return map;
   }

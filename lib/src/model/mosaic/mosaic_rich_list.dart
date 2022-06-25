@@ -19,19 +19,13 @@ class MosaicRichList {
   late final Uint64 amount;
 
   static List<MosaicRichList> listFromDTO(List<MosaicRichListDTO> json) =>
-      json.isEmpty
-          ? <MosaicRichList>[]
-          : json.map(MosaicRichList.fromDTO).toList();
+      json.isEmpty ? <MosaicRichList>[] : json.map(MosaicRichList.fromDTO).toList();
 
   @override
   String toString() => encoder.convert(this);
 
   Map<String, dynamic> toJson() {
-    final val = <String, dynamic>{
-      'address': address,
-      'publicKey': publicKey,
-      'amount': amount
-    };
+    final val = <String, dynamic>{'address': address, 'publicKey': publicKey, 'amount': amount};
     return val;
   }
 }

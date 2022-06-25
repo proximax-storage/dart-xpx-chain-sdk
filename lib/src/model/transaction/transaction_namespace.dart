@@ -9,13 +9,11 @@ part of xpx_chain_sdk.model.transaction;
 /// Register a namespace to organize your assets.
 /// Announce a [RegisterNamespaceTransaction] to register and re-rent a namespace.
 ///
-class RegisterNamespaceTransaction extends AbstractTransaction
-    implements Transaction {
-  RegisterNamespaceTransaction.createRoot(Deadline deadline,
-      String rootNamespaceName, Uint64 duration, NetworkType networkType,
+class RegisterNamespaceTransaction extends AbstractTransaction implements Transaction {
+  RegisterNamespaceTransaction.createRoot(
+      Deadline deadline, String rootNamespaceName, Uint64 duration, NetworkType networkType,
       [Uint64? maxFee])
-      : super(networkType, deadline, TransactionType.registerNamespace,
-            registerNamespaceVersion, maxFee) {
+      : super(networkType, deadline, TransactionType.registerNamespace, registerNamespaceVersion, maxFee) {
     if (rootNamespaceName.isEmpty) {
       throw errInvalidNamespaceName;
     } else {
@@ -27,21 +25,16 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   }
 
   RegisterNamespaceTransaction.createSub(
-      Deadline deadline,
-      String subNamespaceName,
-      String rootNamespaceName,
-      NetworkType networkType,
+      Deadline deadline, String subNamespaceName, String rootNamespaceName, NetworkType networkType,
       {Uint64? maxFee})
-      : super(networkType, deadline, TransactionType.registerNamespace,
-            registerNamespaceVersion, maxFee) {
+      : super(networkType, deadline, TransactionType.registerNamespace, registerNamespaceVersion, maxFee) {
     if (subNamespaceName.isEmpty) {
       throw errInvalidNamespaceName;
     } else if (rootNamespaceName.isEmpty) {
       throw errInvalidNamespaceName;
     } else {
       parentId = NamespaceId.fromName(rootNamespaceName);
-      namespaceId = NamespaceId(
-          generateNamespaceId(subNamespaceName, parentId!.toUint64()!));
+      namespaceId = NamespaceId(generateNamespaceId(subNamespaceName, parentId!.toUint64()!));
       namespaceName = subNamespaceName;
       namespaceType = NamespaceType.sub;
     }
@@ -50,9 +43,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
   RegisterNamespaceTransaction.fromDTO(RegisterNamespaceTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
     namespaceId = NamespaceId(dto.transaction!.namespaceId!.toUint64());
-    namespaceType = dto.transaction!.namespaceType == 0
-        ? NamespaceType.root
-        : NamespaceType.sub;
+    namespaceType = dto.transaction!.namespaceType == 0 ? NamespaceType.root : NamespaceType.sub;
     namespaceName = dto.transaction!.name;
     if (namespaceType == NamespaceType.root) {
       duration = dto.transaction!.duration!.toUint64();
@@ -112,15 +103,14 @@ class RegisterNamespaceTransaction extends AbstractTransaction
 
     final vector = _generateCommonVector(builder);
 
-    final txnBuilder =
-        $buffer.RegisterNamespaceTransactionBufferBuilder(builder)
-          ..begin()
-          ..addSize(size())
-          ..addNamespaceType(namespaceType!.index)
-          ..addDurationParentIdOffset(durationParentIdOffset)
-          ..addNamespaceIdOffset(namespaceIdOffset)
-          ..addNamespaceNameSize(namespaceName!.length)
-          ..addNamespaceNameOffset(namespaceNameOffset);
+    final txnBuilder = $buffer.RegisterNamespaceTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(size())
+      ..addNamespaceType(namespaceType!.index)
+      ..addDurationParentIdOffset(durationParentIdOffset)
+      ..addNamespaceIdOffset(namespaceIdOffset)
+      ..addNamespaceNameSize(namespaceName!.length)
+      ..addNamespaceNameOffset(namespaceNameOffset);
     _buildCommonVector(builder, vector);
 
     final codedRegisterNamespace = txnBuilder.finish();

@@ -75,8 +75,7 @@ class Offer implements Comparable<Offer> {
     return sb.toString();
   }
 
-  static List<Offer> listFromDto(List<OfferDTO> dto) =>
-      dto.isEmpty ? [] : dto.map(Offer.fromDTO).toList();
+  static List<Offer> listFromDto(List<OfferDTO> dto) => dto.isEmpty ? [] : dto.map(Offer.fromDTO).toList();
 }
 
 class _SellOffer extends OfferType {
@@ -166,8 +165,7 @@ class OfferInfo {
   OfferInfo.fromDTO(OfferInfoDTO dto) {
     type = OfferType(dto.type);
     owner = dto.owner;
-    mosaic =
-        Mosaic(MosaicId(dto.mosaicId.toUint64()), dto.amount.toUint64());
+    mosaic = Mosaic(MosaicId(dto.mosaicId.toUint64()), dto.amount.toUint64());
     priceNumerator = dto.priceNumerator.toUint64();
     priceDenominator = dto.priceDenominator.toUint64();
     deadline = Deadline.fromUInt64DTO(dto.deadline);
@@ -187,11 +185,9 @@ class OfferInfo {
 
     switch (type.runtimeType) {
       case _SellOffer:
-        return Uint64((priceNumerator! * amount).toInt().ceilToDouble() /
-            priceDenominator!.toDouble());
+        return Uint64((priceNumerator! * amount).toInt().ceilToDouble() / priceDenominator!.toDouble());
       case _BuyOffer:
-        return Uint64((priceNumerator! * amount).toInt().floorToDouble() /
-            priceDenominator!.toDouble());
+        return Uint64((priceNumerator! * amount).toInt().floorToDouble() / priceDenominator!.toDouble());
       default:
         throw errUnknownOfferType;
     }
@@ -228,8 +224,7 @@ class OfferInfo {
 }
 
 class AddOffer extends Offer {
-  AddOffer({required Offer offer, this.duration})
-      : super(offer.offerType, offer.mosaic, offer.cost);
+  AddOffer({required Offer offer, this.duration}) : super(offer.offerType, offer.mosaic, offer.cost);
 
   AddOffer.fromDTO(AddOfferDTO dto) : super.fromDTO(dto) {
     duration = dto.duration.toUint64();
@@ -250,8 +245,7 @@ class AddOffer extends Offer {
     return sb.toString();
   }
 
-  static List<AddOffer>? listFromDto(List<AddOfferDTO>? dto) =>
-      dto == null ? null : dto.map(AddOffer.fromDTO).toList();
+  static List<AddOffer>? listFromDto(List<AddOfferDTO>? dto) => dto == null ? null : dto.map(AddOffer.fromDTO).toList();
 }
 
 class RemoveOffer {
@@ -273,8 +267,7 @@ class RemoveOffer {
 }
 
 class ExchangeConfirmation extends Offer {
-  ExchangeConfirmation(Offer offer, {this.owner})
-      : super(offer.offerType, offer.mosaic, offer.cost);
+  ExchangeConfirmation(Offer offer, {this.owner}) : super(offer.offerType, offer.mosaic, offer.cost);
 
   ExchangeConfirmation.fromDTO(ConfirmationOfferDTO dto) : super.fromDTO(dto) {
     owner = dto.owner;
@@ -295,7 +288,6 @@ class ExchangeConfirmation extends Offer {
     return sb.toString();
   }
 
-  static List<ExchangeConfirmation>? listFromDto(
-          List<ConfirmationOfferDTO>? dto) =>
+  static List<ExchangeConfirmation>? listFromDto(List<ConfirmationOfferDTO>? dto) =>
       dto == null ? null : dto.map(ExchangeConfirmation.fromDTO).toList();
 }

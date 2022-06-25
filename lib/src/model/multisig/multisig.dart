@@ -7,11 +7,9 @@
 part of xpx_chain_sdk.model.multisig;
 
 class Multisig {
-  Multisig.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  Multisig.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     accountAddress = Address.fromEncoded(json['accountAddress']);
-    account = PublicAccount.fromPublicKey(
-        json['account'], accountAddress!.networkType);
+    account = PublicAccount.fromPublicKey(json['account'], accountAddress!.networkType);
     minApproval = json['minApproval'];
     minRemoval = json['minRemoval'];
     cosignatories = List<String>.from(json['cosignatories']);
@@ -46,8 +44,7 @@ class Multisig {
   static List<Multisig> listFromJson(List<Map> json) =>
       json.isEmpty ? <Multisig>[] : json.map(Multisig.fromJson).toList();
 
-  static Map<String, Multisig> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, Multisig> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, Multisig>{};
     if (json.isNotEmpty) {
       json.forEach((key, value) => map[key] = Multisig.fromJson(value));

@@ -8,8 +8,7 @@ part of xpx_chain_sdk.model.blockchain;
 
 class BlockInfo {
   BlockInfo.fromDTO(BlockInfoDTO v) {
-    networkType =
-        NetworkType.fromInt(extractNetworkType(v.block!.version!.toInt()));
+    networkType = NetworkType.fromInt(extractNetworkType(v.block!.version!.toInt()));
     blockHash = v.meta!.hash;
     generationHash = v.meta!.generationHash;
     totalFee = v.meta!.totalFee!.toUint64();
@@ -20,8 +19,7 @@ class BlockInfo {
     type = v.block!.type as int?;
     height = v.block!.height!.toUint64();
     timestamp = DateTime.fromMillisecondsSinceEpoch(
-        v.block!.timestamp!.toUint64()!.toInt() +
-            timestampNemesisBlock.toUtc().millisecondsSinceEpoch);
+        v.block!.timestamp!.toUint64()!.toInt() + timestampNemesisBlock.toUtc().millisecondsSinceEpoch);
     difficulty = v.block!.difficulty!.toUint64();
     feeMultiplier = v.block!.feeMultiplier;
     previousBlockHash = v.block!.previousBlockHash;
@@ -29,8 +27,7 @@ class BlockInfo {
     blockReceiptsHash = v.block!.blockReceiptsHash;
     stateHash = v.block!.stateHash;
     beneficiary = v.block!.beneficiaryPublicKey != null
-        ? PublicAccount.fromPublicKey(
-            v.block!.beneficiaryPublicKey, networkType!)
+        ? PublicAccount.fromPublicKey(v.block!.beneficiaryPublicKey, networkType!)
         : null;
     feeInterest = v.block!.feeInterest;
     feeInterestDenominator = v.block!.feeInterestDenominator;

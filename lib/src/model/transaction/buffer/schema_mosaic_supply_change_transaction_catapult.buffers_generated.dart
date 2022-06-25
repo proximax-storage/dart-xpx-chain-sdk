@@ -15,37 +15,30 @@ class MosaicSupplyChangeTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<MosaicSupplyChangeTransactionBuffer> reader =
-      _MosaicSupplyChangeTransactionBufferReader();
+  static const fb.Reader<MosaicSupplyChangeTransactionBuffer> reader = _MosaicSupplyChangeTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get signature =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get signature => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get signer =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get signer => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 14);
+  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 14);
 
-  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 16);
+  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 16);
 
-  List<int>? get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 18);
+  List<int>? get mosaicId => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 18);
 
   int get direction => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 20, 0);
 
-  List<int>? get delta => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 22);
+  List<int>? get delta => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 22);
 
   @override
   String toString() {
@@ -53,13 +46,11 @@ class MosaicSupplyChangeTransactionBuffer {
   }
 }
 
-class _MosaicSupplyChangeTransactionBufferReader
-    extends fb.TableReader<MosaicSupplyChangeTransactionBuffer> {
+class _MosaicSupplyChangeTransactionBufferReader extends fb.TableReader<MosaicSupplyChangeTransactionBuffer> {
   const _MosaicSupplyChangeTransactionBufferReader();
 
   @override
-  MosaicSupplyChangeTransactionBuffer createObject(
-          fb.BufferContext bc, int offset) =>
+  MosaicSupplyChangeTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
       MosaicSupplyChangeTransactionBuffer._(bc, offset);
 }
 
@@ -127,8 +118,7 @@ class MosaicSupplyChangeTransactionBufferBuilder {
   }
 }
 
-class MosaicSupplyChangeTransactionBufferObjectBuilder
-    extends fb.ObjectBuilder {
+class MosaicSupplyChangeTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   final int? _size;
   final List<int>? _signature;
   final List<int>? _signer;
@@ -165,18 +155,12 @@ class MosaicSupplyChangeTransactionBufferObjectBuilder
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? signatureOffset =
-        _signature == null ? null : fbBuilder.writeListUint8(_signature!);
-    final int? signerOffset =
-        _signer == null ? null : fbBuilder.writeListUint8(_signer!);
-    final int? maxFeeOffset =
-        _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
-    final int? deadlineOffset =
-        _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
-    final int? mosaicIdOffset =
-        _mosaicId == null ? null : fbBuilder.writeListUint32(_mosaicId!);
-    final int? deltaOffset =
-        _delta == null ? null : fbBuilder.writeListUint32(_delta!);
+    final int? signatureOffset = _signature == null ? null : fbBuilder.writeListUint8(_signature!);
+    final int? signerOffset = _signer == null ? null : fbBuilder.writeListUint8(_signer!);
+    final int? maxFeeOffset = _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
+    final int? deadlineOffset = _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
+    final int? mosaicIdOffset = _mosaicId == null ? null : fbBuilder.writeListUint32(_mosaicId!);
+    final int? deltaOffset = _delta == null ? null : fbBuilder.writeListUint32(_delta!);
     fbBuilder.startTable(10);
     fbBuilder.addUint32(0, _size);
     fbBuilder.addOffset(1, signatureOffset);

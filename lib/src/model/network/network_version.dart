@@ -15,6 +15,5 @@ class NetworkVersion {
   @override
   String toString() => encoder.convert(this);
 
-  Map<String, dynamic> toJson() =>
-      {'startedHeight': startedHeight, 'blockChainVersion': blockChainVersion};
+  Map<String, dynamic> toJson() => {'startedHeight': startedHeight, 'blockChainVersion': blockChainVersion};
 }

@@ -10,28 +10,24 @@ part of xpx_chain_sdk.model.transaction;
 /// Alias: LockFundsTransaction
 ///
 class LockFundsTransaction extends AbstractTransaction implements Transaction {
-  LockFundsTransaction._(Deadline deadline, this.mosaic, this.duration,
-      this.signedTransaction, NetworkType networkType, Uint64? maxFee)
+  LockFundsTransaction._(
+      Deadline deadline, this.mosaic, this.duration, this.signedTransaction, NetworkType networkType, Uint64? maxFee)
       : super(networkType, deadline, TransactionType.lock, lockVersion, maxFee);
 
-  factory LockFundsTransaction.create(Deadline deadline, Mosaic mosaic,
-      Uint64 duration, SignedTransaction signedTx, NetworkType networkType,
+  factory LockFundsTransaction.create(
+      Deadline deadline, Mosaic mosaic, Uint64 duration, SignedTransaction signedTx, NetworkType networkType,
       [Uint64? maxFee]) {
     if (signedTx.transactionType != TransactionType.aggregateBonded) {
       throw errEmptyModifications;
     } else {
-      return LockFundsTransaction._(
-          deadline, mosaic, duration, signedTx, networkType, maxFee);
+      return LockFundsTransaction._(deadline, mosaic, duration, signedTx, networkType, maxFee);
     }
   }
 
-  LockFundsTransaction.fromDTO(LockFundsTransactionInfoDTO dto)
-      : super.fromDto(dto.transaction!, dto.meta!) {
-    mosaic = Mosaic(MosaicId(dto.transaction!.assetId!.toUint64()),
-        dto.transaction!.amount!.toUint64());
+  LockFundsTransaction.fromDTO(LockFundsTransactionInfoDTO dto) : super.fromDto(dto.transaction!, dto.meta!) {
+    mosaic = Mosaic(MosaicId(dto.transaction!.assetId!.toUint64()), dto.transaction!.amount!.toUint64());
     duration = dto.transaction!.duration!.toUint64();
-    signedTransaction =
-        SignedTransaction(TransactionType.lock, '', dto.transaction!.hash!);
+    signedTransaction = SignedTransaction(TransactionType.lock, '', dto.transaction!.hash!);
   }
 
   Mosaic? mosaic;
@@ -66,10 +62,8 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final mosaicIdOffset =
-        builder.writeListUint32(mosaic!.assetId!.toIntArray());
-    final mosaicAmountOffset =
-        builder.writeListUint32(mosaic!.amount!.toIntArray());
+    final mosaicIdOffset = builder.writeListUint32(mosaic!.assetId!.toIntArray());
+    final mosaicAmountOffset = builder.writeListUint32(mosaic!.amount!.toIntArray());
     final durationOffset = builder.writeListUint32(duration!.toIntArray());
 
     final List<int> h = hex.decode(signedTransaction!.hash);

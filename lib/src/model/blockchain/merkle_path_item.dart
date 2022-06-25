@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.model.blockchain;
 
 class MerklePathItem {
-  MerklePathItem.fromJson(Map<String, dynamic> json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  MerklePathItem.fromJson(Map<String, dynamic> json) : assert(json.isNotEmpty, 'json must not be empty') {
     position = json['position'];
     hash = json['hash'];
   }
@@ -23,8 +22,7 @@ class MerklePathItem {
   static List<MerklePathItem> listFromJson(List<Map<String, dynamic>>? json) =>
       json == null ? [] : json.map(MerklePathItem.fromJson).toList();
 
-  static Map<String, MerklePathItem> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, MerklePathItem> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, MerklePathItem>{};
     if (json.isNotEmpty) {
       json.forEach((key, value) => map[key] = MerklePathItem.fromJson(value));

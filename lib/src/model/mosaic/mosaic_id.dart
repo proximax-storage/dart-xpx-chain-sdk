@@ -7,12 +7,11 @@
 part of xpx_chain_sdk.model.mosaic;
 
 class MosaicId extends AssetId {
-
   /// Creates a new [MosaicId] from an [Uint64] id.
   MosaicId(Uint64 uint64) : super(uint64);
 
   /// Creates a new [MosaicId] from a [bigInt].
-  MosaicId.fromBigInt(BigInt bigInt): super(Uint64.fromBigInt(bigInt));
+  MosaicId.fromBigInt(BigInt bigInt) : super(Uint64.fromBigInt(bigInt));
 
   /// Creates a new [MosaicId] from a [hex] string.
   MosaicId.fromHex(String hex) : super(Uint64.fromHex(hex));

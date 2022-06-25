@@ -8,34 +8,22 @@ part of xpx_chain_sdk.model.transaction;
 
 // AliasTransaction
 class AliasTransaction extends AbstractTransaction implements Transaction {
-  AliasTransaction._(
-      int version,
-      Deadline deadline,
-      this.actionType,
-      this.namespaceId,
-      TransactionType transactionType,
+  AliasTransaction._(int version, Deadline deadline, this.actionType, this.namespaceId, TransactionType transactionType,
       NetworkType networkType,
       [Uint64? maxFee])
       : super(networkType, deadline, transactionType, version, maxFee);
 
   AliasTransaction._fromAddressAliasDTO(AddressAliasTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
-    actionType = dto.transaction!.aliasAction == 0
-        ? actionType = AliasActionType.aliasLink
-        : AliasActionType.aliasUnlink;
-    namespaceId = dto.transaction!.namespaceId != null
-        ? NamespaceId(dto.transaction!.namespaceId!.toUint64()!)
-        : null;
+    actionType =
+        dto.transaction!.aliasAction == 0 ? actionType = AliasActionType.aliasLink : AliasActionType.aliasUnlink;
+    namespaceId = dto.transaction!.namespaceId != null ? NamespaceId(dto.transaction!.namespaceId!.toUint64()!) : null;
   }
 
-  AliasTransaction._fromMosaicAliasDTO(MosaicAliasTransactionInfoDTO dto)
-      : super.fromDto(dto.transaction!, dto.meta!) {
-    actionType = dto.transaction!.aliasAction == 0
-        ? actionType = AliasActionType.aliasLink
-        : AliasActionType.aliasUnlink;
-    namespaceId = dto.transaction!.namespaceId != null
-        ? NamespaceId(dto.transaction!.namespaceId!.toUint64()!)
-        : null;
+  AliasTransaction._fromMosaicAliasDTO(MosaicAliasTransactionInfoDTO dto) : super.fromDto(dto.transaction!, dto.meta!) {
+    actionType =
+        dto.transaction!.aliasAction == 0 ? actionType = AliasActionType.aliasLink : AliasActionType.aliasUnlink;
+    namespaceId = dto.transaction!.namespaceId != null ? NamespaceId(dto.transaction!.namespaceId!.toUint64()!) : null;
   }
 
   AliasActionType? actionType;
@@ -100,16 +88,10 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
 
 class AddressAliasTransaction extends AliasTransaction {
   AddressAliasTransaction(
-      Deadline deadline,
-      this.address,
-      NamespaceId namespaceId,
-      AliasActionType actionType,
-      NetworkType networkType)
-      : super._(addressAliasVersion, deadline, actionType, namespaceId,
-            TransactionType.addressAlias, networkType);
+      Deadline deadline, this.address, NamespaceId namespaceId, AliasActionType actionType, NetworkType networkType)
+      : super._(addressAliasVersion, deadline, actionType, namespaceId, TransactionType.addressAlias, networkType);
 
-  AddressAliasTransaction.fromDTO(AddressAliasTransactionInfoDTO dto)
-      : super._fromAddressAliasDTO(dto) {
+  AddressAliasTransaction.fromDTO(AddressAliasTransactionInfoDTO dto) : super._fromAddressAliasDTO(dto) {
     address = Address.fromEncoded(dto.transaction!.address!);
   }
 
@@ -153,13 +135,8 @@ class AddressAliasTransaction extends AliasTransaction {
 
 class MosaicAliasTransaction extends AliasTransaction {
   MosaicAliasTransaction(
-      Deadline deadline,
-      this.mosaicId,
-      NamespaceId namespaceId,
-      AliasActionType actionType,
-      NetworkType networkType)
-      : super._(mosaicAliasVersion, deadline, actionType, namespaceId,
-            TransactionType.mosaicAlias, networkType);
+      Deadline deadline, this.mosaicId, NamespaceId namespaceId, AliasActionType actionType, NetworkType networkType)
+      : super._(mosaicAliasVersion, deadline, actionType, namespaceId, TransactionType.mosaicAlias, networkType);
 
   MosaicAliasTransaction.fromDTO(
     MosaicAliasTransactionInfoDTO value,

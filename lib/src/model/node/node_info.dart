@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.model.node;
 
 class NodeInfo {
-  NodeInfo.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  NodeInfo.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     publicKey = json['publicKey'];
     port = json['port'];
     networkIdentifier = json['networkIdentifier'];
@@ -38,8 +37,7 @@ class NodeInfo {
   static List<NodeInfo> listFromJson(List<Map> json) =>
       json.isEmpty ? <NodeInfo>[] : json.map(NodeInfo.fromJson).toList();
 
-  static Map<String, NodeInfo> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, NodeInfo> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, NodeInfo>{};
     if (json.isNotEmpty) {
       json.forEach((key, value) => map[key] = NodeInfo.fromJson(value));
@@ -62,8 +60,7 @@ class NodeInfo {
 }
 
 class CommunicationTimestamps {
-  CommunicationTimestamps.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  CommunicationTimestamps.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     final sRaw = UInt64DTO.fromJson(json['sendTimestamp']);
     final rRaw = UInt64DTO.fromJson(json['receiveTimestamp']);
     sendTimestamp = sRaw.toUint64();
@@ -81,16 +78,12 @@ class CommunicationTimestamps {
       '}\n';
 
   static List<CommunicationTimestamps> listFromJson(List<Map> json) =>
-      json.isEmpty
-          ? <CommunicationTimestamps>[]
-          : json.map(CommunicationTimestamps.fromJson).toList();
+      json.isEmpty ? <CommunicationTimestamps>[] : json.map(CommunicationTimestamps.fromJson).toList();
 
-  static Map<String, CommunicationTimestamps> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, CommunicationTimestamps> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, CommunicationTimestamps>{};
     if (json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = CommunicationTimestamps.fromJson(value));
+      json.forEach((key, value) => map[key] = CommunicationTimestamps.fromJson(value));
     }
     return map;
   }

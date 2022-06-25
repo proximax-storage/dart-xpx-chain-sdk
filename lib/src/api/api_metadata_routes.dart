@@ -21,8 +21,7 @@ class MetadataRoutesApi {
     }
 
     // create path and map variables
-    final String path =
-        _metadataV2InfoRoute.replaceAll('{compositeHash}', compositeHash);
+    final String path = _metadataV2InfoRoute.replaceAll('{compositeHash}', compositeHash);
 
     final response = await _apiClient.get(path);
 
@@ -38,8 +37,7 @@ class MetadataRoutesApi {
 
   /// Gets an array of metadata.
   /// Get metadatas(namespace/mosaic/account) for an array of compositeHashes'
-  Future<List<MetadataEntry>> getMetadatasV2Info(
-      List<String> compositeHashes) async {
+  Future<List<MetadataEntry>> getMetadatasV2Info(List<String> compositeHashes) async {
     if (compositeHashes.isEmpty) {
       throw ApiException(400, 'compositeHashes must not be empty');
     }
@@ -53,9 +51,7 @@ class MetadataRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient
-          .deserialize(response.data, 'List<MetadataV2InfoDTO>')
-          .cast<MetadataV2InfoDTO>();
+      final resp = _apiClient.deserialize(response.data, 'List<MetadataV2InfoDTO>').cast<MetadataV2InfoDTO>();
       return MetadataEntry.listFromDTO(resp);
     } else {
       return [];
@@ -63,8 +59,7 @@ class MetadataRoutesApi {
   }
 
   /// Gets the metadata for a given mosaicId.
-  Future<List<MetadataEntry>> searchMetadata(
-      [MetadataQueryParams? metadataQueryParams]) async {
+  Future<List<MetadataEntry>> searchMetadata([MetadataQueryParams? metadataQueryParams]) async {
     const String path = _metadatasV2InfoRoute;
 
     // query params
@@ -78,9 +73,7 @@ class MetadataRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient
-          .deserialize(response.data, 'List<MetadataV2InfoDTO>')
-          .cast<MetadataV2InfoDTO>();
+      final resp = _apiClient.deserialize(response.data, 'List<MetadataV2InfoDTO>').cast<MetadataV2InfoDTO>();
       return MetadataEntry.listFromDTO(resp);
     } else {
       return [];

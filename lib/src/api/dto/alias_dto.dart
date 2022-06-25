@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api.dto;
 
 class AddressAliasDTO extends AbstractTransactionDTO {
-  AddressAliasDTO.fromJson(json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  AddressAliasDTO.fromJson(json) : assert(json.isNotEmpty, 'json must not be empty') {
     deadline = UInt64DTO.fromJson(json['deadline']);
     signature = json['signature'];
     signer = json['signer'];
@@ -36,8 +35,7 @@ class AddressAliasDTO extends AbstractTransactionDTO {
   static List<AddressAliasDTO> listFromJson(List<dynamic> json) =>
       json.isEmpty ? [] : json.map(AddressAliasDTO.fromJson).toList();
 
-  static Map<String, AddressAliasDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, AddressAliasDTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, AddressAliasDTO>{};
     if (json.isNotEmpty) {
       json.forEach((key, value) => map[key] = AddressAliasDTO.fromJson(value));
@@ -48,12 +46,9 @@ class AddressAliasDTO extends AbstractTransactionDTO {
 
 class AddressAliasTransactionInfoDTO {
   AddressAliasTransactionInfoDTO.fromJson(Map<String, dynamic> json) {
-    meta =
-        json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
+    meta = json['meta'] != null ? MetaTransactionDTO.fromJson(json['meta']) : null;
 
-    transaction = json['transaction'] != null
-        ? AddressAliasDTO.fromJson(json['transaction'])
-        : null;
+    transaction = json['transaction'] != null ? AddressAliasDTO.fromJson(json['transaction']) : null;
   }
 
   MetaTransactionDTO? meta;
@@ -91,11 +86,9 @@ class AliasDTO {
     return data;
   }
 
-  static List<AliasDTO> listFromJson(List<dynamic> json) =>
-      json.isEmpty ? [] : json.map(AliasDTO.fromJson).toList();
+  static List<AliasDTO> listFromJson(List<dynamic> json) => json.isEmpty ? [] : json.map(AliasDTO.fromJson).toList();
 
-  static Map<String, AliasDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, AliasDTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, AliasDTO>{};
     if (json.isNotEmpty) {
       json.forEach((key, value) => map[key] = AliasDTO.fromJson(value));

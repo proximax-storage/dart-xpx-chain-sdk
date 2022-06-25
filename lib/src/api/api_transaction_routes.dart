@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api;
 
 class TransactionRoutesApi {
-  TransactionRoutesApi([ApiClient? _apiClient])
-      : _apiClient = _apiClient ?? defaultApiClient;
+  TransactionRoutesApi([ApiClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
 
   final ApiClient _apiClient;
 
@@ -23,16 +22,14 @@ class TransactionRoutesApi {
   static const _transactionsCounteRoute = '/transactions/count';
 
   /// returns transaction hash after announcing passed SignedTransaction.
-  Future<Object?> announce(SignedTransaction tx) async =>
-      _announceTransaction(tx, _announceTransactionRoute);
+  Future<Object?> announce(SignedTransaction tx) async => _announceTransaction(tx, _announceTransactionRoute);
 
   /// returns transaction hash after announcing passed aggregate bounded SignedTransaction.
   Future<Object?> announcePartialTransaction(SignedTransaction tx) async =>
       _announceTransaction(tx, _announcePartialRoute);
 
   /// returns transaction hash after announcing passed CosignatureSignedTransaction.
-  Future<Object?> announceAggregateBondedCosignature(
-          CosignatureSignedTransaction tx) async =>
+  Future<Object?> announceAggregateBondedCosignature(CosignatureSignedTransaction tx) async =>
       _announceTransaction(tx, _announceAggregateCosignatureRoute);
 
   /// Announce a  transaction
@@ -60,24 +57,21 @@ class TransactionRoutesApi {
   /// Get transaction information
   ///
   /// Returns a [Transaction] information given a transactionId or hash.
-  Future<Transaction?> getTransaction(
-      TransactionGroupType group, String transactionId) async {
+  Future<Transaction?> getTransaction(TransactionGroupType group, String transactionId) async {
     // verify required params are set
     if (transactionId.isEmpty) {
       throw ApiException(400, 'transactionId must not be empty');
     }
 
     // create path and map variables
-    final String path = _transactionRoute
-        .replaceAll('{group}', group.name)
-        .replaceAll('{transactionId}', transactionId);
+    final String path =
+        _transactionRoute.replaceAll('{group}', group.name).replaceAll('{transactionId}', transactionId);
 
     final response = await _apiClient.get(path);
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return deserializeDTO(
-          _apiClient.deserialize(response.data, 'Transaction'));
+      return deserializeDTO(_apiClient.deserialize(response.data, 'Transaction'));
     } else {
       return null;
     }
@@ -94,25 +88,21 @@ class TransactionRoutesApi {
     try {
       final txnStatus = await getTransactionStatus(transactionId);
 
-      if (txnStatus!.group!.toTransactionGroupType ==
-          TransactionGroupType.failed) {
+      if (txnStatus!.group!.toTransactionGroupType == TransactionGroupType.failed) {
         throw ApiException(400, txnStatus.status);
       }
 
-      return await getTransaction(
-          txnStatus.group!.toTransactionGroupType!, transactionId);
+      return await getTransaction(txnStatus.group!.toTransactionGroupType!, transactionId);
     } on DioError catch (_) {
       rethrow;
     }
   }
 
   /// GetTransactionsByGroup returns an array of Transaction's for passed TransactionGroupType.
-  Future<List<Transaction>> getTransactionsByGroup(
-      TransactionGroupType groupType,
+  Future<List<Transaction>> getTransactionsByGroup(TransactionGroupType groupType,
       [TransactionQueryParams? txnQueryParams]) async {
     // create path and map variables
-    final String path =
-        _transactionsRoute.replaceAll('{group}', groupType.name);
+    final String path = _transactionsRoute.replaceAll('{group}', groupType.name);
 
     // query params
     final List<QueryParam> queryParams = [];
@@ -124,16 +114,14 @@ class TransactionRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactions(_apiClient, path, queryParams, null,
-        firstLevel: firstLevel);
+    return internalGetTransactions(_apiClient, path, queryParams, null, firstLevel: firstLevel);
   }
 
   /// Get transactions information
   ///
   /// Returns a List of [Transaction] information for a given
   /// List of transactionIds.
-  Future<List<Transaction>> getTransactions(
-      List<String> transactionIds, TransactionGroupType groupType) async {
+  Future<List<Transaction>> getTransactions(List<String> transactionIds, TransactionGroupType groupType) async {
     // verify required params are set
     if (transactionIds.isEmpty) {
       throw ApiException(400, 'transactionIds must not be empty');
@@ -143,8 +131,7 @@ class TransactionRoutesApi {
     final Object postBody = {'transactionIds': transactionIds};
 
     // create path and map variables
-    final String path =
-        _transactionsRoute.replaceAll('{group}', groupType.name);
+    final String path = _transactionsRoute.replaceAll('{group}', groupType.name);
 
     return internalGetTransactions(_apiClient, path, [], postBody);
   }
@@ -159,8 +146,7 @@ class TransactionRoutesApi {
     }
 
     // create path and map variables
-    final String path =
-        _transactionStatusRoute.replaceAll('{hash}', hash.toString());
+    final String path = _transactionStatusRoute.replaceAll('{hash}', hash.toString());
 
     final response = await _apiClient.get(path);
 
@@ -177,8 +163,7 @@ class TransactionRoutesApi {
   ///
   /// Returns an List of transaction statuses for a given
   /// List of transaction hashes.
-  Future<List<TransactionStatus>> getTransactionsStatuses(
-      List<String> transactionHashes) async {
+  Future<List<TransactionStatus>> getTransactionsStatuses(List<String> transactionHashes) async {
     // verify required params are set
     if (transactionHashes.isEmpty) {
       throw ApiException(400, 'transactionHashes must not be empty');
@@ -194,9 +179,7 @@ class TransactionRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient
-          .deserialize(response.data, 'List<TransactionStatus>')
-          .cast<TransactionStatus>();
+      return _apiClient.deserialize(response.data, 'List<TransactionStatus>').cast<TransactionStatus>();
     } else {
       return [];
     }
@@ -212,11 +195,9 @@ class TransactionRoutesApi {
     }
 
     try {
-      final tx =
-          await getTransaction(TransactionGroupType.confirmed, transactionId);
+      final tx = await getTransaction(TransactionGroupType.confirmed, transactionId);
 
-      final block = await BlockchainRoutesApi(_apiClient)
-          .getBlockByHeight(tx!.absTransaction().height!);
+      final block = await BlockchainRoutesApi(_apiClient).getBlockByHeight(tx!.absTransaction().height!);
 
       return block!.feeMultiplier! * tx.size();
     } on DioError catch (_) {
@@ -227,8 +208,7 @@ class TransactionRoutesApi {
   /// Get transactionTypes count.
   ///
   /// Returns transactions count separate by type for a given array of transactionTypes.
-  Future<List> getTransactionsCount(
-      List<TransactionType> transactionTypes) async {
+  Future<List> getTransactionsCount(List<TransactionType> transactionTypes) async {
     // verify required params are set
     if (transactionTypes.isEmpty) {
       throw ApiException(400, 'transactionTypes must not be empty');

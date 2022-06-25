@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.model.blockchain;
 
 class BlockchainStorageInfo {
-  BlockchainStorageInfo.fromJson(Map<String, dynamic> json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  BlockchainStorageInfo.fromJson(Map<String, dynamic> json) : assert(json.isNotEmpty, 'json must not be empty') {
     numBlocks = json['numBlocks'];
     numTransactions = json['numTransactions'];
     numAccounts = json['numAccounts'];

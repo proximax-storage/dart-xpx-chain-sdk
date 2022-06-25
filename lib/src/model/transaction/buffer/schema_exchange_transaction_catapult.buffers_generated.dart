@@ -15,36 +15,29 @@ class AddExchangeOfferTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<AddExchangeOfferTransactionBuffer> reader =
-      _AddExchangeOfferTransactionBufferReader();
+  static const fb.Reader<AddExchangeOfferTransactionBuffer> reader = _AddExchangeOfferTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get signature =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get signature => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get signer =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get signer => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 14);
+  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 14);
 
-  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 16);
+  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 16);
 
-  int get offersCount =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+  int get offersCount => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
 
   List<AddExchangeOfferBuffer>? get offers =>
-      const fb.ListReader<AddExchangeOfferBuffer>(AddExchangeOfferBuffer.reader)
-          .vTableGetNullable(_bc, _bcOffset, 20);
+      const fb.ListReader<AddExchangeOfferBuffer>(AddExchangeOfferBuffer.reader).vTableGetNullable(_bc, _bcOffset, 20);
 
   @override
   String toString() {
@@ -52,13 +45,11 @@ class AddExchangeOfferTransactionBuffer {
   }
 }
 
-class _AddExchangeOfferTransactionBufferReader
-    extends fb.TableReader<AddExchangeOfferTransactionBuffer> {
+class _AddExchangeOfferTransactionBufferReader extends fb.TableReader<AddExchangeOfferTransactionBuffer> {
   const _AddExchangeOfferTransactionBufferReader();
 
   @override
-  AddExchangeOfferTransactionBuffer createObject(
-          fb.BufferContext bc, int offset) =>
+  AddExchangeOfferTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
       AddExchangeOfferTransactionBuffer._(bc, offset);
 }
 
@@ -155,18 +146,12 @@ class AddExchangeOfferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? signatureOffset =
-        _signature == null ? null : fbBuilder.writeListUint8(_signature!);
-    final int? signerOffset =
-        _signer == null ? null : fbBuilder.writeListUint8(_signer!);
-    final int? maxFeeOffset =
-        _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
-    final int? deadlineOffset =
-        _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
-    final int? offersOffset = _offers == null
-        ? null
-        : fbBuilder.writeList(
-            _offers!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
+    final int? signatureOffset = _signature == null ? null : fbBuilder.writeListUint8(_signature!);
+    final int? signerOffset = _signer == null ? null : fbBuilder.writeListUint8(_signer!);
+    final int? maxFeeOffset = _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
+    final int? deadlineOffset = _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
+    final int? offersOffset =
+        _offers == null ? null : fbBuilder.writeList(_offers!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
     fbBuilder.startTable(9);
     fbBuilder.addUint32(0, _size);
     fbBuilder.addOffset(1, signatureOffset);
@@ -197,36 +182,29 @@ class ExchangeOfferTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<ExchangeOfferTransactionBuffer> reader =
-      _ExchangeOfferTransactionBufferReader();
+  static const fb.Reader<ExchangeOfferTransactionBuffer> reader = _ExchangeOfferTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get signature =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get signature => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get signer =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get signer => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 14);
+  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 14);
 
-  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 16);
+  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 16);
 
-  int get offersCount =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+  int get offersCount => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
 
   List<ExchangeOfferBuffer>? get offers =>
-      const fb.ListReader<ExchangeOfferBuffer>(ExchangeOfferBuffer.reader)
-          .vTableGetNullable(_bc, _bcOffset, 20);
+      const fb.ListReader<ExchangeOfferBuffer>(ExchangeOfferBuffer.reader).vTableGetNullable(_bc, _bcOffset, 20);
 
   @override
   String toString() {
@@ -234,13 +212,11 @@ class ExchangeOfferTransactionBuffer {
   }
 }
 
-class _ExchangeOfferTransactionBufferReader
-    extends fb.TableReader<ExchangeOfferTransactionBuffer> {
+class _ExchangeOfferTransactionBufferReader extends fb.TableReader<ExchangeOfferTransactionBuffer> {
   const _ExchangeOfferTransactionBufferReader();
 
   @override
-  ExchangeOfferTransactionBuffer createObject(
-          fb.BufferContext bc, int offset) =>
+  ExchangeOfferTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
       ExchangeOfferTransactionBuffer._(bc, offset);
 }
 
@@ -337,18 +313,12 @@ class ExchangeOfferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? signatureOffset =
-        _signature == null ? null : fbBuilder.writeListUint8(_signature!);
-    final int? signerOffset =
-        _signer == null ? null : fbBuilder.writeListUint8(_signer!);
-    final int? maxFeeOffset =
-        _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
-    final int? deadlineOffset =
-        _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
-    final int? offersOffset = _offers == null
-        ? null
-        : fbBuilder.writeList(
-            _offers!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
+    final int? signatureOffset = _signature == null ? null : fbBuilder.writeListUint8(_signature!);
+    final int? signerOffset = _signer == null ? null : fbBuilder.writeListUint8(_signer!);
+    final int? maxFeeOffset = _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
+    final int? deadlineOffset = _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
+    final int? offersOffset =
+        _offers == null ? null : fbBuilder.writeList(_offers!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
     fbBuilder.startTable(9);
     fbBuilder.addUint32(0, _size);
     fbBuilder.addOffset(1, signatureOffset);
@@ -379,36 +349,29 @@ class RemoveExchangeOfferTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<RemoveExchangeOfferTransactionBuffer> reader =
-      _RemoveExchangeOfferTransactionBufferReader();
+  static const fb.Reader<RemoveExchangeOfferTransactionBuffer> reader = _RemoveExchangeOfferTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get signature =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get signature => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get signer =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get signer => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 14);
+  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 14);
 
-  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 16);
+  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 16);
 
-  int get offersCount =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+  int get offersCount => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 18, 0);
 
   List<RemoveExchangeOfferBuffer>? get offers =>
-      const fb.ListReader<RemoveExchangeOfferBuffer>(
-              RemoveExchangeOfferBuffer.reader)
+      const fb.ListReader<RemoveExchangeOfferBuffer>(RemoveExchangeOfferBuffer.reader)
           .vTableGetNullable(_bc, _bcOffset, 20);
 
   @override
@@ -417,13 +380,11 @@ class RemoveExchangeOfferTransactionBuffer {
   }
 }
 
-class _RemoveExchangeOfferTransactionBufferReader
-    extends fb.TableReader<RemoveExchangeOfferTransactionBuffer> {
+class _RemoveExchangeOfferTransactionBufferReader extends fb.TableReader<RemoveExchangeOfferTransactionBuffer> {
   const _RemoveExchangeOfferTransactionBufferReader();
 
   @override
-  RemoveExchangeOfferTransactionBuffer createObject(
-          fb.BufferContext bc, int offset) =>
+  RemoveExchangeOfferTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
       RemoveExchangeOfferTransactionBuffer._(bc, offset);
 }
 
@@ -486,8 +447,7 @@ class RemoveExchangeOfferTransactionBufferBuilder {
   }
 }
 
-class RemoveExchangeOfferTransactionBufferObjectBuilder
-    extends fb.ObjectBuilder {
+class RemoveExchangeOfferTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   final int? _size;
   final List<int>? _signature;
   final List<int>? _signer;
@@ -521,18 +481,12 @@ class RemoveExchangeOfferTransactionBufferObjectBuilder
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? signatureOffset =
-        _signature == null ? null : fbBuilder.writeListUint8(_signature!);
-    final int? signerOffset =
-        _signer == null ? null : fbBuilder.writeListUint8(_signer!);
-    final int? maxFeeOffset =
-        _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
-    final int? deadlineOffset =
-        _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
-    final int? offersOffset = _offers == null
-        ? null
-        : fbBuilder.writeList(
-            _offers!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
+    final int? signatureOffset = _signature == null ? null : fbBuilder.writeListUint8(_signature!);
+    final int? signerOffset = _signer == null ? null : fbBuilder.writeListUint8(_signer!);
+    final int? maxFeeOffset = _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
+    final int? deadlineOffset = _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
+    final int? offersOffset =
+        _offers == null ? null : fbBuilder.writeList(_offers!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
     fbBuilder.startTable(9);
     fbBuilder.addUint32(0, _size);
     fbBuilder.addOffset(1, signatureOffset);
@@ -563,25 +517,20 @@ class AddExchangeOfferBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<AddExchangeOfferBuffer> reader =
-      _AddExchangeOfferBufferReader();
+  static const fb.Reader<AddExchangeOfferBuffer> reader = _AddExchangeOfferBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  List<int>? get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 4);
+  List<int>? get mosaicId => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 4);
 
-  List<int>? get mosaicAmount => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get mosaicAmount => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get cost => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get cost => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 8);
 
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
-  List<int>? get duration => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 12);
+  List<int>? get duration => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 12);
 
   @override
   String toString() {
@@ -589,13 +538,11 @@ class AddExchangeOfferBuffer {
   }
 }
 
-class _AddExchangeOfferBufferReader
-    extends fb.TableReader<AddExchangeOfferBuffer> {
+class _AddExchangeOfferBufferReader extends fb.TableReader<AddExchangeOfferBuffer> {
   const _AddExchangeOfferBufferReader();
 
   @override
-  AddExchangeOfferBuffer createObject(fb.BufferContext bc, int offset) =>
-      AddExchangeOfferBuffer._(bc, offset);
+  AddExchangeOfferBuffer createObject(fb.BufferContext bc, int offset) => AddExchangeOfferBuffer._(bc, offset);
 }
 
 class AddExchangeOfferBufferBuilder {
@@ -659,15 +606,10 @@ class AddExchangeOfferBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? mosaicIdOffset =
-        _mosaicId == null ? null : fbBuilder.writeListUint32(_mosaicId!);
-    final int? mosaicAmountOffset = _mosaicAmount == null
-        ? null
-        : fbBuilder.writeListUint32(_mosaicAmount!);
-    final int? costOffset =
-        _cost == null ? null : fbBuilder.writeListUint32(_cost!);
-    final int? durationOffset =
-        _duration == null ? null : fbBuilder.writeListUint32(_duration!);
+    final int? mosaicIdOffset = _mosaicId == null ? null : fbBuilder.writeListUint32(_mosaicId!);
+    final int? mosaicAmountOffset = _mosaicAmount == null ? null : fbBuilder.writeListUint32(_mosaicAmount!);
+    final int? costOffset = _cost == null ? null : fbBuilder.writeListUint32(_cost!);
+    final int? durationOffset = _duration == null ? null : fbBuilder.writeListUint32(_duration!);
     fbBuilder.startTable(5);
     fbBuilder.addOffset(0, mosaicIdOffset);
     fbBuilder.addOffset(1, mosaicAmountOffset);
@@ -694,25 +636,20 @@ class ExchangeOfferBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<ExchangeOfferBuffer> reader =
-      _ExchangeOfferBufferReader();
+  static const fb.Reader<ExchangeOfferBuffer> reader = _ExchangeOfferBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  List<int>? get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 4);
+  List<int>? get mosaicId => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 4);
 
-  List<int>? get mosaicAmount => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get mosaicAmount => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get cost => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get cost => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 8);
 
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
-  List<int>? get owner =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 12);
+  List<int>? get owner => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 12);
 
   @override
   String toString() {
@@ -724,8 +661,7 @@ class _ExchangeOfferBufferReader extends fb.TableReader<ExchangeOfferBuffer> {
   const _ExchangeOfferBufferReader();
 
   @override
-  ExchangeOfferBuffer createObject(fb.BufferContext bc, int offset) =>
-      ExchangeOfferBuffer._(bc, offset);
+  ExchangeOfferBuffer createObject(fb.BufferContext bc, int offset) => ExchangeOfferBuffer._(bc, offset);
 }
 
 class ExchangeOfferBufferBuilder {
@@ -789,15 +725,10 @@ class ExchangeOfferBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? mosaicIdOffset =
-        _mosaicId == null ? null : fbBuilder.writeListUint32(_mosaicId!);
-    final int? mosaicAmountOffset = _mosaicAmount == null
-        ? null
-        : fbBuilder.writeListUint32(_mosaicAmount!);
-    final int? costOffset =
-        _cost == null ? null : fbBuilder.writeListUint32(_cost!);
-    final int? ownerOffset =
-        _owner == null ? null : fbBuilder.writeListUint8(_owner!);
+    final int? mosaicIdOffset = _mosaicId == null ? null : fbBuilder.writeListUint32(_mosaicId!);
+    final int? mosaicAmountOffset = _mosaicAmount == null ? null : fbBuilder.writeListUint32(_mosaicAmount!);
+    final int? costOffset = _cost == null ? null : fbBuilder.writeListUint32(_cost!);
+    final int? ownerOffset = _owner == null ? null : fbBuilder.writeListUint8(_owner!);
     fbBuilder.startTable(5);
     fbBuilder.addOffset(0, mosaicIdOffset);
     fbBuilder.addOffset(1, mosaicAmountOffset);
@@ -824,14 +755,12 @@ class RemoveExchangeOfferBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<RemoveExchangeOfferBuffer> reader =
-      _RemoveExchangeOfferBufferReader();
+  static const fb.Reader<RemoveExchangeOfferBuffer> reader = _RemoveExchangeOfferBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
-  List<int>? get mosaicId => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 4);
+  List<int>? get mosaicId => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 4);
 
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 6, 0);
 
@@ -841,13 +770,11 @@ class RemoveExchangeOfferBuffer {
   }
 }
 
-class _RemoveExchangeOfferBufferReader
-    extends fb.TableReader<RemoveExchangeOfferBuffer> {
+class _RemoveExchangeOfferBufferReader extends fb.TableReader<RemoveExchangeOfferBuffer> {
   const _RemoveExchangeOfferBufferReader();
 
   @override
-  RemoveExchangeOfferBuffer createObject(fb.BufferContext bc, int offset) =>
-      RemoveExchangeOfferBuffer._(bc, offset);
+  RemoveExchangeOfferBuffer createObject(fb.BufferContext bc, int offset) => RemoveExchangeOfferBuffer._(bc, offset);
 }
 
 class RemoveExchangeOfferBufferBuilder {
@@ -887,8 +814,7 @@ class RemoveExchangeOfferBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? mosaicIdOffset =
-        _mosaicId == null ? null : fbBuilder.writeListUint32(_mosaicId!);
+    final int? mosaicIdOffset = _mosaicId == null ? null : fbBuilder.writeListUint32(_mosaicId!);
     fbBuilder.startTable(2);
     fbBuilder.addOffset(0, mosaicIdOffset);
     fbBuilder.addUint8(1, _type);

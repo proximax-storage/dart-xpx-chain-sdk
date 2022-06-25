@@ -6,13 +6,9 @@
 
 part of xpx_chain_sdk.model.transaction;
 
-class AddExchangeOfferTransaction extends AbstractTransaction
-    implements Transaction {
-  AddExchangeOfferTransaction(
-      Deadline deadline, List<AddOffer> addOffers, NetworkType networkType,
-      [Uint64? maxFee])
-      : super(networkType, deadline, TransactionType.addExchangeOffer,
-            addExchangeOfferVersion, maxFee) {
+class AddExchangeOfferTransaction extends AbstractTransaction implements Transaction {
+  AddExchangeOfferTransaction(Deadline deadline, List<AddOffer> addOffers, NetworkType networkType, [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.addExchangeOffer, addExchangeOfferVersion, maxFee) {
     if (addOffers.isEmpty) {
       throw errNullAddOffers;
     } else {
@@ -47,8 +43,7 @@ class AddExchangeOfferTransaction extends AbstractTransaction
   }
 
   @override
-  int size() =>
-      addExchangeOfferHeaderSize + offers!.length * addExchangeOfferSize;
+  int size() => addExchangeOfferHeaderSize + offers!.length * addExchangeOfferSize;
 
   @override
   Uint8List generateBytes() {
@@ -71,13 +66,10 @@ class AddExchangeOfferTransaction extends AbstractTransaction
   }
 }
 
-class ExchangeOfferTransaction extends AbstractTransaction
-    implements Transaction {
-  ExchangeOfferTransaction(Deadline deadline,
-      List<ExchangeConfirmation> confirmations, NetworkType networkType,
+class ExchangeOfferTransaction extends AbstractTransaction implements Transaction {
+  ExchangeOfferTransaction(Deadline deadline, List<ExchangeConfirmation> confirmations, NetworkType networkType,
       [Uint64? maxFee])
-      : super(networkType, deadline, TransactionType.exchangeOffer,
-            exchangeOfferVersion, maxFee) {
+      : super(networkType, deadline, TransactionType.exchangeOffer, exchangeOfferVersion, maxFee) {
     if (confirmations.isEmpty) {
       throw errNullConfirmations;
     } else {
@@ -85,8 +77,7 @@ class ExchangeOfferTransaction extends AbstractTransaction
     }
   }
 
-  ExchangeOfferTransaction.fromDTO(ExchangeOfferTransactionInfoDTO dto)
-      : super.fromDto(dto.transaction!, dto.meta!) {
+  ExchangeOfferTransaction.fromDTO(ExchangeOfferTransactionInfoDTO dto) : super.fromDto(dto.transaction!, dto.meta!) {
     confirmations = ExchangeConfirmation.listFromDto(dto.transaction!.offers);
   }
 
@@ -112,8 +103,7 @@ class ExchangeOfferTransaction extends AbstractTransaction
   }
 
   @override
-  int size() =>
-      exchangeOfferHeaderSize + confirmations!.length * exchangeOfferSize;
+  int size() => exchangeOfferHeaderSize + confirmations!.length * exchangeOfferSize;
 
   @override
   Uint8List generateBytes() {
@@ -136,13 +126,10 @@ class ExchangeOfferTransaction extends AbstractTransaction
   }
 }
 
-class RemoveExchangeOfferTransaction extends AbstractTransaction
-    implements Transaction {
-  RemoveExchangeOfferTransaction(
-      Deadline deadline, List<RemoveOffer> removeOffer, NetworkType networkType,
+class RemoveExchangeOfferTransaction extends AbstractTransaction implements Transaction {
+  RemoveExchangeOfferTransaction(Deadline deadline, List<RemoveOffer> removeOffer, NetworkType networkType,
       [Uint64? maxFee])
-      : super(networkType, deadline, TransactionType.removeExchangeOffer,
-            removeExchangeOfferVersion, maxFee) {
+      : super(networkType, deadline, TransactionType.removeExchangeOffer, removeExchangeOfferVersion, maxFee) {
     if (removeOffer.isEmpty) {
       throw errNullRemoveOffers;
     } else {
@@ -150,8 +137,7 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction
     }
   }
 
-  RemoveExchangeOfferTransaction.fromDTO(
-      RemoveExchangeOfferTransactionInfoDTO dto)
+  RemoveExchangeOfferTransaction.fromDTO(RemoveExchangeOfferTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
     offers = RemoveOffer.listFromDto(dto.transaction!.offers);
   }
@@ -178,8 +164,7 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction
   }
 
   @override
-  int size() =>
-      removeExchangeOfferHeaderSize + offers!.length * removeExchangeOfferSize;
+  int size() => removeExchangeOfferHeaderSize + offers!.length * removeExchangeOfferSize;
 
   @override
   TransactionType entityType() => type;
@@ -192,12 +177,11 @@ class RemoveExchangeOfferTransaction extends AbstractTransaction
 
     final offersV = removeExchangeOfferToArrayToBuffer(builder, offers!);
 
-    final txnBuilder =
-        $buffer.RemoveExchangeOfferTransactionBufferBuilder(builder)
-          ..begin()
-          ..addSize(size())
-          ..addOffersCount(offers!.length)
-          ..addOffersOffset(offersV);
+    final txnBuilder = $buffer.RemoveExchangeOfferTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(size())
+      ..addOffersCount(offers!.length)
+      ..addOffersOffset(offersV);
     _buildCommonVector(builder, vectors);
 
     final codedTransfer = txnBuilder.finish();

@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.model.multisig;
 
 class MultisigAccountInfo {
-  MultisigAccountInfo.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  MultisigAccountInfo.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     multisig = Multisig.fromJson(json['multisig']);
   }
 
@@ -17,16 +16,13 @@ class MultisigAccountInfo {
   @override
   String toString() => encoder.convert(this);
 
-  static List<MultisigAccountInfo> listFromJson(List<Map> json) => json.isEmpty
-      ? <MultisigAccountInfo>[]
-      : json.map(MultisigAccountInfo.fromJson).toList();
+  static List<MultisigAccountInfo> listFromJson(List<Map> json) =>
+      json.isEmpty ? <MultisigAccountInfo>[] : json.map(MultisigAccountInfo.fromJson).toList();
 
-  static Map<String, MultisigAccountInfo> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, MultisigAccountInfo> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, MultisigAccountInfo>{};
     if (json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = MultisigAccountInfo.fromJson(value));
+      json.forEach((key, value) => map[key] = MultisigAccountInfo.fromJson(value));
     }
     return map;
   }

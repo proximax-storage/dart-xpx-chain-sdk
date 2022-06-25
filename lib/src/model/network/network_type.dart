@@ -10,8 +10,7 @@ class NetworkType {
   /// Returns a new constant [NetworkType] using [identifier] and [name].
   NetworkType._(this.identifier, this.name);
 
-  static NetworkType UNKNOWN_NETWORK_TYPE =
-      NetworkType._(0x0, 'network type is unknown');
+  static NetworkType UNKNOWN_NETWORK_TYPE = NetworkType._(0x0, 'network type is unknown');
 
   /// The Mijin [NetworkType] identifier. Decimal value = 96.
   static NetworkType MIJIN = NetworkType._(0x60, 'Mijin');
@@ -90,14 +89,7 @@ class NetworkType {
   }
 
   /// Supported network types.
-  static final List<NetworkType> values = <NetworkType>[
-    MIJIN,
-    MIJIN_TEST,
-    PUBLIC,
-    PUBLIC_TEST,
-    PRIVATE,
-    PRIVATE_TEST
-  ];
+  static final List<NetworkType> values = <NetworkType>[MIJIN, MIJIN_TEST, PUBLIC, PUBLIC_TEST, PRIVATE, PRIVATE_TEST];
 
   /// This [NetworkType]'s integer value.
   late final int identifier;
@@ -108,16 +100,13 @@ class NetworkType {
   /// Checks if the given [NetworkType] is valid.
   ///
   /// Throws an error if network type is invalid and when the parameter [throwError] is set to true.
-  static bool isValid(final NetworkType userEventType,
-          {bool throwError = false}) =>
-      NetworkType.isValidValue(userEventType.identifier,
-          throwError: throwError);
+  static bool isValid(final NetworkType userEventType, {bool throwError = false}) =>
+      NetworkType.isValidValue(userEventType.identifier, throwError: throwError);
 
   /// Checks if the given int value is of a valid user network type.
   ///
   /// Throws an error if network type is invalid and when the parameter [throwError] is set to true.
-  static bool isValidValue(final int userEventTypeInt,
-      {final bool throwError = false}) {
+  static bool isValidValue(final int userEventTypeInt, {final bool throwError = false}) {
     try {
       fromInt(userEventTypeInt);
       return true;

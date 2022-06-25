@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.model.transaction;
 
 class TransactionStatus {
-  TransactionStatus.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  TransactionStatus.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     group = json['group'];
     status = json['status'];
     hash = json['hash'];
@@ -32,12 +31,10 @@ class TransactionStatus {
   static List<TransactionStatus> listFromJson(List<Map> json) =>
       json.isEmpty ? [] : json.map(TransactionStatus.fromJson).toList();
 
-  static Map<String, TransactionStatus> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, TransactionStatus> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, TransactionStatus>{};
     if (json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = TransactionStatus.fromJson(value));
+      json.forEach((key, value) => map[key] = TransactionStatus.fromJson(value));
     }
     return map;
   }

@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api.dto;
 
 class MosaicLevyDTO {
-  MosaicLevyDTO.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  MosaicLevyDTO.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     type = json['type'] as int;
     recipient = json['recipient'] as String;
     mosaicId = UInt64DTO.fromJson(json['mosaicId']);

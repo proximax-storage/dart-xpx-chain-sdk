@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api;
 
 class BlockchainRoutesApi {
-  BlockchainRoutesApi([ApiClient? apiClient])
-      : _apiClient = apiClient ?? defaultApiClient;
+  BlockchainRoutesApi([ApiClient? apiClient]) : _apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient _apiClient;
 
@@ -26,8 +25,7 @@ class BlockchainRoutesApi {
   /// Gets a [BlockInfo] from the chain that has the given height.
   Future<BlockInfo?> getBlockByHeight(Height height) async {
     // create path and map variables
-    final String path =
-        _blockByHeightRoute.replaceAll('{height}', height.toString());
+    final String path = _blockByHeightRoute.replaceAll('{height}', height.toString());
 
     final response = await _apiClient.get(path);
 
@@ -107,8 +105,7 @@ class BlockchainRoutesApi {
   /// Get transactions from a block
   ///
   /// Returns an List of [Transaction] included in a block for a given block height.
-  Future<List<Transaction>> getBlockTransactions(Height height,
-      {TransactionQueryParams? txnQueryParams}) async {
+  Future<List<Transaction>> getBlockTransactions(Height height, {TransactionQueryParams? txnQueryParams}) async {
     // create path and map variables
     const String path = _blockTransactionsRoute;
 
@@ -128,8 +125,7 @@ class BlockchainRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final List resp =
-          _apiClient.deserialize(response.data, 'List<Transaction>');
+      final List resp = _apiClient.deserialize(response.data, 'List<Transaction>');
       return resp.map(deserializeDTO).toList().cast<Transaction>();
     } else {
       return [];
@@ -139,21 +135,17 @@ class BlockchainRoutesApi {
   /// Get blocks information
   ///
   /// Gets up to limit number of blocks after given block height.
-  Future<List<BlockInfo>?> getBlocksByHeightWithLimit(
-      int height, int limit) async {
+  Future<List<BlockInfo>?> getBlocksByHeightWithLimit(int height, int limit) async {
     // create path and map variables
-    final String path = _blocksByHeightWithLimitRoute
-        .replaceAll('{height}', height.toString())
-        .replaceAll('{limit}', limit.toString());
+    final String path =
+        _blocksByHeightWithLimitRoute.replaceAll('{height}', height.toString()).replaceAll('{limit}', limit.toString());
 
     final response = await _apiClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient
-          .deserialize(response.data, 'List<BlockInfoDTO>')
-          .cast<BlockInfoDTO>();
+      final resp = _apiClient.deserialize(response.data, 'List<BlockInfoDTO>').cast<BlockInfoDTO>();
       return BlockInfo.listFromDTO(resp);
     } else {
       return [];

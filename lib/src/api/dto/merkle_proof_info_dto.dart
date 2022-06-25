@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api.dto;
 
 class MerkleProofInfoDTO {
-  MerkleProofInfoDTO.fromJson(Map<String, dynamic> json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  MerkleProofInfoDTO.fromJson(Map<String, dynamic> json) : assert(json.isNotEmpty, 'json must not be empty') {
     payload = MerkleProofInfoPayload.fromJson(json['payload']);
     type = json['type'];
   }
@@ -25,16 +24,13 @@ class MerkleProofInfoDTO {
     return data;
   }
 
-  static List<MerkleProofInfoDTO> listFromJson(
-          List<Map<String, dynamic>> json) =>
+  static List<MerkleProofInfoDTO> listFromJson(List<Map<String, dynamic>> json) =>
       json.isEmpty ? [] : json.map(MerkleProofInfoDTO.fromJson).toList();
 
-  static Map<String, MerkleProofInfoDTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, MerkleProofInfoDTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, MerkleProofInfoDTO>{};
     if (json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = MerkleProofInfoDTO.fromJson(value));
+      json.forEach((key, value) => map[key] = MerkleProofInfoDTO.fromJson(value));
     }
     return map;
   }

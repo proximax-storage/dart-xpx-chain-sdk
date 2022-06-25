@@ -16,6 +16,5 @@ class Metadata {
   @override
   String toString() => encoder.convert(this);
 
-  Map<String, dynamic> toJson() =>
-      {'metadataType': metadataType, 'fields': fields};
+  Map<String, dynamic> toJson() => {'metadataType': metadataType, 'fields': fields};
 }

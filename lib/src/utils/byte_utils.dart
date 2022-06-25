@@ -32,16 +32,13 @@ class ByteUtils {
   }
 
   /// Converts bytes to [BigInt].
-  static BigInt bytesToBigInt(Uint8List bigIntBytes) =>
-      _decodeBigInt(bigIntBytes);
+  static BigInt bytesToBigInt(Uint8List bigIntBytes) => _decodeBigInt(bigIntBytes);
 
   /// Converts a bigint to a byte array.
-  static Uint8List bigIntTo16Bytes(BigInt bigInt) =>
-      HexUtils.hexToBytes(bigInt.toRadixString(16).padLeft(32, '0'));
+  static Uint8List bigIntTo16Bytes(BigInt bigInt) => HexUtils.hexToBytes(bigInt.toRadixString(16).padLeft(32, '0'));
 
   /// Converts a binary string into a hex string.
-  static String binaryToHex(String binary) =>
-      BigInt.parse(binary, radix: 2).toRadixString(16).toUpperCase();
+  static String binaryToHex(String binary) => BigInt.parse(binary, radix: 2).toRadixString(16).toUpperCase();
 
   /// Reverse the bytes.
   static Uint8List reverseBytes(Uint8List bytes) {
@@ -76,8 +73,7 @@ class ByteUtils {
   static List<int> stringToBytesUtf8(final String input) => utf8.encode(input);
 
   /// Converts a UTF-8 [input] string to an encoded byte array.
-  static Uint8List utf8StringToBytes(final String input) =>
-      Uint8List.fromList(utf8.encode(input));
+  static Uint8List utf8StringToBytes(final String input) => Uint8List.fromList(utf8.encode(input));
 
   /// Concatenates one or more byte arrays.
   static Uint8List concat(List<Uint8List> bytes) {

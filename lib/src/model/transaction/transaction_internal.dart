@@ -169,10 +169,7 @@ dynamic txnDeserialize(value, String targetType) {
     final data = value is Map ? value['data'] : value;
     final match = regList.firstMatch(targetType);
     final newTargetType = match![1];
-    return data
-        .map((v) => txnDeserialize(v, newTargetType!))
-        .where((element) => element != null)
-        .toList();
+    return data.map((v) => txnDeserialize(v, newTargetType!)).where((element) => element != null).toList();
   }
 
   // ignore: parameter_assignments
@@ -222,8 +219,7 @@ dynamic txnDeserialize(value, String targetType) {
         return null;
     }
   } on Exception catch (e, stack) {
-    throw ApiException.withInner(
-        500, 'Exception during deserialization.', e, stack);
+    throw ApiException.withInner(500, 'Exception during deserialization.', e, stack);
   }
 }
 
@@ -232,13 +228,11 @@ int extractNetworkType(int version) => version.toUnsigned(32) >> 24;
 
 int extractVersion(int version) {
   final buffer = Uint8List(8).buffer;
-  final bufferData = ByteData.view(buffer)
-    ..setUint64(0, version, Endian.little);
+  final bufferData = ByteData.view(buffer)..setUint64(0, version, Endian.little);
   return bufferData.getUint8(0);
 }
 
-Future<SignedTransaction> signTransactionWith(
-    Transaction tx, Account a, String generationHash) async {
+Future<SignedTransaction> signTransactionWith(Transaction tx, Account a, String generationHash) async {
   final s = a.account;
   final b = tx.generateBytes();
   var sb = Uint8List.fromList(b.skip(100).take(b.length).toList());
@@ -257,12 +251,11 @@ Future<SignedTransaction> signTransactionWith(
 
   final hash = _createTransactionHash(pHex, generationHash);
 
-  return Future.value(
-      SignedTransaction(tx.absTransaction().type, pHex.toUpperCase(), hash));
+  return Future.value(SignedTransaction(tx.absTransaction().type, pHex.toUpperCase(), hash));
 }
 
-Future<SignedTransaction> signTransactionWithCosignatures(Transaction tx,
-    Account a, List<Account> cosignatories, String generationHash) async {
+Future<SignedTransaction> signTransactionWithCosignatures(
+    Transaction tx, Account a, List<Account> cosignatories, String generationHash) async {
   final stx = await signTransactionWith(tx, a, generationHash);
 
   final p = StringBuffer(stx.payload);
@@ -283,27 +276,22 @@ Future<SignedTransaction> signTransactionWithCosignatures(Transaction tx,
 
   i.replaceRange(0, s.lengthInBytes, s.buffer.asUint8List());
 
-  return SignedTransaction(
-      tx.absTransaction().type, hex.encode(i).toUpperCase(), stx.hash);
+  return SignedTransaction(tx.absTransaction().type, hex.encode(i).toUpperCase(), stx.hash);
 }
 
-Future<CosignatureSignedTransaction> signCosignatureTransactionRwa(
-    CosignatureTransaction tx, Account a) async {
+Future<CosignatureSignedTransaction> signCosignatureTransactionRwa(CosignatureTransaction tx, Account a) async {
   if (tx._transactionToCosign.getTransactionInfo.transactionHash!.isEmpty) {
     throw errCosignatureTxHash;
   }
 
   final signer = a.account;
 
-  final List<int> hashByte =
-      hex.decode(tx._transactionToCosign.getTransactionInfo.transactionHash!);
+  final List<int> hashByte = hex.decode(tx._transactionToCosign.getTransactionInfo.transactionHash!);
 
   final signatureByte = await signer.sign(Uint8List.fromList(hashByte));
 
-  return CosignatureSignedTransaction(
-      tx._transactionToCosign.getTransactionInfo.transactionHash,
-      hex.encode(signatureByte.bytes),
-      signer.publicKey.toString());
+  return CosignatureSignedTransaction(tx._transactionToCosign.getTransactionInfo.transactionHash,
+      hex.encode(signatureByte.bytes), signer.publicKey.toString());
 }
 
 String _createTransactionHash(String pHex, String generationHash) {
@@ -335,8 +323,7 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
 
   rB.insertAll(rB.length, b.skip(100).take(versionSize + typeSize));
 
-  rB.insertAll(signerSize + sizeSize + versionSize + typeSize,
-      b.skip(transactionHeaderSize));
+  rB.insertAll(signerSize + sizeSize + versionSize + typeSize, b.skip(transactionHeaderSize));
 
   final buffer = Uint8List(4).buffer;
   final s = ByteData.view(buffer);
@@ -348,8 +335,7 @@ Uint8List toAggregateTransactionBytes(Transaction tx) {
   return Uint8List.fromList(rB);
 }
 
-int cosignatoryModificationArrayToBuffer(
-    fb.Builder builder, List<MultisigCosignatoryModification> modifications) {
+int cosignatoryModificationArrayToBuffer(fb.Builder builder, List<MultisigCosignatoryModification> modifications) {
   final msb = <int>[];
   for (final m in modifications) {
     final b = hexDecodeStringOdd(m.publicAccount!.publicKey);
@@ -424,9 +410,9 @@ List<Transaction> fixAggregate(List<Transaction> allTransaction) {
     for (var transaction in allTransaction) {
       if (transaction.entityType() != TransactionType.aggregateCompleted &&
           transaction.entityType() != TransactionType.aggregateBonded) {
-        final aggregateTransaction = allTransaction.firstWhere((element) =>
-            element.absTransaction().transactionHash ==
-            transaction.absTransaction().aggregateHash) as AggregateTransaction;
+        final aggregateTransaction = allTransaction.firstWhere(
+                (element) => element.absTransaction().transactionHash == transaction.absTransaction().aggregateHash)
+            as AggregateTransaction;
         aggregateTransaction.innerTransactions.add(transaction);
         final indexATx = allTransaction.indexOf(aggregateTransaction);
         allTransaction[indexATx] = aggregateTransaction;
@@ -435,16 +421,15 @@ List<Transaction> fixAggregate(List<Transaction> allTransaction) {
 
     final respAll = <Transaction>[];
     for (var transaction in allTransaction) {
-      if (transaction.absTransaction().aggregateHash == null)
-        respAll.add(transaction);
+      if (transaction.absTransaction().aggregateHash == null) respAll.add(transaction);
     }
     return respAll;
   }
   return allTransaction;
 }
 
-Future<List<Transaction>> internalGetTransactions(ApiClient client, String path,
-    List<QueryParam> queryParams, Object? postBody,
+Future<List<Transaction>> internalGetTransactions(
+    ApiClient client, String path, List<QueryParam> queryParams, Object? postBody,
     {bool firstLevel = true}) async {
   final response = await client.get(path, postBody, queryParams);
 
@@ -452,8 +437,7 @@ Future<List<Transaction>> internalGetTransactions(ApiClient client, String path,
     throw ApiException(response.statusCode!, response.data);
   } else if (response.data != null) {
     final List resp = client.deserialize(response.data, 'List<Transaction>');
-    final allTransaction =
-        resp.map(deserializeDTO).toList().cast<Transaction>();
+    final allTransaction = resp.map(deserializeDTO).toList().cast<Transaction>();
 
     if (firstLevel) {
       return allTransaction;

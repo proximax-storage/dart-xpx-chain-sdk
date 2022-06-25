@@ -37,8 +37,7 @@ class Uint64 implements Comparable<Uint64> {
   }
 
   /// Creates a [Uint64] from a [int].
-  static Uint64 fromInt(final int value) =>
-      Uint64.fromBigInt(BigInt.from(value));
+  static Uint64 fromInt(final int value) => Uint64.fromBigInt(BigInt.from(value));
 
   /// Creates a [Uint64] from a uint8list [bytes] (64-bit).
   static Uint64 fromBytes(final Uint8List bytes) {
@@ -93,8 +92,7 @@ class Uint64 implements Comparable<Uint64> {
   static final BigInt _minValueUnsigned = BigInt.zero;
 
   /// The maximum value of 64-bit unsigned integer. Equals to 18446744073709551615.
-  static final BigInt _maxValueUnsigned =
-      BigInt.parse('FFFFFFFFFFFFFFFF', radix: 16);
+  static final BigInt _maxValueUnsigned = BigInt.parse('FFFFFFFFFFFFFFFF', radix: 16);
 
   /// The value of Uint64 is stored as BigInt.
   BigInt _value;
@@ -118,8 +116,7 @@ class Uint64 implements Comparable<Uint64> {
 
   bool get isMinValue => _value == _minValueUnsigned;
 
-  bool get isZero =>
-      _value == BigInt.zero && toBytes().every((value) => 0 == value);
+  bool get isZero => _value == BigInt.zero && toBytes().every((value) => 0 == value);
 
   @override
   int get hashCode => _value.hashCode;
@@ -227,9 +224,9 @@ class Uint64 implements Comparable<Uint64> {
   }
 
   static void _checkValue(final BigInt value) {
-   if (value < _minValueUnsigned || value > _maxValueUnsigned) {
-     throw ArgumentError('Value out of range');
-   }
+    if (value < _minValueUnsigned || value > _maxValueUnsigned) {
+      throw ArgumentError('Value out of range');
+    }
   }
 
   // Returns the [Int64] representation of the specified value. Throws

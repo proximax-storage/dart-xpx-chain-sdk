@@ -7,16 +7,14 @@
 part of xpx_chain_sdk.api;
 
 class AccountRoutesApi {
-  AccountRoutesApi([ApiClient? _apiClient])
-      : _apiClient = _apiClient ?? defaultApiClient;
+  AccountRoutesApi([ApiClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
 
   final ApiClient _apiClient;
 
   static const _accountInfoRoute = '/account/{accountId}';
   static const _accountsInfoRoute = '/account';
   static const _accountMultisigRoute = '/account/{accountId}/multisig';
-  static const _accountMultisigGraphRoute =
-      '/account/{accountId}/multisig/graph';
+  static const _accountMultisigGraphRoute = '/account/{accountId}/multisig/graph';
   static const _transactionsRoute = '/transactions/confirmed';
   static const _unconfirmedTransactionsRoute = '/transactions/unconfirmed';
   static const _aggregateBondedTransactionsRoute = '/transactions/partial';
@@ -29,8 +27,7 @@ class AccountRoutesApi {
   /// Returns the account information.
   Future<AccountInfo?> getAccountInfo(Address address) async {
     // create path and map variables
-    final String path =
-        _accountInfoRoute.replaceAll('{accountId}', address.address);
+    final String path = _accountInfoRoute.replaceAll('{accountId}', address.address);
 
     final response = await _apiClient.get(path);
 
@@ -52,9 +49,7 @@ class AccountRoutesApi {
       throw ApiException(400, 'addresses must not be empty');
     }
 
-    final Object postBody = {
-      'addresses': addresses.map((a) => a.address).toList()
-    };
+    final Object postBody = {'addresses': addresses.map((a) => a.address).toList()};
 
     // create path and map variables
     const String path = _accountsInfoRoute;
@@ -64,9 +59,7 @@ class AccountRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient
-          .deserialize(response.data, 'List<AccountInfoDTO>')
-          .cast<AccountInfoDTO>();
+      final resp = _apiClient.deserialize(response.data, 'List<AccountInfoDTO>').cast<AccountInfoDTO>();
       return AccountInfo.listFromDTO(resp);
     } else {
       return [];
@@ -78,8 +71,7 @@ class AccountRoutesApi {
   /// Returns the [MultisigAccountInfo] information.
   Future<MultisigAccountInfo?> getAccountMultisig(Address address) async {
     // create path and map variables
-    final String path =
-        _accountMultisigRoute.replaceAll('{accountId}', address.address);
+    final String path = _accountMultisigRoute.replaceAll('{accountId}', address.address);
 
     final response = await _apiClient.get(path);
 
@@ -95,20 +87,16 @@ class AccountRoutesApi {
   /// Get multisig account graph information
   ///
   /// Returns list [MultisigAccountGraphInfo] graph.
-  Future<List<MultisigAccountGraphInfo>> getAccountMultisigGraph(
-      Address address) async {
+  Future<List<MultisigAccountGraphInfo>> getAccountMultisigGraph(Address address) async {
     // create path and map variables
-    final String path =
-        _accountMultisigGraphRoute.replaceAll('{accountId}', address.address);
+    final String path = _accountMultisigGraphRoute.replaceAll('{accountId}', address.address);
 
     final response = await _apiClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient
-          .deserialize(response.data, 'List<MultisigAccountGraphInfo>')
-          .cast<MultisigAccountGraphInfo>();
+      return _apiClient.deserialize(response.data, 'List<MultisigAccountGraphInfo>').cast<MultisigAccountGraphInfo>();
     } else {
       return [];
     }
@@ -122,8 +110,7 @@ class AccountRoutesApi {
   /// param: pageSize The number of transactions to return for each request.
   /// param: id The transaction id up to which transactions are returned.
   /// param: ordering The ordering criteria: * -id - Descending order by id. * id - Ascending order by id.
-  Future<List<Transaction>> transactions(PublicAccount account,
-      [TransactionQueryParams? txnQueryParams]) async {
+  Future<List<Transaction>> transactions(PublicAccount account, [TransactionQueryParams? txnQueryParams]) async {
     // query params
     final List<QueryParam> queryParams = [];
     if (txnQueryParams != null) {
@@ -137,9 +124,7 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactions(
-        _apiClient, _transactionsRoute, queryParams, null,
-        firstLevel: firstLevel);
+    return internalGetTransactions(_apiClient, _transactionsRoute, queryParams, null, firstLevel: firstLevel);
   }
 
   /// Get incoming transactions
@@ -161,9 +146,7 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactions(
-        _apiClient, _transactionsRoute, queryParams, null,
-        firstLevel: firstLevel);
+    return internalGetTransactions(_apiClient, _transactionsRoute, queryParams, null, firstLevel: firstLevel);
   }
 
   /// Get outgoing transactions
@@ -186,9 +169,7 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactions(
-        _apiClient, _transactionsRoute, queryParams, null,
-        firstLevel: firstLevel);
+    return internalGetTransactions(_apiClient, _transactionsRoute, queryParams, null, firstLevel: firstLevel);
   }
 
   /// Get unconfirmed transactions
@@ -210,8 +191,7 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactions(
-        _apiClient, _unconfirmedTransactionsRoute, queryParams, null,
+    return internalGetTransactions(_apiClient, _unconfirmedTransactionsRoute, queryParams, null,
         firstLevel: firstLevel);
   }
 
@@ -237,11 +217,9 @@ class AccountRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final List resp =
-          _apiClient.deserialize(response.data, 'List<Transaction>');
+      final List resp = _apiClient.deserialize(response.data, 'List<Transaction>');
 
-      final allTransaction =
-          resp.map(deserializeDTO).toList().cast<Transaction>();
+      final allTransaction = resp.map(deserializeDTO).toList().cast<Transaction>();
 
       var aggregateBondedTransactions = <AggregateTransaction>[];
       for (var transaction in allTransaction) {
@@ -253,9 +231,7 @@ class AccountRoutesApi {
       for (var transaction in allTransaction) {
         if (transaction.entityType() != TransactionType.aggregateBonded) {
           final aggregateTransaction = aggregateBondedTransactions.firstWhere(
-              (element) =>
-                  element.absTransaction().transactionHash ==
-                  transaction.absTransaction().aggregateHash);
+              (element) => element.absTransaction().transactionHash == transaction.absTransaction().aggregateHash);
           aggregateTransaction.innerTransactions.add(transaction);
         }
       }
@@ -272,9 +248,7 @@ class AccountRoutesApi {
       throw ApiException(400, 'addresses must not be empty');
     }
 
-    final Object postBody = {
-      'addresses': addresses.map((a) => a.address).toList()
-    };
+    final Object postBody = {'addresses': addresses.map((a) => a.address).toList()};
 
     // create path and map variables
     const String path = _accountsNamesRoute;
@@ -284,9 +258,7 @@ class AccountRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient
-          .deserialize(response.data, 'List<AccountNames>')
-          .cast<AccountNamesDTO>();
+      final resp = _apiClient.deserialize(response.data, 'List<AccountNames>').cast<AccountNamesDTO>();
       return AccountNames.listFromJson(resp);
     } else {
       return [];
@@ -295,16 +267,14 @@ class AccountRoutesApi {
 
   Future<AccountProperties?> getAccountProperties(Address address) async {
     // create path and map variables
-    final String path =
-        _accountPropertiesRoute.replaceAll('{address}', address.address);
+    final String path = _accountPropertiesRoute.replaceAll('{address}', address.address);
 
     final response = await _apiClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp =
-          _apiClient.deserialize(response.data, 'AccountPropertiesDTO');
+      final resp = _apiClient.deserialize(response.data, 'AccountPropertiesDTO');
 
       return AccountProperties.fromDto(resp);
     } else {
@@ -312,15 +282,12 @@ class AccountRoutesApi {
     }
   }
 
-  Future<List<AccountProperties>> getAccountsProperties(
-      List<Address> addresses) async {
+  Future<List<AccountProperties>> getAccountsProperties(List<Address> addresses) async {
     if (addresses.isEmpty) {
       throw ApiException(400, 'addresses must not be empty');
     }
 
-    final Object postBody = {
-      'addresses': addresses.map((a) => a.address).toList()
-    };
+    final Object postBody = {'addresses': addresses.map((a) => a.address).toList()};
 
     // create path and map variables
     const String path = _accountsPropertiesRoute;
@@ -330,9 +297,7 @@ class AccountRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient
-          .deserialize(response.data, 'List<AccountPropertiesDTO>')
-          .cast<AccountPropertiesDTO>();
+      final resp = _apiClient.deserialize(response.data, 'List<AccountPropertiesDTO>').cast<AccountPropertiesDTO>();
       return AccountProperties.listFromJson(resp);
     } else {
       return [];

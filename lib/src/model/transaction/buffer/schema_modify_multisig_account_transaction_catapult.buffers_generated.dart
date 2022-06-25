@@ -25,34 +25,26 @@ class ModifyMultisigAccountTransactionBuffer {
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get signature =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get signature => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get signer =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get signer => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 14);
+  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 14);
 
-  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 16);
+  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 16);
 
-  int get minRemovalDelta =>
-      const fb.Int8Reader().vTableGet(_bc, _bcOffset, 18, 0);
+  int get minRemovalDelta => const fb.Int8Reader().vTableGet(_bc, _bcOffset, 18, 0);
 
-  int get minApprovalDelta =>
-      const fb.Int8Reader().vTableGet(_bc, _bcOffset, 20, 0);
+  int get minApprovalDelta => const fb.Int8Reader().vTableGet(_bc, _bcOffset, 20, 0);
 
-  int get numModifications =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
+  int get numModifications => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
 
   List<CosignatoryModificationBuffer>? get modifications =>
-      const fb.ListReader<CosignatoryModificationBuffer>(
-              CosignatoryModificationBuffer.reader)
+      const fb.ListReader<CosignatoryModificationBuffer>(CosignatoryModificationBuffer.reader)
           .vTableGetNullable(_bc, _bcOffset, 24);
 
   @override
@@ -61,13 +53,11 @@ class ModifyMultisigAccountTransactionBuffer {
   }
 }
 
-class _ModifyMultisigAccountTransactionBufferReader
-    extends fb.TableReader<ModifyMultisigAccountTransactionBuffer> {
+class _ModifyMultisigAccountTransactionBufferReader extends fb.TableReader<ModifyMultisigAccountTransactionBuffer> {
   const _ModifyMultisigAccountTransactionBufferReader();
 
   @override
-  ModifyMultisigAccountTransactionBuffer createObject(
-          fb.BufferContext bc, int offset) =>
+  ModifyMultisigAccountTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
       ModifyMultisigAccountTransactionBuffer._(bc, offset);
 }
 
@@ -140,8 +130,7 @@ class ModifyMultisigAccountTransactionBufferBuilder {
   }
 }
 
-class ModifyMultisigAccountTransactionBufferObjectBuilder
-    extends fb.ObjectBuilder {
+class ModifyMultisigAccountTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   final int? _size;
   final List<int>? _signature;
   final List<int>? _signer;
@@ -181,19 +170,13 @@ class ModifyMultisigAccountTransactionBufferObjectBuilder
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? signatureOffset =
-        _signature == null ? null : fbBuilder.writeListUint8(_signature!);
-    final int? signerOffset =
-        _signer == null ? null : fbBuilder.writeListUint8(_signer!);
-    final int? maxFeeOffset =
-        _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
-    final int? deadlineOffset =
-        _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
+    final int? signatureOffset = _signature == null ? null : fbBuilder.writeListUint8(_signature!);
+    final int? signerOffset = _signer == null ? null : fbBuilder.writeListUint8(_signer!);
+    final int? maxFeeOffset = _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
+    final int? deadlineOffset = _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
     final int? modificationsOffset = _modifications == null
         ? null
-        : fbBuilder.writeList(_modifications!
-            .map((b) => b.getOrCreateOffset(fbBuilder))
-            .toList());
+        : fbBuilder.writeList(_modifications!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
     fbBuilder.startTable(11);
     fbBuilder.addUint32(0, _size);
     fbBuilder.addOffset(1, signatureOffset);

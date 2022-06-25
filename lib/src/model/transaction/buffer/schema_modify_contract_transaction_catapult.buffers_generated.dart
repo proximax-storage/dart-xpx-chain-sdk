@@ -15,16 +15,14 @@ class CosignatoryModificationBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<CosignatoryModificationBuffer> reader =
-      _CosignatoryModificationBufferReader();
+  static const fb.Reader<CosignatoryModificationBuffer> reader = _CosignatoryModificationBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get type => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get cosignatoryPublicKey =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get cosignatoryPublicKey => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
   @override
   String toString() {
@@ -32,8 +30,7 @@ class CosignatoryModificationBuffer {
   }
 }
 
-class _CosignatoryModificationBufferReader
-    extends fb.TableReader<CosignatoryModificationBuffer> {
+class _CosignatoryModificationBufferReader extends fb.TableReader<CosignatoryModificationBuffer> {
   const _CosignatoryModificationBufferReader();
 
   @override
@@ -78,9 +75,8 @@ class CosignatoryModificationBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? cosignatoryPublicKeyOffset = _cosignatoryPublicKey == null
-        ? null
-        : fbBuilder.writeListUint8(_cosignatoryPublicKey!);
+    final int? cosignatoryPublicKeyOffset =
+        _cosignatoryPublicKey == null ? null : fbBuilder.writeListUint8(_cosignatoryPublicKey!);
     fbBuilder.startTable(2);
     fbBuilder.addUint8(0, _type);
     fbBuilder.addOffset(1, cosignatoryPublicKeyOffset);
@@ -104,58 +100,45 @@ class ModifyContractTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<ModifyContractTransactionBuffer> reader =
-      _ModifyContractTransactionBufferReader();
+  static const fb.Reader<ModifyContractTransactionBuffer> reader = _ModifyContractTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get signature =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get signature => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get signer =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get signer => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 14);
+  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 14);
 
-  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 16);
+  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 16);
 
-  List<int>? get durationDelta => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 18);
+  List<int>? get durationDelta => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 18);
 
-  List<int>? get hash =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 20);
+  List<int>? get hash => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 20);
 
-  int get numCustomers =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
+  int get numCustomers => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
 
-  int get numExecutors =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 24, 0);
+  int get numExecutors => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 24, 0);
 
-  int get numVerifiers =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 26, 0);
+  int get numVerifiers => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 26, 0);
 
   List<CosignatoryModificationBuffer>? get customers =>
-      const fb.ListReader<CosignatoryModificationBuffer>(
-              CosignatoryModificationBuffer.reader)
+      const fb.ListReader<CosignatoryModificationBuffer>(CosignatoryModificationBuffer.reader)
           .vTableGetNullable(_bc, _bcOffset, 28);
 
   List<CosignatoryModificationBuffer>? get executors =>
-      const fb.ListReader<CosignatoryModificationBuffer>(
-              CosignatoryModificationBuffer.reader)
+      const fb.ListReader<CosignatoryModificationBuffer>(CosignatoryModificationBuffer.reader)
           .vTableGetNullable(_bc, _bcOffset, 30);
 
   List<CosignatoryModificationBuffer>? get verifiers =>
-      const fb.ListReader<CosignatoryModificationBuffer>(
-              CosignatoryModificationBuffer.reader)
+      const fb.ListReader<CosignatoryModificationBuffer>(CosignatoryModificationBuffer.reader)
           .vTableGetNullable(_bc, _bcOffset, 32);
 
   @override
@@ -164,13 +147,11 @@ class ModifyContractTransactionBuffer {
   }
 }
 
-class _ModifyContractTransactionBufferReader
-    extends fb.TableReader<ModifyContractTransactionBuffer> {
+class _ModifyContractTransactionBufferReader extends fb.TableReader<ModifyContractTransactionBuffer> {
   const _ModifyContractTransactionBufferReader();
 
   @override
-  ModifyContractTransactionBuffer createObject(
-          fb.BufferContext bc, int offset) =>
+  ModifyContractTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
       ModifyContractTransactionBuffer._(bc, offset);
 }
 
@@ -315,31 +296,21 @@ class ModifyContractTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? signatureOffset =
-        _signature == null ? null : fbBuilder.writeListUint8(_signature!);
-    final int? signerOffset =
-        _signer == null ? null : fbBuilder.writeListUint8(_signer!);
-    final int? maxFeeOffset =
-        _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
-    final int? deadlineOffset =
-        _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
-    final int? durationDeltaOffset = _durationDelta == null
-        ? null
-        : fbBuilder.writeListUint32(_durationDelta!);
-    final int? hashOffset =
-        _hash == null ? null : fbBuilder.writeListUint8(_hash!);
+    final int? signatureOffset = _signature == null ? null : fbBuilder.writeListUint8(_signature!);
+    final int? signerOffset = _signer == null ? null : fbBuilder.writeListUint8(_signer!);
+    final int? maxFeeOffset = _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
+    final int? deadlineOffset = _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
+    final int? durationDeltaOffset = _durationDelta == null ? null : fbBuilder.writeListUint32(_durationDelta!);
+    final int? hashOffset = _hash == null ? null : fbBuilder.writeListUint8(_hash!);
     final int? customersOffset = _customers == null
         ? null
-        : fbBuilder.writeList(
-            _customers!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
+        : fbBuilder.writeList(_customers!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
     final int? executorsOffset = _executors == null
         ? null
-        : fbBuilder.writeList(
-            _executors!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
+        : fbBuilder.writeList(_executors!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
     final int? verifiersOffset = _verifiers == null
         ? null
-        : fbBuilder.writeList(
-            _verifiers!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
+        : fbBuilder.writeList(_verifiers!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
     fbBuilder.startTable(15);
     fbBuilder.addUint32(0, _size);
     fbBuilder.addOffset(1, signatureOffset);

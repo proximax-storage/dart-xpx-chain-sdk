@@ -9,7 +9,6 @@ library xpx_chain_sdk.test.model.mosaic.mosaic_id_test;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:test/test.dart';
-
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart' show MosaicId, MosaicNonce, NetworkType, PublicAccount, Uint64;
 
 void main() {
@@ -83,8 +82,8 @@ void main() {
     test('Invalid constructor parameter', () {
       expect(
           () => MosaicId.fromHex(''),
-          throwsA(
-              predicate((e) => e is ArgumentError && e.message.toString().contains('The hexString must not be null or empty'))));
+          throwsA(predicate(
+              (e) => e is ArgumentError && e.message.toString().contains('The hexString must not be null or empty'))));
       expect(() => MosaicId.fromHex('12zz34'),
           throwsA(predicate((e) => e is ArgumentError && e.message.toString().contains('Invalid hex'))));
     });

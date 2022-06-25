@@ -40,9 +40,7 @@ class MosaicProperty {
   Uint64? value;
 
   static List<MosaicProperty> listFromDTO(List<MosaicPropertyDTO> json) =>
-      json.isEmpty
-          ? <MosaicProperty>[]
-          : json.map(MosaicProperty.fromDTO).toList();
+      json.isEmpty ? <MosaicProperty>[] : json.map(MosaicProperty.fromDTO).toList();
 
   @override
   String toString() => encoder.convert(this);

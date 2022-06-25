@@ -19,11 +19,10 @@ class MosaicNonce {
     ArgumentError.checkNotNull(nonce);
 
     if (nonceSize != nonce.length) {
-      throw new ArgumentError(
-          'Invalid nonce size. The nonce should be $nonceSize bytes but received: ${nonce.length}');
+      throw ArgumentError('Invalid nonce size. The nonce should be $nonceSize bytes but received: ${nonce.length}');
     }
 
-    return new MosaicNonce._(nonce);
+    return MosaicNonce._(nonce);
   }
 
   /// Creates a random MosaicNonce.
@@ -47,8 +46,7 @@ class MosaicNonce {
     return MosaicNonce._(bytes);
   }
 
-  static MosaicNonce fromInt(final int value) =>
-      fromUint64(Uint64.fromInt(value));
+  static MosaicNonce fromInt(final int value) => fromUint64(Uint64.fromInt(value));
 
   /// Converts the nonce bytes to a hex string.
   String toHex() => HexUtils.getString(nonce);

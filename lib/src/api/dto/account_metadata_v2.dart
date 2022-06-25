@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.api.dto;
 
 class MetaDataEntryDTO {
-  MetaDataEntryDTO.fromJson(Map<String, dynamic> json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  MetaDataEntryDTO.fromJson(Map<String, dynamic> json) : assert(json.isNotEmpty, 'json must not be empty') {
     targetKey = json['targetKey'] as String;
     scopedMetadataKey = UInt64DTO.fromJson(json['scopedMetadataKey']);
     valueSizeDelta = json['valueSizeDelta'] as int;

@@ -8,17 +8,8 @@ part of xpx_chain_sdk.model.metadata;
 
 /// MetadataEntry can be associated with an account/namespace/mosaic.
 class MetadataEntry {
-  MetadataEntry(
-      this.version,
-      this.compositeHash,
-      this.sourceAddress,
-      this.targetKey,
-      this.scopedMetadataKey,
-      this.targetId,
-      this.metadataType,
-      this.valueSize,
-      this.value,
-      this.id);
+  MetadataEntry(this.version, this.compositeHash, this.sourceAddress, this.targetKey, this.scopedMetadataKey,
+      this.targetId, this.metadataType, this.valueSize, this.value, this.id);
 
   factory MetadataEntry.fromDTO(MetadataV2InfoDTO dto) {
     final entryDto = dto.metadataEntry;
@@ -27,26 +18,14 @@ class MetadataEntry {
     final scopedMetadataKey = Uint64.fromDto(entryDto.scopedMetadataKey);
     final targetId = Uint64.fromDto(entryDto.targetId);
     final metadataType = entryDto.metadataType.toMetadataType;
-    final value =
-        ByteUtils.bytesToUtf8String(HexUtils.hexToBytes(entryDto.value));
+    final value = ByteUtils.bytesToUtf8String(HexUtils.hexToBytes(entryDto.value));
 
-    return MetadataEntry(
-        entryDto.version,
-        entryDto.compositeHash,
-        sourceAddress,
-        entryDto.targetKey,
-        scopedMetadataKey,
-        targetId,
-        metadataType,
-        entryDto.valueSize,
-        value,
-        dto.id);
+    return MetadataEntry(entryDto.version, entryDto.compositeHash, sourceAddress, entryDto.targetKey, scopedMetadataKey,
+        targetId, metadataType, entryDto.valueSize, value, dto.id);
   }
 
   static List<MetadataEntry> listFromDTO(List<MetadataV2InfoDTO> json) =>
-      json.isEmpty
-          ? <MetadataEntry>[]
-          : json.map(MetadataEntry.fromDTO).toList();
+      json.isEmpty ? <MetadataEntry>[] : json.map(MetadataEntry.fromDTO).toList();
 
   final int version;
   final String compositeHash;

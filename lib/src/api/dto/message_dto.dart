@@ -8,8 +8,7 @@ part of xpx_chain_sdk.api.dto;
 
 // Message
 class MessageDTO {
-  MessageDTO.fromJson(Map<String, dynamic> json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  MessageDTO.fromJson(Map<String, dynamic> json) : assert(json.isNotEmpty, 'json must not be empty') {
     type = json['type'];
     payload = json['payload'];
   }

@@ -60,9 +60,7 @@ class NodeRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient
-          .deserialize(response.data, 'List<NodeInfo>')
-          .cast<NodeInfo>();
+      return _apiClient.deserialize(response.data, 'List<NodeInfo>').cast<NodeInfo>();
     } else {
       return [];
     }

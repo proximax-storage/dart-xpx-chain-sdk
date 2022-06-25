@@ -8,8 +8,7 @@ part of xpx_chain_sdk.model.metadata;
 
 /// Metadata specialization for address/account.
 class AddressMetadata extends Metadata {
-  AddressMetadata(List<Field> fields, this.metadataId)
-      : super(MetadataType.metadataAccount, fields);
+  AddressMetadata(List<Field> fields, this.metadataId) : super(MetadataType.metadataAccount, fields);
 
   final Address metadataId;
 

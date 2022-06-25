@@ -9,17 +9,11 @@ part of xpx_chain_sdk.model.transaction;
 /// Register a new mosaic.
 /// Announce a [MosaicDefinitionTransaction] to create a new [Mosaic].
 ///
-class MosaicDefinitionTransaction extends AbstractTransaction
-    implements Transaction {
-  MosaicDefinitionTransaction.create(
-      Deadline deadline,
-      MosaicNonce nonce,
-      PublicAccount ownerPublicAccount,
-      MosaicProperties mosaicProps,
-      NetworkType networkType,
+class MosaicDefinitionTransaction extends AbstractTransaction implements Transaction {
+  MosaicDefinitionTransaction.create(Deadline deadline, MosaicNonce nonce, PublicAccount ownerPublicAccount,
+      MosaicProperties mosaicProps, NetworkType networkType,
       [Uint64? maxFee])
-      : super(networkType, deadline, TransactionType.mosaicDefinition,
-            mosaicDefinitionVersion, maxFee) {
+      : super(networkType, deadline, TransactionType.mosaicDefinition, mosaicDefinitionVersion, maxFee) {
     mosaicNonce = nonce;
     mosaicProperties = mosaicProps;
     // Signer of transaction must be the same with ownerPublicKey
@@ -63,17 +57,14 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
   @override
   int size() =>
-      mosaicDefinitionTransactionHeaderSize +
-      mosaicProperties!.optionalProperties.length * mosaicOptionalPropertySize;
+      mosaicDefinitionTransactionHeaderSize + mosaicProperties!.optionalProperties.length * mosaicOptionalPropertySize;
 
   @override
   AbstractTransaction absTransaction() => _absTransaction();
 
-  int _buildMosaicPropertyBuffer(
-      fb.Builder builder, List<MosaicProperty?>? properties) {
+  int _buildMosaicPropertyBuffer(fb.Builder builder, List<MosaicProperty?>? properties) {
     if (properties == null) return 0;
-    final List<int> pBuffer =
-        List.filled(properties.length, 0, growable: false);
+    final List<int> pBuffer = List.filled(properties.length, 0, growable: false);
 
     int i = 0;
     for (final p in properties) {
@@ -103,8 +94,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 
     final mosaicIdOffset = builder.writeListUint32(mosaicId!.toIntArray());
     final mosaicNonceOffset = builder.writeListUint8(mosaicNonce!.nonce);
-    final optionalPropertiesOffset = _buildMosaicPropertyBuffer(
-        builder, mosaicProperties!.optionalProperties);
+    final optionalPropertiesOffset = _buildMosaicPropertyBuffer(builder, mosaicProperties!.optionalProperties);
     final commonVector = _generateCommonVector(builder);
 
     final txnBuilder = $buffer.MosaicDefinitionTransactionBufferBuilder(builder)
@@ -128,15 +118,13 @@ class MosaicDefinitionTransaction extends AbstractTransaction
 /// Change an existent mosaic supply.
 /// Announce a [MosaicSupplyChangeTransaction] to increase or decrease a mosaic’s supply.
 ///
-class MosaicSupplyChangeTransaction extends AbstractTransaction
-    implements Transaction {
-  MosaicSupplyChangeTransaction.create(Deadline deadline, this.mosaicSupplyType,
-      this.mosaicId, this.delta, NetworkType networkType, [Uint64? maxFee])
-      : super(networkType, deadline, TransactionType.mosaicSupplyChange,
-            mosaicSupplyChangeVersion, maxFee);
+class MosaicSupplyChangeTransaction extends AbstractTransaction implements Transaction {
+  MosaicSupplyChangeTransaction.create(
+      Deadline deadline, this.mosaicSupplyType, this.mosaicId, this.delta, NetworkType networkType,
+      [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.mosaicSupplyChange, mosaicSupplyChangeVersion, maxFee);
 
-  MosaicSupplyChangeTransaction.fromDTO(
-      MosaicSupplyChangeTransactionInfoDTO dto)
+  MosaicSupplyChangeTransaction.fromDTO(MosaicSupplyChangeTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
     mosaicSupplyType = dto.transaction!.direction == 0 ? decrease : increase;
     mosaicId = MosaicId(dto.transaction!.mosaicId!.toUint64());
@@ -186,13 +174,12 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
     final deltaOffset = builder.writeListUint32(delta!.toIntArray());
     final commonVector = _generateCommonVector(builder);
 
-    final txnBuilder =
-        $buffer.MosaicSupplyChangeTransactionBufferBuilder(builder)
-          ..begin()
-          ..addSize(size())
-          ..addMosaicIdOffset(mosaicIdOffset)
-          ..addDirection(mosaicSupplyType!.index)
-          ..addDeltaOffset(deltaOffset);
+    final txnBuilder = $buffer.MosaicSupplyChangeTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(size())
+      ..addMosaicIdOffset(mosaicIdOffset)
+      ..addDirection(mosaicSupplyType!.index)
+      ..addDeltaOffset(deltaOffset);
     _buildCommonVector(builder, commonVector);
 
     final codedMosaicSupply = txnBuilder.finish();

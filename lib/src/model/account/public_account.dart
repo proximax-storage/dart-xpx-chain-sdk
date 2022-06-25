@@ -10,10 +10,8 @@ class PublicAccount {
   PublicAccount._(this.publicKey, this.address);
 
   /// Create an Account from a given publicKey hex string.
-  static PublicAccount fromPublicKey(
-      String? publicKey, NetworkType networkType) {
-    if (publicKey == null ||
-        (publicKeySize != publicKey.length && 66 != publicKey.length)) {
+  static PublicAccount fromPublicKey(String? publicKey, NetworkType networkType) {
+    if (publicKey == null || (publicKeySize != publicKey.length && 66 != publicKey.length)) {
       throw errInvalidPublicKey;
     }
     final address = Address.fromPublicKey(publicKey, networkType);
@@ -38,13 +36,11 @@ class PublicAccount {
       throw errInvalidHexadecimal;
     }
 
-    final _publicKey = crypto.SimplePublicKey(hex.decode(publicKey),
-        type: crypto.KeyPairType.ed25519);
+    final _publicKey = crypto.SimplePublicKey(hex.decode(publicKey), type: crypto.KeyPairType.ed25519);
 
     final String hexData = HexUtils.utf8ToHex(data);
 
-    final crypto.Signature _signature =
-        crypto.Signature(hex.decode(signature), publicKey: _publicKey);
+    final crypto.Signature _signature = crypto.Signature(hex.decode(signature), publicKey: _publicKey);
 
     return crypto.KeyPair.verify(
         data: Uint8List.fromList(hex.decode(hexData)),

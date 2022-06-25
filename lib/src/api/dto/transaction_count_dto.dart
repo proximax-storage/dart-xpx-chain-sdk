@@ -5,8 +5,7 @@
  */
 
 class TransactionCountDTO {
-  TransactionCountDTO.fromJson(Map json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  TransactionCountDTO.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
     type = json['type'] as int;
     count = json['count'] as int;
   }

@@ -7,8 +7,7 @@
 part of xpx_chain_sdk.model.blockchain;
 
 class MerkleProofInfoPayload {
-  MerkleProofInfoPayload.fromJson(Map<String, dynamic> json)
-      : assert(json.isNotEmpty, 'json must not be empty') {
+  MerkleProofInfoPayload.fromJson(Map<String, dynamic> json) : assert(json.isNotEmpty, 'json must not be empty') {
     merklePath = MerklePathItem.listFromJson(json['merklePath']);
   }
 
@@ -19,16 +18,13 @@ class MerkleProofInfoPayload {
 
   Map<String, dynamic> toJson() => {'merklePath': merklePath};
 
-  static List<MerkleProofInfoPayload> listFromJson(
-          List<Map<String, dynamic>> json) =>
+  static List<MerkleProofInfoPayload> listFromJson(List<Map<String, dynamic>> json) =>
       json.isEmpty ? [] : json.map(MerkleProofInfoPayload.fromJson).toList();
 
-  static Map<String, MerkleProofInfoPayload> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, MerkleProofInfoPayload> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, MerkleProofInfoPayload>{};
     if (json.isNotEmpty) {
-      json.forEach(
-          (key, value) => map[key] = MerkleProofInfoPayload.fromJson(value));
+      json.forEach((key, value) => map[key] = MerkleProofInfoPayload.fromJson(value));
     }
     return map;
   }

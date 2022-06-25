@@ -29,8 +29,7 @@ class UInt64DTO {
   static List<UInt64DTO> listFromJson(List<dynamic> json) =>
       json.isEmpty ? <UInt64DTO>[] : json.map(UInt64DTO.fromJson).toList();
 
-  static Map<String, UInt64DTO> mapFromJson(
-      Map<String, Map<String, dynamic>> json) {
+  static Map<String, UInt64DTO> mapFromJson(Map<String, Map<String, dynamic>> json) {
     final map = <String, UInt64DTO>{};
     if (json.isNotEmpty) {
       json.forEach((key, value) => map[key] = UInt64DTO.fromJson(value));

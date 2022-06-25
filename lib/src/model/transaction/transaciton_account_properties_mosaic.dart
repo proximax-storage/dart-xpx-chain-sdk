@@ -7,19 +7,15 @@
 part of xpx_chain_sdk.model.transaction;
 
 // AliasTransaction
-class AccountPropertiesMosaicTransaction extends AbstractTransaction
-    implements Transaction {
-  AccountPropertiesMosaicTransaction(Deadline deadline, this.propertyType,
-      this.modifications, NetworkType networkType, [Uint64? maxFee])
-      : super(networkType, deadline, TransactionType.accountPropertyMosaic,
-            accountRestrictionMosaicVersion, maxFee);
+class AccountPropertiesMosaicTransaction extends AbstractTransaction implements Transaction {
+  AccountPropertiesMosaicTransaction(Deadline deadline, this.propertyType, this.modifications, NetworkType networkType,
+      [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.accountPropertyMosaic, accountRestrictionMosaicVersion, maxFee);
 
-  AccountPropertiesMosaicTransaction.fromDTO(
-      AccountPropertiesMosaicTransactionInfoDTO dto)
+  AccountPropertiesMosaicTransaction.fromDTO(AccountPropertiesMosaicTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
     propertyType = AccountPropertyType.fromInt(dto.transaction!.propertyType);
-    modifications = AccountPropertiesMosaicModification.listFromJson(
-        dto.transaction!.modifications!);
+    modifications = AccountPropertiesMosaicModification.listFromJson(dto.transaction!.modifications!);
   }
 
   AccountPropertyType? propertyType;
@@ -41,9 +37,7 @@ class AccountPropertiesMosaicTransaction extends AbstractTransaction
   }
 
   @override
-  int size() =>
-      accountPropertyMosaicHeader +
-      (accountPropertiesMosaicModificationSize * modifications!.length);
+  int size() => accountPropertyMosaicHeader + (accountPropertiesMosaicModificationSize * modifications!.length);
 
   @override
   TransactionType entityType() => type;
@@ -56,8 +50,7 @@ class AccountPropertiesMosaicTransaction extends AbstractTransaction
     final builder = fb.Builder(initialSize: 0);
 
     /// Create mosaics
-    final List<int?> msb =
-        List.filled(modifications!.length, null, growable: false);
+    final List<int?> msb = List.filled(modifications!.length, null, growable: false);
     int i = 0;
     for (final modification in modifications!) {
       final assetId = modification.assetId!.toBytes();
@@ -75,13 +68,12 @@ class AccountPropertiesMosaicTransaction extends AbstractTransaction
 
     final vectors = _generateCommonVector(builder);
 
-    final txnBuilder =
-        $buffer.AccountPropertiesTransactionBufferBuilder(builder)
-          ..begin()
-          ..addSize(size())
-          ..addPropertyType(propertyType!.value)
-          ..addModificationCount(modifications!.length)
-          ..addModificationsOffset(mV);
+    final txnBuilder = $buffer.AccountPropertiesTransactionBufferBuilder(builder)
+      ..begin()
+      ..addSize(size())
+      ..addPropertyType(propertyType!.value)
+      ..addModificationCount(modifications!.length)
+      ..addModificationsOffset(mV);
     _buildCommonVector(builder, vectors);
 
     final codedAccountProperty = txnBuilder.finish();

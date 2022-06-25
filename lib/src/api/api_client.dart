@@ -20,6 +20,7 @@ class QueryParam {
 
 class TimeoutOptions {
   TimeoutOptions({required this.connectTimeout, required this.receiveTimeout});
+
   final int connectTimeout;
   final int receiveTimeout;
 }
@@ -81,10 +82,10 @@ class SiriusClient {
   }
 
   static SiriusClient fromUrl(String baseUrl, [TimeoutOptions? timeOptions]) {
-    timeOptions ??=  TimeoutOptions(
-          connectTimeout: 5000,
-          receiveTimeout: 5000,
-        );
+    timeOptions ??= TimeoutOptions(
+      connectTimeout: 5000,
+      receiveTimeout: 5000,
+    );
 
     final options = BaseOptions(
       connectTimeout: timeOptions.connectTimeout,

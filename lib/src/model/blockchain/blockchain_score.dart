@@ -8,8 +8,7 @@ part of xpx_chain_sdk.model.blockchain;
 
 class BlockchainScore {
   BlockchainScore.fromDTO(BlockchainScoreDTO dto) {
-    score = Uint64.fromInts(
-        dto.scoreLow!.toUint64()!.toInt(), dto.scoreHigh!.toUint64()!.toInt());
+    score = Uint64.fromInts(dto.scoreLow!.toUint64()!.toInt(), dto.scoreHigh!.toUint64()!.toInt());
   }
 
   Uint64? score;

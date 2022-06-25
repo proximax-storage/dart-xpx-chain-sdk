@@ -24,13 +24,11 @@ class AccountProperties {
           continue;
 
         case 0x02:
-          allowedMosaicId
-              .addAll(v.mosaicIds!.map((m) => MosaicId(m.toUint64())));
+          allowedMosaicId.addAll(v.mosaicIds!.map((m) => MosaicId(m.toUint64())));
           continue;
 
         case 0x04:
-          allowedEntityTypes
-              .addAll(v.entityTypes!.map(TransactionType.fromInt));
+          allowedEntityTypes.addAll(v.entityTypes!.map(TransactionType.fromInt));
           continue;
 
         case 0x80 + 0x01:
@@ -38,13 +36,11 @@ class AccountProperties {
           continue;
 
         case 0x80 + 0x02:
-          blockedMosaicId
-              .addAll(v.mosaicIds!.map((m) => MosaicId(m.toUint64())));
+          blockedMosaicId.addAll(v.mosaicIds!.map((m) => MosaicId(m.toUint64())));
           continue;
 
         case 0x80 + 0x04:
-          blockedEntityTypes
-              .addAll(v.entityTypes!.map(TransactionType.fromInt));
+          blockedEntityTypes.addAll(v.entityTypes!.map(TransactionType.fromInt));
           continue;
       }
     }
@@ -58,11 +54,8 @@ class AccountProperties {
   List<MosaicId> blockedMosaicId = [];
   List<TransactionType> blockedEntityTypes = [];
 
-  static List<AccountProperties> listFromJson(
-          List<AccountPropertiesDTO>? json) =>
-      json == null
-          ? <AccountProperties>[]
-          : json.map(AccountProperties.fromDto).toList();
+  static List<AccountProperties> listFromJson(List<AccountPropertiesDTO>? json) =>
+      json == null ? <AccountProperties>[] : json.map(AccountProperties.fromDto).toList();
 
   @override
   String toString() => encoder.convert(this);
@@ -86,19 +79,15 @@ class AccountPropertiesMosaicModification {
 
   AccountPropertiesMosaicModification.fromDto(dto) {
     assetId = MosaicId(dto.assetId!.toUint64());
-    modificationType = dto.modificationType == 0
-        ? PropertyModificationType.addProperty
-        : PropertyModificationType.removeProperty;
+    modificationType =
+        dto.modificationType == 0 ? PropertyModificationType.addProperty : PropertyModificationType.removeProperty;
   }
 
   PropertyModificationType? modificationType;
   AssetId? assetId;
 
-  static List<AccountPropertiesMosaicModification> listFromJson(
-          List<dynamic> json) =>
-      json.isEmpty
-          ? []
-          : json.map(AccountPropertiesMosaicModification.fromDto).toList();
+  static List<AccountPropertiesMosaicModification> listFromJson(List<dynamic> json) =>
+      json.isEmpty ? [] : json.map(AccountPropertiesMosaicModification.fromDto).toList();
 
   @override
   String toString() => encoder.convert(this);
@@ -106,9 +95,7 @@ class AccountPropertiesMosaicModification {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['modificationType'] =
-        modificationType == PropertyModificationType.removeProperty
-            ? 'removeProperty'
-            : 'addProperty';
+        modificationType == PropertyModificationType.removeProperty ? 'removeProperty' : 'addProperty';
     data['assetId'] = assetId;
 
     return data;
@@ -120,19 +107,15 @@ class AccountPropertiesAddressModification {
 
   AccountPropertiesAddressModification.fromDto(dto) {
     address = Address.fromEncoded(dto.address!);
-    modificationType = dto.modificationType == 0
-        ? PropertyModificationType.addProperty
-        : PropertyModificationType.removeProperty;
+    modificationType =
+        dto.modificationType == 0 ? PropertyModificationType.addProperty : PropertyModificationType.removeProperty;
   }
 
   PropertyModificationType? modificationType;
   Address? address;
 
-  static List<AccountPropertiesAddressModification> listFromJson(
-          List<dynamic> json) =>
-      json.isEmpty
-          ? []
-          : json.map(AccountPropertiesAddressModification.fromDto).toList();
+  static List<AccountPropertiesAddressModification> listFromJson(List<dynamic> json) =>
+      json.isEmpty ? [] : json.map(AccountPropertiesAddressModification.fromDto).toList();
 
   @override
   String toString() => encoder.convert(this);
@@ -140,9 +123,7 @@ class AccountPropertiesAddressModification {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['modificationType'] =
-        modificationType == PropertyModificationType.removeProperty
-            ? 'removeProperty'
-            : 'addProperty';
+        modificationType == PropertyModificationType.removeProperty ? 'removeProperty' : 'addProperty';
     data['address'] = address;
 
     return data;
@@ -150,24 +131,19 @@ class AccountPropertiesAddressModification {
 }
 
 class AccountPropertiesEntityTypeModification {
-  AccountPropertiesEntityTypeModification(
-      this.modificationType, this.transactionType);
+  AccountPropertiesEntityTypeModification(this.modificationType, this.transactionType);
 
   AccountPropertiesEntityTypeModification.fromDto(dto) {
     transactionType = TransactionType.fromInt(dto.entityType);
-    modificationType = dto.modificationType == 0
-        ? PropertyModificationType.addProperty
-        : PropertyModificationType.removeProperty;
+    modificationType =
+        dto.modificationType == 0 ? PropertyModificationType.addProperty : PropertyModificationType.removeProperty;
   }
 
   PropertyModificationType? modificationType;
   TransactionType? transactionType;
 
-  static List<AccountPropertiesEntityTypeModification> listFromJson(
-          List<dynamic> json) =>
-      json.isEmpty
-          ? []
-          : json.map(AccountPropertiesEntityTypeModification.fromDto).toList();
+  static List<AccountPropertiesEntityTypeModification> listFromJson(List<dynamic> json) =>
+      json.isEmpty ? [] : json.map(AccountPropertiesEntityTypeModification.fromDto).toList();
 
   @override
   String toString() => encoder.convert(this);
@@ -175,9 +151,7 @@ class AccountPropertiesEntityTypeModification {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['modificationType'] =
-        modificationType == PropertyModificationType.removeProperty
-            ? 'removeProperty'
-            : 'addProperty';
+        modificationType == PropertyModificationType.removeProperty ? 'removeProperty' : 'addProperty';
     data['transactionType'] = transactionType;
 
     return data;

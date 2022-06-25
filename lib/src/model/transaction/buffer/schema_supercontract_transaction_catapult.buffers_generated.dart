@@ -17,41 +17,32 @@ class DeployTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<DeployTransactionBuffer> reader =
-      _DeployTransactionBufferReader();
+  static const fb.Reader<DeployTransactionBuffer> reader = _DeployTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get signature =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get signature => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get signer =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get signer => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 14);
+  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 14);
 
-  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 16);
+  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 16);
 
-  List<int>? get driveKey =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 18);
+  List<int>? get driveKey => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 18);
 
-  List<int>? get owner =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 20);
+  List<int>? get owner => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 20);
 
-  List<int>? get fileHash =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 22);
+  List<int>? get fileHash => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 22);
 
-  List<int>? get vmVersion => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 24);
+  List<int>? get vmVersion => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 24);
 
   @override
   String toString() {
@@ -59,13 +50,11 @@ class DeployTransactionBuffer {
   }
 }
 
-class _DeployTransactionBufferReader
-    extends fb.TableReader<DeployTransactionBuffer> {
+class _DeployTransactionBufferReader extends fb.TableReader<DeployTransactionBuffer> {
   const _DeployTransactionBufferReader();
 
   @override
-  DeployTransactionBuffer createObject(fb.BufferContext bc, int offset) =>
-      DeployTransactionBuffer._(bc, offset);
+  DeployTransactionBuffer createObject(fb.BufferContext bc, int offset) => DeployTransactionBuffer._(bc, offset);
 }
 
 class DeployTransactionBufferBuilder {
@@ -177,22 +166,14 @@ class DeployTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? signatureOffset =
-        _signature == null ? null : fbBuilder.writeListUint8(_signature!);
-    final int? signerOffset =
-        _signer == null ? null : fbBuilder.writeListUint8(_signer!);
-    final int? maxFeeOffset =
-        _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
-    final int? deadlineOffset =
-        _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
-    final int? driveKeyOffset =
-        _driveKey == null ? null : fbBuilder.writeListUint8(_driveKey!);
-    final int? ownerOffset =
-        _owner == null ? null : fbBuilder.writeListUint8(_owner!);
-    final int? fileHashOffset =
-        _fileHash == null ? null : fbBuilder.writeListUint8(_fileHash!);
-    final int? vmVersionOffset =
-        _vmVersion == null ? null : fbBuilder.writeListUint32(_vmVersion!);
+    final int? signatureOffset = _signature == null ? null : fbBuilder.writeListUint8(_signature!);
+    final int? signerOffset = _signer == null ? null : fbBuilder.writeListUint8(_signer!);
+    final int? maxFeeOffset = _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
+    final int? deadlineOffset = _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
+    final int? driveKeyOffset = _driveKey == null ? null : fbBuilder.writeListUint8(_driveKey!);
+    final int? ownerOffset = _owner == null ? null : fbBuilder.writeListUint8(_owner!);
+    final int? fileHashOffset = _fileHash == null ? null : fbBuilder.writeListUint8(_fileHash!);
+    final int? vmVersionOffset = _vmVersion == null ? null : fbBuilder.writeListUint32(_vmVersion!);
     fbBuilder.startTable(11);
     fbBuilder.addUint32(0, _size);
     fbBuilder.addOffset(1, signatureOffset);
@@ -225,51 +206,39 @@ class StartExecuteTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<StartExecuteTransactionBuffer> reader =
-      _StartExecuteTransactionBufferReader();
+  static const fb.Reader<StartExecuteTransactionBuffer> reader = _StartExecuteTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get signature =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get signature => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get signer =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get signer => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 14);
+  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 14);
 
-  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 16);
+  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 16);
 
-  List<int>? get superContract =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 18);
+  List<int>? get superContract => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 18);
 
-  int get functionSize =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 20, 0);
+  int get functionSize => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 20, 0);
 
-  int get mosaicsCount =>
-      const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
+  int get mosaicsCount => const fb.Uint8Reader().vTableGet(_bc, _bcOffset, 22, 0);
 
-  List<int>? get dataSize =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 24);
+  List<int>? get dataSize => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 24);
 
-  List<int>? get function =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 26);
+  List<int>? get function => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 26);
 
   List<MosaicBuffer>? get mosaics =>
-      const fb.ListReader<MosaicBuffer>(MosaicBuffer.reader)
-          .vTableGetNullable(_bc, _bcOffset, 28);
+      const fb.ListReader<MosaicBuffer>(MosaicBuffer.reader).vTableGetNullable(_bc, _bcOffset, 28);
 
-  List<int>? get data =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 30);
+  List<int>? get data => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 30);
 
   @override
   String toString() {
@@ -277,8 +246,7 @@ class StartExecuteTransactionBuffer {
   }
 }
 
-class _StartExecuteTransactionBufferReader
-    extends fb.TableReader<StartExecuteTransactionBuffer> {
+class _StartExecuteTransactionBufferReader extends fb.TableReader<StartExecuteTransactionBuffer> {
   const _StartExecuteTransactionBufferReader();
 
   @override
@@ -419,27 +387,16 @@ class StartExecuteTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? signatureOffset =
-        _signature == null ? null : fbBuilder.writeListUint8(_signature!);
-    final int? signerOffset =
-        _signer == null ? null : fbBuilder.writeListUint8(_signer!);
-    final int? maxFeeOffset =
-        _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
-    final int? deadlineOffset =
-        _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
-    final int? superContractOffset = _superContract == null
-        ? null
-        : fbBuilder.writeListUint8(_superContract!);
-    final int? dataSizeOffset =
-        _dataSize == null ? null : fbBuilder.writeListUint8(_dataSize!);
-    final int? functionOffset =
-        _function == null ? null : fbBuilder.writeListUint8(_function!);
-    final int? mosaicsOffset = _mosaics == null
-        ? null
-        : fbBuilder.writeList(
-            _mosaics!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
-    final int? dataOffset =
-        _data == null ? null : fbBuilder.writeListUint8(_data!);
+    final int? signatureOffset = _signature == null ? null : fbBuilder.writeListUint8(_signature!);
+    final int? signerOffset = _signer == null ? null : fbBuilder.writeListUint8(_signer!);
+    final int? maxFeeOffset = _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
+    final int? deadlineOffset = _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
+    final int? superContractOffset = _superContract == null ? null : fbBuilder.writeListUint8(_superContract!);
+    final int? dataSizeOffset = _dataSize == null ? null : fbBuilder.writeListUint8(_dataSize!);
+    final int? functionOffset = _function == null ? null : fbBuilder.writeListUint8(_function!);
+    final int? mosaicsOffset =
+        _mosaics == null ? null : fbBuilder.writeList(_mosaics!.map((b) => b.getOrCreateOffset(fbBuilder)).toList());
+    final int? dataOffset = _data == null ? null : fbBuilder.writeListUint8(_data!);
     fbBuilder.startTable(14);
     fbBuilder.addUint32(0, _size);
     fbBuilder.addOffset(1, signatureOffset);
@@ -475,35 +432,28 @@ class DeactivateTransactionBuffer {
     return reader.read(rootRef, 0);
   }
 
-  static const fb.Reader<DeactivateTransactionBuffer> reader =
-      _DeactivateTransactionBufferReader();
+  static const fb.Reader<DeactivateTransactionBuffer> reader = _DeactivateTransactionBufferReader();
 
   final fb.BufferContext _bc;
   final int _bcOffset;
 
   int get size => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 4, 0);
 
-  List<int>? get signature =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
+  List<int>? get signature => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 6);
 
-  List<int>? get signer =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
+  List<int>? get signer => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 8);
 
   int get version => const fb.Uint32Reader().vTableGet(_bc, _bcOffset, 10, 0);
 
   int get type => const fb.Uint16Reader().vTableGet(_bc, _bcOffset, 12, 0);
 
-  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 14);
+  List<int>? get maxFee => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 14);
 
-  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 16);
+  List<int>? get deadline => const fb.ListReader<int>(fb.Uint32Reader()).vTableGetNullable(_bc, _bcOffset, 16);
 
-  List<int>? get superContract =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 18);
+  List<int>? get superContract => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 18);
 
-  List<int>? get driveKey =>
-      const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 20);
+  List<int>? get driveKey => const fb.Uint8ListReader().vTableGetNullable(_bc, _bcOffset, 20);
 
   @override
   String toString() {
@@ -511,8 +461,7 @@ class DeactivateTransactionBuffer {
   }
 }
 
-class _DeactivateTransactionBufferReader
-    extends fb.TableReader<DeactivateTransactionBuffer> {
+class _DeactivateTransactionBufferReader extends fb.TableReader<DeactivateTransactionBuffer> {
   const _DeactivateTransactionBufferReader();
 
   @override
@@ -613,19 +562,12 @@ class DeactivateTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   /// Finish building, and store into the [fbBuilder].
   @override
   int finish(fb.Builder fbBuilder) {
-    final int? signatureOffset =
-        _signature == null ? null : fbBuilder.writeListUint8(_signature!);
-    final int? signerOffset =
-        _signer == null ? null : fbBuilder.writeListUint8(_signer!);
-    final int? maxFeeOffset =
-        _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
-    final int? deadlineOffset =
-        _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
-    final int? superContractOffset = _superContract == null
-        ? null
-        : fbBuilder.writeListUint8(_superContract!);
-    final int? driveKeyOffset =
-        _driveKey == null ? null : fbBuilder.writeListUint8(_driveKey!);
+    final int? signatureOffset = _signature == null ? null : fbBuilder.writeListUint8(_signature!);
+    final int? signerOffset = _signer == null ? null : fbBuilder.writeListUint8(_signer!);
+    final int? maxFeeOffset = _maxFee == null ? null : fbBuilder.writeListUint32(_maxFee!);
+    final int? deadlineOffset = _deadline == null ? null : fbBuilder.writeListUint32(_deadline!);
+    final int? superContractOffset = _superContract == null ? null : fbBuilder.writeListUint8(_superContract!);
+    final int? driveKeyOffset = _driveKey == null ? null : fbBuilder.writeListUint8(_driveKey!);
     fbBuilder.startTable(9);
     fbBuilder.addUint32(0, _size);
     fbBuilder.addOffset(1, signatureOffset);

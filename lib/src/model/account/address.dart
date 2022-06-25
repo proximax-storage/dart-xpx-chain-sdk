@@ -30,8 +30,7 @@ class Address {
     final addressRaw = address.trim().replaceAll('-', '').toUpperCase();
 
     if (addressRaw.length != addressEncodeSize) {
-      throw ArgumentError(
-          'Address $addressRaw has to be $addressEncodeSize characters long');
+      throw ArgumentError('Address $addressRaw has to be $addressEncodeSize characters long');
     }
 
     return Address._(addressRaw, NetworkType.getAddressNet(addressRaw[0]));
@@ -59,6 +58,5 @@ class Address {
   @override
   String toString() => encoder.convert(this);
 
-  Map<String, dynamic> toJson() =>
-      {'networkType': networkType, 'address': address};
+  Map<String, dynamic> toJson() => {'networkType': networkType, 'address': address};
 }
