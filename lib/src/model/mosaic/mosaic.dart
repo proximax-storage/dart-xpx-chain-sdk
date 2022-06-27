@@ -6,13 +6,16 @@
 
 part of xpx_chain_sdk.model.mosaic;
 
+/// A mosaic describes an instance of a [Mosaic].
+/// Mosaics can be transferred by means of a transfer transaction.
 class Mosaic {
+
+  /// Creates a new Mosaic with the given [assetId] with the given [amount].
+  ///
+  /// The quantity is always given in smallest units for the mosaic. For example, if it has a
+  /// divisibility of 3 the quantity is given in millis.
   Mosaic(this.assetId, this.amount) {
-    if (assetId == null) {
-      throw errNullMosaicId;
-    } else if (amount == null) {
-      throw errNullMosaicAmount;
-    } else if (amount!.isZero) {
+    if (amount.isZero) {
       throw errNullMosaicAmount;
     } else {
       assetId = assetId;
@@ -20,20 +23,24 @@ class Mosaic {
     }
   }
 
-  Mosaic.fromDTO(MosaicDTO v) {
-    assetId = MosaicId(v.id!.toUint64());
-    amount = v.amount!.toUint64();
+  factory Mosaic.fromDTO(MosaicDTO v) {
+    final assetId = MosaicId(v.id!.toUint64());
+    final amount = v.amount!.toUint64();
+    return Mosaic(assetId, amount);
   }
 
-  AssetId? assetId;
-  Uint64? amount;
+  /// The mosaic [AssetId]. This can either be of type [MosaicId] or [NamespaceId].
+  AssetId assetId;
+
+  /// The mosaic amount.
+  Uint64 amount;
 
   @override
   String toString() => encoder.convert(this);
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['id'] = assetId!.toHex();
+    data['id'] = assetId.toHex();
     data['amount'] = amount;
     return data;
   }
