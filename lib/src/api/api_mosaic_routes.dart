@@ -21,7 +21,7 @@ class MosaicRoutesApi {
   ///
   /// Gets a [MosaicInfo] definition for a given mosaicId.
   Future<MosaicInfo?> getMosaic(MosaicId mosaicId) async {
-    final String path = _mosaicRoute.replaceAll('{mosaicId}', mosaicId.toHex()!);
+    final String path = _mosaicRoute.replaceAll('{mosaicId}', mosaicId.toHex());
 
     final response = await _apiClient.get(path);
 
@@ -90,7 +90,7 @@ class MosaicRoutesApi {
   /// param: pageSize The count of items on a page (max 100, default 25).
   /// Returns owners of a given mosaic sorted on descending order based on amount. (REST only)
   Future<List<MosaicRichList>> getMosaicRichList(MosaicId mosaicId, {PageQueryParams? pageQueryParams}) async {
-    final String path = _mosaicRichListRoute.replaceAll('{mosaicId}', mosaicId.toHex()!);
+    final String path = _mosaicRichListRoute.replaceAll('{mosaicId}', mosaicId.toHex());
 
     // query params
     final List<QueryParam> queryParams = [];
@@ -113,7 +113,7 @@ class MosaicRoutesApi {
 
   /// Get mosaic levy information for a mosaic.
   Future<MosaicLevy?> getMosaicLevy(MosaicId mosaicId) async {
-    final String path = _getMosaicLevyRoute.replaceAll('{mosaicId}', mosaicId.toHex()!);
+    final String path = _getMosaicLevyRoute.replaceAll('{mosaicId}', mosaicId.toHex());
 
     final response = await _apiClient.get(path);
 

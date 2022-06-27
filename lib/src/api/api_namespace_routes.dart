@@ -32,7 +32,7 @@ class NamespaceRoutesApi {
   ///
   /// Gets a [NamespaceInfo] for a given namespaceId.
   Future<NamespaceInfo?> getNamespace(NamespaceId namespaceId) async {
-    final String path = _namespaceRoute.replaceAll('{namespaceId}', namespaceId.toHex()!);
+    final String path = _namespaceRoute.replaceAll('{namespaceId}', namespaceId.toHex());
 
     final response = await _apiClient.get(path);
 

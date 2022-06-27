@@ -19,7 +19,7 @@ class BlockInfo {
     type = v.block!.type as int?;
     height = v.block!.height!.toUint64();
     timestamp = DateTime.fromMillisecondsSinceEpoch(
-        v.block!.timestamp!.toUint64()!.toInt() + timestampNemesisBlock.toUtc().millisecondsSinceEpoch);
+        v.block!.timestamp!.toUint64().toInt() + timestampNemesisBlock.toUtc().millisecondsSinceEpoch);
     difficulty = v.block!.difficulty!.toUint64();
     feeMultiplier = v.block!.feeMultiplier;
     previousBlockHash = v.block!.previousBlockHash;

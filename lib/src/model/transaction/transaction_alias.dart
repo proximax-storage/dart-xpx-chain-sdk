@@ -17,13 +17,13 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
       : super.fromDto(dto.transaction!, dto.meta!) {
     actionType =
         dto.transaction!.aliasAction == 0 ? actionType = AliasActionType.aliasLink : AliasActionType.aliasUnlink;
-    namespaceId = dto.transaction!.namespaceId != null ? NamespaceId(dto.transaction!.namespaceId!.toUint64()!) : null;
+    namespaceId = dto.transaction!.namespaceId != null ? NamespaceId(dto.transaction!.namespaceId!.toUint64()) : null;
   }
 
   AliasTransaction._fromMosaicAliasDTO(MosaicAliasTransactionInfoDTO dto) : super.fromDto(dto.transaction!, dto.meta!) {
     actionType =
         dto.transaction!.aliasAction == 0 ? actionType = AliasActionType.aliasLink : AliasActionType.aliasUnlink;
-    namespaceId = dto.transaction!.namespaceId != null ? NamespaceId(dto.transaction!.namespaceId!.toUint64()!) : null;
+    namespaceId = dto.transaction!.namespaceId != null ? NamespaceId(dto.transaction!.namespaceId!.toUint64()) : null;
   }
 
   AliasActionType? actionType;

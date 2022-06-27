@@ -26,7 +26,7 @@ class BasicMetadataTransaction extends AbstractTransaction {
 
   BasicMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto) : super.fromDto(dto.transaction!, dto.meta!) {
     targetPublicAccount = PublicAccount.fromPublicKey(dto.transaction!.targetKey, networkType);
-    scopedMetadataKey = dto.transaction!.scopedMetadataKey!.toUint64()!;
+    scopedMetadataKey = dto.transaction!.scopedMetadataKey!.toUint64();
     valueSizeDelta = dto.transaction!.valueSizeDelta!;
     value = ByteUtils.bytesToUtf8String(HexUtils.hexToBytes(dto.transaction!.value!));
   }

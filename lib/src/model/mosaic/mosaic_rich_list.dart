@@ -11,7 +11,7 @@ class MosaicRichList {
   MosaicRichList.fromDTO(MosaicRichListDTO dto) {
     address = Address.fromEncoded(dto.address);
     publicKey = dto.publicKey;
-    amount = dto.amount.toUint64()!;
+    amount = dto.amount.toUint64();
   }
 
   late final Address address;

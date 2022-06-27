@@ -23,12 +23,8 @@ abstract class AssetId {
   @override
   int get hashCode => 'Id'.hashCode ^ value.hashCode;
 
-  String? toHex() {
-    if (value == null) {
-      return null;
-    }
-
-    var s = value!.toHexString().toUpperCase();
+  String toHex() {
+    var s = value.toHexString().toUpperCase();
     if (s.length % 2 != 0) {
       s = '0$s';
     }

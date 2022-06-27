@@ -36,7 +36,7 @@ class MosaicProperties {
           flags = property.value!.toUint64();
           break;
         case 1:
-          divisibility = property.value!.toUint64()!.toInt();
+          divisibility = property.value!.toUint64().toInt();
           break;
         case 2:
           optionalProperties = <MosaicProperty>[];

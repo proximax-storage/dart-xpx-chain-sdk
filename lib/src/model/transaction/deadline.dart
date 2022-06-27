@@ -21,10 +21,8 @@ class Deadline {
 
   Deadline.fromUInt64DTO(UInt64DTO data)
       : assert(data.lower != null || data.higher == null, 'lower or higher must not be null') {
-    value = data.toUint64() != null
-        ? DateTime.fromMillisecondsSinceEpoch(
-            data.toUint64()!.toInt() + timestampNemesisBlock.toUtc().millisecondsSinceEpoch)
-        : null;
+    value = DateTime.fromMillisecondsSinceEpoch(
+        data.toUint64().toInt() + timestampNemesisBlock.toUtc().millisecondsSinceEpoch);
   }
 
   DateTime? value;
