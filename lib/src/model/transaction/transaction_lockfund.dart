@@ -62,8 +62,8 @@ class LockFundsTransaction extends AbstractTransaction implements Transaction {
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    final mosaicIdOffset = builder.writeListUint32(mosaic!.assetId!.toIntArray());
-    final mosaicAmountOffset = builder.writeListUint32(mosaic!.amount!.toIntArray());
+    final mosaicIdOffset = builder.writeListUint32(mosaic!.assetId.toIntArray());
+    final mosaicAmountOffset = builder.writeListUint32(mosaic!.amount.toIntArray());
     final durationOffset = builder.writeListUint32(duration!.toIntArray());
 
     final List<int> h = hex.decode(signedTransaction!.hash);

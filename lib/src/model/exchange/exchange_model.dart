@@ -179,7 +179,7 @@ class OfferInfo {
   Deadline? deadline;
 
   Uint64 cost(Uint64 amount) {
-    if (mosaic.amount! < amount) {
+    if (mosaic.amount< amount) {
       throw errorInvalidMosaicsOffer;
     }
 

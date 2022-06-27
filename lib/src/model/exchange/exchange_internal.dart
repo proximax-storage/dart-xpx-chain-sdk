@@ -10,8 +10,8 @@ int addExchangeOfferToArrayToBuffer(fb.Builder builder, List<AddOffer> offers) {
   final List<int?> msb = List.filled(offers.length, null, growable: false);
   int i = 0;
   for (final offer in offers) {
-    final mV = builder.writeListUint32(offer.mosaic!.assetId!.toIntArray());
-    final maV = builder.writeListUint32(offer.mosaic!.amount!.toIntArray());
+    final mV = builder.writeListUint32(offer.mosaic!.assetId.toIntArray());
+    final maV = builder.writeListUint32(offer.mosaic!.amount.toIntArray());
     final dV = builder.writeListUint32(offer.duration!.toIntArray());
     final cV = builder.writeListUint32(offer.cost!.toIntArray());
 
@@ -33,8 +33,8 @@ int exchangeOfferToArrayToBuffer(fb.Builder builder, List<ExchangeConfirmation> 
   final List<int?> msb = List.filled(offers.length, null, growable: false);
   int i = 0;
   for (final offer in offers) {
-    final mV = builder.writeListUint32(offer.mosaic!.assetId!.toIntArray());
-    final maV = builder.writeListUint32(offer.mosaic!.amount!.toIntArray());
+    final mV = builder.writeListUint32(offer.mosaic!.assetId.toIntArray());
+    final maV = builder.writeListUint32(offer.mosaic!.amount.toIntArray());
     final cV = builder.writeListUint32(offer.cost!.toIntArray());
 
     final ob = hexDecodeStringOdd(offer.owner!);

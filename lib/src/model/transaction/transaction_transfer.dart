@@ -68,8 +68,8 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     final mb = List.generate(mosaics!.length, (_) => 0);
     int i = 0;
     for (final mosaic in mosaics!) {
-      final id = builder.writeListUint32(mosaic.assetId!.toIntArray());
-      final amount = builder.writeListUint32(mosaic.amount!.toIntArray());
+      final id = builder.writeListUint32(mosaic.assetId.toIntArray());
+      final amount = builder.writeListUint32(mosaic.amount.toIntArray());
 
       final ms = $buffer.MosaicBufferBuilder(builder)
         ..begin()
