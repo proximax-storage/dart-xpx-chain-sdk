@@ -85,10 +85,10 @@ class MosaicDefinitionTransaction extends AbstractTransaction implements Transac
     final builder = fb.Builder(initialSize: 0);
 
     int flags = 0;
-    if (mosaicProperties!.supplyMutable!) {
+    if (mosaicProperties!.supplyMutable) {
       flags += getSupplyMutable;
     }
-    if (mosaicProperties!.transferable!) {
+    if (mosaicProperties!.transferable) {
       flags += getTransferable;
     }
 
@@ -103,7 +103,7 @@ class MosaicDefinitionTransaction extends AbstractTransaction implements Transac
       ..addMosaicNonceOffset(mosaicNonceOffset)
       ..addMosaicIdOffset(mosaicIdOffset)
       ..addFlags(flags)
-      ..addDivisibility(mosaicProperties!.divisibility!)
+      ..addDivisibility(mosaicProperties!.divisibility)
       ..addNumOptionalProperties(mosaicProperties!.optionalProperties.length)
       ..addOptionalPropertiesOffset(optionalPropertiesOffset);
 

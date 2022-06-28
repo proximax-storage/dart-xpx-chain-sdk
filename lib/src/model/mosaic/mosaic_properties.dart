@@ -13,12 +13,11 @@ class MosaicProperties {
       this.supplyMutable,
       this.transferable,
       this.divisibility,
-      Uint64? duration,
+      this.duration,
       [List<MosaicProperty>? optionalProperties]) {
     if (optionalProperties != null) {
       this.optionalProperties = optionalProperties;
     }
-    this.duration = duration ?? Uint64.zero;
   }
 
   factory MosaicProperties.create(
