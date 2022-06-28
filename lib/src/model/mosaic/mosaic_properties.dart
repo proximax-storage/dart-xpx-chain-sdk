@@ -25,10 +25,12 @@ class MosaicProperties {
           {required bool supplyMutable, required bool transferable, required int divisibility, Uint64? duration}) =>
       MosaicProperties._(supplyMutable, transferable, divisibility, duration);
 
-  MosaicProperties.fromDTO(List<MosaicPropertyDTO> value) {
+  factory MosaicProperties.fromDTO(List<MosaicPropertyDTO> value) {
     Uint64? flags = Uint64.zero;
 
-    divisibility = 0;
+    var divisibility = 0;
+
+    List<MosaicProperty> optionalProperties = [];
 
     for (MosaicPropertyDTO property in value) {
       switch (property.id) {
@@ -46,21 +48,45 @@ class MosaicProperties {
       }
     }
 
-    supplyMutable = hasBits(flags!, getSupplyMutable);
-    transferable = hasBits(flags, getTransferable);
+    final supplyMutable = hasBits(flags!, getSupplyMutable);
+    final transferable = hasBits(flags, getTransferable);
+
+    return MosaicProperties._(supplyMutable, transferable, divisibility, null, optionalProperties);
   }
 
-  bool? supplyMutable;
-  bool? transferable;
-  int? divisibility;
+  /// The mosaic supply mutability. When set to `true`, allows the supply to be changed at
+  /// later point.
+  ///
+  /// Default value is `false`.
+  bool supplyMutable = false;
+
+  /// The mosaic transferability. Defines if the mosaic is allowed for transfers among accounts
+  /// other than the creator. When set to `false`, this mosaic can only be transferred to and from
+  /// the creator of this mosaic. When set to `true` this mosaic can be transferred to and from
+  /// arbitrary accounts.
+  ///
+  /// Default value is `true`.
+  bool transferable = true;
+
+  /// The divisibility determines the decimal place the mosaic can be divided into.
+  ///
+  /// Default value is 0.
+  int divisibility;
+
+  /// The duration in blocks a mosaic will become available.
   Uint64? duration;
+
   List<MosaicProperty> optionalProperties = <MosaicProperty>[];
 
   @override
   String toString() => encoder.convert(this);
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> val = {};
+    final Map<String, dynamic> val = {
+      'supplyMutable': supplyMutable,
+      'transferable': transferable,
+      'divisibility': divisibility
+    };
 
     void writeNotNull(String key, value) {
       if (value != null) {
@@ -68,9 +94,7 @@ class MosaicProperties {
       }
     }
 
-    writeNotNull('supplyMutable', supplyMutable);
-    writeNotNull('transferable', transferable);
-    writeNotNull('divisibility', divisibility);
+    writeNotNull('duration', duration);
 
     if (optionalProperties.isNotEmpty) {
       val['optionalProperties'] = optionalProperties;

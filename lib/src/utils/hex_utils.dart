@@ -47,9 +47,9 @@ class HexUtils {
       return false;
     }
 
-    if (0 != (input.length % 2)) {
-      return false;
-    }
+    // if (0 != (input.length % 2)) {
+    //   return false;
+    // }
 
     return tryGetBytes(input) != null && true;
   }
