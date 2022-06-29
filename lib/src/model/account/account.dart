@@ -57,9 +57,13 @@ class Account {
 
   /// Signs raw data.
   Future<String> signData(String rawData) async {
-    final String hex = HexUtils.utf8ToHex(rawData);
-    final Uint8List data = HexUtils.hexToBytes(hex);
-    final signedData = await account.sign(data);
+    List<int> data;
+    if (HexUtils.isHex(rawData)) {
+      data = HexUtils.hexToBytes(rawData);
+    } else {
+      data = utf8.encode(rawData);
+    }
+    final signedData = await account.sign(Uint8List.fromList(data));
     return ByteUtils.bytesToHex(signedData.bytes);
   }
 

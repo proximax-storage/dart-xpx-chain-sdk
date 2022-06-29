@@ -21,7 +21,6 @@ void main() {
       expect(mosaic.amount, equals(amount));
       expect(mosaic.amount.toInt(), equals(9999999999));
 
-      print(mosaic);
       expect(mosaic.toString(), equals('{\n  "id": $mosaicId,\n  "amount": $amount\n}'));
     });
   });

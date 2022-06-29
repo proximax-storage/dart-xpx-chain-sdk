@@ -6,6 +6,7 @@
 
 library xpx_chain_sdk.model.account;
 
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:base32/base32.dart';
