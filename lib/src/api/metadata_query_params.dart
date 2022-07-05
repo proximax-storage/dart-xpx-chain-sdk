@@ -73,6 +73,11 @@ class MetadataQueryParams {
     if (metadataType != null) {
       val['metadataType'] = metadataType!.toInt;
     }
+
+    if (targetId != null) {
+      val['targetId'] = targetId!.toHex();
+    }
+
     if (scopedMetadataKey != null) {
       val['scopedMetadataKey'] = scopedMetadataKey!.toHexString();
     }
@@ -83,7 +88,6 @@ class MetadataQueryParams {
     writeNotNull('pageNumber', pageNumber);
     writeNotNull('sortField', sortField);
     writeNotNull('sourceAddress', sourceAddress);
-    writeNotNull('targetId', targetId);
     writeNotNull('targetKey', targetKey);
 
     return val;
