@@ -401,6 +401,7 @@ Uint8List hexDecodeStringOdd(final String s) {
   return Uint8List.fromList(hex.decode(data));
 }
 
+@Deprecated('Needed for old versions of rest api')
 List<Transaction> fixAggregate(List<Transaction> allTransaction) {
   final containsAggregate = allTransaction.firstWhereOrNull((element) =>
       element.entityType() == TransactionType.aggregateCompleted ||
@@ -429,6 +430,12 @@ List<Transaction> fixAggregate(List<Transaction> allTransaction) {
 }
 
 Future<List<Transaction>> internalGetTransactions(
+        ApiClient client, String path, List<QueryParam> queryParams, Object? postBody,
+        {bool firstLevel = true}) async =>
+    (await internalGetTransactionsWithPagination(client, path, queryParams, postBody, firstLevel: firstLevel))
+        .transactions;
+
+Future<TransactionSearch> internalGetTransactionsWithPagination(
     ApiClient client, String path, List<QueryParam> queryParams, Object? postBody,
     {bool firstLevel = true}) async {
   final response = await client.get(path, postBody, queryParams);
@@ -437,13 +444,9 @@ Future<List<Transaction>> internalGetTransactions(
     throw ApiException(response.statusCode!, response.data);
   } else if (response.data != null) {
     final List resp = client.deserialize(response.data, 'List<Transaction>');
-    final allTransaction = resp.map(deserializeDTO).toList().cast<Transaction>();
-
-    if (firstLevel) {
-      return allTransaction;
-    } else
-      return fixAggregate(allTransaction);
+    final transaction = resp.map(deserializeDTO).toList().cast<Transaction>();
+    return TransactionSearch(transaction, Pagination.fromJson(response.data['pagination']));
   } else {
-    return [];
+    return TransactionSearch([], Pagination.fromJson(response.data['pagination']));
   }
 }

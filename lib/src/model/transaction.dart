@@ -45,6 +45,7 @@ part 'transaction/transaction_mosaic_metadata.dart';
 part 'transaction/transaction_multisig.dart';
 part 'transaction/transaction_namespace.dart';
 part 'transaction/transaction_namespace_metadata.dart';
+part 'transaction/transaction_search.dart';
 part 'transaction/transaction_status.dart';
 part 'transaction/transaction_transfer.dart';
 part 'transaction/transaction_type.dart';

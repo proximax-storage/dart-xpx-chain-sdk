@@ -9,7 +9,6 @@ part of xpx_chain_sdk.model.mosaic;
 /// A mosaic describes an instance of a [Mosaic].
 /// Mosaics can be transferred by means of a transfer transaction.
 class Mosaic {
-
   /// Creates a new Mosaic with the given [assetId] with the given [amount].
   ///
   /// The quantity is always given in smallest units for the mosaic. For example, if it has a

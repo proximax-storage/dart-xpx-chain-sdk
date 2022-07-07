@@ -100,6 +100,10 @@ class TransactionRoutesApi {
 
   /// GetTransactionsByGroup returns an array of Transaction's for passed TransactionGroupType.
   Future<List<Transaction>> getTransactionsByGroup(TransactionGroupType groupType,
+          [TransactionQueryParams? txnQueryParams]) async =>
+      (await getTransactionsByGroupWithPagination(groupType, txnQueryParams)).transactions;
+
+  Future<TransactionSearch> getTransactionsByGroupWithPagination(TransactionGroupType groupType,
       [TransactionQueryParams? txnQueryParams]) async {
     // create path and map variables
     final String path = _transactionsRoute.replaceAll('{group}', groupType.name);
@@ -114,7 +118,7 @@ class TransactionRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactions(_apiClient, path, queryParams, null, firstLevel: firstLevel);
+    return internalGetTransactionsWithPagination(_apiClient, path, queryParams, null, firstLevel: firstLevel);
   }
 
   /// Get transactions information

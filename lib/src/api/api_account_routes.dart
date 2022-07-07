@@ -110,7 +110,11 @@ class AccountRoutesApi {
   /// param: pageSize The number of transactions to return for each request.
   /// param: id The transaction id up to which transactions are returned.
   /// param: ordering The ordering criteria: * -id - Descending order by id. * id - Ascending order by id.
-  Future<List<Transaction>> transactions(PublicAccount account, [TransactionQueryParams? txnQueryParams]) async {
+  Future<List<Transaction>> transactions(PublicAccount account, [TransactionQueryParams? txnQueryParams]) async =>
+      (await transactionsWithPagination(account, txnQueryParams)).transactions;
+
+  Future<TransactionSearch> transactionsWithPagination(PublicAccount account,
+      [TransactionQueryParams? txnQueryParams]) async {
     // query params
     final List<QueryParam> queryParams = [];
     if (txnQueryParams != null) {
@@ -124,7 +128,8 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactions(_apiClient, _transactionsRoute, queryParams, null, firstLevel: firstLevel);
+    return await internalGetTransactionsWithPagination(_apiClient, _transactionsRoute, queryParams, null,
+        firstLevel: firstLevel);
   }
 
   /// Get incoming transactions
@@ -133,6 +138,10 @@ class AccountRoutesApi {
   /// A transaction is said to be incoming with respect to an
   /// account if the account is the recipient of the transaction.
   Future<List<Transaction>> incomingTransactions(PublicAccount account,
+          [TransactionQueryParams? txnQueryParams]) async =>
+      (await incomingTransactionsWithPagination(account, txnQueryParams)).transactions;
+
+  Future<TransactionSearch> incomingTransactionsWithPagination(PublicAccount account,
       [TransactionQueryParams? txnQueryParams]) async {
     // query params
     final List<QueryParam> queryParams = [];
@@ -146,7 +155,8 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactions(_apiClient, _transactionsRoute, queryParams, null, firstLevel: firstLevel);
+    return internalGetTransactionsWithPagination(_apiClient, _transactionsRoute, queryParams, null,
+        firstLevel: firstLevel);
   }
 
   /// Get outgoing transactions
@@ -155,6 +165,10 @@ class AccountRoutesApi {
   /// A transaction is said to be outgoing with respect to an
   /// account if the account is the sender of the transaction.
   Future<List<Transaction>> outgoingTransactions(PublicAccount account,
+          [TransactionQueryParams? txnQueryParams]) async =>
+      (await outgoingTransactionsWithPagination(account, txnQueryParams)).transactions;
+
+  Future<TransactionSearch> outgoingTransactionsWithPagination(PublicAccount account,
       [TransactionQueryParams? txnQueryParams]) async {
     // query params
     final List<QueryParam> queryParams = [];
@@ -169,7 +183,8 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactions(_apiClient, _transactionsRoute, queryParams, null, firstLevel: firstLevel);
+    return internalGetTransactionsWithPagination(_apiClient, _transactionsRoute, queryParams, null,
+        firstLevel: firstLevel);
   }
 
   /// Get unconfirmed transactions
@@ -177,6 +192,10 @@ class AccountRoutesApi {
   /// Gets the List of transactions not included in a block where an account
   /// is the sender or receiver.
   Future<List<Transaction>> unconfirmedTransactions(PublicAccount account,
+          [TransactionQueryParams? txnQueryParams]) async =>
+      (await unconfirmedTransactionsWithPagination(account, txnQueryParams)).transactions;
+
+  Future<TransactionSearch> unconfirmedTransactionsWithPagination(PublicAccount account,
       [TransactionQueryParams? txnQueryParams]) async {
     // query params
     final List<QueryParam> queryParams = [];
@@ -191,7 +210,7 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactions(_apiClient, _unconfirmedTransactionsRoute, queryParams, null,
+    return internalGetTransactionsWithPagination(_apiClient, _unconfirmedTransactionsRoute, queryParams, null,
         firstLevel: firstLevel);
   }
 
