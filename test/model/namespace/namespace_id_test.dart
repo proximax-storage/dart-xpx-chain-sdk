@@ -10,9 +10,9 @@ import 'package:test/test.dart';
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart' show NamespaceId, Uint64;
 
 void main() {
-  const xpxHexString = 'A2045D74612E5194'; // 11674558888479183252
+  const xpxHexString = 'B16D77FD8B6FB3BE'; // 12785006848024490942
   final xpxId = Uint64.fromHex(xpxHexString);
-  const subXpxHexString = 'E5A8EA26D80FB890'; // 16548734283327453328
+  const subXpxHexString = 'BFFB42A19116BDF6'; // 13833723942089965046
   final subXpxId = Uint64.fromHex(subXpxHexString);
 
   group('Create NamespaceId via constructor', () {
@@ -20,21 +20,21 @@ void main() {
       final NamespaceId namespaceId = NamespaceId(xpxId);
 
       expect(namespaceId.value, equals(xpxId));
-      expect(namespaceId.value.toHexString().toUpperCase(), equals(xpxHexString));
+      expect(namespaceId.value.toHex().toUpperCase(), equals(xpxHexString));
       expect(namespaceId.hashCode, isNotNull);
     });
 
     test('Can create using a full name string', () {
-      final NamespaceId namespaceId = NamespaceId.fromName('xpx.subxpx');
+      final NamespaceId namespaceId = NamespaceId.fromName('prx.xpx');
 
       expect(namespaceId.value, equals(subXpxId));
-      expect(namespaceId.value.toHexString().toUpperCase(), equals(subXpxHexString));
+      expect(namespaceId.value.toHex().toUpperCase(), equals(subXpxHexString));
     });
 
     test('Should have equal Ids', () {
       final NamespaceId namespaceId1 = NamespaceId(xpxId);
       final NamespaceId namespaceId2 = NamespaceId(xpxId);
-      final NamespaceId namespaceId3 = NamespaceId.fromName('xpx');
+      final NamespaceId namespaceId3 = NamespaceId.fromName('prx');
 
       expect(namespaceId1, equals(namespaceId2));
       expect(namespaceId1.value, equals(namespaceId2.value));

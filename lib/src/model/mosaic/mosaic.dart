@@ -23,8 +23,8 @@ class Mosaic {
   }
 
   factory Mosaic.fromDTO(MosaicDTO v) {
-    final assetId = MosaicId(v.id!.toUint64());
-    final amount = v.amount!.toUint64();
+    final assetId = AssetId.fromId(v.id.toUint64());
+    final amount = v.amount.toUint64();
     return Mosaic(assetId, amount);
   }
 

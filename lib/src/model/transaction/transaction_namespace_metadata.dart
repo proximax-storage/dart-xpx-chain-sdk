@@ -37,7 +37,7 @@ class NamespaceMetadataTransaction extends BasicMetadataTransaction implements T
       throw ArgumentError('invalid scopedMetadataKey type');
     }
 
-    final scopedMetadataKeyValue = Uint64.fromString(scopedMetadataKey);
+    final scopedMetadataKeyValue = Uint64.fromUtf8(scopedMetadataKey);
 
     final valueLength = HexUtils.utf8ToHex(value).length ~/ 2;
     final oldValueLength = HexUtils.utf8ToHex(oldValue).length ~/ 2;

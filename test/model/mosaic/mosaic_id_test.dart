@@ -22,7 +22,7 @@ void main() {
       final mosaicId = MosaicId(testId);
 
       expect(mosaicId.value, equals(testId));
-      expect(mosaicId.value.toHexString().toUpperCase(), equals(testHex));
+      expect(mosaicId.value.toHex().toUpperCase(), equals(testHex));
       expect(mosaicId.hashCode, isNotNull);
     });
 
@@ -40,21 +40,21 @@ void main() {
       final mosaicId = MosaicId(testId);
 
       expect(mosaicId.value, equals(testId));
-      expect(mosaicId.value.toHexString().toUpperCase(), equals(testHex));
+      expect(mosaicId.value.toHex().toUpperCase(), equals(testHex));
     });
 
     test('fromBigInt()', () {
       final mosaicId = MosaicId.fromBigInt(testId.toBigInt());
 
       expect(mosaicId.value, equals(testId));
-      expect(mosaicId.value.toHexString().toUpperCase(), equals(testHex));
+      expect(mosaicId.value.toHex().toUpperCase(), equals(testHex));
     });
 
     test('fromHex()', () {
       final mosaicId = MosaicId.fromHex(testHex);
 
       expect(mosaicId.value, equals(testId));
-      expect(mosaicId.value.toHexString().toUpperCase(), equals(testHex));
+      expect(mosaicId.value.toHex().toUpperCase(), equals(testHex));
     });
 
     test('fromNonce()', () {
@@ -65,14 +65,14 @@ void main() {
       final expected = Uint64.fromHex('8dc67fbe1cad29e3');
 
       expect(mosaicId.value, equals(expected));
-      expect(mosaicId.value.toHexString(), equals(expected.toHexString()));
+      expect(mosaicId.value.toHex(), equals(expected.toHex()));
     });
 
     test('fromInts()', () {
       final mosaicId = MosaicId.fromInts(testInts[0], testInts[1]);
 
       expect(mosaicId.value, equals(testId));
-      expect(mosaicId.value.toHexString().toUpperCase(), equals(testHex));
+      expect(mosaicId.value.toHex().toUpperCase(), equals(testHex));
       expect(mosaicId.value.toIntArray()[0], equals(testInts[0]));
       expect(mosaicId.value.toIntArray()[1], equals(testInts[1]));
     });

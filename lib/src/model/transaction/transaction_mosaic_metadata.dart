@@ -38,7 +38,7 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction implements Tran
     }
 
     final scopedMetadataKeyValue =
-        scopedMetadataKey is Uint64 ? scopedMetadataKey : Uint64.fromString(scopedMetadataKey);
+        scopedMetadataKey is Uint64 ? scopedMetadataKey : Uint64.fromUtf8(scopedMetadataKey);
 
     final valueLength = HexUtils.utf8ToHex(value).length ~/ 2;
     final oldValueLength = HexUtils.utf8ToHex(oldValue).length ~/ 2;

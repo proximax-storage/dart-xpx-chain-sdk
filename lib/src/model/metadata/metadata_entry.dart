@@ -54,7 +54,7 @@ class MetadataEntry {
       'sourceAddress': sourceAddress,
       'targetKey': targetKey,
       'scopedMetadataKey': scopedMetadataKey,
-      'targetId': targetId.toHexString(),
+      'targetId': targetId.toHex(),
       'metadataType': metadataType.getName,
       'valueSize': valueSize,
       'value': value,

@@ -47,8 +47,8 @@ class MosaicProperties {
       }
     }
 
-    final supplyMutable = hasBits(flags!, getSupplyMutable);
-    final transferable = hasBits(flags, getTransferable);
+    final supplyMutable = hasBits(flags!.toInt(), getSupplyMutable);
+    final transferable = hasBits(flags.toInt(), getTransferable);
 
     return MosaicProperties._(supplyMutable, transferable, divisibility, null, optionalProperties);
   }

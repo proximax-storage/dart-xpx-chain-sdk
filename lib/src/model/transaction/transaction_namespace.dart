@@ -34,7 +34,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction implements Transa
       throw errInvalidNamespaceName;
     } else {
       parentId = NamespaceId.fromName(rootNamespaceName);
-      namespaceId = NamespaceId(generateNamespaceId(subNamespaceName, parentId!.toUint64()!));
+      namespaceId = generateNamespaceId(subNamespaceName, parentId!);
       namespaceName = subNamespaceName;
       namespaceType = NamespaceType.sub;
     }

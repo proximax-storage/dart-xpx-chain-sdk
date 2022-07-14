@@ -22,7 +22,7 @@ const xpxMaxValue = xpxMaxRelativeValue * xpxDivisibility;
 
 const xpxMaxRelativeValue = 9000000000;
 
-bool hasBits(Uint64 number, int bits) => number.toInt() & bits == bits;
+bool hasBits(number, bits) => (number & bits) == bits;
 
 // Create xpx with using xpx as unit
 Mosaic xpx(int amount) {

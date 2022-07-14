@@ -79,7 +79,7 @@ class MetadataQueryParams {
     }
 
     if (scopedMetadataKey != null) {
-      val['scopedMetadataKey'] = scopedMetadataKey!.toHexString();
+      val['scopedMetadataKey'] = scopedMetadataKey!.toHex();
     }
 
     writeNotNull('pageSize', pageSize);

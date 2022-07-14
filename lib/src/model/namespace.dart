@@ -8,7 +8,6 @@ library xpx_chain_sdk.model.namespace;
 
 import 'dart:typed_data';
 
-import 'package:fixnum/fixnum.dart';
 import 'package:sha3/sha3.dart';
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 

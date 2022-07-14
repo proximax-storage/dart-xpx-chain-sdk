@@ -13,12 +13,12 @@ part of xpx_chain_sdk.uint64;
 /// Value range is 0 through 18446744073709551615.
 class Uint64 implements Comparable<Uint64> {
   factory Uint64([final num value = 0, final num value2 = 0]) {
-    if (_minValueSigned > value || _minValueSigned > value2) {
-      throw ArgumentError('Minimum value must be $_minValueUnsigned');
+    if (minValueSigned > value || minValueSigned > value2) {
+      throw ArgumentError('Minimum value must be $minValue');
     }
 
     // check if user is trying to create using an array of (32-bit) int
-    if (_minValueSigned < value2) {
+    if (minValueSigned < value2) {
       return Uint64.fromInts(value as int, value2 as int);
     }
 
@@ -28,12 +28,13 @@ class Uint64 implements Comparable<Uint64> {
     return Uint64._internal(bigValue);
   }
 
-  Uint64._internal(BigInt i) : _value = i;
+  Uint64._internal(BigInt i) : value = i;
 
-  /// Creates a [Uint64] from a [bigInt].
-  static Uint64 fromBigInt(final BigInt bigInt) {
-    _checkValue(bigInt);
-    return Uint64._internal(bigInt);
+  /// Creates a [Uint64] from a [bigValue].
+  static Uint64 fromBigInt(final BigInt bigValue) {
+    _checkValue(bigValue);
+
+    return Uint64._internal(bigValue);
   }
 
   /// Creates a [Uint64] from a [int].
@@ -72,30 +73,44 @@ class Uint64 implements Comparable<Uint64> {
     return fromHex(int64.toHexString());
   }
 
-  /// Generate UInt64 from a string.
-  /// Deterministic uint64 value for the given string.
-  static Uint64 fromString(final String input) {
-    if (input.isEmpty) {
+  /// Parses [source] as a, possibly signed, integer literal and returns its
+  /// value.
+  static Uint64? tryParse(String source) {
+    final bigInt = BigInt.tryParse(source);
+    if (bigInt != null) {
+      return fromBigInt(bigInt);
+    } else {
+      return null;
+    }
+  }
+
+  /// Generate UInt64 from a utf8 string.
+  /// Deterministic uint64 value for the given utf8 string.
+  static Uint64 fromUtf8(final String source) {
+    if (source.isEmpty) {
       throw ArgumentError('Input must not be empty');
     }
     final sha3_256 = SHA3(256, SHA3_PADDING, 256);
 
-    final buf = sha3_256.update(ByteUtils.stringToBytesUtf8(input));
+    final buf = sha3_256.update(ByteUtils.stringToBytesUtf8(source));
 
     return Uint64.fromBytes(Uint8List.fromList(buf.digest()));
   }
 
   /// The accepted min value of 64-bit signed integer.
-  static const int _minValueSigned = 0;
+  static const int minValueSigned = 0;
 
+  /// The maximum value of 64-bit signed integer. Equals to 9223372036854775807.
+  static const int maxValueSigned = 2147483648 * 2147483648 - 1 + 2147483648 * 2147483648;
+  
   /// The accepted minimum value of 64-bit unsigned integer.
-  static final BigInt _minValueUnsigned = BigInt.zero;
+  static final BigInt minValue = BigInt.zero;
 
   /// The maximum value of 64-bit unsigned integer. Equals to 18446744073709551615.
-  static final BigInt _maxValueUnsigned = BigInt.parse('FFFFFFFFFFFFFFFF', radix: 16);
+  static final BigInt maxValue = BigInt.parse('FFFFFFFFFFFFFFFF', radix: 16);
 
   /// The value of Uint64 is stored as BigInt.
-  BigInt _value;
+  BigInt value;
 
   /// An [Int64] constant equal to 0.
   static Uint64 get zero => fromBigInt(BigInt.zero);
@@ -107,106 +122,136 @@ class Uint64 implements Comparable<Uint64> {
   static Uint64 get two => fromBigInt(BigInt.two);
 
   /// Whether this big integer is even.
-  bool get isEven => _value.isEven;
+  bool get isEven => value.isEven;
 
   /// Whether this big integer is odd.
-  bool get isOdd => _value.isOdd;
+  bool get isOdd => value.isOdd;
 
-  bool get isMaxValue => _value == _maxValueUnsigned;
+  bool get isMaxValue => value == maxValue;
 
-  bool get isMinValue => _value == _minValueUnsigned;
+  bool get isMinValue => value == minValue;
 
-  bool get isZero => _value == BigInt.zero && toBytes().every((value) => 0 == value);
-
-  @override
-  int get hashCode => _value.hashCode;
+  bool get isZero => value == BigInt.zero && toBytes().every((value) => 0 == value);
 
   @override
-  bool operator ==(final other) => other is Uint64 && _value == other._value;
+  int get hashCode => value.hashCode;
+
+  @override
+  bool operator ==(final other) => other is Uint64 && value == other.value;
 
   /// Return the negative value of this integer.
   ///
   /// The result of negating an integer always has the opposite sign, except
   /// for zero, which is its own negation.
-  Uint64 operator -() => Uint64.fromBigInt(-_value);
+  ///
+  Uint64 operator -() => Uint64.fromBigInt(-value);
 
   /// Addition operator.
-  Uint64 operator +(other) => Uint64.fromBigInt(_value + other._value);
+  Uint64 operator +(other) => Uint64.fromBigInt(value + other.value);
 
   /// Subtraction operator.
-  Uint64 operator -(other) => Uint64.fromBigInt(_value - other._value);
+  Uint64 operator -(other) => Uint64.fromBigInt(value - other.value);
 
   /// Multiplication operator.
-  Uint64 operator *(other) => Uint64.fromBigInt(_value * other._value);
+  Uint64 operator *(other) => Uint64.fromBigInt(value * other.value);
 
   /// Division operator.
-  double operator /(other) => (_value / other._value).toDouble();
+  double operator /(other) => (value / other.value).toDouble();
 
   /// Truncating division operator.
-  Uint64 operator ~/(other) => Uint64.fromBigInt(_value ~/ other._value);
+  Uint64 operator ~/(other) => Uint64.fromBigInt(value ~/ other.value);
 
   /// Euclidean modulo operator.
-  Uint64 operator %(other) => Uint64.fromBigInt(_value ~/ other._value);
+  Uint64 operator %(other) => Uint64.fromBigInt(value ~/ other.value);
 
   /// Relational less than operator.
-  bool operator <(other) => _value < other._value;
+  bool operator <(other) => value < other.value;
 
   /// Relational less than or equal operator.
-  bool operator <=(other) => _value <= other._value;
+  bool operator <=(other) => value <= other.value;
 
   /// Relational greater than operator.
-  bool operator >(other) => _value > other._value;
+  bool operator >(other) => value > other.value;
 
   /// Relational greater than or equal operator.
-  bool operator >=(other) => _value >= other._value;
+  bool operator >=(other) => value >= other.value;
+
+  /// Right bit-shift operator.
+  Uint64 operator <<(int shiftAmount) {
+    if (shiftAmount < 0) {
+      throw ArgumentError.value(shiftAmount);
+    }
+    if (shiftAmount >= 64) {
+      return Uint64.zero;
+    }
+
+    final bigInt = toBigInt() << shiftAmount;
+
+    return Uint64.fromBigInt(bigInt);
+  }
 
   /// Bit-wise and operator.
   Uint64 operator &(other) {
     final Uint64 o = _promote(other);
-    return Uint64.fromBigInt(_value & o._value);
+    return Uint64.fromBigInt(value & o.value);
   }
 
   /// Bit-wise exclusive-or operator.
   Uint64 operator ^(Object other) {
     final Uint64 o = _promote(other);
-    return Uint64.fromBigInt(_value ^ o._value);
+    return Uint64.fromBigInt(value ^ o.value);
   }
 
   /// Bit-wise or operator.
   Uint64 operator |(other) {
     final Uint64 o = _promote(other);
-    return Uint64.fromBigInt(_value | o._value);
+    return Uint64.fromBigInt(value | o.value);
+  }
+
+  /// Tries to compact a this value into a simple numeric.
+  int get compact {
+    final intArray = toIntArray();
+    final int low = intArray[0];
+    final int high = intArray[1];
+
+    // don't compact if the value is >= 2^53
+    if (0x00200000 <= high) {
+      return toInt();
+    }
+
+    // multiply because javascript bit operations operate on 32bit values
+    return (high * 0x100000000) + low;
   }
 
   @override
-  int compareTo(final Uint64 other) => _value.compareTo(other._value);
+  int compareTo(final Uint64 other) => value.compareTo(other.value);
 
   /// Returns this [Uint64] as a [double].
-  double toDouble() => _value.toDouble();
+  double toDouble() => value.toDouble();
 
   /// Returns this [Uint64] as a [BigInt].
-  BigInt toBigInt() => _value;
+  BigInt toBigInt() => value;
 
   /// Returns this [Uint64] as a [int].
-  int toInt() => _value.toInt();
+  int toInt() => value.toInt();
 
   Uint64 abs() => this;
 
   @override
-  String toString() => _value.toString();
+  String toString() => value.toString();
 
   /// Converts to hex string representation. Fills with leading 0 to reach 16 characters length.
-  String toHexString() {
-    String hex = _value.toRadixString(16).toUpperCase();
-    if (hex.length % 2 != 0) {
-      hex = '0$hex';
+  String toHex() {
+    String hex = value.toRadixString(16).toUpperCase();
+    if (hex.length != 16) {
+      return '${List.filled(16 - hex.length, '0').join()}$hex';
     }
     return hex;
   }
 
   /// Converts to 64-bit byte array.
   Uint8List toBytes() {
-    final String hex = toHexString();
+    final String hex = toHex();
     final Int64 int64 = Int64.parseHex(hex);
 
     return Uint8List.fromList(int64.toBytes());
@@ -214,17 +259,17 @@ class Uint64 implements Comparable<Uint64> {
 
   /// Converts to a pair of 32-bit integers ([lower, higher]).
   List<int> toIntArray() {
-    if (_value == BigInt.zero) {
+    if (value == BigInt.zero) {
       return [0, 0];
     }
-    final l = _value.toUnsigned(32);
-    final r = (_value >> 32).toUnsigned(32);
+    final l = value.toUnsigned(32);
+    final r = (value >> 32).toUnsigned(32);
 
     return List<int>.from([l.toInt(), r.toInt()]);
   }
 
   static void _checkValue(final BigInt value) {
-    if (value < _minValueUnsigned || value > _maxValueUnsigned) {
+    if (value < minValue || value > maxValue) {
       throw ArgumentError('Value out of range');
     }
   }
@@ -240,5 +285,5 @@ class Uint64 implements Comparable<Uint64> {
     throw ArgumentError.value(value);
   }
 
-  dynamic toJson() => _value.toInt();
+  dynamic toJson() => value.toInt();
 }

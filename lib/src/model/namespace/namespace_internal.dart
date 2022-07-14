@@ -6,7 +6,7 @@
 
 part of xpx_chain_sdk.model.namespace;
 
-const int namespaceBit = 1 << 63;
+Uint64 namespaceBit = Uint64.fromInt(1) << 63;
 
 enum NamespaceType { root, sub }
 
@@ -24,7 +24,7 @@ final NamespaceId streamingNamespaceId = NamespaceId.fromName('prx.streaming');
 
 /// generateNamespaceId create NamespaceId from namespace string name
 /// (ex: prx or domain.subdom.subdome)
-Uint64 generateNamespacePath(String name) {
+NamespaceId generateNamespacePath(String name) {
   final parts = name.split('.');
   if (parts.isEmpty) {
     throw errInvalidNamespaceName;
@@ -33,8 +33,8 @@ Uint64 generateNamespacePath(String name) {
     throw errInvalidNamespaceName;
   }
 
-  var namespaceId = Uint64.zero;
-  final List<Uint64> path = [];
+  var namespaceId = NamespaceId(Uint64.zero);
+  final List<NamespaceId> path = [];
 
   for (final part in parts) {
     if (!regValidNamespace.hasMatch(part)) {
@@ -69,7 +69,7 @@ List<Uint64?> extractLevels(NamespaceInfoDTO ref) {
   return levels;
 }
 
-Uint64 generateNamespaceId(String name, Uint64 parentId) {
+NamespaceId generateNamespaceId(String name, NamespaceId parentId) {
   final Uint8List parentIdBytes = parentId.toBytes();
 
   final sha3_256 = SHA3(256, SHA3_PADDING, 256);
@@ -81,11 +81,9 @@ Uint64 generateNamespaceId(String name, Uint64 parentId) {
   }
 
   final t = result.update(nameBytes);
-  final g = Int64.fromBytes(t.digest());
+  final g = Uint64.fromBytes(Uint8List.fromList(t.digest()));
 
-  final p = g | namespaceBit;
-
-  return Uint64.fromHex(p.toHexString());
+  return NamespaceId(g | namespaceBit);
 }
 
 final RegExp regValidNamespace = RegExp(

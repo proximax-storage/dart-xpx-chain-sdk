@@ -7,14 +7,18 @@
 part of xpx_chain_sdk.api.dto;
 
 class MosaicDTO {
-  MosaicDTO.fromJson(Map json) : assert(json.isNotEmpty, 'json must not be empty') {
-    id = UInt64DTO.fromJson(json['id']);
-    amount = UInt64DTO.fromJson(json['amount']);
+  MosaicDTO(this.id, this.amount);
+
+  factory MosaicDTO.fromJson(Map json) {
+    assert(json.isNotEmpty, 'json must not be empty');
+    final id = UInt64DTO.fromJson(json['id']);
+    final amount = UInt64DTO.fromJson(json['amount']);
+    return MosaicDTO(id, amount);
   }
 
-  UInt64DTO? id;
+  UInt64DTO id;
 
-  UInt64DTO? amount;
+  UInt64DTO amount;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

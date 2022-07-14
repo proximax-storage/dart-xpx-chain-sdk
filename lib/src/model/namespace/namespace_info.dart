@@ -84,7 +84,7 @@ class NamespaceInfo {
     data['typeSpace'] = typeSpace;
     data['depth'] = depth;
     if (levels != null) {
-      data['levels'] = levels!.map((e) => e!.toHexString()).toList();
+      data['levels'] = levels!.map((e) => e!.toHex()).toList();
     }
     if (parent != null) {
       data['parent'] = parent;

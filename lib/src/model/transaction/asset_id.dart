@@ -11,10 +11,18 @@ abstract class AssetId {
 
   final Uint64 value;
 
+  factory AssetId.fromId(Uint64 id) {
+    if (hasBits(id, namespaceBit)) {
+      return NamespaceId(id);
+    } else {
+      return MosaicId(id);
+    }
+  }
+
   @override
   String toString() => encoder.convert(this);
 
-  String toJson() => value.toHexString();
+  String toJson() => value.toHex();
 
   @override
   bool operator ==(Object other) =>
@@ -24,7 +32,7 @@ abstract class AssetId {
   int get hashCode => 'Id'.hashCode ^ value.hashCode;
 
   String toHex() {
-    var s = value.toHexString().toUpperCase();
+    var s = value.toHex().toUpperCase();
     if (s.length % 2 != 0) {
       s = '0$s';
     }
