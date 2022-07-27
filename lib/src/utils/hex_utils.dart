@@ -103,7 +103,7 @@ class HexUtils {
   static String tryHexToUtf8(final String hex) {
     final codeUnits = _getCodeUnits(hex);
     try {
-      return ByteUtils.bytesToUtf8String(codeUnits as Uint8List);
+      return ByteUtils.bytesToUtf8String(Uint8List.fromList(codeUnits));
     } on Exception catch (_) {
       return String.fromCharCodes(codeUnits);
     }

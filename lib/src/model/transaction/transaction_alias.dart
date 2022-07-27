@@ -34,28 +34,20 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
 
   AbstractTransaction get abstractTransaction => absTransaction();
 
-  String _aliasTransactionToString() {
-    final String _actionType = actionType!.toInt == 0 ? 'link' : 'unlink';
-    return '{\n'
-        '\t"abstractTransaction": ${_absToString()}\n'
-        '\t"aliasActionType": $_actionType,\n'
-        '\t"namespaceId": ${namespaceId!.toHex()},\n';
-  }
+  @override
+  String toString() => encoder.convert(this);
 
   @override
-  String toString() => _aliasTransactionToString();
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> val = {};
+    val.addAll(_absToJson());
 
-  @override
-  Map<String, dynamic> toJson() => _aliasTransactionToJson();
-
-  Map<String, dynamic> _aliasTransactionToJson() {
-    final data = <String, dynamic>{};
-    data['abstractTransaction'] = _absToJson();
     if (actionType != null) {
-      data['aliasActionType'] = actionType!.toInt;
+      final String _actionType = actionType!.toInt == 0 ? 'link' : 'unlink';
+      val['aliasActionType'] = _actionType;
     }
-    data['namespaceId'] = namespaceId!.toHex();
-    return data;
+    val['namespaceId'] = namespaceId!.toHex();
+    return val;
   }
 
   @override
@@ -97,23 +89,18 @@ class AddressAliasTransaction extends AliasTransaction {
 
   Address? address;
 
-  String addressAliasTransactionToString() => '${super.toString()}'
-      '\t"address": $address\n'
-      '}\n';
+  @override
+  String toString() => encoder.convert(this);
 
   @override
-  String toString() => addressAliasTransactionToString();
-
-  @override
-  Map<String, dynamic> toJson() => addressAliasTransactionToJson();
-
-  Map<String, dynamic> addressAliasTransactionToJson() {
-    final data = <String, dynamic>{};
-    data.addAll(super.toJson());
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> val = {};
+    val.addAll(_absToJson());
+    val.addAll(super.toJson());
     if (actionType != null) {
-      data['address'] = address;
+      val['address'] = address;
     }
-    return data;
+    return val;
   }
 
   @override
@@ -146,23 +133,18 @@ class MosaicAliasTransaction extends AliasTransaction {
 
   MosaicId? mosaicId;
 
-  String _mosaicAliasTransactionToString() => '${super.toString()}'
-      '\t"mosaicId": ${mosaicId!.toHex()}\n'
-      '}\n';
+  @override
+  String toString() => encoder.convert(this);
 
   @override
-  String toString() => _mosaicAliasTransactionToString();
-
-  @override
-  Map<String, dynamic> toJson() => _mosaicAliasTransactionToJson();
-
-  Map<String, dynamic> _mosaicAliasTransactionToJson() {
-    final data = <String, dynamic>{};
-    data.addAll(super.toJson());
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> val = {};
+    val.addAll(_absToJson());
+    val.addAll(super.toJson());
     if (actionType != null) {
-      data['mosaicId'] = mosaicId!.toHex();
+      val['mosaicId'] = mosaicId!.toHex();
     }
-    return data;
+    return val;
   }
 
   @override
