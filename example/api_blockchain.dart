@@ -7,7 +7,7 @@
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
-  const baseUrl = 'http://bctestnet3.brimstone.xpxsirius.io';
+  const baseUrl = 'https://api-2.testnet2.xpxsirius.io';
 
   /// Creating a client instance
   final client = SiriusClient.fromUrl(baseUrl);
@@ -22,7 +22,7 @@ void main() async {
 
   // Gets a [BlockInfo] from the chain that has the given height.
   try {
-    final result = await client.blockChain.getBlockByHeight(4993924.toHeight);
+    final result = await client.blockChain.getBlockByHeight(1.toHeight);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling BlockChain->GetBlockByHeight: $e\n');
@@ -46,7 +46,7 @@ void main() async {
 
   // Returns an List of [Transaction] included in a block for a given block height.
   try {
-    final result = await client.blockChain.getBlockTransactions(4993924.toHeight);
+    final result = await client.blockChain.getBlockTransactions(1.toHeight);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling BlockChain->getBlockTransactions: $e\n');

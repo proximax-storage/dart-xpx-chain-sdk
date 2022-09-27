@@ -4,14 +4,22 @@ import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 /// Simple Account API AnnounceTransaction
 void main() async {
-  const baseUrl = 'http://bctestnet3.brimstone.xpxsirius.io:3000';
+  const baseUrl = 'https://api-2.testnet2.xpxsirius.io';
 
   /// Creating a client instance
   final client = SiriusClient.fromUrl(baseUrl);
 
-  final generationHash = await client.generationHash;
+  final generationHash = await client.generationHash.catchError((err) {
+    print('Get generationHash Error: ${err.error}');
+    // print('StackTrace: ${err.stackTrace}');
+    exit(0);
+  });
 
-  final networkType = await client.networkType;
+  final networkType = await client.networkType.catchError((err) {
+    print('Get networkType Error: ${err.error}');
+    // print('StackTrace: ${err.stackTrace}');
+    exit(0);
+  });
 
   /// Create an Account from a given Private key.
   final bobAccount =

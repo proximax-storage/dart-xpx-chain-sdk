@@ -7,13 +7,13 @@
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
-  const baseUrl = 'http://bctestnet3.brimstone.xpxsirius.io:3000';
+  const baseUrl = 'https://api-2.testnet2.xpxsirius.io';
 
   /// Creating a client instance
   final client = SiriusClient.fromUrl(baseUrl);
 
   final namespaceIdOne = NamespaceId.fromHex('BFFB42A19116BDF6');
-  final namespaceIdTwo = NamespaceId.fromHex('FB8A78E8ABB05A5E');
+  final namespaceIdTwo = NamespaceId.fromHex('CCD875904F024AAC');
 
   final addressOne = Address.fromRawAddress('VCMCJPRMJ6IUBOZ7HCYBQOSEOVGISX6AMUJ4ESTN');
   final addressTwo = Address.fromRawAddress('VB2HPZ-FL3IRV-62FGZM-7GGIZS-LZGAZE-DZ23P3-EFOR');

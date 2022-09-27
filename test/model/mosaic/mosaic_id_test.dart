@@ -60,8 +60,9 @@ void main() {
     test('fromNonce()', () {
       final bytes = Uint8List.fromList([0x0, 0x0, 0x0, 0x0]);
       final nonce = MosaicNonce(bytes);
-      final owner = PublicAccount.fromPublicKey(testPublicKey, NetworkType.MIJIN_TEST);
+      final owner = PublicAccount.fromPublicKey(testPublicKey, NetworkType.PRIVATE_TEST);
       final mosaicId = MosaicId.fromNonceAndOwner(nonce, owner);
+
       final expected = Uint64.fromHex('8dc67fbe1cad29e3');
 
       expect(mosaicId.value, equals(expected));

@@ -7,14 +7,14 @@
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
-  const baseUrl = 'http://bctestnet3.brimstone.xpxsirius.io:3000';
+  const baseUrl = 'https://api-2.testnet2.xpxsirius.io';
 
   /// Creating a client instance
   final client = SiriusClient.fromUrl(baseUrl);
 
   try {
     final result =
-        await client.metadata.getMetadataV2Info('57D649B3FDC7CEE27A621F710492BB01DD8BA812B93B03B6B80044AABC313DB4');
+        await client.metadata.getMetadataV2Info('D54146ABED5E29D1F5B1D7FDAB36C807AD7B82B3D8E2E251DC32F84CE3E56730');
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Metadata->GetMetadataV2Info: $e\n');
@@ -22,7 +22,7 @@ void main() async {
 
   try {
     final result = await client.metadata.getMetadatasV2Info([
-      '57D649B3FDC7CEE27A621F710492BB01DD8BA812B93B03B6B80044AABC313DB4',
+      'D54146ABED5E29D1F5B1D7FDAB36C807AD7B82B3D8E2E251DC32F84CE3E56730',
       '544F408D38BB884193241E32EE19D9870D332B1C38FBDFA9DF9BC7650F02FD38'
     ]);
     print(result);

@@ -83,8 +83,8 @@ class SiriusClient {
 
   static SiriusClient fromUrl(String baseUrl, [TimeoutOptions? timeOptions]) {
     timeOptions ??= TimeoutOptions(
-      connectTimeout: 5000,
-      receiveTimeout: 5000,
+      connectTimeout: 30000,
+      receiveTimeout: 30000,
     );
 
     final options = BaseOptions(

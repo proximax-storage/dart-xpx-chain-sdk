@@ -7,13 +7,13 @@
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
-  const baseUrl = 'http://bctestnet3.brimstone.xpxsirius.io:3000';
+  const baseUrl = 'https://api-2.testnet2.xpxsirius.io';
 
   /// Creating a client instance
   final client = SiriusClient.fromUrl(baseUrl);
 
-  final mosaicIdOne = MosaicId.fromHex('3296a44be8125aea');
-  final mosaicIdTwo = MosaicId.fromHex('13bfc518e40549d7');
+  final mosaicIdOne = MosaicId.fromHex('13BFC518E40549D7');
+  final mosaicIdTwo = MosaicId.fromHex('705BAFA9B6903C08');
 
   // Gets a [MosaicInfo] definition for a given mosaicId.
   try {

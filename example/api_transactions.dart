@@ -7,13 +7,13 @@
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
-  const baseUrl = 'http://bctestnet3.brimstone.xpxsirius.io:3000';
+  const baseUrl = 'https://api-2.testnet2.xpxsirius.io';
 
   /// Creating a client instance
   final client = SiriusClient.fromUrl(baseUrl);
 
-  const hashOne = '8454782DB6B2BC5764A9EB74C8A7AE4A4024A83BBC7E37626663C21F5C7F5B8C';
-  const hashTwo = 'BF9B3AF29569A17B2FC72204A793A3984FB14022AD597D4D5E997D0965F97E02';
+  const hashOne = 'BA539AB351D0E0DFE062A28ECC9F062E3BCA8237F8116F914739643D3A56EAFD';
+  const hashTwo = '57376F52D2CE59E12F70607AF9DA8868A9193D72D02DED09BFF45CC73DF7A1B9';
 
   // Returns a [Transaction] information given a transactionId or hash.
   try {
@@ -36,7 +36,7 @@ void main() async {
   final txnQueryParams = TransactionQueryParams()
     ..embedded = true
     ..type = [TransactionType.transfer]
-    ..signerPublicKey = "785B6EDD55934391C4C0CBFCF5ECDCBC5104CB781178616A99167480418282BD";
+    ..signerPublicKey = '2CF9BC23414B5A465EA9F331F5912627666E1AF348B96910B5F32D54AB43A05C';
 
   // Returns a [Transaction] information given a transactionId or hash.
   try {
@@ -50,8 +50,7 @@ void main() async {
   //Returns a List of [Transaction] information for a given List of transactionIds.
   try {
     /// Get a transaction information given a transactionId or hash.
-    final result = await client.transaction
-        .getTransactions([hashOne, hashTwo], TransactionGroupType.confirmed);
+    final result = await client.transaction.getTransactions([hashOne, hashTwo], TransactionGroupType.confirmed);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Transaction->GetTransactions: $e\n');
@@ -67,8 +66,7 @@ void main() async {
 
   // Returns an List of transaction statuses for a given List of transaction hashes.
   try {
-    final result =
-        await client.transaction.getTransactionsStatuses([hashOne, hashTwo]);
+    final result = await client.transaction.getTransactionsStatuses([hashOne, hashTwo]);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Transaction->GetTransactionsStatuses: $e\n');
@@ -78,15 +76,13 @@ void main() async {
     final result = await client.transaction.getTransactionEffectiveFee(hashOne);
     print(result);
   } on Exception catch (e) {
-    print(
-        'Exception when calling Transaction->GetTransactionEffectiveFee: $e\n');
+    print('Exception when calling Transaction->GetTransactionEffectiveFee: $e\n');
   }
 
-  try {
-    final result = await client.transaction
-        .getTransactionsCount([TransactionType.transfer]);
-    print(result);
-  } on Exception catch (e) {
-    print('Exception when calling Transaction->GetTransactionsCount: $e\n');
-  }
+  // try {
+  //   final result = await client.transaction.getTransactionsCount([TransactionType.transfer]);
+  //   print(result);
+  // } on Exception catch (e) {
+  //   print('Exception when calling Transaction->GetTransactionsCount: $e\n');
+  // }
 }

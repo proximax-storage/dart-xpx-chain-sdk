@@ -4,19 +4,25 @@
  * license that can be found in the LICENSE file.
  */
 
+import 'dart:io';
+
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
-  const baseUrl = 'http://bctestnet3.brimstone.xpxsirius.io:3000';
+  const baseUrl = 'https://api-2.testnet2.xpxsirius.io';
 
   /// Creating a client instance
   final client = SiriusClient.fromUrl(baseUrl);
 
-  final networkType = await client.networkType;
+  final networkType = await client.networkType.catchError((err) {
+    print('Get networkType Error: ${err.error}');
+    // print('StackTrace: ${err.stackTrace}');
+    exit(0);
+  });
 
   /// Create an Address from a given public key.
   final accountOne =
-      PublicAccount.fromPublicKey('785b6edd55934391c4c0cbfcf5ecdcbc5104cb781178616a99167480418282bd', networkType);
+      PublicAccount.fromPublicKey('1ECDEF5C126615B655B8A367A8B0063726B30F4B11894CA01E32A3A0482E0A4E', networkType);
 
   /// Create an Address from a given public key.
   final accountTwo =
@@ -56,7 +62,32 @@ void main() async {
 
   // Gets an array of transactions for which an account is the sender or receiver.
   try {
-    final result = await client.account.transactions(accountOne, TransactionQueryParams()..embedded = true);
+    final result = await client.account.transactions(
+        accountOne,
+        TransactionQueryParams()
+          ..embedded = true
+          ..pageNumber = 2
+          ..pageSize = 10
+          ..type = [TransactionType.aggregateCompleted, TransactionType.transfer]
+          ..firstLevel = false);
+
+    print(result);
+  } on Exception catch (e) {
+    print('Exception when calling Account->Transactions: $e\n');
+  }
+
+  // Gets an array of transactions for which an account is the sender or receiver.
+  try {
+    final result = await client.account.transactionsWithPagination(
+        accountOne,
+        TransactionQueryParams()
+          ..embedded = true
+          ..pageNumber = 1
+          ..pageSize = 10
+          ..type = [TransactionType.aggregateCompleted, TransactionType.transfer]
+          ..order = Order_v2.DESC
+          ..firstLevel = false);
+
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Account->Transactions: $e\n');

@@ -53,7 +53,7 @@ class MetadataEntry {
       'compositeHash': compositeHash,
       'sourceAddress': sourceAddress,
       'targetKey': targetKey,
-      'scopedMetadataKey': scopedMetadataKey,
+      'scopedMetadataKey': scopedMetadataKey.toHex(),
       'targetId': targetId.toHex(),
       'metadataType': metadataType.getName,
       'valueSize': valueSize,
