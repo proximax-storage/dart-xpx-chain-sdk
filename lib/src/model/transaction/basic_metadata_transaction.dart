@@ -47,7 +47,6 @@ class BasicMetadataTransaction extends AbstractTransaction {
     final Map<String, dynamic> val = {}..addAll(_absToJson());
 
     val['targetPublicKey'] = targetPublicAccount;
-    val['scopedMetadataKey'] = scopedMetadataKey;
     val['valueSizeDelta'] = valueSizeDelta;
 
     void writeNotNull(String key, value) {
@@ -56,6 +55,7 @@ class BasicMetadataTransaction extends AbstractTransaction {
       }
     }
 
+    writeNotNull('scopedMetadataKey', scopedMetadataKey?.toHex());
     writeNotNull('value', value);
 
     return val;

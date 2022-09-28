@@ -99,71 +99,6 @@ const
 
 var timestampNemesisBlock = DateTime.fromMillisecondsSinceEpoch(1459468800000);
 
-String _mapTransaction(decodedJson) {
-  final rawT = decodedJson['transaction']['type'];
-
-  final t = TransactionType.fromInt(rawT);
-
-  switch (t) {
-    case TransactionType.accountPropertyAddress:
-      return 'AccountPropertiesAddress';
-    case TransactionType.accountPropertyMosaic:
-      return 'AccountPropertiesMosaic';
-    case TransactionType.accountPropertyEntityType:
-      return 'AccountPropertiesEntityType';
-    case TransactionType.aggregateCompleted:
-      return 'AggregateCompleted';
-    case TransactionType.aggregateBonded:
-      return 'AggregateBonded';
-    case TransactionType.metadataAddress:
-      return 'MetadataAddress';
-    case TransactionType.addressAlias:
-      return 'AddressAlias';
-    case TransactionType.addExchangeOffer:
-      return 'AddExchangeOffer';
-    case TransactionType.exchangeOffer:
-      return 'ExchangeOffer';
-    case TransactionType.removeExchangeOffer:
-      return 'RemoveExchangeOffer';
-    case TransactionType.metadataMosaic:
-      return 'MetadataMosaic';
-    case TransactionType.metadataNamespace:
-      return 'MetadataNamespace';
-    case TransactionType.mosaicDefinition:
-      return 'MosaicDefinition';
-    case TransactionType.mosaicAlias:
-      return 'MosaicAlias';
-    case TransactionType.mosaicSupplyChange:
-      return 'MosaicSupplyChange';
-    case TransactionType.modifyMultisig:
-      return 'ModifyMultisig';
-    case TransactionType.modifyContract:
-      return 'ModifyContract';
-    case TransactionType.registerNamespace:
-      return 'RegisterNamespace';
-    case TransactionType.transfer:
-      return 'Transfer';
-    case TransactionType.lock:
-      return 'Lock';
-    case TransactionType.secretLock:
-      return 'SecretLock';
-    case TransactionType.secretProof:
-      return 'SecretProof';
-    case TransactionType.accountMetadataV2:
-      return 'AccountMetadataV2';
-    case TransactionType.mosaicMetadataV2:
-      return 'MosaicMetadataV2';
-    case TransactionType.namespaceMetadataV2:
-      return 'NamespaceMetadataV2';
-    case TransactionType.networkConfigEntityType:
-      return 'NetworkConfigEntityType';
-    case TransactionType.blockchainUpgrade:
-      return 'BlockchainUpgrade';
-    default:
-      return 'NULL';
-  }
-}
-
 dynamic txnDeserialize(value, String targetType) {
   if (targetType == 'List<Transaction>') {
     final data = value is Map ? value['data'] : value;
@@ -172,51 +107,50 @@ dynamic txnDeserialize(value, String targetType) {
     return data.map((v) => txnDeserialize(v, newTargetType!)).where((element) => element != null).toList();
   }
 
-  // ignore: parameter_assignments
-  targetType = _mapTransaction(value);
-
   try {
-    switch (targetType) {
-      case 'Transfer':
-        return TransferTransactionInfoDTO.fromJson(value);
-      case 'AccountPropertiesAddress':
+    final entityType = TransactionType.fromInt(value['transaction']['type']);
+
+    switch (entityType) {
+      case TransactionType.accountPropertyAddress:
         return AccountPropertiesAddressTransactionInfoDTO.fromJson(value);
-      case 'AccountPropertiesMosaic':
+      case TransactionType.accountPropertyMosaic:
         return AccountPropertiesMosaicTransactionInfoDTO.fromJson(value);
-      case 'AccountPropertiesEntityType':
+      case TransactionType.accountPropertyEntityType:
         return AccountPropertiesEntityTypeTransactionInfoDTO.fromJson(value);
-      case 'AddExchangeOffer':
-        return AddExchangeOfferTransactionInfoDTO.fromJson(value);
-      case 'RemoveExchangeOffer':
-        return RemoveExchangeOfferTransactionInfoDTO.fromJson(value);
-      case 'ExchangeOffer':
-        return ExchangeOfferTransactionInfoDTO.fromJson(value);
-      case 'RegisterNamespace':
-        return RegisterNamespaceTransactionInfoDTO.fromJson(value);
-      case 'MosaicDefinition':
-        return MosaicDefinitionTransactionInfoDTO.fromJson(value);
-      case 'MosaicSupplyChange':
-        return MosaicSupplyChangeTransactionInfoDTO.fromJson(value);
-      case 'MosaicAlias':
-        return MosaicAliasTransactionInfoDTO.fromJson(value);
-      case 'AggregateCompleted':
+      case TransactionType.aggregateCompleted:
         return AggregateTransactionInfoDTO.fromJson(value);
-      case 'AggregateBonded':
+      case TransactionType.aggregateBonded:
         return AggregateTransactionInfoDTO.fromJson(value);
-      case 'AddressAlias':
+      case TransactionType.addressAlias:
         return AddressAliasTransactionInfoDTO.fromJson(value);
-      case 'ModifyMultisig':
+      case TransactionType.addExchangeOffer:
+        return AddExchangeOfferTransactionInfoDTO.fromJson(value);
+      case TransactionType.exchangeOffer:
+        return ExchangeOfferTransactionInfoDTO.fromJson(value);
+      case TransactionType.removeExchangeOffer:
+        return RemoveExchangeOfferTransactionInfoDTO.fromJson(value);
+      case TransactionType.mosaicDefinition:
+        return MosaicDefinitionTransactionInfoDTO.fromJson(value);
+      case TransactionType.mosaicAlias:
+        return MosaicAliasTransactionInfoDTO.fromJson(value);
+      case TransactionType.mosaicSupplyChange:
+        return MosaicSupplyChangeTransactionInfoDTO.fromJson(value);
+      case TransactionType.modifyMultisig:
         return ModifyMultisigAccountTransactionInfoDTO.fromJson(value);
-      case 'Lock':
+      case TransactionType.registerNamespace:
+        return RegisterNamespaceTransactionInfoDTO.fromJson(value);
+      case TransactionType.transfer:
+        return TransferTransactionInfoDTO.fromJson(value);
+      case TransactionType.lock:
         return LockFundsTransactionInfoDTO.fromJson(value);
-      case 'NetworkConfigEntityType':
-        return; // TODO: missing implementation
-      case 'BlockchainUpgrade':
-        return; // TODO: missing implementation
-      case 'AccountMetadataV2':
+      case TransactionType.accountMetadataV2:
+        return MetaDataEntryTransactioInfoDTO.fromJson(value);
+      case TransactionType.mosaicMetadataV2:
+        return MetaDataEntryTransactioInfoDTO.fromJson(value);
+      case TransactionType.namespaceMetadataV2:
         return MetaDataEntryTransactioInfoDTO.fromJson(value);
       default:
-        return null;
+        return null; // TODO: missing implementation
     }
   } on Exception catch (e, stack) {
     throw ApiException.withInner(500, 'Exception during deserialization.', e, stack);
@@ -350,7 +284,7 @@ int cosignatoryModificationArrayToBuffer(fb.Builder builder, List<MultisigCosign
   return builder.writeList(msb);
 }
 
-Transaction? deserializeDTO(value) {
+Transaction? mapTransactionDTO(value) {
   switch (value.runtimeType) {
     case AccountPropertiesAddressTransactionInfoDTO:
       return AccountPropertiesAddressTransaction.fromDTO(value);
@@ -383,10 +317,19 @@ Transaction? deserializeDTO(value) {
     case LockFundsTransactionInfoDTO:
       return LockFundsTransaction.fromDTO(value);
     case MetaDataEntryTransactioInfoDTO:
-      return AccountMetadataTransaction.fromDTO(value);
+      final transactionType = TransactionType.fromInt(value.transaction.type);
+      if (transactionType == TransactionType.accountMetadataV2) {
+        return AccountMetadataTransaction.fromDTO(value);
+      } else if (transactionType == TransactionType.mosaicMetadataV2) {
+        final targetMosaicId = MosaicId.fromHex(value.transaction.targetMosaicId.toUint64().toHex());
+        return MosaicMetadataTransaction.fromDTO(value, targetMosaicId);
+      } else {
+        return NamespaceMetadataTransaction.fromDTO(value);
+      }
+
     default:
       if (value is List) {
-        value.map(deserializeDTO).toList();
+        value.map(mapTransactionDTO).toList();
       }
       return null;
   }
@@ -444,7 +387,7 @@ Future<TransactionSearch> internalGetTransactionsWithPagination(
     throw ApiException(response.statusCode!, response.data);
   } else if (response.data != null) {
     final List resp = client.deserialize(response.data, 'List<Transaction>');
-    final transaction = resp.map(deserializeDTO).toList().cast<Transaction>();
+    final transaction = resp.map(mapTransactionDTO).toList().cast<Transaction>();
     return TransactionSearch(transaction, Pagination.fromJson(response.data['pagination']));
   } else {
     return TransactionSearch([], Pagination.fromJson(response.data['pagination']));

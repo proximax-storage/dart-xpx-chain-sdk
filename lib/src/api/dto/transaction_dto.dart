@@ -320,6 +320,7 @@ class MetaDataEntryTransactionDTO extends AbstractTransactionDTO {
     valueSizeDelta = json['valueSizeDelta'] as int;
     valueSize = json['valueSize'] as int;
     value = json['value'] as String;
+    targetMosaicId = UInt64DTO.fromJson(json['targetMosaicId']);
   }
 
   String? targetKey;
@@ -327,6 +328,7 @@ class MetaDataEntryTransactionDTO extends AbstractTransactionDTO {
   int? valueSizeDelta;
   int? valueSize;
   String? value;
+  UInt64DTO? targetMosaicId;
 
   @override
   Map<String, dynamic> toJson() => {

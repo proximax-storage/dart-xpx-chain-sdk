@@ -126,7 +126,7 @@ class BlockchainRoutesApi {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
       final List resp = _apiClient.deserialize(response.data, 'List<Transaction>');
-      return resp.map(deserializeDTO).toList().cast<Transaction>();
+      return resp.map(mapTransactionDTO).toList().cast<Transaction>();
     } else {
       return [];
     }

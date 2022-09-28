@@ -71,7 +71,7 @@ class TransactionRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return deserializeDTO(_apiClient.deserialize(response.data, 'Transaction'));
+      return mapTransactionDTO(_apiClient.deserialize(response.data, 'Transaction'));
     } else {
       return null;
     }

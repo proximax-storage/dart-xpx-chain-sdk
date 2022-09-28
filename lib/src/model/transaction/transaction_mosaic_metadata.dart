@@ -24,7 +24,7 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction implements Tran
       : super(targetAccount, scopedMetadataKey, valueSizeDelta, value, valueSize, oldValue, valueDifferences,
             networkType, deadline, TransactionType.mosaicMetadataV2, mosaicMetadataVersionV2, maxFee);
 
-  MosaicMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto) : super.fromDTO(dto);
+  MosaicMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto, this.targetMosaicId): super.fromDTO(dto);
 
   factory MosaicMetadataTransaction.create(Deadline deadline, MosaicId targetMosaicId, PublicAccount targetAccount,
       scopedMetadataKey, String value, String oldValue, NetworkType networkType,
@@ -60,7 +60,7 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction implements Tran
         valueSize, oldValue, valueDifferenceBytes, networkType, deadline, maxFee);
   }
 
-  late MosaicId targetMosaicId;
+  final MosaicId targetMosaicId;
 
   @override
   int size() => metadataV2HeaderSize + mosaicIdSize + valueSize;
@@ -73,6 +73,15 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction implements Tran
     final builder = fb.Builder(initialSize: 0);
     final targetIdOffset = builder.writeListUint8(targetMosaicId.toBytes().toList());
     return super.basicGenerateBytes(builder, targetIdOffset, size());
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> val = {}..addAll(super.toJson());
+
+    val['targetMosaicId'] = targetMosaicId;
+
+    return val;
   }
 
   @override

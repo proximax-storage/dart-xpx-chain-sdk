@@ -33,7 +33,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
 
   AggregateTransaction.fromDTO(AggregateTransactionInfoDTO dto) : super.fromDto(dto.transaction!, dto.meta!) {
     if (dto.transaction!.transactions.isNotEmpty) {
-      innerTransactions = dto.transaction!.transactions.map(deserializeDTO).toList();
+      innerTransactions = dto.transaction!.transactions.map(mapTransactionDTO).toList();
     }
     cosignatures = AggregateTransactionCosignature.listFromDTO(networkType.identifier, dto.transaction!.cosignatures);
   }

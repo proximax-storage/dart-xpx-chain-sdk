@@ -238,7 +238,7 @@ class AccountRoutesApi {
     } else if (response.data != null) {
       final List resp = _apiClient.deserialize(response.data, 'List<Transaction>');
 
-      final allTransaction = resp.map(deserializeDTO).toList().cast<Transaction>();
+      final allTransaction = resp.map(mapTransactionDTO).toList().cast<Transaction>();
 
       var aggregateBondedTransactions = <AggregateTransaction>[];
       for (var transaction in allTransaction) {
