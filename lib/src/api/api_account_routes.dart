@@ -128,6 +128,7 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
+
     return await internalGetTransactionsWithPagination(_apiClient, _transactionsRoute, queryParams, null,
         firstLevel: firstLevel);
   }
