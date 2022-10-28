@@ -24,38 +24,38 @@ void main() async {
     print('Exception when calling Transaction->GetTransaction: $e\n');
   }
 
-  // // Returns a [Transaction] information given a transactionId or hash.
-  // try {
-  //   /// Get a transaction information given a transactionId or hash.
-  //   final result = await client.transaction.getTransaction(TransactionGroupType.confirmed, hashOne);
-  //   print(result);
-  // } on Exception catch (e) {
-  //   print('Exception when calling Transaction->GetTransaction: $e\n');
-  // }
+  // Returns a [Transaction] information given a transactionId or hash.
+  try {
+    /// Get a transaction information given a transactionId or hash.
+    final result = await client.transaction.getTransaction(TransactionGroupType.confirmed, hashOne);
+    print(result);
+  } on Exception catch (e) {
+    print('Exception when calling Transaction->GetTransaction: $e\n');
+  }
 
-  // final txnQueryParams = TransactionQueryParams()
-  //   ..embedded = true
-  //   ..type = [TransactionType.transfer]
-  //   ..signerPublicKey = 'C2F93346E27CE6AD1A9F8F5E3066F8326593A406BDF357ACB041E2F9AB402EFE';
-  //
-  // // Returns a [Transaction] information given a transactionId or hash.
-  // try {
-  //   /// Get a transaction information given a transactionId or hash.
-  //   final result = await client.transaction.getTransactionsByGroupWithPagination(TransactionGroupType.confirmed, txnQueryParams);
-  //   print(result);
-  // } on Exception catch (e) {
-  //   print('Exception when calling Transaction->GetTransaction: $e\n');
-  // }
-  //
-  // //Returns a List of [Transaction] information for a given List of transactionIds.
-  // try {
-  //   /// Get a transaction information given a transactionId or hash.
-  //   final result = await client.transaction.getTransactions([hashOne, hashTwo], TransactionGroupType.confirmed);
-  //   print(result);
-  // } on Exception catch (e) {
-  //   print('Exception when calling Transaction->GetTransactions: $e\n');
-  // }
-  //
+  final txnQueryParams = TransactionQueryParams()
+    ..embedded = true
+    ..type = [TransactionType.transfer]
+    ..signerPublicKey = 'C2F93346E27CE6AD1A9F8F5E3066F8326593A406BDF357ACB041E2F9AB402EFE';
+
+  // Returns a [Transaction] information given a transactionId or hash.
+  try {
+    /// Get a transaction information given a transactionId or hash.
+    final result = await client.transaction.getTransactionsByGroupWithPagination(TransactionGroupType.confirmed, txnQueryParams);
+    print(result);
+  } on Exception catch (e) {
+    print('Exception when calling Transaction->GetTransaction: $e\n');
+  }
+
+  //Returns a List of [Transaction] information for a given List of transactionIds.
+  try {
+    /// Get a transaction information given a transactionId or hash.
+    final result = await client.transaction.getTransactions([hashOne, hashTwo], TransactionGroupType.confirmed);
+    print(result);
+  } on Exception catch (e) {
+    print('Exception when calling Transaction->GetTransactions: $e\n');
+  }
+
   // Returns the transaction status for a given hash.
   try {
     final result = await client.transaction.getTransactionStatus(hashOne);
@@ -71,18 +71,18 @@ void main() async {
   } on Exception catch (e) {
     print('Exception when calling Transaction->GetTransactionsStatuses: $e\n');
   }
-  //
-  // try {
-  //   final result = await client.transaction.getTransactionEffectiveFee(hashOne);
-  //   print(result);
-  // } on Exception catch (e) {
-  //   print('Exception when calling Transaction->GetTransactionEffectiveFee: $e\n');
-  // }
 
-  // try {
-  //   final result = await client.transaction.getTransactionsCount([TransactionType.transfer]);
-  //   print(result);
-  // } on Exception catch (e) {
-  //   print('Exception when calling Transaction->GetTransactionsCount: $e\n');
-  // }
+  try {
+    final result = await client.transaction.getTransactionEffectiveFee(hashOne);
+    print(result);
+  } on Exception catch (e) {
+    print('Exception when calling Transaction->GetTransactionEffectiveFee: $e\n');
+  }
+
+  try {
+    final result = await client.transaction.getTransactionsCount([TransactionType.transfer]);
+    print(result);
+  } on Exception catch (e) {
+    print('Exception when calling Transaction->GetTransactionsCount: $e\n');
+  }
 }

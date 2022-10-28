@@ -20,35 +20,35 @@ void main() async {
     print('Exception when calling BlockChain->GetBlockchainHeight: $e\n');
   }
 
-  // // Gets a [BlockInfo] from the chain that has the given height.
-  // try {
-  //   final result = await client.blockChain.getBlockByHeight(1.toHeight);
-  //   print(result);
-  // } on Exception catch (e) {
-  //   print('Exception when calling BlockChain->GetBlockByHeight: $e\n');
-  // }
-  //
-  // // Get the current score of the chain.
-  // try {
-  //   final result = await client.blockChain.getBlockchainScore();
-  //   print(result);
-  // } on Exception catch (e) {
-  //   print('Exception when calling BlockChain->GetBlockchainScore: $e\n');
-  // }
-  //
-  // // Gets up to limit number of blocks after given block height.
-  // try {
-  //   final result = await client.blockChain.getBlocksByHeightWithLimit(1, 25);
-  //   print(result);
-  // } on Exception catch (e) {
-  //   print('Exception when calling BlockChain->GetBlocksByHeightWithLimit: $e\n');
-  // }
-  //
-  // // Returns an List of [Transaction] included in a block for a given block height.
-  // try {
-  //   final result = await client.blockChain.getBlockTransactions(1.toHeight);
-  //   print(result);
-  // } on Exception catch (e) {
-  //   print('Exception when calling BlockChain->getBlockTransactions: $e\n');
-  // }
+  // Gets a [BlockInfo] from the chain that has the given height.
+  try {
+    final result = await client.blockChain.getBlockByHeight(1.toHeight);
+    print(result);
+  } on Exception catch (e) {
+    print('Exception when calling BlockChain->GetBlockByHeight: $e\n');
+  }
+
+  // Get the current score of the chain.
+  try {
+    final result = await client.blockChain.getBlockchainScore();
+    print(result);
+  } on Exception catch (e) {
+    print('Exception when calling BlockChain->GetBlockchainScore: $e\n');
+  }
+
+  // Gets up to limit number of blocks after given block height.
+  try {
+    final result = await client.blockChain.getBlocksByHeightWithLimit(1, 25);
+    print(result);
+  } on Exception catch (e) {
+    print('Exception when calling BlockChain->GetBlocksByHeightWithLimit: $e\n');
+  }
+
+  // Returns an List of [Transaction] included in a block for a given block height.
+  try {
+    final result = await client.blockChain.getBlockTransactions(1.toHeight);
+    print(result);
+  } on Exception catch (e) {
+    print('Exception when calling BlockChain->getBlockTransactions: $e\n');
+  }
 }
