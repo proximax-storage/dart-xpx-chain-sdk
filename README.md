@@ -12,7 +12,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  xpx_chain_sdk: 0.0.7+10
+  xpx_chain_sdk: 0.0.7+13
 ```
 
 **2. Install it**
