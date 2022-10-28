@@ -12,7 +12,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  xpx_chain_sdk: 0.0.7+13
+   xpx_chain_sdk: 0.0.7+13
 ```
 
 **2. Install it**
@@ -38,7 +38,7 @@ Alternatively, your editor might support pub get or flutter packages get. Check 
 Now in your Dart code, you can use:
 
 ```dart
-import 'package:xpx_chain_sdk/xpx_sdk.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 ```
 
 ## Wiki and Examples ##
