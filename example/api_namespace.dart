@@ -18,13 +18,13 @@ void main() async {
   final addressOne = Address.fromRawAddress('VCMCJPRMJ6IUBOZ7HCYBQOSEOVGISX6AMUJ4ESTN');
   final addressTwo = Address.fromRawAddress('VB2HPZ-FL3IRV-62FGZM-7GGIZS-LZGAZE-DZ23P3-EFOR');
 
-  // Gets a [NamespaceInfo] for a given namespaceId.
-  try {
-    final result = await client.namespace.getNamespace(namespaceIdOne);
-    print(result);
-  } on Exception catch (e) {
-    print('Exception when calling Namespace->GetNamespace: $e\n');
-  }
+  // // Gets a [NamespaceInfo] for a given namespaceId.
+  // try {
+  //   final result = await client.namespace.getNamespace(namespaceIdOne);
+  //   print(result);
+  // } on Exception catch (e) {
+  //   print('Exception when calling Namespace->GetNamespace: $e\n');
+  // }
 
   // Gets an List of [NamespaceInfo] for a given account address.
   try {

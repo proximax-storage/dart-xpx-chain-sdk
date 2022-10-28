@@ -13,7 +13,10 @@ class PageQueryParams {
     this.page = (page != null && page >= 0) ? page : 0;
   }
 
+  // Page number should be non negative number, otherwise 0 (first page).
   int page = 0;
+
+  // Page size between 10 and 100, otherwise 25.
   int pageSize = 25;
 
   Iterable<QueryParam> toQueryParams() {

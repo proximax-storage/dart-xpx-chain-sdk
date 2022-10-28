@@ -6,7 +6,7 @@
 
 part of xpx_chain_sdk.model.account;
 
-String _generateEncodedAddress(String pKey, int version) {
+String _generateEncodedAddress(String pKey, int networkType) {
   // step 1: sha3 hash of the public key
   final List<int> pKeyD = hex.decode(pKey);
 
@@ -18,8 +18,8 @@ String _generateEncodedAddress(String pKey, int version) {
   final ripemd160 = Digest('RIPEMD-160');
   final ripemd160StepOneHash = ripemd160.process(Uint8List.fromList(sha3PublicKeyHash));
 
-  // step 3: add version byte in front of (2)
-  final versionPrefixedRipemd160Hash = addUint8List(Uint8List.fromList([version]), ripemd160StepOneHash);
+  // step 3: add network identifier byte in front of (2)
+  final versionPrefixedRipemd160Hash = addUint8List(Uint8List.fromList([networkType]), ripemd160StepOneHash);
 
   // step 4: get the checksum of (3)
   final stepThreeChecksum = _generateChecksum(versionPrefixedRipemd160Hash);
