@@ -24,7 +24,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
         ? actionType = AliasActionType.aliasLink
         : AliasActionType.aliasUnlink;
     namespaceId = dto.transaction!.namespaceId != null
-        ? NamespaceId.fromId(dto.transaction!.namespaceId!.toUint64())
+        ? NamespaceId.fromUint64(dto.transaction!.namespaceId!.toUint64()!)
         : null;
   }
 
@@ -34,7 +34,7 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
         ? actionType = AliasActionType.aliasLink
         : AliasActionType.aliasUnlink;
     namespaceId = dto.transaction!.namespaceId != null
-        ? NamespaceId.fromId(dto.transaction!.namespaceId!.toUint64())
+        ? NamespaceId.fromUint64(dto.transaction!.namespaceId!.toUint64()!)
         : null;
   }
 

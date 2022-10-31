@@ -20,5 +20,7 @@ dependencies:
   flat_buffers: ^2.0.5
   collection: ^1.16.0
 
-#dev_dependencies:
+dev_dependencies:
+  test: ^1.21.3
+
 #  build_web_compilers: any

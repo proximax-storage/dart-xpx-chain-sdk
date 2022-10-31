@@ -25,7 +25,7 @@ class AccountProperties {
 
         case 0x02:
           allowedMosaicId
-              .addAll(v.mosaicIds!.map((m) => MosaicId.fromId(m.toUint64())));
+              .addAll(v.mosaicIds!.map((m) => MosaicId.fromUint64(m.toUint64())));
           continue;
 
         case 0x04:
@@ -39,7 +39,7 @@ class AccountProperties {
 
         case 0x80 + 0x02:
           blockedMosaicId
-              .addAll(v.mosaicIds!.map((m) => MosaicId.fromId(m.toUint64())));
+              .addAll(v.mosaicIds!.map((m) => MosaicId.fromUint64(m.toUint64())));
           continue;
 
         case 0x80 + 0x04:
@@ -85,7 +85,7 @@ class AccountPropertiesMosaicModification {
   AccountPropertiesMosaicModification(this.modificationType, this.assetId);
 
   AccountPropertiesMosaicModification.fromDto(dto) {
-    assetId = MosaicId.fromId(dto.assetId!.toUint64());
+    assetId = MosaicId.fromUint64(dto.assetId!.toUint64());
     modificationType = dto.modificationType == 0
         ? PropertyModificationType.addProperty
         : PropertyModificationType.removeProperty;
