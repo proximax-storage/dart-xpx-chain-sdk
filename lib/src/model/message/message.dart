@@ -21,7 +21,17 @@ class Message {
   late MessageType type;
   late Uint8List payload;
 
-  String get payloadAsString => utf8.decode(payload);
+  String get payloadAsString {
+    final rawPayload = StringBuffer();
+    for (var element in payload) {
+      try {
+        rawPayload.write(utf8.decode([element]));
+      } on Exception catch (_) {
+        rawPayload.write(String.fromCharCode(element));
+      }
+    }
+    return rawPayload.toString();
+  }
 
   @override
   String toString() => '${toJson()}';
