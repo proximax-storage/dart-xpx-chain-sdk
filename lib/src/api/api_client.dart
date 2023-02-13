@@ -131,7 +131,7 @@ class ApiClient {
       );
       clients.add(Dio(options));
     }
-    return ApiClient(clients);
+    return ApiClient(clients..shuffle());
   }
 
   dynamic _deserialize(value, String? targetType) {
@@ -277,6 +277,7 @@ class ApiClient {
 
     final String url = '${client.options.baseUrl}$path$queryString';
 
+    print(url);
     client.options.headers['Content-Type'] = contentType;
 
     final msgBody = serialize(body);
