@@ -7,16 +7,22 @@
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
-  const baseUrl = 'https://api-2.testnet2.xpxsirius.io';
+  const nodes = [
+    'https://api-1.testnet2.xpxsirius.io',
+    'https://api-2.testnet2.xpxsirius.io',
+    'https://api-3.testnet2.xpxsirius.io'
+  ];
 
-  /// Creating a client instance
-  final client = SiriusClient.fromUrl(baseUrl);
+  /// Creating a client balanceList
+  final client = SiriusClient.balanceList(nodes);
 
-  try {
-    final result = await client.node.getNodeInfo();
-    print(result);
-  } on Exception catch (e) {
-    print('Exception when calling Node->GetNodeInfo: $e\n');
+  for (var i = 0; i < client.nodesLength; i++) {
+    try {
+      final result = await client.node.getNodeInfo();
+      print(result);
+    } on Exception catch (e) {
+      print('Exception when calling Node->GetNodeInfo: $e\n');
+    }
   }
 
   try {

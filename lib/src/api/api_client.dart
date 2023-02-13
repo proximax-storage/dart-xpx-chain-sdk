@@ -41,6 +41,8 @@ class SiriusClient {
   NodeRoutesApi? _node;
   TransactionRoutesApi? _transaction;
 
+  int get nodesLength => _apiClient._clients.length;
+
   /// Api dedicated to users operations
   BlockchainRoutesApi get blockChain => _blockChain ??= BlockchainRoutesApi(_apiClient);
 
