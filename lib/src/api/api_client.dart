@@ -277,7 +277,6 @@ class ApiClient {
 
     final String url = '${client.options.baseUrl}$path$queryString';
 
-    print(url);
     client.options.headers['Content-Type'] = contentType;
 
     final msgBody = serialize(body);
