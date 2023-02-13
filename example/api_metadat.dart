@@ -30,10 +30,10 @@ void main() async {
     print('Exception when calling Metadata->GetMetadatasV2Info: $e\n');
   }
 
-  // final queryParams = MetadataQueryParams()..targetId = MosaicId.fromHex('1EFEA8C391FB9C48');
+  final queryParams = MetadataQueryParams()..targetId = MosaicId.fromHex('1EFEA8C391FB9C48');
 
   try {
-    final result = await client.metadata.searchMetadata();
+    final result = await client.metadata.searchMetadata(queryParams);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Metadata->SearchMetadata: $e\n');

@@ -7,12 +7,12 @@
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
-  const baseUrl = 'https://api-2.testnet2.xpxsirius.io:443';
+  const baseUrl = 'https://api-2.testnet2.xpxsirius.io';
 
   /// Creating a client instance
   final client = SiriusClient.fromUrl(baseUrl);
 
-  const hashOne = '6FE85BD05964E38143E4B1599880156522B8E058588357AD7C0C047723037892';
+  const hashOne = '1139564FAC621511E261ACA36D227992FB82267EDA8754773AFB26024AA22805';
   const hashTwo = '47dec094a3379d9cfb1ed100c843da5f5578af7ad16bb2ef3d5d0ab0f6493c8d';
 
   // Returns a [Transaction] information given a transactionId or hash.
@@ -35,13 +35,14 @@ void main() async {
 
   final txnQueryParams = TransactionQueryParams()
     ..embedded = true
-    ..type = [TransactionType.transfer]
-    ..signerPublicKey = 'C2F93346E27CE6AD1A9F8F5E3066F8326593A406BDF357ACB041E2F9AB402EFE';
+    ..type = [TransactionType.transfer, TransactionType.aggregateCompleted]
+    ..signerPublicKey = '5e1d44d8a09b2146cc64f369d4b030ce8df4f6d4bee499aeb62f6d154cf95fa4';
 
   // Returns a [Transaction] information given a transactionId or hash.
   try {
     /// Get a transaction information given a transactionId or hash.
-    final result = await client.transaction.getTransactionsByGroupWithPagination(TransactionGroupType.confirmed, txnQueryParams);
+    final result =
+        await client.transaction.getTransactionsByGroupWithPagination(TransactionGroupType.confirmed, txnQueryParams);
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Transaction->GetTransaction: $e\n');

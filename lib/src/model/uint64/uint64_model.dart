@@ -55,7 +55,17 @@ class Uint64 implements Comparable<Uint64> {
     if (!HexUtils.isHex(hex)) {
       throw ArgumentError('Invalid hex');
     }
-    final BigInt bigInt = BigInt.parse(hex, radix: 16);
+
+    BigInt bigInt = BigInt.zero;
+    if (hex.startsWith('0x'))
+      bigInt = BigInt.parse(hex.substring(2), radix: 16);
+    else if (hex.startsWith('+0x'))
+      bigInt = BigInt.parse(hex.substring(3), radix: 16);
+    else if (hex.startsWith('-0x'))
+      bigInt = -BigInt.parse(hex.substring(3), radix: 16);
+    else
+      BigInt.parse(hex, radix: 16);
+
     return fromBigInt(bigInt);
   }
 
@@ -102,7 +112,7 @@ class Uint64 implements Comparable<Uint64> {
 
   /// The maximum value of 64-bit signed integer. Equals to 9223372036854775807.
   static const int maxValueSigned = 2147483648 * 2147483648 - 1 + 2147483648 * 2147483648;
-  
+
   /// The accepted minimum value of 64-bit unsigned integer.
   static final BigInt minValue = BigInt.zero;
 

@@ -32,10 +32,10 @@ const
     transferVersion = 3,
 
     /// Aggregate complete transaction version.
-    aggregateCompletedVersion = 2, // TODO: implement new version 3
+    aggregateCompletedVersion = 3,
 
     /// Aggregate bonded transaction version.
-    aggregateBondedVersion = 2, // TODO: implement new version 3
+    aggregateBondedVersion = 3,
 
     /// Add exchange transaction version.
     addExchangeOfferVersion = 1, // TODO: implement new version 4

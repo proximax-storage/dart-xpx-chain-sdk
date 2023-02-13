@@ -21,14 +21,15 @@ class QueryParam {
 class TimeoutOptions {
   TimeoutOptions({required this.connectTimeout, required this.receiveTimeout});
 
-  final int connectTimeout;
-  final int receiveTimeout;
+  final Duration connectTimeout;
+  final Duration receiveTimeout;
 }
 
 class SiriusClient {
   SiriusClient._(this._apiClient);
 
   final ApiClient _apiClient;
+
   Future<NetworkType>? _networkType;
   BlockchainRoutesApi? _blockChain;
   AccountRoutesApi? _account;
@@ -83,11 +84,12 @@ class SiriusClient {
 
   static SiriusClient fromUrl(String baseUrl, [TimeoutOptions? timeOptions]) {
     timeOptions ??= TimeoutOptions(
-      connectTimeout: 30000,
-      receiveTimeout: 30000,
+      connectTimeout: const Duration(seconds: 30000),
+      receiveTimeout: const Duration(seconds: 30000),
     );
 
     final options = BaseOptions(
+      baseUrl: baseUrl,
       connectTimeout: timeOptions.connectTimeout,
       receiveTimeout: timeOptions.receiveTimeout,
       receiveDataWhenStatusError: false,
@@ -96,22 +98,41 @@ class SiriusClient {
       validateStatus: (status) => status! <= 503,
     );
 
-    final ApiClient apiClient = ApiClient(baseUrl, options);
+    final ApiClient apiClient = ApiClient([Dio(options)]);
 
     return SiriusClient._(apiClient);
   }
+
+  factory SiriusClient.balanceList(List<String> nodes) => SiriusClient._(ApiClient.balanceList(nodes));
 }
 
 class ApiClient {
-  ApiClient(this.baseUrl, this._options);
+  ApiClient(this._clients);
 
-  String? baseUrl;
+  final List<Dio> _clients;
 
-  final BaseOptions? _options;
+  int _nextHttpClient = 0;
 
-  Dio? _client;
+  Dio get client {
+    var channel = _clients[_nextHttpClient];
+    _nextHttpClient = (_nextHttpClient + 1) % _clients.length;
+    return channel;
+  }
 
-  Dio get client => _client ?? Dio(_options);
+  factory ApiClient.balanceList(List<String> nodes) {
+    final clients = <Dio>[];
+    for (String node in nodes) {
+      final options = BaseOptions(
+        baseUrl: node,
+        receiveDataWhenStatusError: false,
+        responseType: ResponseType.json,
+        followRedirects: true,
+        validateStatus: (status) => status! <= 503,
+      );
+      clients.add(Dio(options));
+    }
+    return ApiClient(clients);
+  }
 
   dynamic _deserialize(value, String? targetType) {
     try {
@@ -254,7 +275,7 @@ class ApiClient {
     final ps = queryParams.where((p) => p.name.isNotEmpty).map((p) => '${p.name}=${p.value}');
     final String queryString = ps.isNotEmpty ? '?${ps.join('&')}' : '';
 
-    final String url = '${baseUrl!}$path$queryString';
+    final String url = '${client.options.baseUrl}$path$queryString';
 
     client.options.headers['Content-Type'] = contentType;
 

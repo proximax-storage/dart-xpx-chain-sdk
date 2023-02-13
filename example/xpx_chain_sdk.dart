@@ -18,14 +18,14 @@ void main() async {
   final publicAccount = PublicAccount.fromPublicKey(publicKey, NetworkType.PRIVATE_TEST);
   print(publicAccount.address);
 
-  const rawAddress = 'VAQXZH7TDE6EMG7KIGJ5KPCHHAEDYK4VIMLZD7VK';
+  const rawAddress = 'z';
 
   /// Creates an Sirius 'Address' from a given raw address string.
   ///
   /// A Sirius raw address string looks like:
   /// * VAQXZH7TDE6EMG7KIGJ5KPCHHAEDYK4VIMLZD7VK or VAQXZH-7TDE6E-MG7KIG-J5KPCH-HAEDYK-4VIMLZ-D7VK.
   final addressOne = Address.fromRawAddress(rawAddress);
-  print(addressOne);
+  print(Uint64.fromUtf8(addressOne.address).toHex());
 
   /// Create an [Address] from a given public key.
   final addressTwo = Address.fromPublicKey(publicKey, NetworkType.PUBLIC_TEST);

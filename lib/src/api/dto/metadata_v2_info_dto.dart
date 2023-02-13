@@ -14,6 +14,7 @@ class MetadataV2InfoDTO {
 
   MetadataV2InfoDTO.fromJson(Map<String, dynamic> json) : assert(json.isNotEmpty, 'json must not be empty') {
     metadataEntry = MetadataEntryDto.fromJson(json['metadataEntry']);
+    print(json);
     id = json['meta'] != null ? json['meta']['id'] : json['id'];
   }
 

@@ -24,7 +24,7 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction implements Tran
       : super(targetAccount, scopedMetadataKey, valueSizeDelta, value, valueSize, oldValue, valueDifferences,
             networkType, deadline, TransactionType.mosaicMetadataV2, mosaicMetadataVersionV2, maxFee);
 
-  MosaicMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto, this.targetMosaicId): super.fromDTO(dto);
+  MosaicMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto, this.targetMosaicId) : super.fromDTO(dto);
 
   factory MosaicMetadataTransaction.create(Deadline deadline, MosaicId targetMosaicId, PublicAccount targetAccount,
       scopedMetadataKey, String value, String oldValue, NetworkType networkType,
@@ -37,8 +37,7 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction implements Tran
       throw ArgumentError('invalid scopedMetadataKey type');
     }
 
-    final scopedMetadataKeyValue =
-        scopedMetadataKey is Uint64 ? scopedMetadataKey : Uint64.fromUtf8(scopedMetadataKey);
+    final scopedMetadataKeyValue = scopedMetadataKey is Uint64 ? scopedMetadataKey : Uint64.fromUtf8(scopedMetadataKey);
 
     final valueLength = HexUtils.utf8ToHex(value).length ~/ 2;
     final oldValueLength = HexUtils.utf8ToHex(oldValue).length ~/ 2;
@@ -71,6 +70,7 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction implements Tran
   @override
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
+    print(targetMosaicId.toBytes());
     final targetIdOffset = builder.writeListUint8(targetMosaicId.toBytes().toList());
     return super.basicGenerateBytes(builder, targetIdOffset, size());
   }

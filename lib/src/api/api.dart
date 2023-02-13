@@ -32,9 +32,9 @@ part 'pagination.dart';
 part 'query_params.dart';
 part 'transaction_query_params.dart';
 
-ApiClient defaultApiClient = ApiClient(
-    'http://127.0.0.1:3000',
-    BaseOptions(
-      connectTimeout: 5000,
-      receiveTimeout: 5000,
-    ));
+ApiClient defaultApiClient = ApiClient([
+  Dio(BaseOptions(
+      baseUrl: 'http://127.0.0.1:3000',
+      connectTimeout: const Duration(seconds: 5000),
+      receiveTimeout: const Duration(seconds: 5000)))
+]);
