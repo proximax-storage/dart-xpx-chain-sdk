@@ -38,7 +38,8 @@ class Uint64 implements Comparable<Uint64> {
   }
 
   /// Creates a [Uint64] from a [int].
-  static Uint64 fromInt(final int value) => Uint64.fromBigInt(BigInt.from(value));
+  static Uint64 fromInt(final int value) =>
+      Uint64.fromBigInt(BigInt.from(value));
 
   /// Creates a [Uint64] from a uint8list [bytes] (64-bit).
   static Uint64 fromBytes(final Uint8List bytes) {
@@ -64,7 +65,7 @@ class Uint64 implements Comparable<Uint64> {
     else if (hex.startsWith('-0x'))
       bigInt = -BigInt.parse(hex.substring(3), radix: 16);
     else
-      BigInt.parse(hex, radix: 16);
+      bigInt = BigInt.parse(hex, radix: 16);
 
     return fromBigInt(bigInt);
   }
@@ -111,7 +112,8 @@ class Uint64 implements Comparable<Uint64> {
   static const int minValueSigned = 0;
 
   /// The maximum value of 64-bit signed integer. Equals to 9223372036854775807.
-  static const int maxValueSigned = 2147483648 * 2147483648 - 1 + 2147483648 * 2147483648;
+  static const int maxValueSigned =
+      2147483648 * 2147483648 - 1 + 2147483648 * 2147483648;
 
   /// The accepted minimum value of 64-bit unsigned integer.
   static final BigInt minValue = BigInt.zero;
@@ -141,7 +143,8 @@ class Uint64 implements Comparable<Uint64> {
 
   bool get isMinValue => value == minValue;
 
-  bool get isZero => value == BigInt.zero && toBytes().every((value) => 0 == value);
+  bool get isZero =>
+      value == BigInt.zero && toBytes().every((value) => 0 == value);
 
   @override
   int get hashCode => value.hashCode;
