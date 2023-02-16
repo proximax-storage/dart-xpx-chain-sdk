@@ -78,8 +78,7 @@ void main() async {
 
   // Gets an array of transactions for which an account is the sender or receiver.
   try {
-    final result = await client.account.transactionsWithPagination(
-        accountOne);
+    final result = await client.account.transactionsWithPagination(accountOne);
 
     print(result);
   } on Exception catch (e) {

@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class ExchangeRoutesApi {
-  ExchangeRoutesApi([ApiClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
+  ExchangeRoutesApi([HttpClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
 
-  final ApiClient _apiClient;
+  final HttpClient _apiClient;
 
   /// Return [List<OfferInfo>] with same operation type and mosaic id.
   /// Example: If you want to buy Storage units, you need

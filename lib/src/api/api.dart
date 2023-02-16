@@ -14,9 +14,18 @@ import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 import 'dto.dart';
 
+//     account_routes_api.dart: Contains API routes for working with accounts.
+//     blockchain_routes_api.dart: Contains API routes for working with the blockchain.
+//     exchange_routes_api.dart: Contains API routes for working with exchanges.
+//     metadata_routes_api.dart: Contains API routes for working with metadata.
+//     mosaic_routes_api.dart: Contains API routes for working with mosaics.
+//     namespace_routes_api.dart: Contains API routes for working with namespaces.
+//     network_routes_api.dart: Contains API routes for working with the network.
+//     node_routes_api.dart: Contains API routes for working with nodes.
+//     transaction_routes_api.dart: Contains API routes for working with transactions.
+
 part 'api_account_routes.dart';
 part 'api_blockchain_routes.dart';
-part 'api_client.dart';
 part 'api_conf.dart';
 part 'api_exception.dart';
 part 'api_exchange_routes.dart';
@@ -26,14 +35,16 @@ part 'api_namespace_routes.dart';
 part 'api_network_routes.dart';
 part 'api_node_routes.dart';
 part 'api_transaction_routes.dart';
+part 'http_client.dart';
 part 'metadata_query_params.dart';
 part 'page_query_params.dart';
 part 'pagination.dart';
 part 'query_params.dart';
+part 'sirius_client.dart';
 part 'timeout_options.dart';
 part 'transaction_query_params.dart';
 
-ApiClient defaultApiClient = ApiClient([
+HttpClient defaultApiClient = HttpClient([
   Dio(BaseOptions(
       baseUrl: 'http://127.0.0.1:3000',
       connectTimeout: const Duration(seconds: 5000),

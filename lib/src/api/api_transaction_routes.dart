@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class TransactionRoutesApi {
-  TransactionRoutesApi([ApiClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
+  TransactionRoutesApi([HttpClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
 
-  final ApiClient _apiClient;
+  final HttpClient _apiClient;
 
   // routes for TransactionApi.
   static const _announceTransactionRoute = '/transactions';

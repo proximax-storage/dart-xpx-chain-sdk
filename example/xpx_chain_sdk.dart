@@ -1,7 +1,6 @@
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {
-
   const privateKey = '16a0422ca629765a04d2da88404e90f6d82c44c6009cffc7664517731df7746d';
 
   /// Create an Account from a given Private key.

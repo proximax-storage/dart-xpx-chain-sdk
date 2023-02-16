@@ -7,13 +7,12 @@
 library xpx_chain_sdk.test.model.namespace.asset_id_test;
 
 import 'package:test/test.dart';
-
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart' show AssetId, MosaicId, NamespaceId, Uint64;
 
 void main() {
   group('AssetId', () {
     test('Can create an AssetId object', () {
-      final AssetId id =  MockId(Uint64(9000));
+      final AssetId id = MockId(Uint64(9000));
 
       final expected = Uint64.fromBigInt(BigInt.from(9000));
       expect(id == MockId(expected), isTrue);

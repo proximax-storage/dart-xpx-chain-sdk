@@ -57,9 +57,11 @@ class TransactionFieldOrder {
   Order_v2 order;
   TransactionSortingField sortingField;
 
-  static TransactionFieldOrder setAscending(TransactionSortingField sortingField) => TransactionFieldOrder(Order_v2.ASC, sortingField);
+  static TransactionFieldOrder setAscending(TransactionSortingField sortingField) =>
+      TransactionFieldOrder(Order_v2.ASC, sortingField);
 
-  static TransactionFieldOrder setDescending(TransactionSortingField sortingField) => TransactionFieldOrder(Order_v2.DESC, sortingField);
+  static TransactionFieldOrder setDescending(TransactionSortingField sortingField) =>
+      TransactionFieldOrder(Order_v2.DESC, sortingField);
 }
 
 class TransactionQueryParams {

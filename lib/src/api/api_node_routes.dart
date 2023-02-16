@@ -9,7 +9,7 @@ part of xpx_chain_sdk.api;
 class NodeRoutesApi {
   NodeRoutesApi(this._apiClient);
 
-  final ApiClient _apiClient;
+  final HttpClient _apiClient;
 
   static const _nodeInfoRoute = '/node/info';
   static const _nodeTimeRoute = '/node/time';

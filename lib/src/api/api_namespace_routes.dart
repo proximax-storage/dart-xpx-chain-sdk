@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class NamespaceRoutesApi {
-  NamespaceRoutesApi([ApiClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
+  NamespaceRoutesApi([HttpClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
 
-  final ApiClient _apiClient;
+  final HttpClient _apiClient;
 
   static const _namespaceRoute = '/namespace/{namespaceId}';
   static const _namespacesFromAccountRoute = '/account/{accountId}/namespaces';

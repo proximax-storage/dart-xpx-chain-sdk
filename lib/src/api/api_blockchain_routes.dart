@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class BlockchainRoutesApi {
-  BlockchainRoutesApi([ApiClient? apiClient]) : _apiClient = apiClient ?? defaultApiClient;
+  BlockchainRoutesApi([HttpClient? apiClient]) : _apiClient = apiClient ?? defaultApiClient;
 
-  final ApiClient _apiClient;
+  final HttpClient _apiClient;
 
   static const _blockchainHeightRoute = '/chain/height';
   static const _blockByHeightRoute = '/block/{height}';

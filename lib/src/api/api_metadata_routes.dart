@@ -9,7 +9,7 @@ part of xpx_chain_sdk.api;
 class MetadataRoutesApi {
   MetadataRoutesApi(this._apiClient);
 
-  final ApiClient _apiClient;
+  final HttpClient _apiClient;
 
   static const _metadataV2InfoRoute = '/metadata_v2/{compositeHash}';
   static const _metadatasV2InfoRoute = '/metadata_v2';

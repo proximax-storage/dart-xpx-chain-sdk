@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class AccountRoutesApi {
-  AccountRoutesApi([ApiClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
+  AccountRoutesApi([HttpClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
 
-  final ApiClient _apiClient;
+  final HttpClient _apiClient;
 
   static const _accountInfoRoute = '/account/{accountId}';
   static const _accountsInfoRoute = '/account';

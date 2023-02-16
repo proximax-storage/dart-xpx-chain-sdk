@@ -41,7 +41,9 @@ void main() async {
 
   // Retrieve owners of a given mosaic sorted on descending order based on amount.
   try {
-    final result = await client.mosaic.getMosaicRichList(mosaicIdOne,);
+    final result = await client.mosaic.getMosaicRichList(
+      mosaicIdOne,
+    );
     print(result);
   } on Exception catch (e) {
     print('Exception when calling Mosaic->GetMosaicRichList: $e\n');

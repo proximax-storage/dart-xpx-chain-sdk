@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class NetworkRoutesApi {
-  NetworkRoutesApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
+  NetworkRoutesApi([HttpClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
-  final ApiClient apiClient;
+  final HttpClient apiClient;
 
   /// Get the current network type of the chain
   ///

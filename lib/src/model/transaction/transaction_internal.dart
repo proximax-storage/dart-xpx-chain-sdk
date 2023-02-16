@@ -373,13 +373,13 @@ List<Transaction> fixAggregate(List<Transaction> allTransaction) {
 }
 
 Future<List<Transaction>> internalGetTransactions(
-        ApiClient client, String path, List<QueryParam> queryParams, Object? postBody,
+        HttpClient client, String path, List<QueryParam> queryParams, Object? postBody,
         {bool firstLevel = true}) async =>
     (await internalGetTransactionsWithPagination(client, path, queryParams, postBody, firstLevel: firstLevel))
         .transactions;
 
 Future<TransactionSearch> internalGetTransactionsWithPagination(
-    ApiClient client, String path, List<QueryParam> queryParams, Object? postBody,
+    HttpClient client, String path, List<QueryParam> queryParams, Object? postBody,
     {bool firstLevel = true}) async {
   final response = await client.get(path, postBody, queryParams);
 
