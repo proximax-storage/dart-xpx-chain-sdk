@@ -70,7 +70,6 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction implements Tran
   @override
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
-    print(targetMosaicId.toBytes());
     final targetIdOffset = builder.writeListUint8(targetMosaicId.toBytes().toList());
     return super.basicGenerateBytes(builder, targetIdOffset, size());
   }

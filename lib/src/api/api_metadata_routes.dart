@@ -28,7 +28,6 @@ class MetadataRoutesApi {
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      print(response.data);
       final resp = _apiClient.deserialize(response.data, 'MetadataV2InfoDTO');
       return MetadataEntry.fromDTO(resp);
     } else {

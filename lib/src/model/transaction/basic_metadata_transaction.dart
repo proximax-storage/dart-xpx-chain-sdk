@@ -66,8 +66,6 @@ class BasicMetadataTransaction extends AbstractTransaction {
   AbstractTransaction absTransaction() => _absTransaction();
 
   Uint8List basicGenerateBytes(fb.Builder builder, int targetIdOffset, int size) {
-    print(size);
-    print(targetIdOffset);
     final targetKeyOffset = builder.writeListUint8(HexUtils.hexToBytes(targetPublicAccount!.publicKey));
 
     final scopedMetadataKeyOffset = builder.writeListUint32(scopedMetadataKey!.toIntArray());
@@ -82,7 +80,6 @@ class BasicMetadataTransaction extends AbstractTransaction {
 
     nonceB.setUint16(0, valueSizeDelta, Endian.little);
     final valueSizeDeltaOffset = builder.writeListUint8(buffer.asUint8List());
-    print(valueSizeDeltaOffset);
 
     final vectors = _generateCommonVector(builder);
 
