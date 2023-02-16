@@ -48,31 +48,28 @@ class HttpClient {
         followRedirects: true,
         validateStatus: (status) => status! <= 503,
       );
+      options.contentType = 'application/json';
       clients.add(Dio(options));
     }
     return HttpClient(clients..shuffle());
   }
 
   /// Private function used to invoke the APIs.
-  Future<Response> _invokeAPI(final String path, String method, Iterable<QueryParam> queryParams, Object? body,
-      final String contentType) async {
+  Future<Response> _invokeAPI(final String path, String method, Iterable<QueryParam> queryParams, Object? body) async {
     final ps = queryParams.where((p) => p.name.isNotEmpty).map((p) => '${p.name}=${p.value}');
     final String queryString = ps.isNotEmpty ? '?${ps.join('&')}' : '';
 
     final String url = '${client.options.baseUrl}$path$queryString';
 
-    client.options.method = method;
-    client.options.headers['Content-Type'] = contentType;
-
     final msgBody = serialize(body);
 
     switch (method) {
       case 'POST':
-        return await client.request(url, data: msgBody);
+        return await client.post(url, data: msgBody);
       case 'PUT':
-        return await client.request(url, data: msgBody);
+        return await client.put(url, data: msgBody);
       default:
-        return await client.request(url);
+        return await client.get(url);
     }
   }
 
@@ -91,12 +88,8 @@ class HttpClient {
   Future<Response> _response(String path, String method, [Object? postBody, List<QueryParam>? queryParams]) async {
     queryParams ??= [];
 
-    final List<String> contentTypes = [];
-
-    final String contentType = contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-
     try {
-      return await _invokeAPI(path, method, queryParams, postBody, contentType);
+      return await _invokeAPI(path, method, queryParams, postBody);
     } on DioError catch (_) {
       rethrow;
     }
