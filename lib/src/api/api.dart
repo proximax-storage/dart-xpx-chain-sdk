@@ -30,6 +30,7 @@ part 'metadata_query_params.dart';
 part 'page_query_params.dart';
 part 'pagination.dart';
 part 'query_params.dart';
+part 'timeout_options.dart';
 part 'transaction_query_params.dart';
 
 ApiClient defaultApiClient = ApiClient([

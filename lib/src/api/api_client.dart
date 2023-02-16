@@ -6,30 +6,13 @@
 
 part of xpx_chain_sdk.api;
 
-class QueryParam {
-  QueryParam(this.name, this.value);
-
-  String name;
-  Object value;
-
-  @override
-  String toString() => encoder.convert(this);
-
-  Map<String, dynamic> toJson() => {'name': name, 'value': value};
-}
-
-class TimeoutOptions {
-  TimeoutOptions({required this.connectTimeout, required this.receiveTimeout});
-
-  final Duration connectTimeout;
-  final Duration receiveTimeout;
-}
-
+/// A client for interacting with the Sirius blockchain API.
 class SiriusClient {
   SiriusClient._(this._apiClient);
 
   final ApiClient _apiClient;
 
+  // Fields for caching frequently used data
   Future<NetworkType>? _networkType;
   BlockchainRoutesApi? _blockChain;
   AccountRoutesApi? _account;
@@ -41,49 +24,55 @@ class SiriusClient {
   NodeRoutesApi? _node;
   TransactionRoutesApi? _transaction;
 
+  /// Returns the number of nodes in the API client's client list.
   int get nodesLength => _apiClient._clients.length;
 
-  /// Api dedicated to users operations
+  /// Returns an API client for interacting with the blockchain.
   BlockchainRoutesApi get blockChain => _blockChain ??= BlockchainRoutesApi(_apiClient);
 
-  /// Api dedicated to users operations
+  /// Returns an API client for interacting with accounts.
   AccountRoutesApi get account => _account ??= AccountRoutesApi(_apiClient);
 
-  /// Api dedicated to users operations
+  /// Returns an API client for interacting with exchanges.
   ExchangeRoutesApi get exchange => _exchange ??= ExchangeRoutesApi(_apiClient);
 
-  /// Api dedicated to users operations
+  /// Returns an API client for interacting with metadata.
   MetadataRoutesApi get metadata => _metadata ??= MetadataRoutesApi(_apiClient);
 
-  /// Api dedicated to users operations
+  /// Returns an API client for interacting with mosaics.
   MosaicRoutesApi get mosaic => _mosaic ??= MosaicRoutesApi(_apiClient);
 
-  /// Api dedicated to users operations
+  /// Returns an API client for interacting with namespaces.
   NamespaceRoutesApi get namespace => _namespace ??= NamespaceRoutesApi(_apiClient);
 
-  /// Api dedicated to users operations
+  /// Returns an API client for interacting with the network.
   NetworkRoutesApi get network => _network ??= NetworkRoutesApi(_apiClient);
 
-  /// Api dedicated to users operations
+  /// Returns an API client for interacting with nodes.
   NodeRoutesApi get node => _node ??= NodeRoutesApi(_apiClient);
 
-  /// Api dedicated to users operations
+  /// Returns an API client for interacting with transactions.
   TransactionRoutesApi get transaction => _transaction ??= TransactionRoutesApi(_apiClient);
 
+  /// Returns the generation hash for the blockchain.
   Future<String?> get generationHash => _getGenerationHash();
 
+  /// Returns the `NetworkType` for the blockchain.
   Future<NetworkType> get networkType => _networkType ??= _getNetworkType();
 
+  /// Gets the `generationHash` for the blockchain by querying the first block.
   Future<String?> _getGenerationHash() async {
     final BlockInfo? hash = await blockChain.getBlockByHeight(1.toHeight);
     return hash!.generationHash;
   }
 
+  /// Gets the `NetworkType` for the blockchain by querying the node information.
   Future<NetworkType> _getNetworkType() async {
     final NodeInfo? info = await node.getNodeInfo();
     return NetworkType.fromInt(info!.networkIdentifier!);
   }
 
+  /// Returns a new `SiriusClient` instance that communicates with the specified API server.
   static SiriusClient fromUrl(String baseUrl, [TimeoutOptions? timeOptions]) {
     timeOptions ??= TimeoutOptions(
       connectTimeout: const Duration(seconds: 30000),

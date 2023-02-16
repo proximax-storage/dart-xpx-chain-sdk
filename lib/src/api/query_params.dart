@@ -34,6 +34,21 @@ class Order_v2 {
   Object toJson() => value;
 }
 
+/// Represents a single parameter to be included in a query to the API.
+class QueryParam {
+  QueryParam(this.name, this.value);
+
+  String name;
+  Object value;
+
+  /// Converts the object to its JSON representation.
+  @override
+  String toString() => encoder.convert(this);
+
+  /// Converts the object to a JSON-compatible Map.
+  Map<String, dynamic> toJson() => {'name': name, 'value': value};
+}
+
 /// The query params structure describes pagination params for requests.
 class QueryParams {
   QueryParams(this.id, int pageSize, this.order) {
