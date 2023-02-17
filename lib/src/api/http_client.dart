@@ -68,7 +68,7 @@ class HttpClient {
       responseType: ResponseType.json,
       followRedirects: true,
       validateStatus: (status) => status! <= 503,
-      headers: {'user-agent': 'Dart Sirius/0.0.7+16', 'content-type': 'application/json'},
+      headers: {'user-agent': 'Dart Sirius/0.0.7+17', 'content-type': 'application/json'},
     );
     return Dio(options);
   }
