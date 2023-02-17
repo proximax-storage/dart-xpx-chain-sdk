@@ -17,7 +17,7 @@ part of xpx_chain_sdk.api;
 class SiriusClient {
   // ----- Constructor and factory methods -----
 
-  // The private constructor used to initialize the _apiClient field.
+  // The private constructor used to initialize the _httpClient field.
   SiriusClient._(this._httpClient);
 
   /// A factory method that creates a new SiriusClient instance that communicates with the specified API server.
@@ -105,8 +105,13 @@ class SiriusClient {
   /// Adds Node to the end of this list,
   /// extending the length by one.
   void pushNode(String baseUrl, [TimeoutOptions? timeOptions]) {
+    final index = _httpClient._clients.indexWhere((element) => element.options.baseUrl == baseUrl);
     final client = HttpClient._createDio(baseUrl, timeOptions);
-    _httpClient._clients.add(client);
+    if (index != -1) {
+      _httpClient._clients.replaceRange(index, index + 1, [client]);
+    } else {
+      _httpClient._clients.add(client);
+    }
   }
 
   /// Removes the first occurrence of Node from this list.

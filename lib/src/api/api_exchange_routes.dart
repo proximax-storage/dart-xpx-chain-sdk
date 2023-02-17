@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class ExchangeRoutesApi {
-  ExchangeRoutesApi([HttpClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
+  ExchangeRoutesApi([HttpClient? _httpClient]) : _httpClient = _httpClient ?? defaultApiClient;
 
-  final HttpClient _apiClient;
+  final HttpClient _httpClient;
 
   /// Return [List<OfferInfo>] with same operation type and mosaic id.
   /// Example: If you want to buy Storage units, you need
@@ -20,12 +20,12 @@ class ExchangeRoutesApi {
         .replaceAll('{format}', 'json')
         .replaceAll('{offerType}', offerType.toString());
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 400) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'List<OfferInfoDTO>').cast<OfferInfoDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<OfferInfoDTO>').cast<OfferInfoDTO>();
 
       return OfferInfo.listFromDTO(resp);
     } else {
@@ -46,12 +46,12 @@ class ExchangeRoutesApi {
     final String path =
         '/account/{publicKey}/exchange'.replaceAll('{format}', 'json').replaceAll('{publicKey}', account.publicKey);
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 400) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'ExchangeDTO');
+      final resp = _httpClient.deserialize(response.data, 'ExchangeDTO');
 
       return UserExchangeInfo.fromDTO(resp);
     } else {

@@ -26,7 +26,6 @@ import 'dto.dart';
 
 part 'api_account_routes.dart';
 part 'api_blockchain_routes.dart';
-part 'api_conf.dart';
 part 'api_exception.dart';
 part 'api_exchange_routes.dart';
 part 'api_metadata_routes.dart';

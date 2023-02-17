@@ -4,14 +4,14 @@ import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 /// Simple Account API AnnounceTransaction
 void main() async {
-  const baseUrl = 'https://api-2.testnet2.xpxsirius.io';
+  const baseUrl = 'https://api-1.testnet2.xpxsirius.io';
 
   /// Creating a client instance
   final client = SiriusClient.fromUrl(baseUrl);
 
   final generationHash = await client.generationHash.catchError((err) {
     print('Get generationHash Error: ${err.error}');
-    // print('StackTrace: ${err.stackTrace}');
+    print('StackTrace: ${err.stackTrace}');
     exit(0);
   });
 

@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class TransactionRoutesApi {
-  TransactionRoutesApi([HttpClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
+  TransactionRoutesApi([HttpClient? _httpClient]) : _httpClient = _httpClient ?? defaultApiClient;
 
-  final HttpClient _apiClient;
+  final HttpClient _httpClient;
 
   // routes for TransactionApi.
   static const _announceTransactionRoute = '/transactions';
@@ -43,12 +43,12 @@ class TransactionRoutesApi {
       throw ApiException(400, 'Missing required param: payload');
     }
 
-    final response = await _apiClient.put(path, postBody);
+    final response = await _httpClient.put(path, postBody);
 
     if (response.statusCode! >= 400) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient.deserialize(response.data, 'String');
+      return _httpClient.deserialize(response.data, 'String');
     } else {
       return null;
     }
@@ -67,11 +67,11 @@ class TransactionRoutesApi {
     final String path =
         _transactionRoute.replaceAll('{group}', group.name).replaceAll('{transactionId}', transactionId);
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return mapTransactionDTO(_apiClient.deserialize(response.data, 'Transaction'));
+      return mapTransactionDTO(_httpClient.deserialize(response.data, 'Transaction'));
     } else {
       return null;
     }
@@ -118,7 +118,7 @@ class TransactionRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactionsWithPagination(_apiClient, path, queryParams, null, firstLevel: firstLevel);
+    return internalGetTransactionsWithPagination(_httpClient, path, queryParams, null, firstLevel: firstLevel);
   }
 
   /// Get transactions information
@@ -137,7 +137,7 @@ class TransactionRoutesApi {
     // create path and map variables
     final String path = _transactionsRoute.replaceAll('{group}', groupType.name);
 
-    return internalGetTransactions(_apiClient, path, [], postBody);
+    return internalGetTransactions(_httpClient, path, [], postBody);
   }
 
   /// Get transaction status
@@ -152,12 +152,12 @@ class TransactionRoutesApi {
     // create path and map variables
     final String path = _transactionStatusRoute.replaceAll('{hash}', hash.toString());
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient.deserialize(response.data, 'TransactionStatus');
+      return _httpClient.deserialize(response.data, 'TransactionStatus');
     } else {
       return null;
     }
@@ -178,12 +178,12 @@ class TransactionRoutesApi {
     // create path and map variables
     const String path = _transactionsStatusRoute;
 
-    final response = await _apiClient.post(path, postBody);
+    final response = await _httpClient.post(path, postBody);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient.deserialize(response.data, 'List<TransactionStatus>').cast<TransactionStatus>();
+      return _httpClient.deserialize(response.data, 'List<TransactionStatus>').cast<TransactionStatus>();
     } else {
       return [];
     }
@@ -201,7 +201,7 @@ class TransactionRoutesApi {
     try {
       final tx = await getTransaction(TransactionGroupType.confirmed, transactionId);
 
-      final block = await BlockchainRoutesApi(_apiClient).getBlockByHeight(tx!.absTransaction().height!);
+      final block = await BlockchainRoutesApi(_httpClient).getBlockByHeight(tx!.absTransaction().height!);
 
       return block!.feeMultiplier! * tx.size();
     } on DioError catch (_) {
@@ -223,13 +223,13 @@ class TransactionRoutesApi {
     // create path and map variables
     const String path = _transactionsCounteRoute;
 
-    final response = await _apiClient.post(path, postBody);
+    final response = await _httpClient.post(path, postBody);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else {
       if (response.data != null) {
-        // final _resp = _apiClient.deserialize(response.data, 'List<TransactionCountDTO>').cast<TransactionCountDTO>();
+        // final _resp = _httpClient.deserialize(response.data, 'List<TransactionCountDTO>').cast<TransactionCountDTO>();
         throw UnimplementedError();
       } else {
         return [];

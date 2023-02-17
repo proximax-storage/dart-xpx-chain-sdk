@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class AccountRoutesApi {
-  AccountRoutesApi([HttpClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
+  AccountRoutesApi([HttpClient? _httpClient]) : _httpClient = _httpClient ?? defaultApiClient;
 
-  final HttpClient _apiClient;
+  final HttpClient _httpClient;
 
   static const _accountInfoRoute = '/account/{accountId}';
   static const _accountsInfoRoute = '/account';
@@ -29,12 +29,12 @@ class AccountRoutesApi {
     // create path and map variables
     final String path = _accountInfoRoute.replaceAll('{accountId}', address.address);
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'AccountInfoDTO');
+      final resp = _httpClient.deserialize(response.data, 'AccountInfoDTO');
       return AccountInfo.fromDTO(resp);
     } else {
       return null;
@@ -54,12 +54,12 @@ class AccountRoutesApi {
     // create path and map variables
     const String path = _accountsInfoRoute;
 
-    final response = await _apiClient.post(path, postBody);
+    final response = await _httpClient.post(path, postBody);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'List<AccountInfoDTO>').cast<AccountInfoDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<AccountInfoDTO>').cast<AccountInfoDTO>();
       return AccountInfo.listFromDTO(resp);
     } else {
       return [];
@@ -73,12 +73,12 @@ class AccountRoutesApi {
     // create path and map variables
     final String path = _accountMultisigRoute.replaceAll('{accountId}', address.address);
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient.deserialize(response.data, 'MultisigAccountInfo');
+      return _httpClient.deserialize(response.data, 'MultisigAccountInfo');
     } else {
       return null;
     }
@@ -91,12 +91,12 @@ class AccountRoutesApi {
     // create path and map variables
     final String path = _accountMultisigGraphRoute.replaceAll('{accountId}', address.address);
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient.deserialize(response.data, 'List<MultisigAccountGraphInfo>').cast<MultisigAccountGraphInfo>();
+      return _httpClient.deserialize(response.data, 'List<MultisigAccountGraphInfo>').cast<MultisigAccountGraphInfo>();
     } else {
       return [];
     }
@@ -129,7 +129,7 @@ class AccountRoutesApi {
       firstLevel = false;
     }
 
-    return await internalGetTransactionsWithPagination(_apiClient, _transactionsRoute, queryParams, null,
+    return await internalGetTransactionsWithPagination(_httpClient, _transactionsRoute, queryParams, null,
         firstLevel: firstLevel);
   }
 
@@ -156,7 +156,7 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactionsWithPagination(_apiClient, _transactionsRoute, queryParams, null,
+    return internalGetTransactionsWithPagination(_httpClient, _transactionsRoute, queryParams, null,
         firstLevel: firstLevel);
   }
 
@@ -184,7 +184,7 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactionsWithPagination(_apiClient, _transactionsRoute, queryParams, null,
+    return internalGetTransactionsWithPagination(_httpClient, _transactionsRoute, queryParams, null,
         firstLevel: firstLevel);
   }
 
@@ -211,7 +211,7 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactionsWithPagination(_apiClient, _unconfirmedTransactionsRoute, queryParams, null,
+    return internalGetTransactionsWithPagination(_httpClient, _unconfirmedTransactionsRoute, queryParams, null,
         firstLevel: firstLevel);
   }
 
@@ -232,12 +232,12 @@ class AccountRoutesApi {
       queryParams.add(QueryParam('publicKey', account.publicKey));
     }
 
-    final response = await _apiClient.get(path, null, queryParams);
+    final response = await _httpClient.get(path, null, queryParams);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final List resp = _apiClient.deserialize(response.data, 'List<Transaction>');
+      final List resp = _httpClient.deserialize(response.data, 'List<Transaction>');
 
       final allTransaction = resp.map(mapTransactionDTO).toList().cast<Transaction>();
 
@@ -273,12 +273,12 @@ class AccountRoutesApi {
     // create path and map variables
     const String path = _accountsNamesRoute;
 
-    final response = await _apiClient.post(path, postBody);
+    final response = await _httpClient.post(path, postBody);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'List<AccountNames>').cast<AccountNamesDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<AccountNames>').cast<AccountNamesDTO>();
       return AccountNames.listFromJson(resp);
     } else {
       return [];
@@ -289,12 +289,12 @@ class AccountRoutesApi {
     // create path and map variables
     final String path = _accountPropertiesRoute.replaceAll('{address}', address.address);
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'AccountPropertiesDTO');
+      final resp = _httpClient.deserialize(response.data, 'AccountPropertiesDTO');
 
       return AccountProperties.fromDto(resp);
     } else {
@@ -312,12 +312,12 @@ class AccountRoutesApi {
     // create path and map variables
     const String path = _accountsPropertiesRoute;
 
-    final response = await _apiClient.post(path, postBody);
+    final response = await _httpClient.post(path, postBody);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'List<AccountPropertiesDTO>').cast<AccountPropertiesDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<AccountPropertiesDTO>').cast<AccountPropertiesDTO>();
       return AccountProperties.listFromJson(resp);
     } else {
       return [];

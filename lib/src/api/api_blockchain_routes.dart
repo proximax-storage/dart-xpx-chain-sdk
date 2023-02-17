@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class BlockchainRoutesApi {
-  BlockchainRoutesApi([HttpClient? apiClient]) : _apiClient = apiClient ?? defaultApiClient;
+  BlockchainRoutesApi([HttpClient? apiClient]) : _httpClient = apiClient ?? defaultApiClient;
 
-  final HttpClient _apiClient;
+  final HttpClient _httpClient;
 
   static const _blockchainHeightRoute = '/chain/height';
   static const _blockByHeightRoute = '/block/{height}';
@@ -27,12 +27,12 @@ class BlockchainRoutesApi {
     // create path and map variables
     final String path = _blockByHeightRoute.replaceAll('{height}', height.toString());
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'BlockInfoDTO');
+      final resp = _httpClient.deserialize(response.data, 'BlockInfoDTO');
       return BlockInfo.fromDTO(resp);
     } else {
       return null;
@@ -45,12 +45,12 @@ class BlockchainRoutesApi {
   Future<Height> getBlockchainHeight() async {
     const String path = _blockchainHeightRoute;
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final HeightDTO resp = _apiClient.deserialize(response.data, 'HeightDTO');
+      final HeightDTO resp = _httpClient.deserialize(response.data, 'HeightDTO');
       return Height.fromDto(resp.height!);
     } else {
       return Height.zero;
@@ -71,12 +71,12 @@ class BlockchainRoutesApi {
     // create path and map variables
     const String path = _blockchainScoreRoute;
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'BlockchainScoreDTO');
+      final resp = _httpClient.deserialize(response.data, 'BlockchainScoreDTO');
       return BlockchainScore.fromDTO(resp);
     } else {
       return null;
@@ -91,12 +91,12 @@ class BlockchainRoutesApi {
     // create path and map variables
     const String path = _diagnosticStorageRoute;
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient.deserialize(response.data, 'BlockchainStorageInfo');
+      return _httpClient.deserialize(response.data, 'BlockchainStorageInfo');
     } else {
       return null;
     }
@@ -120,12 +120,12 @@ class BlockchainRoutesApi {
     }
     queryParams.add(QueryParam('embedded', 'true'));
 
-    final response = await _apiClient.get(path, null, queryParams);
+    final response = await _httpClient.get(path, null, queryParams);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final List resp = _apiClient.deserialize(response.data, 'List<Transaction>');
+      final List resp = _httpClient.deserialize(response.data, 'List<Transaction>');
       return resp.map(mapTransactionDTO).toList().cast<Transaction>();
     } else {
       return [];
@@ -140,12 +140,12 @@ class BlockchainRoutesApi {
     final String path =
         _blocksByHeightWithLimitRoute.replaceAll('{height}', height.toString()).replaceAll('{limit}', limit.toString());
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'List<BlockInfoDTO>').cast<BlockInfoDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<BlockInfoDTO>').cast<BlockInfoDTO>();
       return BlockInfo.listFromDTO(resp);
     } else {
       return [];

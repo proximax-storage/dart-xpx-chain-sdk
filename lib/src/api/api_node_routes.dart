@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class NodeRoutesApi {
-  NodeRoutesApi(this._apiClient);
+  NodeRoutesApi(this._httpClient);
 
-  final HttpClient _apiClient;
+  final HttpClient _httpClient;
 
   static const _nodeInfoRoute = '/node/info';
   static const _nodeTimeRoute = '/node/time';
@@ -22,12 +22,12 @@ class NodeRoutesApi {
     // create path and map variables
     const String path = _nodeInfoRoute;
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient.deserialize(response.data, 'NodeInfo');
+      return _httpClient.deserialize(response.data, 'NodeInfo');
     } else {
       return null;
     }
@@ -40,12 +40,12 @@ class NodeRoutesApi {
     // create path and map variables
     const String path = _nodeTimeRoute;
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient.deserialize(response.data, 'NodeTime');
+      return _httpClient.deserialize(response.data, 'NodeTime');
     } else {
       return null;
     }
@@ -55,12 +55,12 @@ class NodeRoutesApi {
     // create path and map variables
     const String path = _nodePeersRoute;
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return _apiClient.deserialize(response.data, 'List<NodeInfo>').cast<NodeInfo>();
+      return _httpClient.deserialize(response.data, 'List<NodeInfo>').cast<NodeInfo>();
     } else {
       return [];
     }

@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class MetadataRoutesApi {
-  MetadataRoutesApi(this._apiClient);
+  MetadataRoutesApi(this._httpClient);
 
-  final HttpClient _apiClient;
+  final HttpClient _httpClient;
 
   static const _metadataV2InfoRoute = '/metadata_v2/{compositeHash}';
   static const _metadatasV2InfoRoute = '/metadata_v2';
@@ -23,12 +23,12 @@ class MetadataRoutesApi {
     // create path and map variables
     final String path = _metadataV2InfoRoute.replaceAll('{compositeHash}', compositeHash);
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'MetadataV2InfoDTO');
+      final resp = _httpClient.deserialize(response.data, 'MetadataV2InfoDTO');
       return MetadataEntry.fromDTO(resp);
     } else {
       return null;
@@ -46,12 +46,12 @@ class MetadataRoutesApi {
 
     const String path = _metadatasV2InfoRoute;
 
-    final response = await _apiClient.post(path, postBody);
+    final response = await _httpClient.post(path, postBody);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'List<MetadataV2InfoDTO>').cast<MetadataV2InfoDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<MetadataV2InfoDTO>').cast<MetadataV2InfoDTO>();
       return MetadataEntry.listFromDTO(resp);
     } else {
       return [];
@@ -68,12 +68,12 @@ class MetadataRoutesApi {
       queryParams.addAll(metadataQueryParams.toQueryParams());
     }
 
-    final response = await _apiClient.get(path, null, queryParams);
+    final response = await _httpClient.get(path, null, queryParams);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'List<MetadataV2InfoDTO>').cast<MetadataV2InfoDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<MetadataV2InfoDTO>').cast<MetadataV2InfoDTO>();
       return MetadataEntry.listFromDTO(resp);
     } else {
       return [];

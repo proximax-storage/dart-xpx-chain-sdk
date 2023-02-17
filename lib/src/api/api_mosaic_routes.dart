@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class MosaicRoutesApi {
-  MosaicRoutesApi([HttpClient? apiClient]) : _apiClient = apiClient ?? defaultApiClient;
+  MosaicRoutesApi([HttpClient? apiClient]) : _httpClient = apiClient ?? defaultApiClient;
 
-  final HttpClient _apiClient;
+  final HttpClient _httpClient;
 
   static const _mosaicRoute = '/mosaic/{mosaicId}';
   static const _mosaicsRoute = '/mosaic';
@@ -23,12 +23,12 @@ class MosaicRoutesApi {
   Future<MosaicInfo?> getMosaic(MosaicId mosaicId) async {
     final String path = _mosaicRoute.replaceAll('{mosaicId}', mosaicId.toHex());
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'MosaicInfoDTO');
+      final resp = _httpClient.deserialize(response.data, 'MosaicInfoDTO');
       return MosaicInfo.fromDTO(resp);
     } else {
       return null;
@@ -47,12 +47,12 @@ class MosaicRoutesApi {
 
     const String path = _mosaicsRoute;
 
-    final response = await _apiClient.post(path, postBody);
+    final response = await _httpClient.post(path, postBody);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'List<MosaicInfoDTO>').cast<MosaicInfoDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<MosaicInfoDTO>').cast<MosaicInfoDTO>();
       return MosaicInfo.listFromDTO(resp);
     } else {
       return [];
@@ -71,13 +71,13 @@ class MosaicRoutesApi {
 
     const String path = _mosaicsNameRoute;
 
-    final response = await _apiClient.post(path, postBody);
+    final response = await _httpClient.post(path, postBody);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
       final List<MosaicNameDTO> resp =
-          _apiClient.deserialize(response.data, 'List<MosaicNameDTO>').cast<MosaicNameDTO>();
+          _httpClient.deserialize(response.data, 'List<MosaicNameDTO>').cast<MosaicNameDTO>();
       return MosaicName.listFromDTO(resp);
     } else {
       return [];
@@ -98,12 +98,12 @@ class MosaicRoutesApi {
       queryParams.addAll(pageQueryParams.toQueryParams());
     }
 
-    final response = await _apiClient.get(path, null, queryParams);
+    final response = await _httpClient.get(path, null, queryParams);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'List<MosaicRichListDTO>').cast<MosaicRichListDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<MosaicRichListDTO>').cast<MosaicRichListDTO>();
 
       return MosaicRichList.listFromDTO(resp);
     } else {
@@ -115,12 +115,12 @@ class MosaicRoutesApi {
   Future<MosaicLevy?> getMosaicLevy(MosaicId mosaicId) async {
     final String path = _getMosaicLevyRoute.replaceAll('{mosaicId}', mosaicId.toHex());
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      final resp = _apiClient.deserialize(response.data, 'MosaicLevyDTO');
+      final resp = _httpClient.deserialize(response.data, 'MosaicLevyDTO');
 
       return MosaicLevy.fromDTO(resp);
     } else {

@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class NetworkRoutesApi {
-  NetworkRoutesApi([HttpClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
+  NetworkRoutesApi([HttpClient? apiClient]) : _httpClient = apiClient ?? defaultApiClient;
 
-  final HttpClient apiClient;
+  final HttpClient _httpClient;
 
   /// Get the current network type of the chain
   ///
@@ -18,12 +18,12 @@ class NetworkRoutesApi {
     // create path and map variables
     const String path = '/network';
 
-    final response = await apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data != null) {
-      return apiClient.deserialize(response.data, 'NetworkInfoDTO');
+      return _httpClient.deserialize(response.data, 'NetworkInfoDTO');
     } else {
       return null;
     }

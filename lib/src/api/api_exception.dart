@@ -11,10 +11,13 @@ class ApiException implements Exception {
 
   ApiException.withInner(this.code, this.message, this.innerException, this.stackTrace);
 
+  ApiException.withNode(this.code, this.message, this.node);
+
   int code = 0;
   dynamic message;
   Exception? innerException;
   StackTrace? stackTrace;
+  String? node;
 
   @override
   String toString() {

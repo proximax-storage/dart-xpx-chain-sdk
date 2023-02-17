@@ -7,9 +7,9 @@
 part of xpx_chain_sdk.api;
 
 class NamespaceRoutesApi {
-  NamespaceRoutesApi([HttpClient? _apiClient]) : _apiClient = _apiClient ?? defaultApiClient;
+  NamespaceRoutesApi([HttpClient? _httpClient]) : _httpClient = _httpClient ?? defaultApiClient;
 
-  final HttpClient _apiClient;
+  final HttpClient _httpClient;
 
   static const _namespaceRoute = '/namespace/{namespaceId}';
   static const _namespacesFromAccountRoute = '/account/{accountId}/namespaces';
@@ -34,12 +34,12 @@ class NamespaceRoutesApi {
   Future<NamespaceInfo?> getNamespace(NamespaceId namespaceId) async {
     final String path = _namespaceRoute.replaceAll('{namespaceId}', namespaceId.toHex());
 
-    final response = await _apiClient.get(path);
+    final response = await _httpClient.get(path);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data.isNotEmpty) {
-      final resp = _apiClient.deserialize(response.data, 'NamespaceInfoDTO');
+      final resp = _httpClient.deserialize(response.data, 'NamespaceInfoDTO');
       final ns = NamespaceInfo.fromDTO(resp);
 
       if (ns.parent != null) {
@@ -64,12 +64,12 @@ class NamespaceRoutesApi {
       _queryParams.addAll(queryParams.toQueryParams());
     }
 
-    final response = await _apiClient.get(path, null, _queryParams);
+    final response = await _httpClient.get(path, null, _queryParams);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data.isNotEmpty) {
-      final resp = _apiClient.deserialize(response.data, 'List<NamespaceInfoDTO>').cast<NamespaceInfoDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<NamespaceInfoDTO>').cast<NamespaceInfoDTO>();
 
       final nss = NamespaceInfo.listFromDTO(resp);
 
@@ -97,12 +97,12 @@ class NamespaceRoutesApi {
       _queryParams.addAll(queryParams.toQueryParams());
     }
 
-    final response = await _apiClient.post(path, postBody, _queryParams);
+    final response = await _httpClient.post(path, postBody, _queryParams);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data.isNotEmpty) {
-      final resp = _apiClient.deserialize(response.data, 'List<NamespaceInfoDTO>').cast<NamespaceInfoDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<NamespaceInfoDTO>').cast<NamespaceInfoDTO>();
 
       final nss = NamespaceInfo.listFromDTO(resp);
 
@@ -128,12 +128,12 @@ class NamespaceRoutesApi {
     // create path and map variables
     const String path = _namespacesNamesRoute;
 
-    final response = await _apiClient.post(path, postBody);
+    final response = await _httpClient.post(path, postBody);
 
     if (response.statusCode! >= 299) {
       throw ApiException(response.statusCode!, response.data);
     } else if (response.data.isNotEmpty) {
-      final resp = _apiClient.deserialize(response.data, 'List<NamespaceNameDTO>').cast<NamespaceNameDTO>();
+      final resp = _httpClient.deserialize(response.data, 'List<NamespaceNameDTO>').cast<NamespaceNameDTO>();
 
       return NamespaceName.listFromDTO(resp);
     } else {

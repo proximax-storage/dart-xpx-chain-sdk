@@ -33,8 +33,11 @@ class HttpClient {
   int _nextHttpClient = 0;
 
   factory HttpClient.balanceList(List<String> nodes) {
+    final existing = <String>{};
+    final unique = nodes.where(existing.add).toList();
+
     final clients = <Dio>[];
-    for (String node in nodes) {
+    for (String node in unique) {
       clients.add(_createDio(node));
     }
     return HttpClient._(clients..shuffle());
