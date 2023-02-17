@@ -26,11 +26,24 @@ part of xpx_chain_sdk.api;
 /// This code appears to be part of a SDK for interacting with the Sirius blockchain.
 /// The Dio package is used for making HTTP requests.
 class HttpClient {
-  HttpClient(this._clients);
+  HttpClient._(this._clients);
 
   final List<Dio> _clients;
 
   int _nextHttpClient = 0;
+
+  factory HttpClient.balanceList(List<String> nodes) {
+    final clients = <Dio>[];
+    for (String node in nodes) {
+      clients.add(_createDio(node));
+    }
+    return HttpClient._(clients..shuffle());
+  }
+
+  factory HttpClient.fromUrl(String baseUrl, [TimeoutOptions? timeOptions]) {
+    final node = _createDio(baseUrl, timeOptions);
+    return HttpClient._([node]);
+  }
 
   Dio get client {
     var channel = _clients[_nextHttpClient];
@@ -38,39 +51,23 @@ class HttpClient {
     return channel;
   }
 
-  factory HttpClient.balanceList(List<String> nodes) {
-    final clients = <Dio>[];
-    for (String node in nodes) {
-      final options = BaseOptions(
-        baseUrl: node,
-        receiveDataWhenStatusError: false,
-        responseType: ResponseType.json,
-        followRedirects: true,
-        validateStatus: (status) => status! <= 503,
-      );
-      options.contentType = 'application/json';
-      clients.add(Dio(options));
-    }
-    return HttpClient(clients..shuffle());
-  }
+  static Dio _createDio(String url, [TimeoutOptions? timeOptions]) {
+    timeOptions ??= TimeoutOptions(
+      connectTimeout: const Duration(seconds: 30000),
+      receiveTimeout: const Duration(seconds: 30000),
+    );
 
-  /// Private function used to invoke the APIs.
-  Future<Response> _invokeAPI(final String path, String method, Iterable<QueryParam> queryParams, Object? body) async {
-    final ps = queryParams.where((p) => p.name.isNotEmpty).map((p) => '${p.name}=${p.value}');
-    final String queryString = ps.isNotEmpty ? '?${ps.join('&')}' : '';
-
-    final String url = '${client.options.baseUrl}$path$queryString';
-
-    final msgBody = serialize(body);
-
-    switch (method) {
-      case 'POST':
-        return await client.post(url, data: msgBody);
-      case 'PUT':
-        return await client.put(url, data: msgBody);
-      default:
-        return await client.get(url);
-    }
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: timeOptions.connectTimeout,
+      receiveTimeout: timeOptions.receiveTimeout,
+      receiveDataWhenStatusError: false,
+      responseType: ResponseType.json,
+      followRedirects: true,
+      validateStatus: (status) => status! <= 503,
+      headers: {'user-agent': 'Dart Sirius/0.0.7+16', 'content-type': 'application/json'},
+    );
+    return Dio(options);
   }
 
   /// Function to perform a GET request on the given path.
@@ -87,9 +84,22 @@ class HttpClient {
   /// Private function that performs the actual HTTP request based on the method, path, and query parameters.
   Future<Response> _response(String path, String method, [Object? postBody, List<QueryParam>? queryParams]) async {
     queryParams ??= [];
+    final ps = queryParams.where((p) => p.name.isNotEmpty).map((p) => '${p.name}=${p.value}');
+    final String queryString = ps.isNotEmpty ? '?${ps.join('&')}' : '';
+
+    final String url = '${client.options.baseUrl}$path$queryString';
+
+    final msgBody = serialize(postBody);
 
     try {
-      return await _invokeAPI(path, method, queryParams, postBody);
+      switch (method) {
+        case 'POST':
+          return await client.post(url, data: msgBody);
+        case 'PUT':
+          return await client.put(url, data: msgBody);
+        default:
+          return await client.get(url);
+      }
     } on DioError catch (_) {
       rethrow;
     }

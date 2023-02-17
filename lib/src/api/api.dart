@@ -44,7 +44,7 @@ part 'sirius_client.dart';
 part 'timeout_options.dart';
 part 'transaction_query_params.dart';
 
-HttpClient defaultApiClient = HttpClient([
+HttpClient defaultApiClient = HttpClient._([
   Dio(BaseOptions(
       baseUrl: 'http://127.0.0.1:3000',
       connectTimeout: const Duration(seconds: 5000),

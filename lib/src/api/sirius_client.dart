@@ -18,35 +18,19 @@ class SiriusClient {
   // ----- Constructor and factory methods -----
 
   // The private constructor used to initialize the _apiClient field.
-  SiriusClient._(this._apiClient);
+  SiriusClient._(this._httpClient);
 
   /// A factory method that creates a new SiriusClient instance that communicates with the specified API server.
   static SiriusClient fromUrl(String baseUrl, [TimeoutOptions? timeOptions]) {
-    timeOptions ??= TimeoutOptions(
-      connectTimeout: const Duration(seconds: 30000),
-      receiveTimeout: const Duration(seconds: 30000),
-    );
-
-    final options = BaseOptions(
-      baseUrl: baseUrl,
-      connectTimeout: timeOptions.connectTimeout,
-      receiveTimeout: timeOptions.receiveTimeout,
-      receiveDataWhenStatusError: false,
-      responseType: ResponseType.json,
-      followRedirects: true,
-      validateStatus: (status) => status! <= 503,
-    );
-
-    final HttpClient apiClient = HttpClient([Dio(options)]);
-
-    return SiriusClient._(apiClient);
+    final httpClient = HttpClient.fromUrl(baseUrl, timeOptions);
+    return SiriusClient._(httpClient);
   }
 
   /// A factory method that creates a new SiriusClient instance using the list of nodes specified.
   factory SiriusClient.balanceList(List<String> nodes) => SiriusClient._(HttpClient.balanceList(nodes));
 
   /// An instance of HttpClient which is responsible for performing API requests.
-  final HttpClient _apiClient;
+  final HttpClient _httpClient;
 
   // ----- Fields for caching frequently used data -----
 
@@ -83,40 +67,53 @@ class SiriusClient {
   // ----- Getters -----
 
   /// Returns an API client for interacting with the blockchain.
-  BlockchainRoutesApi get blockChain => _blockChain ??= BlockchainRoutesApi(_apiClient);
+  BlockchainRoutesApi get blockChain => _blockChain ??= BlockchainRoutesApi(_httpClient);
 
   /// Returns an API client for interacting with accounts.
-  AccountRoutesApi get account => _account ??= AccountRoutesApi(_apiClient);
+  AccountRoutesApi get account => _account ??= AccountRoutesApi(_httpClient);
 
   /// Returns an API client for interacting with exchanges.
-  ExchangeRoutesApi get exchange => _exchange ??= ExchangeRoutesApi(_apiClient);
+  ExchangeRoutesApi get exchange => _exchange ??= ExchangeRoutesApi(_httpClient);
 
   /// Returns an API client for interacting with metadata.
-  MetadataRoutesApi get metadata => _metadata ??= MetadataRoutesApi(_apiClient);
+  MetadataRoutesApi get metadata => _metadata ??= MetadataRoutesApi(_httpClient);
 
   /// Returns an API client for interacting with mosaics.
-  MosaicRoutesApi get mosaic => _mosaic ??= MosaicRoutesApi(_apiClient);
+  MosaicRoutesApi get mosaic => _mosaic ??= MosaicRoutesApi(_httpClient);
 
   /// Returns an API client for interacting with namespaces.
-  NamespaceRoutesApi get namespace => _namespace ??= NamespaceRoutesApi(_apiClient);
+  NamespaceRoutesApi get namespace => _namespace ??= NamespaceRoutesApi(_httpClient);
 
   /// Returns an API client for interacting with the network.
-  NetworkRoutesApi get network => _network ??= NetworkRoutesApi(_apiClient);
+  NetworkRoutesApi get network => _network ??= NetworkRoutesApi(_httpClient);
 
   /// Returns an API client for interacting with nodes.
-  NodeRoutesApi get node => _node ??= NodeRoutesApi(_apiClient);
+  NodeRoutesApi get node => _node ??= NodeRoutesApi(_httpClient);
 
   /// Returns an API client for interacting with transactions.
-  TransactionRoutesApi get transaction => _transaction ??= TransactionRoutesApi(_apiClient);
+  TransactionRoutesApi get transaction => _transaction ??= TransactionRoutesApi(_httpClient);
 
   /// Returns the number of nodes in the API client's client list.
-  int get nodesLength => _apiClient._clients.length;
+  int get nodesLength => _httpClient._clients.length;
 
   /// Returns a Future<String?> that resolves to the generationHash of the blockchain.
   Future<String?> get generationHash => _getGenerationHash();
 
   /// Returns a Future<NetworkType> that resolves to the network type of the blockchain.
   Future<NetworkType> get networkType => _networkType ??= _getNetworkType();
+
+  /// Adds Node to the end of this list,
+  /// extending the length by one.
+  void pushNode(String baseUrl, [TimeoutOptions? timeOptions]) {
+    final client = HttpClient._createDio(baseUrl, timeOptions);
+    _httpClient._clients.add(client);
+  }
+
+  /// Removes the first occurrence of Node from this list.
+  /// Returns true if Node was in the list, false otherwise.
+  void removeNode(String baseUrl) {
+    _httpClient._clients.removeWhere((node) => node.options.baseUrl == baseUrl);
+  }
 
   // ----- Private methods -----
 

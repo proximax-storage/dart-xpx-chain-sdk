@@ -30,7 +30,7 @@ void main() async {
       PublicAccount.fromPublicKey('D04AB232742BB4AB3A1368BD4615E4E6D0224AB71A016BAF8520A332C9778737', networkType);
 
   // replace with namespace id
-  final namespaceId = NamespaceId.fromHex('2111AB580BD93748');
+  final namespaceId = NamespaceId.fromHex('CCD875904F024AAC');
 
   /// Create a  transaction type transfer
   final metadataTx = NamespaceMetadataTransaction.create(
