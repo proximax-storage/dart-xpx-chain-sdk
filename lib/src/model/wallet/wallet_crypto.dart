@@ -1,30 +1,16 @@
-import 'dart:convert';
-import 'dart:typed_data';
-import 'package:convert/convert.dart';
-import 'package:encrypt/encrypt.dart';
-import 'package:sha3/sha3.dart';
-import 'package:xpx_chain_sdk/src/model/wallet/wallet_algorithm.dart';
-import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
-
-Uint8List hexToUint8List(String hex) {
-  if (hex.length % 2 != 0) {
-    throw new Exception('Odd number of hex digits');
-  }
-  var l = hex.length ~/ 2;
-  var result = new Uint8List(l);
-  for (var i = 0; i < l; ++i) {
-    var x = int.parse(hex.substring(i * 2, 2 * i + 1), radix: 16);
-    if (x.isNaN) {
-      throw Exception('Expected hex string');
-    }
-    result[i] = x;
-  }
-  return result;
-}
+part of xpx_chain_sdk.wallet;
 
 class WalletCrypto {
-  static Map<String, dynamic> encrypt(String data, Uint8List key) {
-    final iv = IV.fromLength(16);
+  /*
+  * Encrypt hex data using a key
+  *
+  * @param {string} data - A hex string
+  * @param {Uint8List} key - An Uint8List key
+  *
+  * @return {Map} - The encrypted data
+  */
+  static Map<String, String> encrypt(String data, Uint8List key) {
+    final iv = IV.fromSecureRandom(16);
     final encrypter = Encrypter(AES(Key(key)));
     Encrypted encrypted = encrypter.encrypt(data, iv: iv);
 
@@ -34,6 +20,14 @@ class WalletCrypto {
     };
   }
 
+  /*
+  * Encode a private key using a password
+  *
+  * @param {string} privateKey - A hex private key
+  * @param {string} password - A password
+  *
+  * @return {Map} - The encoded data
+  */
   static Map<String, String> encodePrivateKey(
       String privateKey, String password) {
     // Errors
@@ -42,11 +36,19 @@ class WalletCrypto {
     final r = WalletCrypto.encrypt(privateKey, HexUtils.hexToBytes(pass));
     // Result
     return {
-      'ciphertext': r['cipherText'],
-      'iv': r['iv'],
+      'cipherText': r['cipherText']!,
+      'iv': r['iv']!,
     };
   }
 
+  /*
+    * Derive a private key from a password using count iterations of SHA3-256
+    *
+    * @param {string} password - A wallet password
+    * @param {number} count - A number of iterations above 0
+    *
+    * @return {string} - The derived private key
+    */
   static String derivePassSha(String password, int count) {
     if (count <= 0) {
       throw new Exception('Please provide a count number above 0');
@@ -61,6 +63,13 @@ class WalletCrypto {
     return hex.encode(hash);
   }
 
+  /*
+  * Decrypt data
+  *
+  * @param {Map} data - An encrypted data object
+  *
+  * @return {string} - The decrypted hex string
+  */
   static String decrypt(Map<String, String> data) {
     final encrypter = Encrypter(AES(Key(HexUtils.hexToBytes(data['key']!))));
 
@@ -68,6 +77,15 @@ class WalletCrypto {
         iv: IV.fromBase16(data['iv']!));
   }
 
+  /*
+  * Reveal the private key of an account or derive it from the wallet password
+  *
+  * @param {string} password- A wallet password
+  * @param {string} encryptedKey - An encrypted key
+  * @param {string} iv - Initialization vector used in the decrypt process
+  * @param {WalletAlgorithm} algo - A wallet algorithm
+  * @return { string } - The account private key
+  */
   static String passwordToPrivateKey(
       String password, String encrypted, String iv, WalletAlgorithm algo) {
     if (algo == WalletAlgorithm.passBip32) {
@@ -77,6 +95,6 @@ class WalletCrypto {
 
       return WalletCrypto.decrypt(data);
     }
-    return '';
+    throw Exception('Algorithm not supported');
   }
 }
