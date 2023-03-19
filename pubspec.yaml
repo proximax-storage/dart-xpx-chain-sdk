@@ -19,6 +19,8 @@ dependencies:
   fixnum: ^1.0.0
   flat_buffers: ^2.0.5
   collection: ^1.16.0
+  time_machine: ^0.9.17
+  encrypt: ^5.0.1
 
 dev_dependencies:
   test: ^1.21.3
