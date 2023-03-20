@@ -32,7 +32,7 @@ class SimpleWallet extends Wallet {
      * @param creationDate
      * @param encryptedPrivateKey
      */
-  SimpleWallet(
+  SimpleWallet._(
       String name,
       /**
        * The wallet's network
@@ -78,7 +78,7 @@ class SimpleWallet extends Wallet {
     final encryptedPrivateKey =
         new EncryptedPrivateKey(encrypted['cipherText']!, encrypted['iv']!);
 
-    return new SimpleWallet(
+    return new SimpleWallet._(
         name, network, publicAccount, LocalDateTime.now(), encryptedPrivateKey);
   }
 
@@ -107,7 +107,7 @@ class SimpleWallet extends Wallet {
     final encryptedPrivateKey =
         new EncryptedPrivateKey(encrypted['cipherText']!, encrypted['iv']!);
 
-    return new SimpleWallet(
+    return new SimpleWallet._(
         name, network, publicAccount, LocalDateTime.now(), encryptedPrivateKey);
   }
 
