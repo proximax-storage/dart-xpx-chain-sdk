@@ -20,3 +20,4 @@ export 'package:xpx_chain_sdk/src/model/network.dart';
 export 'package:xpx_chain_sdk/src/model/node.dart';
 export 'package:xpx_chain_sdk/src/model/transaction.dart';
 export 'package:xpx_chain_sdk/src/model/uint64.dart';
+export 'package:xpx_chain_sdk/src/model/wallet.dart';
