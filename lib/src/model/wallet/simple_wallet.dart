@@ -85,6 +85,30 @@ class SimpleWallet extends Wallet {
   /*
   * Create a SimpleWallet from private key
   * @param name - Wallet name
+  * @param encryptedPrivateKey - EncryptedPrivateKey
+  * @param publicKey - Public Key
+  * @param network - Network id
+  * @returns {SimpleWallet}
+  */
+  static Future<SimpleWallet> createFromEncryptedKey(
+      String name,
+      String encryptedKey,
+      String iv,
+      String publicKey,
+      NetworkType network) async {
+    // Create publicAccount from public key
+    final PublicAccount publicAccount =
+        PublicAccount.fromPublicKey(publicKey, network);
+
+    final encryptedPrivateKey = EncryptedPrivateKey(encryptedKey, iv);
+
+    return SimpleWallet._(
+        name, network, publicAccount, LocalDateTime.now(), encryptedPrivateKey);
+  }
+
+  /*
+  * Create a SimpleWallet from private key
+  * @param name - Wallet name
   * @param password - Password to encrypt wallet
   * @param privateKey - Wallet private key
   * @param network - Network id
