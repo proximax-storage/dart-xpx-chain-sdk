@@ -25,7 +25,8 @@ class BlockchainRoutesApi {
   /// Get block information
   ///
   /// Gets a [BlockConfig] from the chain that has the given height.
-  Future<String> getBlockchainConfigByHeight(Height height) async {
+  Future<Map<String, dynamic>> getBlockchainConfigByHeight(
+      Height height) async {
     // create path and map variables
     final String path =
         _blockchainConfigRoute.replaceAll('{height}', height.toString());
