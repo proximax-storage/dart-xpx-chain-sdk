@@ -31,6 +31,8 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
       NetworkType networkType, int version, TransactionType type,
       [Uint64? maxFee])
       : super(networkType, deadline, type, version, maxFee) {
+    maxFee ??= this.maxFee = calculateFee(size());
+
     if (innerTxs.isEmpty) {
       throw errNullInnerTransactions;
     } else {
