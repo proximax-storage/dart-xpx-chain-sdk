@@ -11,9 +11,14 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
+import 'package:fixnum/fixnum.dart';
+import 'package:xpx_chain_sdk/src/api/dto.dart';
+import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 part './utils/all_errors.dart';
 part './utils/byte_utils.dart';
 part './utils/consts.dart';
 part './utils/hex_utils.dart';
 part './utils/json_utils.dart';
+part 'utils/create_transaction_from_payload.dart';
+part 'utils/transaction_mapping.dart';

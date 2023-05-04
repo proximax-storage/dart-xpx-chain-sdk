@@ -1,4 +1,3 @@
-import 'package:xpx_chain_sdk/src/model/wallet.dart';
 import 'package:xpx_chain_sdk/xpx_chain_sdk.dart';
 
 void main() async {

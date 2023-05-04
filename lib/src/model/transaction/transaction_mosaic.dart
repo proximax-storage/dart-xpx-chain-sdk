@@ -26,6 +26,20 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     mosaicId = MosaicId.fromNonceAndOwner(nonce, ownerPublicAccount);
   }
 
+  MosaicDefinitionTransaction.createWithMosaicId(
+      Deadline deadline,
+      MosaicNonce nonce,
+      MosaicId id,
+      MosaicProperties mosaicProps,
+      NetworkType networkType,
+      [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.mosaicDefinition,
+            mosaicDefinitionVersion, maxFee) {
+    mosaicNonce = nonce;
+    mosaicProperties = mosaicProps;
+    mosaicId = id;
+  }
+
   MosaicDefinitionTransaction.fromDTO(MosaicDefinitionTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
     mosaicProperties = MosaicProperties.fromDTO(dto.transaction!.properties!);
