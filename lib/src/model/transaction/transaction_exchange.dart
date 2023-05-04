@@ -18,6 +18,7 @@ class AddExchangeOfferTransaction extends AbstractTransaction
     } else {
       offers = addOffers;
     }
+    maxFee ??= this.maxFee = calculateFee(size());
   }
 
   AddExchangeOfferTransaction.fromDTO(AddExchangeOfferTransactionInfoDTO dto)

@@ -67,6 +67,7 @@ class ModifyMultisigAccountTransaction extends AbstractTransaction
       minApprovalDelta = minApproval;
       minRemovalDelta = minRemoval;
       this.modifications = modifications;
+      maxFee ??= this.maxFee = calculateFee(size());
     }
   }
 

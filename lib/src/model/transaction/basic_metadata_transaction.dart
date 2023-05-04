@@ -22,7 +22,9 @@ class BasicMetadataTransaction extends AbstractTransaction {
       TransactionType type,
       int version,
       Uint64? maxFee)
-      : super(networkType, deadline, type, version, maxFee);
+      : super(networkType, deadline, type, version, maxFee) {
+    maxFee ??= this.maxFee = calculateFee(size());
+  }
 
   BasicMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {

@@ -12,7 +12,9 @@ class AccountPropertiesAddressTransaction extends AbstractTransaction
   AccountPropertiesAddressTransaction(Deadline deadline, this.propertyType,
       this.modifications, NetworkType networkType, [Uint64? maxFee])
       : super(networkType, deadline, TransactionType.accountPropertyAddress,
-            accountRestrictionAddressVersion, maxFee);
+            accountRestrictionAddressVersion, maxFee) {
+    maxFee ??= this.maxFee = calculateFee(size());
+  }
 
   AccountPropertiesAddressTransaction.fromDTO(
       AccountPropertiesAddressTransactionInfoDTO dto)
