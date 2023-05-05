@@ -1,6 +1,28 @@
+/*
+ * Copyright 2023 ProximaX
+ * Copyright 2019 NEM
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 part of xpx_chain_sdk.model.utils;
 
-Transaction CreateTransactionFromPayload(String transactionBinary) {
+/*
+ * @internal
+ * @param transactionBinary - The transaction binary data
+ * @returns {Transaction}
+ * @constructor
+ */
+Transaction createTransactionFromPayload(String transactionBinary) {
   // Transaction byte size data
   const sizeLength = 8;
   const signatureLength = 128;
@@ -31,23 +53,18 @@ Transaction CreateTransactionFromPayload(String transactionBinary) {
   return createTransaction(type, transactionData, networkType, deadline);
 }
 
-Uint8List reverseUint8List(List<int> bytes) =>
-    Uint8List.fromList(bytes.reversed.toList());
-
-int hexToInt(String hex) {
-  if (hex.length % 2 != 0) {
-    hex = '0' + hex;
-  }
-  int num = int.parse(hex, radix: 16);
-  final maxVal = pow(2, hex.length ~/ 2 * 8).toInt();
-  if (num > maxVal ~/ 2 - 1) {
-    num = num - maxVal;
-  }
-  return num;
-}
-
+/*
+ * @internal
+ * @param hexValue - Hex representation of the number
+ * @returns {number}
+ */
 int extractValueSizeDelta(String hexValue) => hexToInt(hexReverse(hexValue));
 
+/*
+ * @internal
+ * @param hex
+ * @returns {string}
+ */
 String hexReverse(String hexString) {
   if (hexString.length % 2 != 0) {
     hexString = '0' + hexString;
@@ -56,6 +73,11 @@ String hexReverse(String hexString) {
   return hex.encode(reverseUint8List(uint8Array));
 }
 
+/*
+ * @internal
+ * @param innerTransactionBinary - Inner transaction binary data
+ * @returns {Array}
+ */
 List<String> parseInnerTransactionFromBinary(String innerTransactionBinary) {
   List<String> embeddedTransaction = [];
   String innerBinary = innerTransactionBinary;
@@ -69,6 +91,12 @@ List<String> parseInnerTransactionFromBinary(String innerTransactionBinary) {
   return embeddedTransaction;
 }
 
+/*
+ * @internal
+ * @param messageType - Message Type
+ * @param payload - Message Payload
+ * @returns {Message}
+ */
 Message extractMessage(MessageType messageType, String payload) {
   if (messageType == MessageType.unencrypted) {
     return PlainMessage(payload: payload);
@@ -79,14 +107,29 @@ Message extractMessage(MessageType messageType, String payload) {
   }
 }
 
+/*
+ * @internal
+ * @param hexValue - Hex representation of the number
+ * @returns {number}
+ */
 int extractNumberFromHex(String hexValue) =>
     int.parse(hex.encode(reverseUint8List(hex.decode(hexValue))), radix: 16);
 
+/*
+ * @internal
+ * @param hex - Hex input
+ * @returns {string}
+ */
 String decodeHexUtf8(String hex) {
   String str = decodeHexRaw(hex);
   return utf8.decode(str.codeUnits);
 }
 
+/*
+ * @internal
+ * @param hex - Hex input
+ * @returns {string}
+ */
 String decodeHexRaw(String hex) {
   final buffer = StringBuffer();
   for (int i = 0; i < hex.length; i += 2) {
@@ -95,6 +138,11 @@ String decodeHexRaw(String hex) {
   return buffer.toString();
 }
 
+/*
+ * @internal
+ * @param versionHex - Transaction version in hex
+ * @returns {NetworkType}
+ */
 NetworkType extractNetwork(String versionHex) {
   final networkType = hex.decode(versionHex)[3];
   if (networkType == NetworkType.PUBLIC) {
@@ -113,25 +161,22 @@ NetworkType extractNetwork(String versionHex) {
   throw Exception('Unimplemented network type');
 }
 
-Uint8List hexToUint8List(String hex) {
-  if (hex.length % 2 != 0) {
-    throw Exception('Odd number of hex digits');
-  }
-  var l = hex.length ~/ 2;
-  var result = Uint8List(l);
-  for (var i = 0; i < l; ++i) {
-    var x = int.parse(hex.substring(2 * i, 2 * (i + 1)), radix: 16);
-    if (x.isNaN) {
-      throw Exception('Expected hex string');
-    }
-    result[i] = x;
-  }
-  return result;
-}
-
+/*
+ * @internal
+ * @param hex
+ * @returns {string}
+ */
 String reverse(String hexString) =>
     hex.encode(reverseUint8List(hex.decode(hexString)));
 
+/*
+ * @internal
+ * @param type - Transaction type
+ * @param transactionData - Details per specific transaction type
+ * @param networkType - Network type
+ * @param deadline - Deadline
+ * @returns {Transaction}
+ */
 Transaction createTransaction(int type, String transactionData,
     NetworkType networkType, Uint64 deadlineUint64) {
   final deadline = Deadline.fromUInt64DTO(UInt64DTO(
@@ -515,7 +560,7 @@ Transaction createTransaction(int type, String transactionData,
   }
 }
 
- /* else if(type == TransactionType.blockchainUpgrade){
+/* else if(type == TransactionType.blockchainUpgrade){
 
  const upgradePeriod = transactionData.substring(0, 16);
             const newBlockchainVersion = transactionData.substring(16, 32);
@@ -524,7 +569,7 @@ Transaction createTransaction(int type, String transactionData,
                 .newBlockchainVersion(UInt64.fromHex(reverse(newBlockchainVersion)))
                 .build();
     } */
-  /* else if(type == TransactionType.networkConfigEntityType){
+/* else if(type == TransactionType.networkConfigEntityType){
 final applyHeightDelta = transactionData.substring(0, 16);
             final networkConfigLength = extractNumberFromHex(transactionData.substring(16, 20));
             final supportedEntityVersionsLength = extractNumberFromHex(transactionData.substring(20, 24));
@@ -576,7 +621,7 @@ LockFundsTransaction.create(deadline, Mosaic(MosaicId.fromUint64(Uint64.fromHex(
  Uint64.fromHex(reverse(hashLockDuration)), SignedTransaction(TransactionType.aggregateBonded, payload, hashLockHash), networkType);
           
     } */
-  /* else if(type == TransactionType.){
+/* else if(type == TransactionType.){
 
     }
        else if(type == TransactionType.){
@@ -590,7 +635,7 @@ LockFundsTransaction.create(deadline, Mosaic(MosaicId.fromUint64(Uint64.fromHex(
     }
         */
 
-  /* switch (type) {
+/* switch (type) {
      
         case TransactionType.MODIFY_MOSAIC_LEVY:
             return factory.mosaicModifyLevy()
@@ -629,3 +674,34 @@ LockFundsTransaction.create(deadline, Mosaic(MosaicId.fromUint64(Uint64.fromHex(
         }
 
         } */
+
+Uint8List reverseUint8List(List<int> bytes) =>
+    Uint8List.fromList(bytes.reversed.toList());
+
+int hexToInt(String hex) {
+  if (hex.length % 2 != 0) {
+    hex = '0' + hex;
+  }
+  int num = int.parse(hex, radix: 16);
+  final maxVal = pow(2, hex.length ~/ 2 * 8).toInt();
+  if (num > maxVal ~/ 2 - 1) {
+    num = num - maxVal;
+  }
+  return num;
+}
+
+Uint8List hexToUint8List(String hex) {
+  if (hex.length % 2 != 0) {
+    throw Exception('Odd number of hex digits');
+  }
+  var l = hex.length ~/ 2;
+  var result = Uint8List(l);
+  for (var i = 0; i < l; ++i) {
+    var x = int.parse(hex.substring(2 * i, 2 * (i + 1)), radix: 16);
+    if (x.isNaN) {
+      throw Exception('Expected hex string');
+    }
+    result[i] = x;
+  }
+  return result;
+}
