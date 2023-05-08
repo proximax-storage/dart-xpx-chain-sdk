@@ -70,7 +70,7 @@ String hexReverse(String hexString) {
     hexString = '0' + hexString;
   }
   final uint8Array = hex.decode(hexString);
-  return hex.encode(reverseUint8List(uint8Array));
+  return uint8ListToHex(reverseUint8List(uint8Array));
 }
 
 /*
@@ -113,7 +113,8 @@ Message extractMessage(MessageType messageType, String payload) {
  * @returns {number}
  */
 int extractNumberFromHex(String hexValue) =>
-    int.parse(hex.encode(reverseUint8List(hex.decode(hexValue))), radix: 16);
+    int.parse(uint8ListToHex(reverseUint8List(hex.decode(hexValue))),
+        radix: 16);
 
 /*
  * @internal
@@ -144,7 +145,7 @@ String decodeHexRaw(String hex) {
  * @returns {NetworkType}
  */
 NetworkType extractNetwork(String versionHex) {
-  final networkType = hex.decode(versionHex)[3];
+  final networkType = hexToUint8List(versionHex)[3];
   if (networkType == NetworkType.PUBLIC) {
     return NetworkType.PUBLIC;
   } else if (networkType == NetworkType.PUBLIC_TEST) {
@@ -167,7 +168,7 @@ NetworkType extractNetwork(String versionHex) {
  * @returns {string}
  */
 String reverse(String hexString) =>
-    hex.encode(reverseUint8List(hex.decode(hexString)));
+    uint8ListToHex(reverseUint8List(hex.decode(hexString)));
 
 /*
  * @internal
@@ -692,16 +693,24 @@ int hexToInt(String hex) {
 
 Uint8List hexToUint8List(String hex) {
   if (hex.length % 2 != 0) {
-    throw Exception('Odd number of hex digits');
+    throw 'Odd number of hex digits';
   }
   var l = hex.length ~/ 2;
   var result = Uint8List(l);
   for (var i = 0; i < l; ++i) {
     var x = int.parse(hex.substring(2 * i, 2 * (i + 1)), radix: 16);
     if (x.isNaN) {
-      throw Exception('Expected hex string');
+      throw 'Expected hex string';
     }
     result[i] = x;
   }
   return result;
+}
+
+String uint8ListToHex(Uint8List uint8List) {
+  var hexString = '';
+  for (var byte in uint8List) {
+    hexString += byte.toRadixString(16).padLeft(2, '0');
+  }
+  return hexString;
 }
