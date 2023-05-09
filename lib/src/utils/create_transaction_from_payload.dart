@@ -146,6 +146,7 @@ String decodeHexRaw(String hex) {
  */
 NetworkType extractNetwork(String versionHex) {
   final networkType = hexToUint8List(versionHex)[3];
+  print(networkType);
   if (networkType == NetworkType.PUBLIC) {
     return NetworkType.PUBLIC;
   } else if (networkType == NetworkType.PUBLIC_TEST) {
@@ -691,20 +692,18 @@ int hexToInt(String hex) {
   return num;
 }
 
-Uint8List hexToUint8List(String hex) {
-  if (hex.length % 2 != 0) {
-    throw 'Odd number of hex digits';
+Uint8List hexToUint8List(String hexString) {
+  hexString = hexString.replaceAll(' ', ''); // Remove any spaces
+  final length = hexString.length;
+  final data = Uint8List(length ~/ 2);
+
+  for (var i = 0; i < length; i += 2) {
+    final hex = hexString.substring(i, i + 2);
+    final byte = int.parse(hex, radix: 16);
+    data[i ~/ 2] = byte;
   }
-  var l = hex.length ~/ 2;
-  var result = Uint8List(l);
-  for (var i = 0; i < l; ++i) {
-    var x = int.parse(hex.substring(2 * i, 2 * (i + 1)), radix: 16);
-    if (x.isNaN) {
-      throw 'Expected hex string';
-    }
-    result[i] = x;
-  }
-  return result;
+
+  return data;
 }
 
 String uint8ListToHex(Uint8List uint8List) {
