@@ -146,7 +146,6 @@ String decodeHexRaw(String hex) {
  */
 NetworkType extractNetwork(String versionHex) {
   final networkType = hexToUint8List(versionHex)[3];
-  print(networkType);
   if (networkType == 184) {
     return NetworkType.PUBLIC;
   } else if (networkType == 168) {
