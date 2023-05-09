@@ -147,17 +147,17 @@ String decodeHexRaw(String hex) {
 NetworkType extractNetwork(String versionHex) {
   final networkType = hexToUint8List(versionHex)[3];
   print(networkType);
-  if (networkType == NetworkType.PUBLIC) {
+  if (networkType == 184) {
     return NetworkType.PUBLIC;
-  } else if (networkType == NetworkType.PUBLIC_TEST) {
+  } else if (networkType == 168) {
     return NetworkType.PUBLIC_TEST;
-  } else if (networkType == NetworkType.MIJIN) {
+  } else if (networkType == 96) {
     return NetworkType.MIJIN;
-  } else if (networkType == NetworkType.MIJIN_TEST) {
+  } else if (networkType == 144) {
     return NetworkType.MIJIN_TEST;
-  } else if (networkType == NetworkType.PRIVATE) {
+  } else if (networkType == 200) {
     return NetworkType.PRIVATE;
-  } else if (networkType == NetworkType.PRIVATE_TEST) {
+  } else if (networkType == 176) {
     return NetworkType.PRIVATE_TEST;
   }
   throw Exception('Unimplemented network type');
