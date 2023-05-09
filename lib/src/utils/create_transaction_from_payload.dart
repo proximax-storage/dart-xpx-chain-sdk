@@ -183,7 +183,7 @@ Transaction createTransaction(int type, String transactionData,
   final deadline = Deadline.fromUInt64DTO(UInt64DTO(
       Int32(deadlineUint64.toIntArray()[0]),
       Int32(deadlineUint64.toIntArray()[1])));
-  if (type == TransactionType.addressAlias) {
+  if (type == TransactionType.addressAlias.value) {
     final addressAliasAction = transactionData.substring(0, 2);
     final addressAliasNamespaceId = transactionData.substring(2, 18);
     final addressAliasAddress = transactionData.substring(18);
@@ -195,7 +195,7 @@ Transaction createTransaction(int type, String transactionData,
             ? AliasActionType.aliasLink
             : AliasActionType.aliasUnlink,
         networkType);
-  } else if (type == TransactionType.mosaicAlias) {
+  } else if (type == TransactionType.mosaicAlias.value) {
     const mosaicAliasActionLength = 2;
 
     // read bytes
@@ -212,7 +212,7 @@ Transaction createTransaction(int type, String transactionData,
             ? AliasActionType.aliasLink
             : AliasActionType.aliasUnlink,
         networkType);
-  } else if (type == TransactionType.mosaicDefinition) {
+  } else if (type == TransactionType.mosaicDefinition.value) {
     const mosaicDefMosaicNonceLength = 8;
     const mosaicDefMosaicIdLength = 16;
     const mosaicDefPropsNumLength = 2;
@@ -253,7 +253,7 @@ Transaction createTransaction(int type, String transactionData,
             transferable: (flags & 2) == 2,
             divisibility: extractNumberFromHex(divisibility)),
         networkType);
-  } else if (type == TransactionType.mosaicSupplyChange) {
+  } else if (type == TransactionType.mosaicSupplyChange.value) {
     final mosaicSupMosaicId = transactionData.substring(0, 16);
     final mosaicSupDirection = transactionData.substring(16, 18);
     final delta = transactionData.substring(18, 34);
@@ -266,7 +266,7 @@ Transaction createTransaction(int type, String transactionData,
         MosaicId.fromHex(reverse(mosaicSupMosaicId)),
         Uint64.fromHex(reverse(delta)),
         networkType);
-  } else if (type == TransactionType.registerNamespace) {
+  } else if (type == TransactionType.registerNamespace.value) {
     final namespaceType = extractNumberFromHex(transactionData.substring(0, 2));
     final nameSpaceDurationParentId = transactionData.substring(2, 18);
     /* final nameSpaceId = NamespaceId.createFromEncoded(transactionData.substring(18, 34)); */
@@ -284,9 +284,9 @@ Transaction createTransaction(int type, String transactionData,
             decodeHexUtf8(nameSpaceName),
             Uint64.fromHex(reverse(nameSpaceDurationParentId)).toString(),
             networkType);
-  } else if (type == TransactionType.accountPropertyAddress ||
-      type == TransactionType.accountPropertyEntityType ||
-      type == TransactionType.accountPropertyEntityType) {
+  } else if (type == TransactionType.accountPropertyAddress.value ||
+      type == TransactionType.accountPropertyEntityType.value ||
+      type == TransactionType.accountPropertyEntityType.value) {
     const propertyTypeLength = 2;
 
     const modificationCountOffset = propertyTypeLength;
@@ -301,7 +301,7 @@ Transaction createTransaction(int type, String transactionData,
         .allMatches(modifications)
         .map((m) => m.group(0))
         .toList();
-    if (type == TransactionType.accountPropertyAddress) {
+    if (type == TransactionType.accountPropertyAddress.value) {
       return AccountPropertiesAddressTransaction(
           deadline,
           AccountPropertyType.fromInt(extractNumberFromHex(propertyType)),
@@ -314,7 +314,7 @@ Transaction createTransaction(int type, String transactionData,
                   Address.fromEncoded(modification.substring(2))))
               .toList(),
           networkType);
-    } else if (type == TransactionType.accountPropertyMosaic) {
+    } else if (type == TransactionType.accountPropertyMosaic.value) {
       return AccountPropertiesMosaicTransaction(
           deadline,
           AccountPropertyType.fromInt(extractNumberFromHex(propertyType)),
@@ -328,7 +328,7 @@ Transaction createTransaction(int type, String transactionData,
                       reverse(modification.substring(2, modification.length)))))
               .toList(),
           networkType);
-    } else if (type == TransactionType.accountPropertyEntityType) {
+    } else if (type == TransactionType.accountPropertyEntityType.value) {
       return AccountPropertiesEntityTypeTransaction(
           deadline,
           AccountPropertyType.fromInt(extractNumberFromHex(propertyType)),
@@ -345,7 +345,7 @@ Transaction createTransaction(int type, String transactionData,
     } else {
       throw Exception('Invalid txn type');
     }
-  } else if (type == TransactionType.transfer) {
+  } else if (type == TransactionType.transfer.value) {
     // read bytes
     final transferRecipient = transactionData.substring(0, 50);
     final transferMessageSize =
@@ -373,7 +373,7 @@ Transaction createTransaction(int type, String transactionData,
         extractMessage(
             MessageType.getType(transferMessageType), transferMessage),
         networkType);
-  } else if (type == TransactionType.modifyMultisig) {
+  } else if (type == TransactionType.modifyMultisig.value) {
     final minRemovalDelta =
         extractNumberFromHex(transactionData.substring(0, 2));
     final minApprovalDelta =
@@ -402,7 +402,7 @@ Transaction createTransaction(int type, String transactionData,
                 ))
             .toList(),
         networkType);
-  } else if (type == TransactionType.aggregateCompleted) {
+  } else if (type == TransactionType.aggregateCompleted.value) {
     final payloadSize =
         extractNumberFromHex(transactionData.substring(0, 8)) * 2;
     /* final cosignatures = transactionData.substring(payloadSize + 8); */
@@ -432,7 +432,7 @@ Transaction createTransaction(int type, String transactionData,
           return transaction;
         }).toList(),
         networkType);
-  } else if (type == TransactionType.aggregateBonded) {
+  } else if (type == TransactionType.aggregateBonded.value) {
     final bondedPayloadSize =
         extractNumberFromHex(transactionData.substring(0, 8)) * 2;
     /*  final bondedCosignatures = transactionData.substring(bondedPayloadSize + 8); */
@@ -461,7 +461,7 @@ Transaction createTransaction(int type, String transactionData,
           return transaction;
         }).toList(),
         networkType);
-  } else if (type == TransactionType.mosaicMetadataV2) {
+  } else if (type == TransactionType.mosaicMetadataV2.value) {
     return MosaicMetadataTransaction.createFromPayload(
         deadline,
         MosaicId.fromHex(reverse(transactionData.substring(80, 96))),
@@ -472,7 +472,7 @@ Transaction createTransaction(int type, String transactionData,
         extractValueSizeDelta(transactionData.substring(96, 100)),
         hexToUint8List(transactionData.substring(104)),
         networkType);
-  } else if (type == TransactionType.namespaceMetadataV2) {
+  } else if (type == TransactionType.namespaceMetadataV2.value) {
     return NamespaceMetadataTransaction.createFromPayload(
         deadline,
         NamespaceId.fromHex(reverse(transactionData.substring(80, 96))),
@@ -483,7 +483,7 @@ Transaction createTransaction(int type, String transactionData,
         extractValueSizeDelta(transactionData.substring(96, 100)),
         hexToUint8List(transactionData.substring(104)),
         networkType);
-  } else if (type == TransactionType.accountMetadataV2) {
+  } else if (type == TransactionType.accountMetadataV2.value) {
     return AccountMetadataTransaction.createFromPayload(
         deadline,
         PublicAccount.fromPublicKey(
@@ -493,7 +493,7 @@ Transaction createTransaction(int type, String transactionData,
         extractValueSizeDelta(transactionData.substring(80, 84)),
         hexToUint8List(transactionData.substring(88)),
         networkType);
-  } else if (type == TransactionType.addExchangeOffer) {
+  } else if (type == TransactionType.addExchangeOffer.value) {
     final addOffersArray = RegExp('.{66}')
         .allMatches(transactionData.substring(2))
         .map((match) => match.group(0))
@@ -516,7 +516,7 @@ Transaction createTransaction(int type, String transactionData,
               duration: Uint64.fromHex(reverse(duration)));
         }).toList(),
         networkType);
-  } else if (type == TransactionType.exchangeOffer) {
+  } else if (type == TransactionType.exchangeOffer.value) {
     final offersArray = RegExp('.{114}')
         .allMatches(transactionData.substring(2))
         .map((match) => match.group(0))
@@ -539,7 +539,7 @@ Transaction createTransaction(int type, String transactionData,
               owner: owner);
         }).toList(),
         networkType);
-  } else if (type == TransactionType.removeExchangeOffer) {
+  } else if (type == TransactionType.removeExchangeOffer.value) {
     final removeOffersArray = RegExp('.{18}')
         .allMatches(transactionData.substring(2))
         .map((match) => match.group(0))
@@ -561,7 +561,7 @@ Transaction createTransaction(int type, String transactionData,
   }
 }
 
-/* else if(type == TransactionType.blockchainUpgrade){
+/* else if(type == TransactionType.blockchainUpgrade.value){
 
  const upgradePeriod = transactionData.substring(0, 16);
             const newBlockchainVersion = transactionData.substring(16, 32);
