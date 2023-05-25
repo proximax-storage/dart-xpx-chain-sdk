@@ -303,7 +303,7 @@ Future<CosignatureSignedTransaction> signCosignatureTransactionRwa(
   return CosignatureSignedTransaction(
       tx._transactionToCosign.getTransactionInfo.transactionHash,
       hex.encode(signatureByte.bytes),
-      signer.publicKey.toString());
+      a.publicKey);
 }
 
 Future<CosignatureSignedTransaction> signCosignatureTransactionRwaWithHash(
