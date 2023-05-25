@@ -85,4 +85,8 @@ class Account {
   Future<CosignatureSignedTransaction> signCosignatureTransaction(
           CosignatureTransaction tx) async =>
       signCosignatureTransactionRwa(tx, this);
+
+  Future<CosignatureSignedTransaction> signCosignatureTransactionWithHash(
+          String hash) async =>
+      signCosignatureTransactionRwaWithHash(hash, this);
 }
