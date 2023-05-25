@@ -315,7 +315,7 @@ Future<CosignatureSignedTransaction> signCosignatureTransactionRwaWithHash(
   final signatureByte = await signer.sign(Uint8List.fromList(hashByte));
 
   return CosignatureSignedTransaction(
-      hash, hex.encode(signatureByte.bytes), signer.publicKey.toString());
+      hash, hex.encode(signatureByte.bytes), a.publicKey);
 }
 
 String _createTransactionHash(String pHex, String generationHash) {
