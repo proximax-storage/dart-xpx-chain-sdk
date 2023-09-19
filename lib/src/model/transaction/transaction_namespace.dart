@@ -23,6 +23,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
       namespaceName = rootNamespaceName;
       namespaceType = NamespaceType.root;
       this.duration = duration;
+      maxFee ??= this.maxFee = calculateFee(size());
     }
   }
 
@@ -44,6 +45,7 @@ class RegisterNamespaceTransaction extends AbstractTransaction
           id: generateNamespaceId(subNamespaceName, parentId!.toUint64()!));
       namespaceName = subNamespaceName;
       namespaceType = NamespaceType.sub;
+      maxFee ??= this.maxFee = calculateFee(size());
     }
   }
 

@@ -36,6 +36,7 @@ class AggregateTransaction extends AbstractTransaction implements Transaction {
     } else {
       innerTransactions = innerTxs;
     }
+    maxFee ??= this.maxFee = calculateFee(size());
   }
 
   AggregateTransaction.fromDTO(AggregateTransactionInfoDTO dto)

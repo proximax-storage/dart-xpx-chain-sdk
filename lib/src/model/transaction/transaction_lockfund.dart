@@ -12,7 +12,10 @@ part of xpx_chain_sdk.model.transaction;
 class LockFundsTransaction extends AbstractTransaction implements Transaction {
   LockFundsTransaction._(Deadline deadline, this.mosaic, this.duration,
       this.signedTransaction, NetworkType networkType, Uint64? maxFee)
-      : super(networkType, deadline, TransactionType.lock, lockVersion, maxFee);
+      : super(
+            networkType, deadline, TransactionType.lock, lockVersion, maxFee) {
+    maxFee ??= this.maxFee = calculateFee(size());
+  }
 
   factory LockFundsTransaction.create(Deadline deadline, Mosaic mosaic,
       Uint64 duration, SignedTransaction signedTx, NetworkType networkType,

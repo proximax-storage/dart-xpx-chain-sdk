@@ -12,7 +12,9 @@ class AccountPropertiesEntityTypeTransaction extends AbstractTransaction
   AccountPropertiesEntityTypeTransaction(Deadline deadline, this.propertyType,
       this.modifications, NetworkType networkType, [Uint64? maxFee])
       : super(networkType, deadline, TransactionType.accountPropertyEntityType,
-            accountRestrictionEntityTypeVersion, maxFee);
+            accountRestrictionEntityTypeVersion, maxFee) {
+    maxFee ??= this.maxFee = calculateFee(size());
+  }
 
   AccountPropertiesEntityTypeTransaction.fromDTO(
       AccountPropertiesEntityTypeTransactionInfoDTO dto)

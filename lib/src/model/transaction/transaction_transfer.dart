@@ -14,7 +14,9 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
       List<Mosaic> this.mosaics, Message this.message, NetworkType networkType,
       [Uint64? maxFee])
       : super(networkType, deadline, TransactionType.transfer, transferVersion,
-            maxFee);
+            maxFee) {
+    maxFee ??= this.maxFee = calculateFee(size());
+  }
 
   TransferTransaction.fromDTO(TransferTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
@@ -22,10 +24,13 @@ class TransferTransaction extends AbstractTransaction implements Transaction {
     recipient = Address.fromEncoded(dto.transaction!.recipient!);
     message = null;
     if (dto.transaction!.message != null) {
-      if (MessageType.getType(dto.transaction!.message!.type) == MessageType.unencrypted) {
+      if (MessageType.getType(dto.transaction!.message!.type) ==
+          MessageType.unencrypted) {
         message = PlainMessage(payload: dto.transaction!.message!.payload);
-      } else if (MessageType.getType(dto.transaction!.message!.type) == MessageType.encrypted) {
-        message = EncryptedMessage.fromPayload(dto.transaction!.message!.payload as String);
+      } else if (MessageType.getType(dto.transaction!.message!.type) ==
+          MessageType.encrypted) {
+        message = EncryptedMessage.fromPayload(
+            dto.transaction!.message!.payload as String);
       }
     }
   }

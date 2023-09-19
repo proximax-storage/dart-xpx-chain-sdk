@@ -303,7 +303,19 @@ Future<CosignatureSignedTransaction> signCosignatureTransactionRwa(
   return CosignatureSignedTransaction(
       tx._transactionToCosign.getTransactionInfo.transactionHash,
       hex.encode(signatureByte.bytes),
-      signer.publicKey.toString());
+      a.publicKey);
+}
+
+Future<CosignatureSignedTransaction> signCosignatureTransactionRwaWithHash(
+    String hash, Account a) async {
+  final signer = a.account;
+
+  final List<int> hashByte = hex.decode(hash);
+
+  final signatureByte = await signer.sign(Uint8List.fromList(hashByte));
+
+  return CosignatureSignedTransaction(
+      hash, hex.encode(signatureByte.bytes), a.publicKey);
 }
 
 String _createTransactionHash(String pHex, String generationHash) {

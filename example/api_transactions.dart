@@ -39,7 +39,7 @@ void main() async {
   final txnQueryParams = TransactionQueryParams()
     ..embedded = true
     ..signerPublicKey =
-        "785B6EDD55934391C4C0CBFCF5ECDCBC5104CB781178616A99167480418282BD";
+        '785B6EDD55934391C4C0CBFCF5ECDCBC5104CB781178616A99167480418282BD';
 
   // Returns a [Transaction] information given a transactionId or hash.
   try {

@@ -16,7 +16,9 @@ class AliasTransaction extends AbstractTransaction implements Transaction {
       TransactionType transactionType,
       NetworkType networkType,
       [Uint64? maxFee])
-      : super(networkType, deadline, transactionType, version, maxFee);
+      : super(networkType, deadline, transactionType, version, maxFee) {
+    maxFee ??= this.maxFee = calculateFee(size());
+  }
 
   AliasTransaction._fromAddressAliasDTO(AddressAliasTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {

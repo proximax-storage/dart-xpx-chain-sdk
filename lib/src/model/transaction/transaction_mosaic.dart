@@ -24,6 +24,22 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     mosaicProperties = mosaicProps;
     // Signer of transaction must be the same with ownerPublicKey
     mosaicId = MosaicId.fromNonceAndOwner(nonce, ownerPublicAccount);
+    maxFee ??= this.maxFee = calculateFee(size());
+  }
+
+  MosaicDefinitionTransaction.createWithMosaicId(
+      Deadline deadline,
+      MosaicNonce nonce,
+      MosaicId id,
+      MosaicProperties mosaicProps,
+      NetworkType networkType,
+      [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.mosaicDefinition,
+            mosaicDefinitionVersion, maxFee) {
+    mosaicNonce = nonce;
+    mosaicProperties = mosaicProps;
+    mosaicId = id;
+    maxFee ??= this.maxFee = calculateFee(size());
   }
 
   MosaicDefinitionTransaction.fromDTO(MosaicDefinitionTransactionInfoDTO dto)

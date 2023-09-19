@@ -20,6 +20,24 @@ class BlockchainRoutesApi {
   static const _diagnosticStorageRoute = '/diagnostic/storage';
   static const _blockTransactionsRoute = '/transactions/confirmed';
   static const _blocksByHeightWithLimitRoute = '/blocks/{height}/limit/{limit}';
+  static const _blockchainConfigRoute = '/config/{height}';
+
+  /// Get block information
+  ///
+  /// Gets a [BlockConfig] from the chain that has the given height.
+  Future<Map<String, dynamic>> getBlockchainConfigByHeight(
+      Height height) async {
+    // create path and map variables
+    final String path =
+        _blockchainConfigRoute.replaceAll('{height}', height.toString());
+
+    final response = await _apiClient.get(path);
+
+    if (response.statusCode! >= 299) {
+      throw ApiException(response.statusCode!, response.data);
+    }
+    return response.data;
+  }
 
   /// Get block information
   ///
