@@ -1,3 +1,12 @@
+## 0.0.8
+### Updates
+[ADD] function to get encrypted private key with password
+[ADD] route to get blockchain config
+[UPDATE] max fee
+[ADD] function to sign partial txn with txn hash
+[UPDATE] dependencies
+[ADD] function to create txn from payload
+
 ## 0.0.7+9
 ### Bug Fixes
 [FIXED] transaction query param typo.
