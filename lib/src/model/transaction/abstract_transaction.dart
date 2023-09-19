@@ -83,8 +83,6 @@ class AbstractTransaction with TransactionInfo {
   bool hasMissingSignatures() =>
       height!.toInt() == 0 && transactionHash != merkleComponentHash;
 
-  bool isUnannounced() => this == null;
-
   @override
   String toString() => _absToString();
 
