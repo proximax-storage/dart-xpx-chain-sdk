@@ -16,7 +16,7 @@ class MosaicLevy {
   MosaicLevy.fromDTO(MosaicLevyDTO dto) {
     type = dto.type.toLevyType;
     recipient = Address.fromEncoded(dto.recipient);
-    mosaicId = MosaicId.fromId(dto.mosaicId.toUint64()!);
+    mosaicId = MosaicId.fromUint64(dto.mosaicId.toUint64()!);
     fee = dto.fee.toUint64()!;
   }
 

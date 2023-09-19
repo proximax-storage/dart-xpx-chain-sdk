@@ -10,7 +10,7 @@ part of xpx_chain_sdk.model.transaction;
 ///
 class AccountMetadataTransaction extends BasicMetadataTransaction
     implements Transaction {
-  AccountMetadataTransaction(
+  AccountMetadataTransaction._(
       PublicAccount targetAccount,
       Uint64 scopedMetadataKey,
       int valueSizeDelta,
@@ -36,19 +36,12 @@ class AccountMetadataTransaction extends BasicMetadataTransaction
             maxFee);
 
   AccountMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto)
-      : super.fromDTO(dto) {
-    targetPublicAccount =
-        PublicAccount.fromPublicKey(dto.transaction!.targetKey, networkType);
-    scopedMetadataKey = dto.transaction!.scopedMetadataKey!.toUint64()!;
-    valueSizeDelta = dto.transaction!.valueSizeDelta!;
-    value = ByteUtils.bytesToUtf8String(
-        HexUtils.hexToBytes(dto.transaction!.value!));
-  }
+      : super.fromDTO(dto);
 
   factory AccountMetadataTransaction.create(
       Deadline deadline,
       PublicAccount targetAccount,
-      String scopedMetadataKeyString,
+      scopedMetadataKey,
       String value,
       String oldValue,
       NetworkType networkType,
@@ -57,10 +50,17 @@ class AccountMetadataTransaction extends BasicMetadataTransaction
       throw ArgumentError('new value is the same');
     }
 
-    final scopedMetadataKey = Uint64.fromString(scopedMetadataKeyString);
+    if (!(scopedMetadataKey is Uint64) && !(scopedMetadataKey is String)) {
+      throw ArgumentError('invalid scopedMetadataKey type');
+    }
 
-    final valueSizeDelta = (value.length - oldValue.length).toInt();
-    final valueSize = [value.length, oldValue.length, 0].reduce(max).toInt();
+    final scopedMetadataKeyValue = Uint64.fromString(scopedMetadataKey);
+
+    final valueLength = HexUtils.utf8ToHex(value).length ~/ 2;
+    final oldValueLength = HexUtils.utf8ToHex(oldValue).length ~/ 2;
+
+    final valueSizeDelta = valueLength - oldValueLength;
+    final valueSize = [valueLength, oldValueLength, 0].reduce(max);
 
     final Uint8List valueUint8List = Uint8List(valueSize);
     valueUint8List.setAll(0, HexUtils.hexToBytes(HexUtils.utf8ToHex(value)));
@@ -73,9 +73,9 @@ class AccountMetadataTransaction extends BasicMetadataTransaction
       valueDifferenceBytes[i] = valueUint8List[i] ^ oldValueUint8List[i];
     }
 
-    return AccountMetadataTransaction(
+    return AccountMetadataTransaction._(
         targetAccount,
-        scopedMetadataKey,
+        scopedMetadataKeyValue,
         valueSizeDelta,
         value,
         valueSize,
@@ -86,8 +86,36 @@ class AccountMetadataTransaction extends BasicMetadataTransaction
         maxFee);
   }
 
+  factory AccountMetadataTransaction.createFromPayload(
+      Deadline deadline,
+      PublicAccount targetAccount,
+      scopedMetadataKey,
+      int valueSize,
+      int valueSizeDelta,
+      Uint8List valueDifferences,
+      NetworkType networkType,
+      [Uint64? maxFee]) {
+    if (!(scopedMetadataKey is Uint64) && !(scopedMetadataKey is String)) {
+      throw ArgumentError('invalid scopedMetadataKey type');
+    }
+
+    final scopedMetadataKeyValue = Uint64.fromString(scopedMetadataKey);
+
+    return AccountMetadataTransaction._(
+        targetAccount,
+        scopedMetadataKeyValue,
+        valueSizeDelta,
+        '',
+        valueSize,
+        '',
+        valueDifferences,
+        networkType,
+        deadline,
+        maxFee);
+  }
+
   @override
-  int size() => metadataV2HeaderSize + value!.length;
+  int size() => metadataV2HeaderSize + valueSize;
 
   @override
   AbstractTransaction absTransaction() => _absTransaction();

@@ -15,7 +15,7 @@ void main() async {
 
   /// Create an [Account] from a given Private key.
   final bobAccount = await Account.fromPrivateKey(
-      '970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF10',
+      '970F8FE51765D1E426C0FE895B7B217FB47C39D049C68EEDFD71FB523812DF11',
       networkType);
 
   /// Create an [PublicAccount] from a given Public key.
@@ -36,8 +36,6 @@ void main() async {
       'testing',
       '',
       networkType);
-
-  print(metadataTx);
 
   metadataTx.toAggregate = bobAccount.publicAccount;
 

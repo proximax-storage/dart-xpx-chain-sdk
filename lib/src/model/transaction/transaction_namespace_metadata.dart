@@ -8,10 +8,10 @@ part of xpx_chain_sdk.model.transaction;
 
 /// Create/ modify a [AccountMetadataTransaction] entry contains information about metadata .
 ///
-class MosaicMetadataTransaction extends BasicMetadataTransaction
+class NamespaceMetadataTransaction extends BasicMetadataTransaction
     implements Transaction {
-  MosaicMetadataTransaction._(
-      this.targetMosaicId,
+  NamespaceMetadataTransaction._(
+      this.targetNamespaceId,
       PublicAccount targetAccount,
       Uint64 scopedMetadataKey,
       int valueSizeDelta,
@@ -32,16 +32,16 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
             valueDifferences,
             networkType,
             deadline,
-            TransactionType.mosaicMetadataV2,
-            mosaicMetadataVersionV2,
+            TransactionType.namespaceMetadataV2,
+            namespaceMetadataVersionV2,
             maxFee);
 
-  MosaicMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto)
+  NamespaceMetadataTransaction.fromDTO(MetaDataEntryTransactioInfoDTO dto)
       : super.fromDTO(dto);
 
-  factory MosaicMetadataTransaction.create(
+  factory NamespaceMetadataTransaction.create(
       Deadline deadline,
-      MosaicId targetMosaicId,
+      NamespaceId targetNamespaceId,
       PublicAccount targetAccount,
       scopedMetadataKey,
       String value,
@@ -56,9 +56,7 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
       throw ArgumentError('invalid scopedMetadataKey type');
     }
 
-    final scopedMetadataKeyValue = scopedMetadataKey is Uint64
-        ? scopedMetadataKey
-        : Uint64.fromString(scopedMetadataKey);
+    final scopedMetadataKeyValue = Uint64.fromString(scopedMetadataKey);
 
     final valueLength = HexUtils.utf8ToHex(value).length ~/ 2;
     final oldValueLength = HexUtils.utf8ToHex(oldValue).length ~/ 2;
@@ -77,8 +75,8 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
       valueDifferenceBytes[i] = valueUint8List[i] ^ oldValueUint8List[i];
     }
 
-    return MosaicMetadataTransaction._(
-        targetMosaicId,
+    return NamespaceMetadataTransaction._(
+        targetNamespaceId,
         targetAccount,
         scopedMetadataKeyValue,
         valueSizeDelta,
@@ -91,9 +89,9 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
         maxFee);
   }
 
-  factory MosaicMetadataTransaction.createFromPayload(
+  factory NamespaceMetadataTransaction.createFromPayload(
       Deadline deadline,
-      MosaicId targetMosaicId,
+      NamespaceId targetNamespaceId,
       PublicAccount targetAccount,
       scopedMetadataKey,
       int valueSize,
@@ -105,12 +103,10 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
       throw ArgumentError('invalid scopedMetadataKey type');
     }
 
-    final scopedMetadataKeyValue = scopedMetadataKey is Uint64
-        ? scopedMetadataKey
-        : Uint64.fromString(scopedMetadataKey);
+    final scopedMetadataKeyValue = Uint64.fromString(scopedMetadataKey);
 
-    return MosaicMetadataTransaction._(
-        targetMosaicId,
+    return NamespaceMetadataTransaction._(
+        targetNamespaceId,
         targetAccount,
         scopedMetadataKeyValue,
         valueSizeDelta,
@@ -123,10 +119,10 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
         maxFee);
   }
 
-  late MosaicId targetMosaicId;
+  late NamespaceId targetNamespaceId;
 
   @override
-  int size() => metadataV2HeaderSize + mosaicIdSize + valueSize;
+  int size() => metadataV2HeaderSize + namespaceSize + valueSize;
 
   @override
   AbstractTransaction absTransaction() => _absTransaction();
@@ -135,7 +131,7 @@ class MosaicMetadataTransaction extends BasicMetadataTransaction
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
     final targetIdOffset =
-        builder.writeListUint8(targetMosaicId.toBytes().toList());
+        builder.writeListUint8(targetNamespaceId.toBytes().toList());
     return super.basicGenerateBytes(builder, targetIdOffset, size());
   }
 

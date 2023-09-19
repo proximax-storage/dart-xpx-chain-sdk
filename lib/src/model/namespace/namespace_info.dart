@@ -35,7 +35,7 @@ class NamespaceInfo {
       } else {
         namespaceInfo.alias = Alias(
             mosaicId:
-                MosaicId.fromId(dto.namespace!.alias!.mosaicId!.toUint64()));
+                MosaicId.fromUint64(dto.namespace!.alias!.mosaicId!.toUint64()));
       }
     }
     if (dto.namespace!.parentId!.toUint64()!.toInt() != 0) {

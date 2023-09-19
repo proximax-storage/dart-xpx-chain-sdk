@@ -19,7 +19,7 @@ class TransactionRoutesApi {
   static const _transactionStatusRoute = '/transactionStatus/{hash}';
   static const _transactionsStatusRoute = '/transactionStatus';
   static const _announcePartialRoute = '/transactions/partial';
-  static const _announceAggregateCosignatureRoute = '/transaction/cosignature';
+  static const _announceAggregateCosignatureRoute = '/transactions/cosignature';
   static const _transactionsCounteRoute = '/transactions/count';
 
   /// returns transaction hash after announcing passed SignedTransaction.

@@ -24,13 +24,29 @@ class MosaicDefinitionTransaction extends AbstractTransaction
     mosaicProperties = mosaicProps;
     // Signer of transaction must be the same with ownerPublicKey
     mosaicId = MosaicId.fromNonceAndOwner(nonce, ownerPublicAccount);
+    maxFee ??= this.maxFee = calculateFee(size());
+  }
+
+  MosaicDefinitionTransaction.createWithMosaicId(
+      Deadline deadline,
+      MosaicNonce nonce,
+      MosaicId id,
+      MosaicProperties mosaicProps,
+      NetworkType networkType,
+      [Uint64? maxFee])
+      : super(networkType, deadline, TransactionType.mosaicDefinition,
+            mosaicDefinitionVersion, maxFee) {
+    mosaicNonce = nonce;
+    mosaicProperties = mosaicProps;
+    mosaicId = id;
+    maxFee ??= this.maxFee = calculateFee(size());
   }
 
   MosaicDefinitionTransaction.fromDTO(MosaicDefinitionTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
     mosaicProperties = MosaicProperties.fromDTO(dto.transaction!.properties!);
     mosaicNonce = MosaicNonce.fromInt(dto.transaction!.mosaicNonce!);
-    mosaicId = MosaicId.fromId(dto.transaction!.mosaicId!.toUint64());
+    mosaicId = MosaicId.fromUint64(dto.transaction!.mosaicId!.toUint64());
   }
 
   MosaicProperties? mosaicProperties;
@@ -139,7 +155,7 @@ class MosaicSupplyChangeTransaction extends AbstractTransaction
       MosaicSupplyChangeTransactionInfoDTO dto)
       : super.fromDto(dto.transaction!, dto.meta!) {
     mosaicSupplyType = dto.transaction!.direction == 0 ? decrease : increase;
-    mosaicId = MosaicId.fromId(dto.transaction!.mosaicId!.toUint64());
+    mosaicId = MosaicId.fromUint64(dto.transaction!.mosaicId!.toUint64());
     delta = dto.transaction!.delta!.toUint64();
   }
 

@@ -21,6 +21,7 @@ import '../api/dto.dart';
 import 'transaction/buffer/buffer.dart' as $buffer;
 import 'transaction/buffer/transactions_buffer.dart' as $txn_buffer;
 
+part 'transaction/fee_calculation_strategy.dart';
 part 'transaction/abstract_transaction.dart';
 part 'transaction/asset_id.dart';
 part 'transaction/basic_metadata_transaction.dart';
@@ -42,6 +43,7 @@ part 'transaction/transaction_internal.dart';
 part 'transaction/transaction_lockfund.dart';
 part 'transaction/transaction_mosaic.dart';
 part 'transaction/transaction_mosaic_metadata.dart';
+part 'transaction/transaction_namespace_metadata.dart';
 part 'transaction/transaction_multisig.dart';
 part 'transaction/transaction_namespace.dart';
 part 'transaction/transaction_status.dart';

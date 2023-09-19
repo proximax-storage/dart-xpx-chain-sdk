@@ -12,7 +12,9 @@ class AccountPropertiesMosaicTransaction extends AbstractTransaction
   AccountPropertiesMosaicTransaction(Deadline deadline, this.propertyType,
       this.modifications, NetworkType networkType, [Uint64? maxFee])
       : super(networkType, deadline, TransactionType.accountPropertyMosaic,
-            accountRestrictionMosaicVersion, maxFee);
+            accountRestrictionMosaicVersion, maxFee) {
+    maxFee ??= this.maxFee = calculateFee(size());
+  }
 
   AccountPropertiesMosaicTransaction.fromDTO(
       AccountPropertiesMosaicTransactionInfoDTO dto)
