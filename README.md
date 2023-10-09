@@ -12,7 +12,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  xpx_chain_sdk: 0.0.7+8
+  xpx_chain_sdk: 0.0.9
 ```
 
 **2. Install it**
@@ -52,4 +52,4 @@ For more examples, go to our [wiki](https://github.com/proximax-storage/dart-xpx
 We'd love to get more people involved in the project. Please feel free to raise any issues or PR and we'll review your
 contribution.
 
-Copyright (c) 2019 ProximaX Limited
+Copyright (c) 2023 ProximaX Limited

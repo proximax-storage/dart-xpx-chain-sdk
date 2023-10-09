@@ -261,6 +261,50 @@ Future<SignedTransaction> signTransactionWith(
       SignedTransaction(tx.absTransaction().type, pHex.toUpperCase(), hash));
 }
 
+Future<SignedTransaction> signTransactionWithTxnPayload(
+    String txnPayload, Account a, String generationHash) async {
+  final s = a.account;
+
+  final List<int> bytes = [];
+  for (int i = 0; i < txnPayload.length; i += 2) {
+    final hexPair = txnPayload.substring(i, i + 2);
+    final byte = int.parse(hexPair, radix: 16);
+    bytes.add(byte);
+  }
+
+  final b = Uint8List.fromList(bytes);
+
+  var sb = Uint8List.fromList(b.skip(100).take(b.length).toList());
+
+  sb = Uint8List.fromList(hex.decode(generationHash) + sb);
+
+  final signature = await s.sign(sb);
+
+  final p = <int>[]
+    ..insertAll(0, b.skip(0).take(4))
+    ..insertAll(4, signature.bytes)
+    ..insertAll(4 + 64, a.account.publicKey)
+    ..insertAll(100, b.skip(100).take(b.length));
+
+  final String pHex = hex.encode(p);
+
+  final hash = _createTransactionHash(pHex, generationHash);
+  const versionLength = 8;
+  const publicKeyLength = 64;
+  const typeLength = 4;
+  const sizeLength = 8;
+  const signatureLength = 128;
+  const signatureOffset = sizeLength;
+  const publicKeyOffset = signatureOffset + signatureLength;
+  const versionOffset = publicKeyOffset + publicKeyLength;
+  const typeOffset = versionOffset + versionLength;
+  const feeOffset = typeOffset + typeLength;
+  final type =
+      extractNumberFromHex(txnPayload.substring(typeOffset, feeOffset));
+  return SignedTransaction(
+      TransactionType.fromInt(type), pHex.toUpperCase(), hash);
+}
+
 Future<SignedTransaction> signTransactionWithCosignatures(Transaction tx,
     Account a, List<Account> cosignatories, String generationHash) async {
   final stx = await signTransactionWith(tx, a, generationHash);
