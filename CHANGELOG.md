@@ -1,5 +1,9 @@
 ## 0.0.8
 ### Updates
+[ADD] sign txn with Payload
+
+## 0.0.8
+### Updates
 [ADD] function to get encrypted private key with password
 [ADD] route to get blockchain config
 [UPDATE] max fee
