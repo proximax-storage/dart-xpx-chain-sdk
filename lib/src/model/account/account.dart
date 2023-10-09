@@ -78,6 +78,10 @@ class Account {
           Transaction tx, String generationHash) async =>
       signTransactionWith(tx, this, generationHash);
 
+  Future<SignedTransaction> signTransactionWithPayload(
+          String txnPayload, String generationHash) async =>
+      signTransactionWithTxnPayload(txnPayload, this, generationHash);
+
   Future<SignedTransaction> signWithCosignatures(Transaction tx,
           List<Account> cosignatories, String generationHash) async =>
       signTransactionWithCosignatures(tx, this, cosignatories, generationHash);
