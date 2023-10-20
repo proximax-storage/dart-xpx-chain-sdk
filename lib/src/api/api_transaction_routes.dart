@@ -104,7 +104,7 @@ class TransactionRoutesApi {
 
       return await getTransaction(
           txnStatus.group!.toTransactionGroupType!, transactionId);
-    } on DioError catch (_) {
+    } on DioException catch (_) {
       rethrow;
     }
   }
@@ -222,7 +222,7 @@ class TransactionRoutesApi {
           .getBlockByHeight(tx!.absTransaction().height!);
 
       return block!.feeMultiplier! * tx.size();
-    } on DioError catch (_) {
+    } on DioException catch (_) {
       rethrow;
     }
   }

@@ -1,4 +1,8 @@
-## 0.0.8
+## 0.0.10
+### Bug fix
+[ADD] Fix transaction type in transaction query parameter 
+
+## 0.0.9
 ### Updates
 [ADD] sign txn with Payload
 
