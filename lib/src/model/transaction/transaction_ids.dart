@@ -11,7 +11,7 @@ class TransactionIds {
 
   TransactionIds.fromJson(Map json)
       : assert(json.isNotEmpty, 'json must not be empty') {
-    transactionIds = (json['transactionIds']).map((item) => item).toList();
+    transactionIds = json['transactionIds'].map((item) => item).toList();
   }
 
   TransactionIds.fromList(List<String> list)
