@@ -330,7 +330,7 @@ class ApiClient {
     try {
       return await _invokeAPI(path, method, queryParams, postBody, headerParams,
           formParams, contentType);
-    } on DioError catch (_) {
+    } on DioException catch (_) {
       rethrow;
     }
   }
