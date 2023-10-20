@@ -67,7 +67,7 @@ class TransactionFieldOrder {
 class TransactionQueryParams {
   int? pageSize;
   int? pageNumber;
-  List<TransactionType>? type;
+  List<int>? type;
   bool embedded = false;
   Order_v2? order;
   TransactionSortingField? sortField;
