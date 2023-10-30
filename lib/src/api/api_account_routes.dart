@@ -138,7 +138,7 @@ class AccountRoutesApi {
       firstLevel = false;
     }
     return internalGetTransactionsWithPagination(
-        _apiClient, _transactionsRoute, queryParams, null,
+        _apiClient, _transactionsRoute, queryParams,
         firstLevel: firstLevel);
   }
 

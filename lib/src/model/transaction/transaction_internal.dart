@@ -521,12 +521,9 @@ Future<List<Transaction>> internalGetTransactions(ApiClient client, String path,
 }
 
 Future<TransactionWithPagination> internalGetTransactionsWithPagination(
-    ApiClient client,
-    String path,
-    List<QueryParam> queryParams,
-    Object? postBody,
+    ApiClient client, String path, List<QueryParam> queryParams,
     {bool firstLevel = true}) async {
-  final response = await client.get(path, postBody, queryParams);
+  final response = await client.get(path, null, queryParams);
 
   if (response.statusCode! >= 299) {
     throw ApiException(response.statusCode!, response.data);
@@ -542,6 +539,6 @@ Future<TransactionWithPagination> internalGetTransactionsWithPagination(
       return TransactionWithPagination.fromDto(
           fixAggregate(allTransaction), response.data['pagination']);
   } else {
-    return TransactionWithPagination([], Pagination(0, 0, 0, 0));
+    return TransactionWithPagination([], null);
   }
 }

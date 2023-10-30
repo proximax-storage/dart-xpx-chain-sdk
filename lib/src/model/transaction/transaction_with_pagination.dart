@@ -2,15 +2,15 @@ part of xpx_chain_sdk.model.transaction;
 
 class TransactionWithPagination {
   final List<Transaction> transactions;
-  final Pagination pagination;
+  final Pagination? pagination;
 
   TransactionWithPagination(this.transactions, this.pagination);
 
   factory TransactionWithPagination.fromDto(
-          List<Transaction> transactions, Map<String, dynamic> json) =>
+          List<Transaction> transactions, Map<String, dynamic>? json) =>
       TransactionWithPagination(
         transactions,
-        Pagination.fromJson(json),
+        json == null ? null : Pagination.fromJson(json),
       );
 }
 
