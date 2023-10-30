@@ -1,3 +1,7 @@
+## 0.0.11
+### Updates
+[ADD] Add pagination property for transaction
+
 ## 0.0.10
 ### Bug fix
 [ADD] Fix transaction type in transaction query parameter 

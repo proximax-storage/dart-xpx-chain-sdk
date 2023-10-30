@@ -519,3 +519,26 @@ Future<List<Transaction>> internalGetTransactions(ApiClient client, String path,
     return [];
   }
 }
+
+Future<TransactionWithPagination> internalGetTransactionsWithPagination(
+    ApiClient client, String path, List<QueryParam> queryParams,
+    {bool firstLevel = true}) async {
+  final response = await client.get(path, null, queryParams);
+
+  if (response.statusCode! >= 299) {
+    throw ApiException(response.statusCode!, response.data);
+  } else if (response.data != null) {
+    final List resp = client.deserialize(response.data, 'List<Transaction>');
+    final allTransaction =
+        resp.map(deserializeDTO).toList().cast<Transaction>();
+
+    if (firstLevel) {
+      return TransactionWithPagination.fromDto(
+          allTransaction, response.data['pagination']);
+    } else
+      return TransactionWithPagination.fromDto(
+          fixAggregate(allTransaction), response.data['pagination']);
+  } else {
+    return TransactionWithPagination([], null);
+  }
+}
