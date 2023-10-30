@@ -16,11 +16,16 @@ class TransactionWithPagination {
 
 class Pagination {
   final int totalEntries;
-  final int pageNumbers;
+  final int pageNumber;
   final int pageSize;
+  final int totalPages;
 
-  Pagination(this.totalEntries, this.pageNumbers, this.pageSize);
+  Pagination(
+      this.totalEntries, this.pageNumber, this.pageSize, this.totalPages);
 
-  factory Pagination.fromJson(Map<String, dynamic> json) =>
-      Pagination(json['totalEntries'], json['pageNumbers'], json['pageSize']);
+  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
+      json['totalEntries'],
+      json['pageNumber'],
+      json['pageSize'],
+      json['totalPages']);
 }

@@ -542,6 +542,6 @@ Future<TransactionWithPagination> internalGetTransactionsWithPagination(
       return TransactionWithPagination.fromDto(
           fixAggregate(allTransaction), response.data['pagination']);
   } else {
-    return TransactionWithPagination([], Pagination(0, 0, 0));
+    return TransactionWithPagination([], Pagination(0, 0, 0, 0));
   }
 }
