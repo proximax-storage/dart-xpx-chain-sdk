@@ -122,7 +122,7 @@ class AccountRoutesApi {
   /// param: pageSize The number of transactions to return for each request.
   /// param: id The transaction id up to which transactions are returned.
   /// param: ordering The ordering criteria: * -id - Descending order by id. * id - Ascending order by id.
-  Future<List<Transaction>> transactions(PublicAccount account,
+  Future<TransactionWithPagination> transactions(PublicAccount account,
       [TransactionQueryParams? txnQueryParams]) async {
     // query params
     final List<QueryParam> queryParams = [];
@@ -137,7 +137,7 @@ class AccountRoutesApi {
     if (txnQueryParams != null && !txnQueryParams.firstLevel) {
       firstLevel = false;
     }
-    return internalGetTransactions(
+    return internalGetTransactionsWithPagination(
         _apiClient, _transactionsRoute, queryParams, null,
         firstLevel: firstLevel);
   }

@@ -21,6 +21,7 @@ import '../api/dto.dart';
 import 'transaction/buffer/buffer.dart' as $buffer;
 import 'transaction/buffer/transactions_buffer.dart' as $txn_buffer;
 
+part 'transaction/transaction_with_pagination.dart';
 part 'transaction/fee_calculation_strategy.dart';
 part 'transaction/abstract_transaction.dart';
 part 'transaction/asset_id.dart';
