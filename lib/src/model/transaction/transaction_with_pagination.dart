@@ -10,7 +10,7 @@ class TransactionWithPagination {
           List<Transaction> transactions, Map<String, dynamic> json) =>
       TransactionWithPagination(
         transactions,
-        Pagination.fromJson(json['pagination']),
+        Pagination.fromJson(json),
       );
 }
 
