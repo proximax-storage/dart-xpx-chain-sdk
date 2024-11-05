@@ -73,6 +73,9 @@ const
     /// Modify mosaic metadata nem transactions version.
     mosaicMetadataVersionV2 = 1,
 
+    ///Super contract transaction version.
+    superContractVersion = 2,
+
     /// Modify namespace metadata nem transactions version.
     namespaceMetadataVersionV2 = 1, // TODO: unimplemented
 

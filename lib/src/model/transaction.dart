@@ -50,3 +50,4 @@ part 'transaction/transaction_namespace.dart';
 part 'transaction/transaction_status.dart';
 part 'transaction/transaction_transfer.dart';
 part 'transaction/transaction_type.dart';
+part 'transaction/transaction_supercontract.dart';

@@ -93,6 +93,8 @@ class TransactionType {
   static const TransactionType blockchainUpgrade =
       TransactionType._internal(0x4158, 'blockchainUpgrade'); // 16728
 
+  static const TransactionType manualCallSuperContract =
+      TransactionType._internal(0x426E, 'manualCallSuperContract'); // 17006
   final int value;
 
   /// This TransactionType's name.

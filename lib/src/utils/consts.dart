@@ -122,4 +122,8 @@ const addressSize = 25,
     removeExchangeOfferSize = offerTypeSize + mosaicIdSize,
     removeExchangeOfferHeaderSize = transactionHeaderSize + offersCountSize,
     metadataV2HeaderSize =
-        transactionHeaderSize + keySize + baseInt64Size + 2 + 2;
+        transactionHeaderSize + keySize + baseInt64Size + 2 + 2,
+    fileNameSize = 2,
+    functionNameSize = 2,
+    actualArgumentsSize = 2,
+    servicePaymentsCount = 1;

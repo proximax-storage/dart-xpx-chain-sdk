@@ -32,3 +32,4 @@ export 'schema_storage_transaction_catapult.buffers_generated.dart';
 export 'schema_supercontract_transaction_catapult.buffers_generated.dart';
 export 'schema_transfer_transaction_catapult.buffers_generated.dart';
 export 'transactions_buffer.dart';
+export "schema_supercontract_v2_transaction_catapult.buffers_generated.dart";

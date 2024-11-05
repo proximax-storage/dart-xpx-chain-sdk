@@ -20,3 +20,4 @@ part './schema/schema_mosaic_supply_change.dart';
 part './schema/schema_multisig.dart';
 part './schema/schema_register_namespace.dart';
 part './schema/schema_transfer.dart';
+part './schema/schema_super_contract.dart';
