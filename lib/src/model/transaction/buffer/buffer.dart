@@ -6,6 +6,7 @@
 
 library xpx_chain_sdk.model.transaction.buffer;
 
+export "schema_mosaic_buffer.dart";
 export 'schema_account_link_transaction_catapult.buffers_generated.dart';
 export 'schema_account_properties_transaction_catapult.buffers_generated.dart';
 export 'schema_aggregate_transaction_catapult.buffers_generated.dart';

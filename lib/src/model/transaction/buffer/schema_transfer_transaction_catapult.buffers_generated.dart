@@ -6,8 +6,7 @@ library catapult.buffers;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flat_buffers/flat_buffers.dart' as fb;
-
-import './schema_operation_transaction_catapult.buffers_generated.dart';
+import './schema_mosaic_buffer.dart';
 
 class MessageBuffer {
   MessageBuffer._(this._bc, this._bcOffset);

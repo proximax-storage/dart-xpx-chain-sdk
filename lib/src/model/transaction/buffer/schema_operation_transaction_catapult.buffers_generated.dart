@@ -6,6 +6,7 @@ library catapult.buffers;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flat_buffers/flat_buffers.dart' as fb;
+import './schema_mosaic_buffer.dart';
 
 class OperationIdentifyTransactionBuffer {
   OperationIdentifyTransactionBuffer._(this._bc, this._bcOffset);
@@ -175,93 +176,6 @@ class OperationIdentifyTransactionBufferObjectBuilder extends fb.ObjectBuilder {
   }
 }
 
-class MosaicBuffer {
-  MosaicBuffer._(this._bc, this._bcOffset);
-
-  factory MosaicBuffer(List<int> bytes) {
-    final rootRef = fb.BufferContext.fromBytes(bytes);
-    return reader.read(rootRef, 0);
-  }
-
-  static const fb.Reader<MosaicBuffer> reader = _MosaicBufferReader();
-
-  final fb.BufferContext _bc;
-  final int _bcOffset;
-
-  List<int>? get id => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 4);
-
-  List<int>? get amount => const fb.ListReader<int>(fb.Uint32Reader())
-      .vTableGetNullable(_bc, _bcOffset, 6);
-
-  @override
-  String toString() {
-    return 'MosaicBuffer{id: ${id}, amount: ${amount}}';
-  }
-}
-
-class _MosaicBufferReader extends fb.TableReader<MosaicBuffer> {
-  const _MosaicBufferReader();
-
-  @override
-  MosaicBuffer createObject(fb.BufferContext bc, int offset) =>
-      MosaicBuffer._(bc, offset);
-}
-
-class MosaicBufferBuilder {
-  MosaicBufferBuilder(this.fbBuilder);
-
-  final fb.Builder fbBuilder;
-
-  void begin() {
-    fbBuilder.startTable(2);
-  }
-
-  int addIdOffset(int? offset) {
-    fbBuilder.addOffset(0, offset);
-    return fbBuilder.offset;
-  }
-
-  int addAmountOffset(int? offset) {
-    fbBuilder.addOffset(1, offset);
-    return fbBuilder.offset;
-  }
-
-  int finish() {
-    return fbBuilder.endTable();
-  }
-}
-
-class MosaicBufferObjectBuilder extends fb.ObjectBuilder {
-  final List<int>? _id;
-  final List<int>? _amount;
-
-  MosaicBufferObjectBuilder({
-    List<int>? id,
-    List<int>? amount,
-  })  : _id = id,
-        _amount = amount;
-
-  /// Finish building, and store into the [fbBuilder].
-  @override
-  int finish(fb.Builder fbBuilder) {
-    final int? idOffset = _id == null ? null : fbBuilder.writeListUint32(_id!);
-    final int? amountOffset =
-        _amount == null ? null : fbBuilder.writeListUint32(_amount!);
-    fbBuilder.startTable(2);
-    fbBuilder.addOffset(0, idOffset);
-    fbBuilder.addOffset(1, amountOffset);
-    return fbBuilder.endTable();
-  }
-
-  /// Convenience method to serialize to byte list.
-  @override
-  Uint8List toBytes([String? fileIdentifier]) {
-    final fbBuilder = fb.Builder(deduplicateTables: false);
-    fbBuilder.finish(finish(fbBuilder), fileIdentifier);
-    return fbBuilder.buffer;
-  }
-}
 
 class StartOperationTransactionBuffer {
   StartOperationTransactionBuffer._(this._bc, this._bcOffset);
