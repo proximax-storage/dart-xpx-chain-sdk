@@ -461,10 +461,10 @@ packages:
     dependency: "direct main"
     description:
       name: xpx_crypto
-      sha256: e0a55181b511ca171b0124ecc36636a376558707b0fb65f2b866cd51e68121ae
+      sha256: cd70fcd0a7b7a43b5150a14c458a5cbbc85adf19266954e334e13bf06bc509d1
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.4+1"
+    version: "0.0.4+2"
   yaml:
     dependency: transitive
     description:
