@@ -1,13 +1,13 @@
 /*
- * Copyright 2018 ProximaX Limited. All rights reserved.
+ * Copyright 2024 ProximaX Limited. All rights reserved.
  * Use of this source code is governed by the Apache 2.0
  * license that can be found in the LICENSE file.
  */
 
 part of xpx_chain_sdk.model.transaction;
 
-/// Send mosaics and messages between two accounts.
-/// Announce a [TransferTransaction] to send [Mosaic] or [Message] between two [Account].
+/// Manual call a supercontract function.
+/// Announce a [ManualCallSuperContractTransaction] to call a function along with arguments.
 ///
 class ManualCallSuperContractTransaction extends AbstractTransaction
     implements Transaction {
@@ -64,7 +64,11 @@ class ManualCallSuperContractTransaction extends AbstractTransaction
       actualArgumentsSize +
       amountSize +
       amountSize +
-      servicePaymentsCount;
+      servicePaymentsCount +
+      fileName.length + 
+      functionName.length +
+      actualArguments.length +
+      (mosaicIdSize + amountSize) * servicePayments.length;
 
   @override
   AbstractTransaction absTransaction() => _absTransaction();
@@ -73,7 +77,7 @@ class ManualCallSuperContractTransaction extends AbstractTransaction
   Uint8List generateBytes() {
     final builder = fb.Builder(initialSize: 0);
 
-    /// Create mosaics
+    /// Create mosaics vector
     final mb = List.generate(servicePayments.length, (_) => 0);
     int i = 0;
     for (final mosaic in servicePayments!) {
@@ -88,30 +92,41 @@ class ManualCallSuperContractTransaction extends AbstractTransaction
       i++;
     }
 
+    final servicePaymentsOffset = builder.writeList(mb);
+
     final contractKeyOffset =
         builder.writeListUint8(HexUtils.hexToBytes(contractKey.publicKey));
 
-    final int? fileNameSizeOffset = builder.writeListUint8();
-
-    final int? functionNameSizeOffset = builder.writeListUint8();
-
-    final int? actualArgumentSizeOffset = builder.writeListUint8();
-
-    final int? executionCallPaymentOffset =
+    final executionCallPaymentOffset =
         builder.writeListUint32(executionCallPayment.toIntArray());
 
-    final int? downloadCallPaymentOffset =
+    final downloadCallPaymentOffset =
         builder.writeListUint32(downloadCallPayment.toIntArray());
 
-    /*  final int? fileNameOffset =
+    final String fileNameHex = HexUtils.utf8ToHex(fileName);
+    final Uint8List fileNameUint8List = HexUtils.hexToBytes(fileNameHex);
+    final int fileNameOffset = builder.writeListUint8(fileNameUint8List);
+    
+    final String functionNameHex = HexUtils.utf8ToHex(functionName);
+    final Uint8List functionNameUint8List = HexUtils.hexToBytes(functionNameHex);
+    final int functionNameOffset = builder.writeListUint8(functionNameUint8List);
 
-    final int? functionNameOffset =  */
-
-    final int? actualArgumentsOffset = builder.writeListUint8(actualArguments);
-
-    final int? servicePaymentsOffset = builder.writeList(mb);
+    final int actualArgumentsOffset = builder.writeListUint8(actualArguments);
 
     final vectors = _generateCommonVector(builder);
+
+    final fileNameSizeUint8List = Uint8List(2)..buffer.asInt16List()[0] = fileNameUint8List.length;//fileNameUint8List.length.;
+    final functionNameSizeUint8List = Uint8List(2)..buffer.asInt16List()[0] = functionNameUint8List.length; 
+    final actualArgumentsSizeUint8List = Uint8List(2)..buffer.asInt16List()[0] = actualArguments.length;
+
+    final fileNameSizeOffset =
+        builder.writeListUint8(fileNameSizeUint8List);
+
+    final functionNameSizeOffset =
+        builder.writeListUint8(functionNameSizeUint8List);
+
+    final actualArgumentsSizeOffset =
+        builder.writeListUint8(actualArgumentsSizeUint8List);
 
     final txnBuilder = $buffer.ManualCallTransactionBufferBuilder(builder)
       ..begin()
@@ -119,7 +134,7 @@ class ManualCallSuperContractTransaction extends AbstractTransaction
       ..addContractKeyOffset(contractKeyOffset)
       ..addFileNameSizeOffset(fileNameSizeOffset)
       ..addFunctionNameSizeOffset(functionNameSizeOffset)
-      ..addActualArgumentsSizeOffset(actualArgumentSizeOffset)
+      ..addActualArgumentsSizeOffset(actualArgumentsSizeOffset)
       ..addExecutionCallPaymentOffset(executionCallPaymentOffset)
       ..addDownloadCallPaymentOffset(downloadCallPaymentOffset)
       ..addServicePaymentsCount(servicePayments.length)
