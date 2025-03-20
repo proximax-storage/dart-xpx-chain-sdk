@@ -74,7 +74,7 @@ const
     mosaicMetadataVersionV2 = 1,
 
     ///Super contract transaction version.
-    superContractVersion = 2,
+    manualCallVersion = 1,
 
     /// Modify namespace metadata nem transactions version.
     namespaceMetadataVersionV2 = 1, // TODO: unimplemented

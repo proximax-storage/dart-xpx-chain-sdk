@@ -23,7 +23,7 @@ class ManualCallSuperContractTransaction extends AbstractTransaction
       NetworkType networkType,
       [Uint64? maxFee])
       : super(networkType, deadline, TransactionType.manualCallSuperContract,
-            superContractVersion, maxFee) {
+            manualCallVersion, maxFee) {
     maxFee ??= this.maxFee = calculateFee(size());
   }
 
